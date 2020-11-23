@@ -7,9 +7,7 @@ type HeaderProps = {
 
 function Header({ className }: HeaderProps) {
 	return (
-		<header
-			className={clsx(className, 'grid grid-cols-8 grid-rows-2 gap-2 my-8')}
-		>
+		<header className={clsx(className, 'grid grid-cols-8 grid-rows-2 gap-4')}>
 			<div className="bg-blue-50 col-span-2 sm:row-span-2">logo</div>
 			<h1 className="text-5xl col-span-6 sm:col-span-3">Matt Greer</h1>
 			<div className="flex flex-row col-span-8 sm:col-span-3 justify-between items-center">
