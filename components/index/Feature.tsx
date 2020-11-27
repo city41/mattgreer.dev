@@ -73,9 +73,9 @@ function Feature({
 				</Link>
 				<div className="my-2 text-sm">{blurb}</div>
 				<div className="mb-2 py-1 text-gray-500 text-xs">{type}</div>
-				<ul className="flex flex-row space-x-2 -mx-2">
+				<ul className="flex flex-row flex-wrap -mx-2">
 					{tags.map((t) => (
-						<Tag key={t} component="li">
+						<Tag key={t} component="li" className="m-1">
 							{t}
 						</Tag>
 					))}
