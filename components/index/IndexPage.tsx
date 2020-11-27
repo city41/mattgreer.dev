@@ -16,7 +16,7 @@ import { Footer } from './Footer';
 function IndexPage() {
 	return (
 		<div className="flex flex-col">
-			<Header className="mt-24 mb-16 sm:mt-32" />
+			<Header className="mt-24 mb-16 sm:mt-32 sm:mb-32" />
 			<main role="main">
 				<div className="h-32 grid place-items-center font-bold">
 					Some things I have created{' '}
@@ -34,7 +34,7 @@ function IndexPage() {
 						type="interactive article"
 					/>
 				</div>
-				<div className="h-32 grid place-items-center font-bold">
+				<div className="h-48 grid place-items-center font-bold">
 					<div>
 						Many more things in my <a className="text-focal">portfolio</a>
 					</div>
