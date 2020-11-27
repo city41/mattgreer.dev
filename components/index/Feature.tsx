@@ -58,14 +58,12 @@ function Feature({ className, title, side, type }: FeatureProps) {
 					} as CSSProperties
 				}
 			>
-				{/*<div className="-mt-6 -mx-6 mb-3 p-2 bg-bg-fade text-fg-deep text-xs text-center self-stretch">*/}
-				{/*	{type}*/}
-				{/*</div>*/}
 				<h2 className="text-3xl font-bold">{title}</h2>
 				<p className="py-2 text-sm">
 					Create game levels in your browser. Easy to use and powerful.
 				</p>
-				<ul className="flex flex-row space-x-2 mt-4">
+				<div className="mb-2 py-1 text-gray-500 text-xs">{type}</div>
+				<ul className="flex flex-row space-x-2 -mx-2">
 					<li className="bg-focal text-white py-1 px-2 text-xs">React</li>
 					<li className="bg-focal text-white py-1 px-2 text-xs">TypeScript</li>
 					<li className="bg-focal text-white py-1 px-2 text-xs">Redux</li>
