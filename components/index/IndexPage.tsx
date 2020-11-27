@@ -1,28 +1,47 @@
 import React from 'react';
 import { Header } from './Header';
-import { Section } from './Section';
+import { Feature } from './Feature';
+import { Footer } from './Footer';
 
-const articleSlugs = ['sega-saturn-and-transparency'];
-
-const articles = articleSlugs.map((slug) => {
-	const mdx = require(`../../pages/articles/${slug}/index.mdx`);
-	return {
-		...mdx,
-		url: `/articles/${slug}/`,
-	};
-});
+// const articleSlugs = ['sega-saturn-and-transparency'];
+//
+// const articles = articleSlugs.map((slug) => {
+// 	const mdx = require(`../../pages/articles/${slug}/index.mdx`);
+// 	return {
+// 		...mdx,
+// 		url: `/articles/${slug}/`,
+// 	};
+// });
 
 function IndexPage() {
 	return (
-		<div className="flex flex-col space-y-1 max-w-screen-lg lg:mx-auto mx-4">
-			<Header className="mt-8 mb-16" />
-			<main
-				role="main"
-				className="flex flex-col sm:flex-row content-between space-x-4"
-			>
-				<Section className="flex-auto" title="Articles" entries={articles} />
-				<Section className="flex-auto" title="Projects" entries={[]} />
+		<div className="flex flex-col">
+			<Header className="mt-24 mb-16 sm:mt-32" />
+			<main role="main">
+				<div className="h-32 grid place-items-center font-bold">
+					Some things I have created{' '}
+				</div>
+				<div className="flex flex-col space-y-32">
+					<Feature side="right" title="Jump.Club" type="website" />
+					<Feature
+						side="left"
+						title="JavaScript Promises"
+						type="technical article"
+					/>
+					<Feature side="right" title="Closet Designer" type="website" />
+					<Feature
+						side="left"
+						title="The Sega Saturn and Transparency"
+						type="interactive article"
+					/>
+				</div>
+				<div className="h-32 grid place-items-center font-bold">
+					<div>
+						Many more things in my <a className="text-blue-500">portfolio</a>
+					</div>
+				</div>
 			</main>
+			<Footer />
 		</div>
 	);
 }
