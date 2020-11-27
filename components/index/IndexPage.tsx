@@ -14,6 +14,36 @@ import { InternalLink } from '../InternalLink';
 // 	};
 // });
 
+const features = [
+	{
+		slug: 'projects/jump-club',
+		blurb: (
+			<>
+				<p>jump club blurb</p>
+			</>
+		),
+		tags: ['React', 'TypeScript', 'Redux', 'NodeJS'],
+	},
+	{
+		slug: 'articles/promises-in-wicked-detail',
+		blurb: (
+			<>
+				<p>promises blurb</p>
+			</>
+		),
+		tags: ['JavaScript'],
+	},
+	{
+		slug: 'articles/sega-saturn-and-transparency',
+		blurb: (
+			<>
+				<p>saturn blurb</p>
+			</>
+		),
+		tags: ['React', 'TypeScript'],
+	},
+];
+
 function IndexPage() {
 	return (
 		<div className="flex flex-col">
@@ -23,17 +53,20 @@ function IndexPage() {
 					Some things I have created{' '}
 				</div>
 				<div className="flex flex-col space-y-48">
-					<Feature side="right" title="Jump.Club" type="website" />
-					<Feature
-						side="left"
-						title="JavaScript Promises"
-						type="technical article"
-					/>
-					<Feature
-						side="right"
-						title="The Sega Saturn and Transparency"
-						type="interactive article"
-					/>
+					{features.map((feature, index) => {
+						const mdx = require(`../../pages/${feature.slug}/index.mdx`);
+						return (
+							<Feature
+								key={feature.slug}
+								side={index & 1 ? 'left' : 'right'}
+								slug={feature.slug}
+								title={mdx.title}
+								blurb={feature.blurb}
+								type={mdx.type}
+								tags={feature.tags}
+							/>
+						);
+					})}
 				</div>
 				<div className="h-48 grid place-items-center font-bold">
 					<div>

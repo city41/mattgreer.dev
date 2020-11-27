@@ -1,5 +1,6 @@
 import React, { CSSProperties } from 'react';
 import clsx from 'clsx';
+import Link from 'next/link';
 import { Tag } from '../Tag';
 
 import jumpClubPng from './jumpclub.png';
@@ -10,18 +11,29 @@ import saturnPng from './saturn.png';
 type FeatureProps = {
 	className?: string;
 	title: string;
+	blurb: React.ReactNode;
 	side: 'left' | 'right';
 	type: 'website' | 'technical article' | 'interactive article';
+	slug: string;
+	tags: string[];
 };
 
 const backgroundImages = {
 	'Jump.Club': `url(${jumpClubPng})`,
-	'JavaScript Promises': `url(${webstormJpg})`,
+	'JavaScript Promises ... in Wicked Detail': `url(${webstormJpg})`,
 	'Closet Designer': `url(${nggmPng})`,
 	'The Sega Saturn and Transparency': `url(${saturnPng})`,
 };
 
-function Feature({ className, title, side, type }: FeatureProps) {
+function Feature({
+	className,
+	title,
+	blurb,
+	side,
+	type,
+	slug,
+	tags,
+}: FeatureProps) {
 	const gradientAngle = side === 'left' ? '-120deg' : '120deg';
 
 	const style = {
@@ -49,21 +61,24 @@ function Feature({ className, title, side, type }: FeatureProps) {
 				className="p-12 w-72 flex flex-col justify-center text-white bg-black"
 				style={
 					{
-						// height: '100%',
 						'--tw-bg-opacity': 0.75,
 						backdropFilter: 'blur(20px)',
 					} as CSSProperties
 				}
 			>
-				<h2 className="text-3xl font-bold">{title}</h2>
-				<p className="py-2 text-sm">
-					Create game levels in your browser. Easy to use and powerful.
-				</p>
+				<Link href={slug} passHref>
+					<a>
+						<h2 className="text-3xl font-bold hover:underline">{title}</h2>
+					</a>
+				</Link>
+				<div className="my-2 text-sm">{blurb}</div>
 				<div className="mb-2 py-1 text-gray-500 text-xs">{type}</div>
 				<ul className="flex flex-row space-x-2 -mx-2">
-					<Tag component="li">React</Tag>
-					<Tag component="li">TypeScript</Tag>
-					<Tag component="li">Redux</Tag>
+					{tags.map((t) => (
+						<Tag key={t} component="li">
+							{t}
+						</Tag>
+					))}
 				</ul>
 			</div>
 		</div>
