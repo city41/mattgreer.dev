@@ -49,7 +49,7 @@ body {
 
     --color-focal-fade: hsl(var(--color-focal-h), var(--color-focal-s), calc(var(--color-focal-l) + var(--lighten)));
     --color-focal: hsl(var(--color-focal-h), var(--color-focal-s), var(--color-focal-l));
-    --color-focal-deep: hsl(var(--color-focal-h), var(--color-focal-s), calc(var(--color-focal-l) + var(--darken)));
+    --color-focal-deep: hsl(var(--color-focal-h), var(--color-focal-s), calc(var(--color-focal-l) + var(--darken) * 4));
   }
 }
 
@@ -104,7 +104,7 @@ body {
 
   --color-focal-fade: hsl(var(--color-focal-h), var(--color-focal-s), calc(var(--color-focal-l) + var(--lighten)));
   --color-focal: hsl(var(--color-focal-h), var(--color-focal-s), var(--color-focal-l));
-  --color-focal-deep: hsl(var(--color-focal-h), var(--color-focal-s), calc(var(--color-focal-l) + var(--darken)));
+  --color-focal-deep: hsl(var(--color-focal-h), var(--color-focal-s), calc(var(--color-focal-l) + var(--darken) * 4));
 }
 
 .forced-light {

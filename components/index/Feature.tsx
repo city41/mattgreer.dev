@@ -1,5 +1,6 @@
 import React, { CSSProperties } from 'react';
 import clsx from 'clsx';
+import { Tag } from '../Tag';
 
 // @ts-ignore
 import jumpClubPng from './jumpclub.png';
@@ -64,9 +65,9 @@ function Feature({ className, title, side, type }: FeatureProps) {
 				</p>
 				<div className="mb-2 py-1 text-gray-500 text-xs">{type}</div>
 				<ul className="flex flex-row space-x-2 -mx-2">
-					<li className="bg-focal text-white py-1 px-2 text-xs">React</li>
-					<li className="bg-focal text-white py-1 px-2 text-xs">TypeScript</li>
-					<li className="bg-focal text-white py-1 px-2 text-xs">Redux</li>
+					<Tag component="li">React</Tag>
+					<Tag component="li">TypeScript</Tag>
+					<Tag component="li">Redux</Tag>
 				</ul>
 			</div>
 		</div>
