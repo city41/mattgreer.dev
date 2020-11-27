@@ -2,6 +2,7 @@ import React from 'react';
 import { Header } from './Header';
 import { Feature } from './Feature';
 import { Footer } from './Footer';
+import { InternalLink } from '../InternalLink';
 
 // const articleSlugs = ['sega-saturn-and-transparency'];
 //
@@ -36,7 +37,8 @@ function IndexPage() {
 				</div>
 				<div className="h-48 grid place-items-center font-bold">
 					<div>
-						Much more in my <a className="text-focal">portfolio</a>
+						Much more in my{' '}
+						<InternalLink href="/portfolio">portfolio</InternalLink>
 					</div>
 				</div>
 			</main>

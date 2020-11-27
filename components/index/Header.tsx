@@ -1,6 +1,8 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import { InternalLink } from '../InternalLink';
+
 type HeaderProps = {
 	className?: string;
 };
@@ -25,9 +27,9 @@ function Header({ className }: HeaderProps) {
 				</p>
 				<p>
 					Want to learn more? Check out my{' '}
-					<a className="text-focal">about page</a>,{' '}
-					<a className="text-focal">my resume</a>, or{' '}
-					<a className="text-focal">get in touch</a>.
+					<InternalLink href="/about">about page</InternalLink>,{' '}
+					<InternalLink href="/resume">my resume</InternalLink>, or{' '}
+					<InternalLink href="/contact">get in touch</InternalLink>.
 				</p>
 			</div>
 		</header>
