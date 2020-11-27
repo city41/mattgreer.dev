@@ -36,7 +36,7 @@ function IndexPage() {
 				</div>
 				<div className="h-48 grid place-items-center font-bold">
 					<div>
-						Many more things in my <a className="text-focal">portfolio</a>
+						Much more in my <a className="text-focal">portfolio</a>
 					</div>
 				</div>
 			</main>
