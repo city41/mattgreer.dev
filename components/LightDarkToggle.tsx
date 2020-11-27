@@ -57,6 +57,7 @@ function LightDarkToggle({ className }: LightDarkToggleProps) {
 			className={clsx(className, 'text-2xl p-2 focus:outline-none')}
 			onClick={handleClick}
 			aria-label="color scheme toggle"
+			title={prefersLightMode ? 'light mode' : 'dark mode'}
 		>
 			{prefersLightMode ? (
 				<FaRegSun aria-label="light mode" />
