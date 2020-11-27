@@ -2,13 +2,9 @@ import React, { CSSProperties } from 'react';
 import clsx from 'clsx';
 import { Tag } from '../Tag';
 
-// @ts-ignore
 import jumpClubPng from './jumpclub.png';
-// @ts-ignore
 import webstormJpg from './webstorm.jpg';
-// @ts-ignore
 import nggmPng from './nggm.png';
-// @ts-ignore
 import saturnPng from './saturn.png';
 
 type FeatureProps = {
