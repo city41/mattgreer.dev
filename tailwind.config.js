@@ -1,13 +1,25 @@
 module.exports = {
 	purge: ['./components/**/*.{js,ts,jsx,tsx}', './pages/**/*.{js,ts,jsx,tsx}'],
-	darkMode: 'media', // 'media' or 'class'
 	theme: {
-		fontFamily: {
-			sans: ['sans-serif'],
-		},
 		extend: {
 			colors: {
-				'accent-1': '#333',
+				focal: {
+					fade: 'var(--color-focal-fade)',
+					DEFAULT: 'var(--color-focal)',
+					deep: 'var(--color-focal-deep)',
+				},
+				bg: {
+					fade: 'var(--color-bg-fade)',
+					DEFAULT: 'var(--color-bg)',
+					deep: 'var(--color-bg-deep)',
+				},
+				fg: {
+					fade: 'var(--color-fg-fade)',
+					DEFAULT: 'var(--color-fg)',
+					deep: 'var(--color-fg-deep)',
+				},
+				// white: 'var(--color-white-agnostic)',
+				// black: 'var(--color-black-agnostic)',
 			},
 		},
 	},

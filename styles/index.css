@@ -8,11 +8,7 @@
 
 html,
 body {
-}
-
-/* Write your own custom component styles here */
-.btn-blue {
-  @apply px-4 py-2 font-bold text-white bg-blue-500 rounded;
+    @apply bg-bg text-fg;
 }
 
 /* Start purging... */
@@ -20,3 +16,121 @@ body {
 /* Stop purging. */
 
 /* Your own custom utilities */
+
+:root {
+  --lighten: 6%;
+  --darken: -6%;
+
+  --color-white-agnostic: hsl(0, 100%, 95%);
+  --color-black-agnostic: hsl(0, 0%, 5%);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg-h: 214;
+    --color-bg-s: 17%;
+    --color-bg-l: 16%;
+
+    --color-fg-h: 0;
+    --color-fg-s: 0%;
+    --color-fg-l: 93%;
+
+    --color-focal-h: 160;
+    --color-focal-s: 55%;
+    --color-focal-l: 55%;
+
+    --color-bg-fade: hsl(var(--color-bg-h), var(--color-bg-s), calc(var(--color-bg-l) + var(--lighten)));
+    --color-bg: hsl(var(--color-bg-h), var(--color-bg-s), var(--color-bg-l));
+    --color-bg-deep: hsl(var(--color-bg-h), var(--color-bg-s), calc(var(--color-bg-l) + var(--darken)));
+
+    --color-fg-fade: hsl(var(--color-fg-h), var(--color-fg-s), calc(var(--color-fg-l) + var(--lighten)));
+    --color-fg: hsl(var(--color-fg-h), var(--color-fg-s), var(--color-fg-l));
+    --color-fg-deep: hsl(var(--color-fg-h), var(--color-fg-s), calc(var(--color-fg-l) + var(--darken)));
+
+    --color-focal-fade: hsl(var(--color-focal-h), var(--color-focal-s), calc(var(--color-focal-l) + var(--lighten)));
+    --color-focal: hsl(var(--color-focal-h), var(--color-focal-s), var(--color-focal-l));
+    --color-focal-deep: hsl(var(--color-focal-h), var(--color-focal-s), calc(var(--color-focal-l) + var(--darken)));
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --color-bg-h: 0;
+    --color-bg-s: 0%;
+    --color-bg-l: 98%;
+
+    --color-fg-h: 214;
+    --color-fg-s: 17%;
+    --color-fg-l: 16%;
+
+    --color-focal-h: 160;
+    --color-focal-s: 55%;
+    --color-focal-l: 55%;
+
+    --color-bg-fade: hsl(var(--color-bg-h), var(--color-bg-s), calc(var(--color-bg-l) + var(--darken)));
+    --color-bg: hsl(var(--color-bg-h), var(--color-bg-s), var(--color-bg-l));
+    --color-bg-deep: hsl(var(--color-bg-h), var(--color-bg-s), calc(var(--color-bg-l) + var(--lighten)));
+
+    --color-fg-fade: hsl(var(--color-fg-h), var(--color-fg-s), calc(var(--color-fg-l) + var(--lighten)));
+    --color-fg: hsl(var(--color-fg-h), var(--color-fg-s), var(--color-fg-l));
+    --color-fg-deep: hsl(var(--color-fg-h), var(--color-fg-s), calc(var(--color-fg-l) + var(--darken)));
+
+    --color-focal-fade: hsl(var(--color-focal-h), var(--color-focal-s), calc(var(--color-focal-l) + var(--lighten)));
+    --color-focal: hsl(var(--color-focal-h), var(--color-focal-s), var(--color-focal-l));
+    --color-focal-deep: hsl(var(--color-focal-h), var(--color-focal-s), calc(var(--color-focal-l) + var(--darken)));
+  }
+}
+
+.forced-dark {
+  --color-bg-h: 214;
+  --color-bg-s: 17%;
+  --color-bg-l: 16%;
+
+  --color-fg-h: 0;
+  --color-fg-s: 0%;
+  --color-fg-l: 93%;
+
+  --color-focal-h: 160;
+  --color-focal-s: 55%;
+  --color-focal-l: 55%;
+
+  --color-bg-fade: hsl(var(--color-bg-h), var(--color-bg-s), calc(var(--color-bg-l) + var(--lighten)));
+  --color-bg: hsl(var(--color-bg-h), var(--color-bg-s), var(--color-bg-l));
+  --color-bg-deep: hsl(var(--color-bg-h), var(--color-bg-s), calc(var(--color-bg-l) + var(--darken)));
+
+  --color-fg-fade: hsl(var(--color-fg-h), var(--color-fg-s), calc(var(--color-fg-l) + var(--lighten)));
+  --color-fg: hsl(var(--color-fg-h), var(--color-fg-s), var(--color-fg-l));
+  --color-fg-deep: hsl(var(--color-fg-h), var(--color-fg-s), calc(var(--color-fg-l) + var(--darken)));
+
+  --color-focal-fade: hsl(var(--color-focal-h), var(--color-focal-s), calc(var(--color-focal-l) + var(--lighten)));
+  --color-focal: hsl(var(--color-focal-h), var(--color-focal-s), var(--color-focal-l));
+  --color-focal-deep: hsl(var(--color-focal-h), var(--color-focal-s), calc(var(--color-focal-l) + var(--darken)));
+}
+
+.forced-light {
+  --color-bg-h: 0;
+  --color-bg-s: 0%;
+  --color-bg-l: 98%;
+
+  --color-fg-h: 214;
+  --color-fg-s: 17%;
+  --color-fg-l: 16%;
+
+  --color-focal-h: 160;
+  --color-focal-s: 55%;
+  --color-focal-l: 55%;
+
+  --color-bg-fade: hsl(var(--color-bg-h), var(--color-bg-s), calc(var(--color-bg-l) + var(--darken)));
+  --color-bg: hsl(var(--color-bg-h), var(--color-bg-s), var(--color-bg-l));
+  --color-bg-deep: hsl(var(--color-bg-h), var(--color-bg-s), calc(var(--color-bg-l) + var(--lighten)));
+
+  --color-fg-fade: hsl(var(--color-fg-h), var(--color-fg-s), calc(var(--color-fg-l) + var(--lighten)));
+  --color-fg: hsl(var(--color-fg-h), var(--color-fg-s), var(--color-fg-l));
+  --color-fg-deep: hsl(var(--color-fg-h), var(--color-fg-s), calc(var(--color-fg-l) + var(--darken)));
+
+  --color-focal-fade: hsl(var(--color-focal-h), var(--color-focal-s), calc(var(--color-focal-l) + var(--lighten)));
+  --color-focal: hsl(var(--color-focal-h), var(--color-focal-s), var(--color-focal-l));
+  --color-focal-deep: hsl(var(--color-focal-h), var(--color-focal-s), calc(var(--color-focal-l) + var(--darken)));
+}
+
+

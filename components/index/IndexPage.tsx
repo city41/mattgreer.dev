@@ -21,23 +21,22 @@ function IndexPage() {
 				<div className="h-32 grid place-items-center font-bold">
 					Some things I have created{' '}
 				</div>
-				<div className="flex flex-col space-y-32">
+				<div className="flex flex-col space-y-48">
 					<Feature side="right" title="Jump.Club" type="website" />
 					<Feature
 						side="left"
 						title="JavaScript Promises"
 						type="technical article"
 					/>
-					<Feature side="right" title="Closet Designer" type="website" />
 					<Feature
-						side="left"
+						side="right"
 						title="The Sega Saturn and Transparency"
 						type="interactive article"
 					/>
 				</div>
 				<div className="h-32 grid place-items-center font-bold">
 					<div>
-						Many more things in my <a className="text-blue-500">portfolio</a>
+						Many more things in my <a className="text-focal">portfolio</a>
 					</div>
 				</div>
 			</main>

@@ -17,7 +17,7 @@ function Footer({ className }: FooterProps) {
 		<footer
 			className={clsx(
 				className,
-				'bg-gray-300 p-8 flex flex-col items-center justify-center text-center text-sm'
+				'bg-bg-deep p-16 flex flex-col items-center justify-center text-center text-sm'
 			)}
 		>
 			<ul className="mt-4 flex flex-row space-x-6">
