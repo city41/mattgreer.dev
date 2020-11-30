@@ -64,7 +64,7 @@ const features = [
 		tags: ['React', 'TypeScript'],
 		img: saturnPng,
 	},
-];
+] as const;
 
 function IndexPage() {
 	return (

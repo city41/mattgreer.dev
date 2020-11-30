@@ -10,7 +10,7 @@ type FeatureProps = {
 	side: 'left' | 'right';
 	type: 'website' | 'technical article' | 'interactive article';
 	slug: string;
-	tags: string[];
+	tags: readonly TagLabel[];
 	img: string;
 };
 

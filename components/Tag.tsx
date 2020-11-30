@@ -3,7 +3,7 @@ import clsx from 'clsx';
 
 type TagProps = {
 	className?: string;
-	children: React.ReactNode;
+	children: TagLabel;
 	component?: React.ElementType;
 };
 

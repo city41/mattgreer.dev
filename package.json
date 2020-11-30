@@ -5,7 +5,8 @@
     "develop": "next",
     "build": "next build",
     "start": "next start",
-    "export-static": "rm -rf .next out && next build && next export"
+    "export-static": "rm -rf .next out && next build && next export",
+    "type-check": "tsc --noemit"
   },
   "dependencies": {
     "@mdx-js/loader": "^1.6.21",
