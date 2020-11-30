@@ -5,6 +5,10 @@ import { Footer } from './Footer';
 import { InternalLink } from '../InternalLink';
 import { FadeInOnScroll } from './FadeInOnScroll';
 
+import jumpClubPng from './jumpclub.png';
+import webstormJpg from './webstorm.jpg';
+import saturnPng from './saturn.png';
+
 const BlurbP = ({ children }: { children: React.ReactNode }) => {
 	return <p className="my-4">{children}</p>;
 };
@@ -25,6 +29,7 @@ const features = [
 			</>
 		),
 		tags: ['React', 'TypeScript', 'Redux', 'NodeJS', 'Godot', 'wasm'],
+		img: jumpClubPng,
 	},
 	{
 		slug: 'articles/promises-in-wicked-detail',
@@ -40,6 +45,7 @@ const features = [
 			</>
 		),
 		tags: ['JavaScript'],
+		img: webstormJpg,
 	},
 	{
 		slug: 'articles/sega-saturn-and-transparency',
@@ -56,6 +62,7 @@ const features = [
 			</>
 		),
 		tags: ['React', 'TypeScript'],
+		img: saturnPng,
 	},
 ];
 
@@ -82,6 +89,7 @@ function IndexPage() {
 									blurb={feature.blurb}
 									type={mdx.type}
 									tags={feature.tags}
+									img={feature.img}
 								/>
 							</FadeInOnScroll>
 						);

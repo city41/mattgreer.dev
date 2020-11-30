@@ -3,11 +3,6 @@ import clsx from 'clsx';
 import Link from 'next/link';
 import { Tag } from '../Tag';
 
-import jumpClubPng from './jumpclub.png';
-import webstormJpg from './webstorm.jpg';
-import nggmPng from './nggm.png';
-import saturnPng from './saturn.png';
-
 type FeatureProps = {
 	className?: string;
 	title: string;
@@ -16,13 +11,7 @@ type FeatureProps = {
 	type: 'website' | 'technical article' | 'interactive article';
 	slug: string;
 	tags: string[];
-};
-
-const backgroundImages = {
-	'Jump.Club': `url(${jumpClubPng})`,
-	'JavaScript Promises ... in Wicked Detail': `url(${webstormJpg})`,
-	'Closet Designer': `url(${nggmPng})`,
-	'The Sega Saturn and Transparency': `url(${saturnPng})`,
+	img: string;
 };
 
 function prefixIfNeeded(slug: string): string {
@@ -41,12 +30,13 @@ function Feature({
 	type,
 	slug,
 	tags,
+	img,
 }: FeatureProps) {
 	const gradientAngle = side === 'left' ? '-120deg' : '120deg';
 
 	const style = {
 		height: 500,
-		'--bg-image': backgroundImages[title] ?? '',
+		'--bg-image': `url(${img})`,
 		background: `linear-gradient(${gradientAngle},
 										/* hsla(var(--color-bg-h), var(--color-bg-s), var(--color-bg-l), 0.35), */ 
 										transparent,
