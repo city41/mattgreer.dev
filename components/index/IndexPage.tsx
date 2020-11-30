@@ -15,7 +15,7 @@ const features = [
 		blurb: (
 			<>
 				<BlurbP>
-					A web based game creator insired by Nintendo's Mario Maker.
+					A web based game creator inspired by Nintendo's Mario Maker.
 				</BlurbP>
 				<BlurbP>
 					Players can create their own levels using a very intuitive level
