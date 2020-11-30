@@ -3,32 +3,40 @@ import { Header } from './Header';
 import { Feature } from './Feature';
 import { Footer } from './Footer';
 import { InternalLink } from '../InternalLink';
+import { FadeInOnScroll } from './FadeInOnScroll';
 
-// const articleSlugs = ['sega-saturn-and-transparency'];
-//
-// const articles = articleSlugs.map((slug) => {
-// 	const mdx = require(`../../pages/articles/${slug}/index.mdx`);
-// 	return {
-// 		...mdx,
-// 		url: `/articles/${slug}/`,
-// 	};
-// });
+const BlurbP = ({ children }: { children: React.ReactNode }) => {
+	return <p className="my-4">{children}</p>;
+};
 
 const features = [
 	{
 		slug: 'projects/jump-club',
 		blurb: (
 			<>
-				<p>jump club blurb</p>
+				<BlurbP>
+					A web based game creator insired by Nintendo's Mario Maker.
+				</BlurbP>
+				<BlurbP>
+					Players can create their own levels using a very intuitive level
+					editor. Once a level is published, it's easily shared with others with
+					a url.
+				</BlurbP>
 			</>
 		),
-		tags: ['React', 'TypeScript', 'Redux', 'NodeJS'],
+		tags: ['React', 'TypeScript', 'Redux', 'NodeJS', 'Godot', 'wasm'],
 	},
 	{
 		slug: 'articles/promises-in-wicked-detail',
 		blurb: (
 			<>
-				<p>promises blurb</p>
+				<BlurbP>
+					A detailed article that implements a simple Promise type from scratch.
+				</BlurbP>
+				<BlurbP>
+					By building the Promise implementation gradually, it shows the why and
+					how of Promises.
+				</BlurbP>
 			</>
 		),
 		tags: ['JavaScript'],
@@ -37,7 +45,14 @@ const features = [
 		slug: 'articles/sega-saturn-and-transparency',
 		blurb: (
 			<>
-				<p>saturn blurb</p>
+				<BlurbP>
+					The Saturn's complex hardware architecture meant having
+					semi-transparent entities in a game was challenging.
+				</BlurbP>
+				<BlurbP>
+					This interactive article explains the conundrum, and shows why game
+					developers often settled for inferior alternatives.
+				</BlurbP>
 			</>
 		),
 		tags: ['React', 'TypeScript'],
@@ -52,19 +67,23 @@ function IndexPage() {
 				<div className="h-32 grid place-items-center font-bold">
 					Some things I have created{' '}
 				</div>
-				<div className="flex flex-col space-y-48">
+				<div className="flex flex-col space-y-48 overflow-x-hidden">
 					{features.map((feature, index) => {
 						const mdx = require(`../../pages/${feature.slug}/index.mdx`);
 						return (
-							<Feature
+							<FadeInOnScroll
 								key={feature.slug}
-								side={index & 1 ? 'left' : 'right'}
-								slug={feature.slug}
-								title={mdx.title}
-								blurb={feature.blurb}
-								type={mdx.type}
-								tags={feature.tags}
-							/>
+								comeFrom={index & 1 ? 'right' : 'left'}
+							>
+								<Feature
+									side={index & 1 ? 'left' : 'right'}
+									slug={feature.slug}
+									title={mdx.title}
+									blurb={feature.blurb}
+									type={mdx.type}
+									tags={feature.tags}
+								/>
+							</FadeInOnScroll>
 						);
 					})}
 				</div>
