@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
-import { FaMoon, FaRegSun } from 'react-icons/fa';
+import { FiMoon, FiSun } from 'react-icons/fi';
 
 type LightDarkToggleProps = {
 	className?: string;
@@ -60,9 +60,9 @@ function LightDarkToggle({ className }: LightDarkToggleProps) {
 			title={prefersLightMode ? 'light mode' : 'dark mode'}
 		>
 			{prefersLightMode ? (
-				<FaRegSun aria-label="light mode" />
+				<FiSun aria-label="light mode" />
 			) : (
-				<FaMoon aria-label="dark mode" />
+				<FiMoon aria-label="dark mode" />
 			)}
 		</button>
 	);
