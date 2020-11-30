@@ -25,6 +25,14 @@ const backgroundImages = {
 	'The Sega Saturn and Transparency': `url(${saturnPng})`,
 };
 
+function prefixIfNeeded(slug: string): string {
+	if (slug[0] !== '/') {
+		return '/' + slug;
+	}
+
+	return slug;
+}
+
 function Feature({
 	className,
 	title,
@@ -66,7 +74,7 @@ function Feature({
 					} as CSSProperties
 				}
 			>
-				<Link href={slug} passHref>
+				<Link href={prefixIfNeeded(slug)} passHref>
 					<a>
 						<h2 className="text-3xl font-bold hover:underline">{title}</h2>
 					</a>
