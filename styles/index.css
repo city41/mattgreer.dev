@@ -8,7 +8,7 @@
 
 html,
 body {
-    @apply bg-bg text-fg;
+    @apply bg-bg text-fg min-h-screen;
 }
 
 /* Start purging... */

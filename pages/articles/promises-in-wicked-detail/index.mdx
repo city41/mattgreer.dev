@@ -1,9 +1,7 @@
-import { Article } from '../../../components/layouts/Article'
+import { Article } from '../../../components/layouts/Article';
+import meta from './meta.json';
 
-export const title = 'JavaScript Promises ... in Wicked Detail';
-export const date = new Date('2014-02-04');
-export const type = 'technical article';
-export default ({ children }) => <Article title={title} date={date}>{children}</Article>
+export default ({ children }) => <Article title={meta.title} date={meta.date}>{children}</Article>
 
 promises placeholder
 

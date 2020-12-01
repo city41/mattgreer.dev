@@ -1,9 +1,7 @@
-import { Article } from '../../../components/layouts/Article'
+import { Article } from '../../../components/layouts/Article';
+import meta from './meta.json';
 
-export const title = 'The Sega Saturn and Transparency';
-export const date = new Date('2016-01-23');
-export const type = 'interactive article';
-export default ({ children }) => <Article title={title} date={date}>{children}</Article>
+export default ({ children }) => <Article title={meta.title} date={meta.date}>{children}</Article>
 
 The Sega Saturn is notorious for not being able to pull off transparency effects as well as its competitors. But the Saturn does do proper transparency effects as many games demonstrate. So why did so many developers so often settle on the "mesh" approach in their Saturn games?
 

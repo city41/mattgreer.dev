@@ -1,5 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
+import Link from 'next/link';
 import {
 	FaEnvelope,
 	FaGithub,
@@ -22,7 +23,11 @@ function Footer({ className }: FooterProps) {
 		>
 			<ul className="mt-4 flex flex-row space-x-6">
 				<li>About Me</li>
-				<li>Portfolio</li>
+				<li>
+					<Link href="/portfolio" passHref>
+						<a>Portfolio</a>
+					</Link>
+				</li>
 				<li>Resume</li>
 			</ul>
 			<ul className="mt-4 flex flex-row space-x-2">

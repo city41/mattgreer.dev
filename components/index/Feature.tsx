@@ -3,36 +3,27 @@ import clsx from 'clsx';
 import Link from 'next/link';
 import { Tag } from '../Tag';
 
-type FeatureProps = {
+type FeatureProps = Omit<PortfolioItem, 'featureIndex'> & {
 	className?: string;
-	title: string;
-	blurb: React.ReactNode;
 	side: 'left' | 'right';
-	type: 'website' | 'technical article' | 'interactive article';
-	slug: string;
-	tags: readonly TagLabel[];
-	img: string;
 };
 
-function prefixIfNeeded(slug: string): string {
-	if (slug[0] !== '/') {
-		return '/' + slug;
-	}
-
-	return slug;
+function buildUrl(classification: string, slug: string): string {
+	return `/${classification}/${slug}`;
 }
 
 function Feature({
 	className,
 	title,
-	blurb,
+	description,
 	side,
+	classification,
 	type,
 	slug,
 	tags,
-	img,
 }: FeatureProps) {
 	const gradientAngle = side === 'left' ? '-120deg' : '120deg';
+	const img = require(`../../pages/${classification}/${slug}/feature.png`);
 
 	const style = {
 		height: 500,
@@ -64,13 +55,19 @@ function Feature({
 					} as CSSProperties
 				}
 			>
-				<Link href={prefixIfNeeded(slug)} passHref>
+				<Link href={buildUrl(classification, slug)} passHref>
 					<a>
 						<h2 className="text-3xl font-bold hover:underline">{title}</h2>
 					</a>
 				</Link>
-				<div className="my-2 text-sm">{blurb}</div>
 				<div className="mb-2 py-1 text-gray-500 text-xs">{type}</div>
+				<div className="text-sm mb-3">
+					{description.map((paragraph) => (
+						<p key={paragraph} className="my-4">
+							{paragraph}
+						</p>
+					))}
+				</div>
 				<ul className="flex flex-row flex-wrap -mx-2">
 					{tags.map((t) => (
 						<Tag key={t} component="li" className="m-1">

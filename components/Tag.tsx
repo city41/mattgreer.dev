@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import clsx from 'clsx';
 
 type TagProps = {
@@ -7,18 +8,30 @@ type TagProps = {
 	component?: React.ElementType;
 };
 
+function getUrl(tag: TagLabel) {
+	if (tag === 'All') {
+		return '/portfolio';
+	} else {
+		return `/portfolio/${tag}`;
+	}
+}
+
 function Tag({ className, children, component = 'div' }: TagProps) {
 	const Component = component;
 
 	return (
-		<Component
-			className={clsx(
-				className,
-				'bg-focal text-white font-bold py-1 px-2 text-xs border-b-4 border-focal-deep'
-			)}
-		>
-			{children}
-		</Component>
+		<Link href={getUrl(children)} passHref>
+			<a>
+				<Component
+					className={clsx(
+						className,
+						'bg-focal text-white font-bold py-1 px-2 text-xs hover:underline hover:bg-focal-fade'
+					)}
+				>
+					{children}
+				</Component>
+			</a>
+		</Link>
 	);
 }
 

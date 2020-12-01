@@ -3,7 +3,7 @@ import { MDXProvider } from '@mdx-js/react';
 
 type ArticleProps = {
 	title: string;
-	date: Date;
+	date: string;
 	children: React.ReactNode;
 };
 
@@ -27,7 +27,7 @@ function Article({ title, date, children }: ArticleProps) {
 		<MDXProvider components={components}>
 			<div className="max-w-screen-lg lg:mx-auto mx-4">
 				<h1 className="text-4xl">{title}</h1>
-				<p>written on {date.toDateString()}</p>
+				<p>written on {new Date(date).toDateString()}</p>
 				{children}
 			</div>
 		</MDXProvider>
