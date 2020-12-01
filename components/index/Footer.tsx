@@ -28,7 +28,11 @@ function Footer({ className }: FooterProps) {
 						<a>Portfolio</a>
 					</Link>
 				</li>
-				<li>Resume</li>
+				<li>
+					<Link href="/MattGreer_resume.pdf" passHref>
+						<a>Resume</a>
+					</Link>
+				</li>
 			</ul>
 			<ul className="mt-4 flex flex-row space-x-2">
 				<li>

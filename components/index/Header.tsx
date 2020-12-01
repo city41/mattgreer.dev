@@ -32,7 +32,7 @@ function Header({ className }: HeaderProps) {
 				<p>
 					Check out my <InternalLink href="/about">about page</InternalLink>,{' '}
 					<InternalLink href="/portfolio">portfolio</InternalLink>, or{' '}
-					<InternalLink href="/resume">resume</InternalLink>. Or,{' '}
+					<InternalLink href="/MattGreer_resume.pdf">resume</InternalLink>. Or,{' '}
 					<InternalLink href="/contact">get in touch</InternalLink>.
 				</p>
 			</div>
