@@ -24,9 +24,9 @@ body {
   --color-white-agnostic: hsl(0, 100%, 95%);
   --color-black-agnostic: hsl(0, 0%, 5%);
 
-  --color-focal-h: 160;
-  --color-focal-s: 55%;
-  --color-focal-l: 55%;
+  --color-focal-h: 173;
+  --color-focal-s: 58%;
+  --color-focal-l: 39%;
 
   --color-focal-fade: hsl(var(--color-focal-h), var(--color-focal-s), calc(var(--color-focal-l) + var(--lighten)));
   --color-focal: hsl(var(--color-focal-h), var(--color-focal-s), var(--color-focal-l));
@@ -111,3 +111,27 @@ body {
 }
 
 
+.index_page_header_illustration {
+  background-size: 100% auto;
+}
+
+@media (prefers-color-scheme: light) {
+  .index_page_header_illustration {
+    background-image: url(/meIndex_light.svg);
+  }
+}
+
+
+@media (prefers-color-scheme: dark) {
+  .index_page_header_illustration {
+    background-image: url(/meIndex_dark.svg);
+  }
+}
+
+.forced-light .index_page_header_illustration {
+  background-image: url(/meIndex_light.svg);
+}
+
+.forced-dark .index_page_header_illustration {
+  background-image: url(/meIndex_dark.svg);
+}
