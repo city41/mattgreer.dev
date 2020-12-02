@@ -3,7 +3,7 @@ import clsx from 'clsx';
 
 import { PageHeading } from '../PageHeading';
 import { InternalLink } from '../InternalLink';
-import sketchPng from './sketch.png';
+import sketchPng from './meIndex.svg';
 
 type HeaderProps = {
 	className?: string;
@@ -17,7 +17,7 @@ function Header({ className }: HeaderProps) {
 				'grid grid-cols-8 gap-8 auto-rows-min max-w-screen-lg mx-auto'
 			)}
 		>
-			<div className="bg-blue-50 col-start-4 col-end-7 row-span-2 sm:row-start-1 sm:col-start-2 sm:col-end-4 self-center">
+			<div className="col-start-4 col-end-7 row-span-2 sm:row-start-1 sm:col-start-1 sm:col-end-4 self-center">
 				<img src={sketchPng} alt="sketch of me" />
 			</div>
 			<PageHeading className="col-span-8 sm:row-start-1 sm:col-start-4 sm:col-span-4">
