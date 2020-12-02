@@ -15,7 +15,7 @@ function PortfolioPage({ tag, allTags, items }: PortfolioPageProps) {
 		<>
 			<div className="mx-auto flex flex-col max-w-2xl">
 				<header className="pt-24 px-8 mb-16 sm:pt-32 sm:mb-32">
-					<PageHeading className="text-center sm:text-left">
+					<PageHeading className="text-center sm:text-left" logo>
 						My Portfolio
 					</PageHeading>
 					<TagFilter className="mt-16" tags={allTags} currentTag={tag} />
