@@ -26,7 +26,7 @@ function Feature({
 	const img = require(`../../pages/${classification}/${slug}/feature.png`);
 
 	const style = {
-		height: 500,
+		minHeight: 500,
 		'--bg-image': `url(${img})`,
 		background: `linear-gradient(${gradientAngle},
 										/* hsla(var(--color-bg-h), var(--color-bg-s), var(--color-bg-l), 0.35), */ 
@@ -40,14 +40,18 @@ function Feature({
 
 	return (
 		<div
-			className={clsx(className, 'flex flex-row items-stretch justify-center', {
-				'sm:justify-start': side === 'left',
-				'sm:justify-end': side === 'right',
-			})}
+			className={clsx(
+				className,
+				'flex flex-row sm:items-stretch justify-center',
+				{
+					'sm:justify-start': side === 'left',
+					'sm:justify-end': side === 'right',
+				}
+			)}
 			style={style}
 		>
 			<div
-				className="p-12 w-72 flex flex-col justify-center text-white bg-black"
+				className="p-8 sm:p-12 w-72 my-16 sm:my-0 flex flex-col justify-center text-white bg-black"
 				style={
 					{
 						'--tw-bg-opacity': 0.75,

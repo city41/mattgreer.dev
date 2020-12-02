@@ -112,7 +112,8 @@ body {
 
 
 .index_page_header_illustration {
-  background-size: 100% auto;
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 
 @media (prefers-color-scheme: light) {

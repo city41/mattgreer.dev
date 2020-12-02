@@ -18,13 +18,13 @@ function Header({ className }: HeaderProps) {
 		>
 			<div
 				className={clsx(
-					'index_page_header_illustration col-start-4 col-end-7 row-span-2 sm:row-start-1 sm:col-start-1 sm:col-end-4 self-stretch'
+					'index_page_header_illustration col-start-2 col-end-8 h-64 sm:h-auto sm:row-span-2 sm:row-start-1 sm:col-start-1 sm:col-end-4 self-stretch'
 				)}
 			/>
-			<PageHeading className="col-span-8 sm:row-start-1 sm:col-start-4 sm:col-span-4">
+			<PageHeading className="col-start-2 col-end-8 sm:row-start-1 sm:col-start-4 sm:col-end-9">
 				Matt Greer
 			</PageHeading>
-			<div className="col-start-2 col-span-6 sm:row-start-2 sm:col-start-4 sm:col-end-8 text-2xl space-y-8">
+			<div className="col-start-2 col-span-6 sm:row-start-2 sm:col-start-4 sm:col-end-8 sm:text-2xl space-y-8">
 				<p>
 					Hi! I am a freelance software engineer with a focus on web
 					technologies. This website is a collection of projects I have created

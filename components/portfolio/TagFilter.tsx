@@ -21,25 +21,23 @@ function TagFilter({ className, tags, currentTag }: TagFilterProps) {
 					</p>
 				)}
 			</div>
-			<p className="mt-4">
-				or filter by{' '}
-				<ul className="inline-flex flex-row flex-wrap space-x-2 pl-4">
-					{['All']
-						.concat(tags)
-						.sort()
-						.map((t: TagLabel) => {
-							if (t === currentTag || (t === 'All' && !currentTag)) {
-								return null;
-							}
+			<p className="mt-16 sm:mt-4 mb-2 text-gray-500">or filter by </p>
+			<ul className="flex flex-row flex-wrap">
+				{['All']
+					.concat(tags)
+					.sort()
+					.map((t: TagLabel) => {
+						if (t === currentTag || (t === 'All' && !currentTag)) {
+							return null;
+						}
 
-							return (
-								<Tag component="li" className="bg-bg-fade text-fg-fade">
-									{t}
-								</Tag>
-							);
-						})}
-				</ul>
-			</p>
+						return (
+							<Tag component="li" className="bg-bg-fade text-fg-fade mb-2 mr-2">
+								{t}
+							</Tag>
+						);
+					})}
+			</ul>
 		</div>
 	);
 }

@@ -16,7 +16,7 @@ const BlurbP = ({ children }: { children: React.ReactNode }) => {
 function IndexPage({ items }: IndexPageProps) {
 	return (
 		<div className="flex flex-col">
-			<Header className="pt-24 mb-16 sm:pt-32 sm:mb-32" />
+			<Header className="pt-12 mb-16 sm:pt-16 md:pt-32 sm:mb-32" />
 			<main role="main">
 				<div className="h-32 grid place-items-center font-bold">
 					Some things I have created{' '}

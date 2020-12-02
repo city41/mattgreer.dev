@@ -9,10 +9,7 @@ type PageHeadingProps = {
 function PageHeading({ className, children }: PageHeadingProps) {
 	return (
 		<h1
-			className={clsx(
-				className,
-				'text-7xl text-center sm:text-left font-black text-focal'
-			)}
+			className={clsx(className, 'text-5xl sm:text-7xl font-black text-focal')}
 		>
 			{children}
 		</h1>
