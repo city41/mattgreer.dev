@@ -1,12 +1,11 @@
 import { Article } from '../../../components/layouts/Article';
 import meta from './meta.json';
-import { SmallLogo } from '../../../components/SmallLogo';
 
 export default ({ children }) => <Article title={meta.title} date={meta.date}>{children}</Article>
 
 The Sega Saturn is notorious for not being able to pull off transparency effects as well as its competitors. But the Saturn does do proper transparency effects as many games demonstrate. So why did so many developers so often settle on the "mesh" approach in their Saturn games?
 
-*This article is based on a YouTube video made by Low Score Boy. See the <a href="#and-thanks-to-low-score-boy">thank you section</a> at the bottom of this post.*
+<wisdom>This article is based on a YouTube video made by Low Score Boy. See the <a href="#and-thanks-to-low-score-boy">thank you section</a> at the bottom of this post.</wisdom>
 
 ## The problem
 
@@ -26,7 +25,7 @@ But they are truly transparent on the PlayStation.
 
 And if you just walk forward a little bit, you find your character encased in a transparent glass tube, showing transparency works just fine on the Saturn!
 
-<img src="img/mmx4SaturnTube.png" />
+<img src={require('./img/mmx4SaturnTube.png')} alt="Mega Man X4 showing transparent effect in a tube enclosure" />
 
 So what's up with the spotlights?
 
@@ -54,9 +53,9 @@ The background layers can be stacked in any order, scrolled independently, some 
 
 ## Bringing VDP1 and VDP2 together
 
-When it comes time to compose all of the layers together into an image to display on the screen, priority is used to decide on order. Each VDP2 layer has a priority set, and *each sprite in the VDP1 frame buffer also has a priority.* This allows different sprites to end up behind and in front of different layers.
+When it comes time to compose all the layers together into an image to display on the screen, priority is used to decide on order. Each VDP2 layer has a priority set, and *each sprite in the VDP1 frame buffer also has a priority.* This allows different sprites to end up behind and in front of different layers.
 
-<img src="img/composingBlowup.svg" width="600" />
+<img src={require('./img/composingBlowup.svg')} alt="Diagram showing how VPD1 and VPD2 get composed together" />
 
 <wisdom>
 Technically the priority in the VDP1 frame buffer is per pixel, not per sprite. The VDP2 doesn't know of or care about sprites, it only sees pixels.
@@ -74,11 +73,11 @@ But if the second sprite wants to be half-transparent, it will still occupy that
 
 Here in Guardian Heroes, Nicole's cape is translucent, it's a sprite that has been set to half-transparent.
 
-<img src="img/guardianHeroesNoOverlapSprites.png" />
+<img src={require('./img/guardianHeroesNoOverlapSprites.png')} alt="Guardian Heroes character wearing a half-transparent cape" />
 
 But when she overlaps with another sprite, her cape "swallows" that sprite's data, still showing through to the background scene and not the sprite underneath. That's because the sprite data underneath no longer exists, instead Nicole's cape replaced it.
 
-<img src="img/guardianHeroesOverlapTransparentSprites.png" />
+<img src={require('./img/guardianHeroesOverlapTransparentSprites.png')} alt="Guardian Heroes character's cape overlapping with another sprite" />
 
 <wisdom>
 In other words, every pixel in the VDP1 frame buffer can have a corresponding priority and transparency value. But at the end of the day, there's still only one pixel to work with. Overlapping sprites clobber each other. The last sprite to be drawn wins.
@@ -96,7 +95,7 @@ When the Saturn was a current console, most people were hooking it up to their T
 
 Here is Mega Man X4 running via composite into my HDTV (oh the humanity...)
 
-<img src="img/mmx4ViaComposite.jpg" />
+<img src={require('./img/mmx4ViaComposite.jpg')} alt="Mega Man X4 running on a modern TV with composite cables" />
 
 Not a perfect simulation of a typical 90s TV, but the best I can do :)
 

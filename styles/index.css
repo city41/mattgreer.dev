@@ -68,7 +68,7 @@ body {
     --color-bg: hsl(var(--color-bg-h), var(--color-bg-s), var(--color-bg-l));
     --color-bg-deep: hsl(var(--color-bg-h), var(--color-bg-s), calc(var(--color-bg-l) + var(--lighten)));
 
-    --color-fg-fade: hsl(var(--color-fg-h), var(--color-fg-s), calc(var(--color-fg-l) + var(--lighten)));
+    --color-fg-fade: hsl(var(--color-fg-h), var(--color-fg-s), calc(var(--color-fg-l) + var(--lighten) * 6));
     --color-fg: hsl(var(--color-fg-h), var(--color-fg-s), var(--color-fg-l));
     --color-fg-deep: hsl(var(--color-fg-h), var(--color-fg-s), calc(var(--color-fg-l) + var(--darken)));
   }
@@ -105,7 +105,7 @@ body {
   --color-bg: hsl(var(--color-bg-h), var(--color-bg-s), var(--color-bg-l));
   --color-bg-deep: hsl(var(--color-bg-h), var(--color-bg-s), calc(var(--color-bg-l) + var(--lighten)));
 
-  --color-fg-fade: hsl(var(--color-fg-h), var(--color-fg-s), calc(var(--color-fg-l) + var(--lighten)));
+  --color-fg-fade: hsl(var(--color-fg-h), var(--color-fg-s), calc(var(--color-fg-l) + var(--lighten) * 6));
   --color-fg: hsl(var(--color-fg-h), var(--color-fg-s), var(--color-fg-l));
   --color-fg-deep: hsl(var(--color-fg-h), var(--color-fg-s), calc(var(--color-fg-l) + var(--darken)));
 }
