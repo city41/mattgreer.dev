@@ -8,6 +8,11 @@ module.exports = {
 					DEFAULT: 'var(--color-focal)',
 					deep: 'var(--color-focal-deep)',
 				},
+				'focal-alt': {
+					fade: 'var(--color-focal-alt-fade)',
+					DEFAULT: 'var(--color-focal-alt)',
+					deep: 'var(--color-focal-alt-deep)',
+				},
 				bg: {
 					fade: 'var(--color-bg-fade)',
 					DEFAULT: 'var(--color-bg)',

@@ -31,6 +31,14 @@ body {
   --color-focal-fade: hsl(var(--color-focal-h), var(--color-focal-s), calc(var(--color-focal-l) + var(--lighten)));
   --color-focal: hsl(var(--color-focal-h), var(--color-focal-s), var(--color-focal-l));
   --color-focal-deep: hsl(var(--color-focal-h), var(--color-focal-s), calc(var(--color-focal-l) + var(--darken) * 4));
+
+  --color-focal-alt-h: 12;
+  --color-focal-alt-s: 76%;
+  --color-focal-alt-l: 61%;
+
+  --color-focal-alt-fade: hsl(var(--color-focal-alt-h), var(--color-focal-alt-s), calc(var(--color-focal-alt-l) + var(--lighten)));
+  --color-focal-alt: hsl(var(--color-focal-alt-h), var(--color-focal-alt-s), var(--color-focal-alt-l));
+  --color-focal-alt-deep: hsl(var(--color-focal-alt-h), var(--color-focal-alt-s), calc(var(--color-focal-alt-l) + var(--darken) * 4));
 }
 
 @media (prefers-color-scheme: dark) {
@@ -48,7 +56,7 @@ body {
     --color-bg: hsl(var(--color-bg-h), var(--color-bg-s), var(--color-bg-l));
     --color-bg-deep: hsl(var(--color-bg-h), var(--color-bg-s), calc(var(--color-bg-l) + var(--darken)));
 
-    --color-fg-fade: hsl(var(--color-fg-h), var(--color-fg-s), calc(var(--color-fg-l) + var(--lighten)));
+    --color-fg-fade: hsl(var(--color-fg-h), var(--color-fg-s), calc(var(--color-fg-l) + var(--darken) * 6));
     --color-fg: hsl(var(--color-fg-h), var(--color-fg-s), var(--color-fg-l));
     --color-fg-deep: hsl(var(--color-fg-h), var(--color-fg-s), calc(var(--color-fg-l) + var(--darken)));
   }
@@ -87,7 +95,7 @@ body {
   --color-bg: hsl(var(--color-bg-h), var(--color-bg-s), var(--color-bg-l));
   --color-bg-deep: hsl(var(--color-bg-h), var(--color-bg-s), calc(var(--color-bg-l) + var(--darken)));
 
-  --color-fg-fade: hsl(var(--color-fg-h), var(--color-fg-s), calc(var(--color-fg-l) + var(--lighten)));
+  --color-fg-fade: hsl(var(--color-fg-h), var(--color-fg-s), calc(var(--color-fg-l) + var(--darken) * 6));
   --color-fg: hsl(var(--color-fg-h), var(--color-fg-s), var(--color-fg-l));
   --color-fg-deep: hsl(var(--color-fg-h), var(--color-fg-s), calc(var(--color-fg-l) + var(--darken)));
 }

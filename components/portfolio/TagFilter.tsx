@@ -32,7 +32,11 @@ function TagFilter({ className, tags, currentTag }: TagFilterProps) {
 						}
 
 						return (
-							<Tag component="li" className="bg-bg-fade text-fg-fade mb-2 mr-2">
+							<Tag
+								key={t}
+								component="li"
+								className="bg-bg-fade text-fg-fade mb-2 mr-2"
+							>
 								{t}
 							</Tag>
 						);

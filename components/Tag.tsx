@@ -25,7 +25,7 @@ function Tag({ className, children, component = 'div' }: TagProps) {
 				<Component
 					className={clsx(
 						className,
-						'bg-focal text-white font-bold py-1 px-2 sm:text-xs hover:underline hover:bg-focal-fade hover:text-white'
+						'bg-focal-alt text-white font-bold py-1 px-2 sm:text-xs hover:underline hover:bg-focal-fade hover:text-white'
 					)}
 				>
 					{children}
