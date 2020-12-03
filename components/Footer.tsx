@@ -13,6 +13,16 @@ type FooterProps = {
 	className?: string;
 };
 
+function IconLink({ Icon, href }: { Icon: React.ElementType; href: string }) {
+	return (
+		<Link href={href} passHref>
+			<a rel="noreferrer noopener">
+				<Icon />
+			</a>
+		</Link>
+	);
+}
+
 function Footer({ className }: FooterProps) {
 	return (
 		<footer
@@ -36,19 +46,25 @@ function Footer({ className }: FooterProps) {
 			</ul>
 			<ul className="mt-4 flex flex-row space-x-2">
 				<li>
-					<FaEnvelope />
+					<IconLink Icon={FaEnvelope} href="mailto:matt.e.greer@gmail.com" />
 				</li>
 				<li>
-					<FaTwitter />
+					<IconLink Icon={FaTwitter} href="https://twitter.com/mattegreer" />
 				</li>
 				<li>
-					<FaLinkedin />
+					<IconLink
+						Icon={FaLinkedin}
+						href="https://www.linkedin.com/in/matt-greer-133405ab/"
+					/>
 				</li>
 				<li>
-					<FaGithub />
+					<IconLink Icon={FaGithub} href="https://github.com/city41" />
 				</li>
 				<li>
-					<FaStackOverflow />
+					<IconLink
+						Icon={FaStackOverflow}
+						href="https://stackoverflow.com/users/194940/matt-greer"
+					/>
 				</li>
 			</ul>
 		</footer>
