@@ -17,7 +17,7 @@ function TagFilter({ className, tags, currentTag }: TagFilterProps) {
 				) : (
 					<p>
 						My projects and articles pertaining to{' '}
-						<span className="font-bold">{currentTag}</span>
+						<span className="font-bold text-focal-alt">{currentTag}</span>
 					</p>
 				)}
 			</div>
