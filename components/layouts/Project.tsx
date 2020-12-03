@@ -1,15 +1,23 @@
 import React from 'react';
+import { MDXProvider } from '@mdx-js/react';
+import { PageHeading } from '../PageHeading';
+import { MDXComponents } from './MDXComponents';
 
 type ProjectProps = {
 	title: string;
-	url: string;
+	children: React.ReactNode;
 };
 
-function Project({ title, url }: ProjectProps) {
+function Project({ title, children }: ProjectProps) {
 	return (
-		<div>
-			{title}, <a href={url}>{url}</a>
-		</div>
+		<MDXProvider components={MDXComponents}>
+			<div className="max-w-screen-lg lg:mx-auto mx-4 px-4 sm:px-16 pb-32 h-full">
+				<header className="pt-24 mb-16 sm:pt-32 sm:mb-24">
+					<PageHeading logo>{title}</PageHeading>
+				</header>
+				{children}
+			</div>
+		</MDXProvider>
 	);
 }
 
