@@ -1,7 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import { MDXProvider } from '@mdx-js/react';
-import { PageHeading } from '../PageHeading';
+import { Header } from '../PageHeading';
 import { MDXComponents } from './MDXComponents';
 
 type ArticleProps = {
@@ -22,7 +22,7 @@ function Article({ title, date, children }: ArticleProps) {
 							day: 'numeric',
 						})}
 					</time>
-					<PageHeading logo>{title}</PageHeading>
+					<Header logo>{title}</Header>
 				</header>
 				{children}
 			</div>
