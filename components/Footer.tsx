@@ -16,7 +16,10 @@ type FooterProps = {
 function IconLink({ Icon, href }: { Icon: React.ElementType; href: string }) {
 	return (
 		<Link href={href} passHref>
-			<a rel="noreferrer noopener">
+			<a
+				rel="noreferrer noopener"
+				className="inline-block p-2 rounded-sm hover:bg-bg"
+			>
 				<Icon />
 			</a>
 		</Link>
@@ -28,23 +31,32 @@ function Footer({ className }: FooterProps) {
 		<footer
 			className={clsx(
 				className,
-				'bg-bg-fade p-16 flex flex-col items-center justify-center text-center text-sm border-t border-bg-fade'
+				'bg-bg-fade p-4 sm:p-16 flex flex-col items-center justify-center text-center text-sm border-t border-bg-fade'
 			)}
 		>
-			<ul className="mt-4 flex flex-row space-x-6">
-				<li>About Me</li>
+			<ul className="mt-4 flex flex-row space-x-6 text-xs sm:text-base">
+				<li>
+					<Link href="/about-me" passHref>
+						<a className="hover:underline">About Me</a>
+					</Link>
+				</li>
 				<li>
 					<Link href="/portfolio" passHref>
-						<a>Portfolio</a>
+						<a className="hover:underline">Portfolio</a>
+					</Link>
+				</li>
+				<li>
+					<Link href="/quick-thoughts" passHref>
+						<a className="hover:underline">Quick Thoughts</a>
 					</Link>
 				</li>
 				<li>
 					<Link href="/MattGreer_resume.pdf" passHref>
-						<a>Resume</a>
+						<a className="hover:underline">Resume</a>
 					</Link>
 				</li>
 			</ul>
-			<ul className="mt-4 flex flex-row space-x-2">
+			<ul className="mt-4 flex flex-row space-x-1">
 				<li>
 					<IconLink Icon={FaEnvelope} href="mailto:matt.e.greer@gmail.com" />
 				</li>

@@ -11,9 +11,7 @@ type PageHeadingProps = {
 function PageHeading({ className, logo, children }: PageHeadingProps) {
 	return (
 		<>
-			{logo && (
-				<SmallLogo className="w-6 h-6 sm:w-9 sm:h-9 absolute left-2 top-2 mx-auto mb-4" />
-			)}
+			{logo && <SmallLogo className="absolute left-2 top-2 mx-auto mb-4" />}
 			<h1
 				className={clsx(
 					className,

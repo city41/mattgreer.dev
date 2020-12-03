@@ -59,7 +59,7 @@ function Article({ title, date, children }: ArticleProps) {
 							day: 'numeric',
 						})}
 					</time>
-					<PageHeading>{title}</PageHeading>
+					<PageHeading logo>{title}</PageHeading>
 				</header>
 				{children}
 			</div>
