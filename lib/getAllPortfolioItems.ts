@@ -21,17 +21,21 @@ function getItems(root: 'articles' | 'projects'): PortfolioItem[] {
 			}
 		}, []);
 
-	return directories.map((directoryPath) => {
+	return directories.reduce<PortfolioItem[]>((buildingItems, directoryPath) => {
 		const metaPath = path.join(directoryPath, 'meta.json');
 		const metaSource = fs.readFileSync(metaPath).toString();
 		const meta = JSON.parse(metaSource);
 
-		return {
-			...meta,
-			classification: root,
-			slug: path.basename(directoryPath),
-		};
-	});
+		if (meta.draft) {
+			return buildingItems;
+		} else {
+			return buildingItems.concat({
+				...meta,
+				classification: root,
+				slug: path.basename(directoryPath),
+			});
+		}
+	}, []);
 }
 
 export function getAllPortfolioItems(): PortfolioItem[] {

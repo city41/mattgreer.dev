@@ -25,7 +25,12 @@ function getTags(root: 'articles' | 'projects'): TagLabel[] {
 		const metaPath = path.join(directory, 'meta.json');
 		const metaSource = fs.readFileSync(metaPath).toString();
 		const pageMeta = JSON.parse(metaSource);
-		return buildingTags.concat(pageMeta.tags);
+
+		if (pageMeta.draft) {
+			return buildingTags;
+		} else {
+			return buildingTags.concat(pageMeta.tags);
+		}
 	}, []);
 
 	return tags;
