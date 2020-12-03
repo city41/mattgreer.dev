@@ -19,7 +19,7 @@ function IndexPage({ items }: IndexPageProps) {
 				<div className="h-32 grid place-items-center font-bold">
 					Some things I have created{' '}
 				</div>
-				<div className="flex flex-col space-y-48 overflow-x-hidden">
+				<div className="flex flex-col space-y-48 overflow-x-hidden max-w-6xl mx-auto">
 					{items.map((item, index) => {
 						return (
 							<Feature
