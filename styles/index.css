@@ -6,16 +6,15 @@
 @tailwind components;
 /* Stop purging. */
 
-html,
-body {
-    @apply bg-bg text-fg min-h-screen;
-}
 
 /* Start purging... */
 @tailwind utilities;
 /* Stop purging. */
 
-/* Your own custom utilities */
+html,
+body {
+  @apply bg-bg text-fg min-h-screen;
+}
 
 :root {
   --lighten: 6%;

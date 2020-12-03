@@ -50,7 +50,7 @@ const components = {
 function Article({ title, date, children }: ArticleProps) {
 	return (
 		<MDXProvider components={components}>
-			<div className="max-w-screen-lg lg:mx-auto mx-4 px-4 sm:px-16 pb-32">
+			<div className="max-w-screen-lg lg:mx-auto mx-4 px-4 sm:px-16 pb-32 h-full">
 				<header className="pt-24 mb-16 sm:pt-32 sm:mb-24">
 					<time className="text-xs text-fg-fade" dateTime={date}>
 						{new Date(date).toLocaleDateString('en-us', {
