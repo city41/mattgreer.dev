@@ -54,7 +54,10 @@ function LightDarkToggle({ className }: LightDarkToggleProps) {
 
 	return (
 		<button
-			className={clsx(className, 'text-2xl p-2 focus:outline-none')}
+			className={clsx(
+				className,
+				'text-2xl p-2 focus:outline-none bg-bg rounded-lg'
+			)}
 			onClick={handleClick}
 			aria-label="color scheme toggle"
 			title={prefersLightMode ? 'light mode' : 'dark mode'}
