@@ -55,7 +55,7 @@ The background layers can be stacked in any order, scrolled independently, some 
 
 When it comes time to compose all the layers together into an image to display on the screen, priority is used to decide on order. Each VDP2 layer has a priority set, and *each sprite in the VDP1 frame buffer also has a priority.* This allows different sprites to end up behind and in front of different layers.
 
-<img src={require('./img/composingBlowup.svg')} alt="Diagram showing how VPD1 and VPD2 get composed together" />
+<img src={require('./img/composingBlowup.png')} alt="Diagram showing how VPD1 and VPD2 get composed together" />
 
 <wisdom>
 Technically the priority in the VDP1 frame buffer is per pixel, not per sprite. The VDP2 doesn't know of or care about sprites, it only sees pixels.

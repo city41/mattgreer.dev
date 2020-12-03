@@ -35,7 +35,9 @@ const components = {
 	a: ({ children }) => (
 		<a className="text-focal font-bold hover:underline">{children}</a>
 	),
-	img: (props) => <img className="my-12 max-w-2xl" {...props} />,
+	img: (props) => (
+		<img className="my-12 max-w-2xl" {...props} style={{ maxWidth: '100%' }} />
+	),
 	p: ({ children }) => <p className="my-4 max-w-2xl">{children}</p>,
 	pitfall: ({ children }) => (
 		<Callout className="text-red-900 bg-red-50">{children}</Callout>
