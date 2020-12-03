@@ -36,8 +36,8 @@ function Footer({ className }: FooterProps) {
 		>
 			<ul className="mt-4 flex flex-row space-x-6 text-xs sm:text-base">
 				<li>
-					<Link href="/about-me" passHref>
-						<a className="hover:underline">About Me</a>
+					<Link href="/about" passHref>
+						<a className="hover:underline">About</a>
 					</Link>
 				</li>
 				<li>

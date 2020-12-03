@@ -118,8 +118,9 @@ body {
 }
 
 
-.index_page_header_illustration {
+.index_page_header_illustration, .about_page_header_illustration {
   background-size: contain;
+  background-position: center center;
   background-repeat: no-repeat;
 }
 
@@ -142,6 +143,27 @@ body {
 
 .forced-dark .index_page_header_illustration {
   background-image: url(/meIndex_dark.svg);
+}
+
+@media (prefers-color-scheme: light) {
+  .about_page_header_illustration {
+    background-image: url(/michiganState_light.svg);
+  }
+}
+
+
+@media (prefers-color-scheme: dark) {
+  .about_page_header_illustration {
+    background-image: url(/michiganState_dark.svg);
+  }
+}
+
+.forced-light .about_page_header_illustration {
+  background-image: url(/michiganState_light.svg);
+}
+
+.forced-dark .about_page_header_illustration {
+  background-image: url(/michiganState_dark.svg);
 }
 
 .small_logo {

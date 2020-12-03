@@ -25,11 +25,11 @@ function Root({
 				<Header logo={smallLogo} title={title} imageClass={headerImageClass}>
 					{headerContent}
 				</Header>
-				<main role="main" className="mt-16">
+				<main role="main" className="mt-16 px-12 sm:px-32">
 					{children}
 				</main>
 			</div>
-			<Footer />
+			<Footer className="mt-16 sm:mt-24" />
 		</>
 	);
 }
