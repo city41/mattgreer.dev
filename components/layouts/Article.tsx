@@ -1,4 +1,5 @@
 import React from 'react';
+import clsx from 'clsx';
 import { MDXProvider } from '@mdx-js/react';
 import { PageHeading } from '../PageHeading';
 
@@ -10,6 +11,14 @@ type ArticleProps = {
 
 function toId(s: string) {
 	return s.toLowerCase().replace(/\s/g, '-');
+}
+
+function Callout({ className, children }) {
+	return (
+		<div className={clsx(className, 'my-4 max-w-2xl p-4 -mx-4')}>
+			{children}
+		</div>
+	);
 }
 
 const components = {
@@ -29,14 +38,10 @@ const components = {
 	img: (props) => <img className="my-12 max-w-2xl" {...props} />,
 	p: ({ children }) => <p className="my-4 max-w-2xl">{children}</p>,
 	pitfall: ({ children }) => (
-		<div className="my-2 max-w-2xl text-red-900 bg-red-50 p-2 -mx-2">
-			{children}
-		</div>
+		<Callout className="text-red-900 bg-red-50">{children}</Callout>
 	),
 	wisdom: ({ children }) => (
-		<div className="my-4 max-w-2xl text-green-900 bg-green-50 p-4 -mx-4">
-			{children}
-		</div>
+		<Callout className="text-green-900 bg-green-50">{children}</Callout>
 	),
 };
 
