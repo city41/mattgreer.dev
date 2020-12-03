@@ -26,7 +26,6 @@ function PortfolioPage({ tag, allTags, items }: PortfolioPageProps) {
 					))}
 				</main>
 			</div>
-			<Footer />
 		</>
 	);
 }

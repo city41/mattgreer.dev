@@ -74,11 +74,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.35355339"
-     inkscape:cx="618.38062"
-     inkscape:cy="158.18748"
+     inkscape:zoom="0.5"
+     inkscape:cx="379.65723"
+     inkscape:cy="67.948802"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer9"
+     inkscape:current-layer="layer22"
      showgrid="false"
      fit-margin-top="8"
      fit-margin-left="8"
@@ -110,6 +110,28 @@
       </cc:Work>
     </rdf:RDF>
   </metadata>
+  <g
+     inkscape:groupmode="layer"
+     id="layer9"
+     inkscape:label="desk"
+     transform="translate(-55.877975,-44.18282)">
+    <path
+       style="fill:url(#radialGradient5749);fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 63.877975,254.99612 H 312.20833 c 0,0 -113.77083,90.3363 -248.330355,0 z"
+       id="path5261"
+       inkscape:connector-curvature="0" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer22"
+     inkscape:label="left arm">
+    <path
+       style="display:inline;fill:#d99e77;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 115.82881,165.13196 8.73125,17.72709 40.78772,11.87774 c 0,0 15.97286,3.78651 2.77773,6.88337 0,0 3.6527,2.6785 -3.4502,3.26693 -16.06998,1.3313 -51.75692,-8.53429 -51.75692,-8.53429 z"
+       id="path7300"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccscc" />
+  </g>
   <g
      inkscape:groupmode="layer"
      id="layer8"
@@ -334,17 +356,6 @@
        id="path4919-8"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccsccccc" />
-  </g>
-  <g
-     inkscape:groupmode="layer"
-     id="layer9"
-     inkscape:label="desk"
-     transform="translate(-55.877975,-44.18282)">
-    <path
-       style="fill:url(#radialGradient5749);fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="M 63.877975,254.99612 H 312.20833 c 0,0 -113.77083,90.3363 -248.330355,0 z"
-       id="path5261"
-       inkscape:connector-curvature="0" />
   </g>
   <g
      inkscape:groupmode="layer"

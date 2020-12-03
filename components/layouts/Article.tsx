@@ -1,5 +1,6 @@
 import React from 'react';
 import { MDXProvider } from '@mdx-js/react';
+import { PageHeading } from '../PageHeading';
 
 type ArticleProps = {
 	title: string;
@@ -26,7 +27,7 @@ function Article({ title, date, children }: ArticleProps) {
 	return (
 		<MDXProvider components={components}>
 			<div className="max-w-screen-lg lg:mx-auto mx-4">
-				<h1 className="text-4xl">{title}</h1>
+				<PageHeading>{title}</PageHeading>
 				<p>written on {new Date(date).toDateString()}</p>
 				{children}
 			</div>

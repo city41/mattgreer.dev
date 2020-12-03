@@ -1,7 +1,6 @@
 import React from 'react';
 import { Header } from './Header';
 import { Feature } from './Feature';
-import { Footer } from './Footer';
 import { InternalLink } from '../InternalLink';
 import { FadeInOnScroll } from './FadeInOnScroll';
 
@@ -15,7 +14,7 @@ const BlurbP = ({ children }: { children: React.ReactNode }) => {
 
 function IndexPage({ items }: IndexPageProps) {
 	return (
-		<div className="flex flex-col">
+		<>
 			<Header className="pt-12 mb-16 sm:pt-16 md:pt-32 sm:mb-32" />
 			<main role="main">
 				<div className="h-32 grid place-items-center font-bold">
@@ -48,8 +47,7 @@ function IndexPage({ items }: IndexPageProps) {
 					</div>
 				</div>
 			</main>
-			<Footer />
-		</div>
+		</>
 	);
 }
 
