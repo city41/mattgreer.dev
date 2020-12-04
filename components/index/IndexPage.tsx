@@ -28,7 +28,7 @@ function IndexPage({ items }: IndexPageProps) {
 		<Root
 			smallLogo={false}
 			title="Matt Greer"
-			headerImageClass="index_page_header_illustration"
+			page="index"
 			headerContent={headerContent}
 		>
 			<div className="h-32 grid place-items-center font-bold">

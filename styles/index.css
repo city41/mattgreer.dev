@@ -118,7 +118,7 @@ body {
 }
 
 
-.index_page_header_illustration, .about_page_header_illustration {
+.header_illustration {
   background-size: contain;
   background-position: center center;
   background-repeat: no-repeat;
@@ -151,7 +151,6 @@ body {
   }
 }
 
-
 @media (prefers-color-scheme: dark) {
   .about_page_header_illustration {
     background-image: url(/michiganState_dark.svg);
@@ -164,6 +163,26 @@ body {
 
 .forced-dark .about_page_header_illustration {
   background-image: url(/michiganState_dark.svg);
+}
+
+@media (prefers-color-scheme: light) {
+  .portfolio_page_header_illustration {
+    background-image: url(/laptop_light.svg);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .portfolio_page_header_illustration {
+    background-image: url(/laptop_dark.svg);
+  }
+}
+
+.forced-light .portfolio_page_header_illustration {
+  background-image: url(/laptop_light.svg);
+}
+
+.forced-dark .portfolio_page_header_illustration {
+  background-image: url(/laptop_dark.svg);
 }
 
 .small_logo {

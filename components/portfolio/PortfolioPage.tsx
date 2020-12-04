@@ -13,7 +13,12 @@ function PortfolioPage({ tag, allTags, items }: PortfolioPageProps) {
 	const headerContent = <TagFilter tags={allTags} currentTag={tag} />;
 
 	return (
-		<Root title="Portfolio" smallLogo headerContent={headerContent}>
+		<Root
+			title="Portfolio"
+			page="portfolio"
+			smallLogo
+			headerContent={headerContent}
+		>
 			<div className="space-y-32 mb-48 max-w-6xl">
 				{items.map((i) => (
 					<Feature key={i.slug} {...i} side="right" />

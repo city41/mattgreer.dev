@@ -21,12 +21,7 @@ function AboutPage() {
 	);
 
 	return (
-		<Root
-			title="About Me"
-			headerImageClass="about_page_header_illustration"
-			smallLogo
-			headerContent={headerContent}
-		>
+		<Root title="About Me" page="about" smallLogo headerContent={headerContent}>
 			<h2 className="font-bold text-2xl">My Interests</h2>
 			<p>My interests go here</p>
 			<h2 className="font-bold text-2xl">This Website</h2>
