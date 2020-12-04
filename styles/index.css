@@ -16,6 +16,11 @@ body {
   @apply bg-bg text-fg min-h-screen;
 }
 
+p {
+  font-family: sans-serif;
+  font-size: 1.1rem;
+}
+
 :root {
   --lighten: 6%;
   --darken: -6%;

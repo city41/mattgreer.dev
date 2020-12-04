@@ -15,12 +15,12 @@ function Callout({ className, children }) {
 
 const MDXComponents = {
 	h2: ({ children }) => (
-		<h2 className="text-2xl font-bold mt-16" id={toId(children)}>
+		<h2 className="text-3xl font-bold mt-16" id={toId(children)}>
 			{children}
 		</h2>
 	),
 	h3: ({ children }) => (
-		<h3 className="font-bold mt-12" id={toId(children)}>
+		<h3 className="text-2xl xfont-bold mt-12" id={toId(children)}>
 			{children}
 		</h3>
 	),
