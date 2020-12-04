@@ -21,7 +21,7 @@ function TagFilter({ className, tags, currentTag }: TagFilterProps) {
 					</p>
 				)}
 			</div>
-			<p className="mt-16 sm:mt-4 mb-2 text-gray-500 text-sm">or filter by </p>
+			<p className="mt-16 sm:mt-12 mb-2 text-gray-500 text-sm">or filter by </p>
 			<ul className="flex flex-row flex-wrap">
 				{['All']
 					.concat(tags)
