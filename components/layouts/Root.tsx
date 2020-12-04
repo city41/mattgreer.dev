@@ -23,13 +23,13 @@ function Root({
 	return (
 		<>
 			<LightDarkToggle className="fixed right-1 top-1 z-10" />
-			<div className="mx-auto max-w-6xl pt-8 sm:pt-32">
+			<div className="mx-auto max-w-6xl pt-12 sm:pt-32">
 				<Header logo={smallLogo} title={title} page={page} img={img}>
 					{headerContent}
 				</Header>
 				<main
 					role="main"
-					className="mt-16 px-12 sm:px-0 sm:max-w-4xl sm:mx-auto"
+					className="mt-16 px-8 sm:px-0 sm:max-w-4xl sm:mx-auto"
 				>
 					{children}
 				</main>

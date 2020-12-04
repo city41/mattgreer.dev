@@ -28,7 +28,7 @@ function Feature({
 	const style = {
 		minHeight: 500,
 		'--bg-image': `url(${img})`,
-		background: `linear-gradient(${gradientAngle},
+		backgroundImage: `linear-gradient(${gradientAngle},
 										/* hsla(var(--color-bg-h), var(--color-bg-s), var(--color-bg-l), 0.35), */ 
 										transparent,
 										transparent),
@@ -42,7 +42,7 @@ function Feature({
 		<div
 			className={clsx(
 				className,
-				'flex flex-row sm:items-stretch justify-center',
+				'flex flex-row sm:items-stretch justify-center -mx-6',
 				{
 					'sm:justify-start': side === 'left',
 					'sm:justify-end': side === 'right',

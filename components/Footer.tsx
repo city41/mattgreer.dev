@@ -56,7 +56,7 @@ function Footer({ className }: FooterProps) {
 					</Link>
 				</li>
 			</ul>
-			<ul className="mt-4 flex flex-row space-x-1">
+			<ul className="mt-1 sm:mt-4 flex flex-row space-x-1">
 				<li>
 					<IconLink Icon={FaEnvelope} href="mailto:matt.e.greer@gmail.com" />
 				</li>
