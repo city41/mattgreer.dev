@@ -19,7 +19,7 @@ function PortfolioPage({ tag, allTags, items }: PortfolioPageProps) {
 			smallLogo
 			headerContent={headerContent}
 		>
-			<div className="space-y-32 mb-48 max-w-6xl">
+			<div className="space-y-32 mt-32 mb-48 max-w-6xl">
 				{items.map((i) => (
 					<Feature key={i.slug} {...i} side="right" />
 				))}

@@ -1,0 +1,13 @@
+{
+	"draft": false,
+	"title": "Arduboy Games",
+	"date": "2021-01-23",
+	"type": "Video Game",
+	"tags": ["C++", "Arduino"],
+	"description": [
+		"Two games I created for the Arduboy.",
+		"A unique challenge revolving around fitting everything into 26kb."
+	],
+	"url": "https://city41.games",
+	"featureIndex": 3
+}

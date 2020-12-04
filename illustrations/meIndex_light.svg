@@ -95,11 +95,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.70710678"
-     inkscape:cx="325.47642"
-     inkscape:cy="507.14381"
+     inkscape:zoom="0.5"
+     inkscape:cx="153.02823"
+     inkscape:cy="440.71846"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer12"
+     inkscape:current-layer="layer17"
      showgrid="false"
      fit-margin-top="8"
      fit-margin-left="8"
@@ -107,7 +107,7 @@
      fit-margin-bottom="8"
      inkscape:window-width="1900"
      inkscape:window-height="1032"
-     inkscape:window-x="0"
+     inkscape:window-x="1920"
      inkscape:window-y="28"
      inkscape:window-maximized="0"
      inkscape:snap-global="false"
@@ -127,22 +127,14 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <g
      inkscape:groupmode="layer"
      id="layer17"
-     inkscape:label="bg"
-     sodipodi:insensitive="true">
-    <rect
-       style="opacity:1;fill:#fffcfa;fill-opacity:1;stroke:none;stroke-width:0.2;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="rect5960"
-       width="257.70416"
-       height="253.47083"
-       x="2.1166666"
-       y="0.7294302" />
+     inkscape:label="bg">
     <ellipse
        style="opacity:1;fill:url(#linearGradient5788);fill-opacity:1;stroke:none;stroke-width:0.2;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="path5756"
@@ -167,7 +159,8 @@
      inkscape:groupmode="layer"
      id="layer21"
      inkscape:label="left arm"
-     style="display:inline">
+     style="display:inline"
+     sodipodi:insensitive="true">
     <path
        style="fill:#d99e77;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 115.82881,165.13196 8.73125,17.72709 40.78772,11.87774 c 0,0 15.97286,3.78651 2.77773,6.88337 0,0 3.6527,2.6785 -3.4502,3.26693 -16.06998,1.3313 -51.75692,-8.53429 -51.75692,-8.53429 z"
@@ -404,7 +397,8 @@
      inkscape:groupmode="layer"
      id="layer12"
      inkscape:label="laptop"
-     transform="translate(-55.877975,-44.18282)">
+     transform="translate(-55.877975,-44.18282)"
+     sodipodi:insensitive="true">
     <path
        style="fill:#020202;fill-opacity:1;stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 212.37905,258.3526 -61.87525,-4.76309 v 4.14268 l 61.84184,5.5649 5.9397,-1.44173 -3.03836,-3.6849 z"
