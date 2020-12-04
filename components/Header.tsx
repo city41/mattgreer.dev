@@ -6,22 +6,27 @@ type HeaderProps = {
 	className?: string;
 	logo?: boolean;
 	title: string;
-	page: string;
-	children: React.ReactNode;
+	page?: string;
+	img?: string;
+	children?: React.ReactNode;
 };
 
-function Header({ className, logo, title, page, children }: HeaderProps) {
+function Header({ className, logo, title, page, img, children }: HeaderProps) {
+	const imgStyle = img
+		? { backgroundImage: `url(${img})`, backgroundSize: 'cover' }
+		: {};
 	return (
 		<>
 			{logo && <SmallLogo className="absolute left-2 top-2 mx-auto mb-4" />}
 			<header
 				className={clsx(
 					className,
-					'grid grid-cols-8 gap-8 auto-rows-min max-w-screen-lg mx-auto'
+					'grid grid-cols-8 gap-8 auto-rows-min max-w-4xl mx-auto'
 				)}
 			>
 				<div
 					className={`header_illustration ${page}_page_header_illustration col-start-1 col-end-9 h-64 sm:h-auto sm:row-span-2 sm:row-start-1 sm:col-start-1 sm:col-end-4 self-stretch`}
+					style={imgStyle}
 				/>
 				<h1 className="col-start-2 col-end-8 sm:row-start-1 sm:col-start-4 sm:col-end-9 text-4xl sm:text-7xl font-black text-focal">
 					{title}

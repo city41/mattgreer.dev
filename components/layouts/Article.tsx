@@ -1,32 +1,36 @@
 import React from 'react';
-import clsx from 'clsx';
 import { MDXProvider } from '@mdx-js/react';
-import { Header } from '../PageHeading';
+import { Root } from './Root';
 import { MDXComponents } from './MDXComponents';
 
 type ArticleProps = {
 	title: string;
 	date: string;
+	intro: string;
+	img: string;
 	children: React.ReactNode;
 };
 
-function Article({ title, date, children }: ArticleProps) {
+function Article({ title, date, intro, img, children }: ArticleProps) {
+	const headerContent = (
+		<p>
+			<time className="block mb-8 text-xs text-fg-fade" dateTime={date}>
+				{new Date(date).toLocaleDateString('en-us', {
+					year: 'numeric',
+					month: 'short',
+					day: 'numeric',
+				})}
+			</time>
+			{intro}
+		</p>
+	);
+
 	return (
-		<MDXProvider components={MDXComponents}>
-			<div className="max-w-screen-lg lg:mx-auto mx-4 px-4 sm:px-16 pb-32 h-full">
-				<header className="pt-24 mb-16 sm:pt-32 sm:mb-24">
-					<time className="text-xs text-fg-fade" dateTime={date}>
-						{new Date(date).toLocaleDateString('en-us', {
-							year: 'numeric',
-							month: 'short',
-							day: 'numeric',
-						})}
-					</time>
-					<Header logo>{title}</Header>
-				</header>
-				{children}
-			</div>
-		</MDXProvider>
+		<Root title={title} headerContent={headerContent} img={img} smallLogo>
+			<MDXProvider components={MDXComponents}>
+				<div className="sm:mt-32">{children}</div>
+			</MDXProvider>
+		</Root>
 	);
 }
 

@@ -1,9 +1,10 @@
 import { Article } from '../../../components/layouts/Article';
 import meta from './meta.json';
 
-export default ({ children }) => <Article title={meta.title} date={meta.date}>{children}</Article>
 
-The Sega Saturn is notorious for not being able to pull off transparency effects as well as its competitors. But the Saturn does do proper transparency effects as many games demonstrate. So why did so many developers so often settle on the "mesh" approach in their Saturn games?
+export default ({ children }) => <Article {...meta} img={require('./feature.png')}
+  intro='The Sega Saturn is notorious for not being able to pull off transparency effects as well as its competitors. Sometimes developers resorted to a "mesh" effect. Why was that compromise needed?'
+>{children}</Article>
 
 <wisdom>This article is based on a YouTube video made by Low Score Boy. See the <a href="#and-thanks-to-low-score-boy">thank you section</a> at the bottom of this post.</wisdom>
 
