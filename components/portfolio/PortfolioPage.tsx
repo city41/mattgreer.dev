@@ -21,7 +21,7 @@ function PortfolioPage({ tag, allTags, items }: PortfolioPageProps) {
 		>
 			<div className="flex flex-col space-y-48 overflow-x-hidden max-w-6xl -mx-8 sm:mx-auto">
 				{items.map((i) => (
-					<Feature key={i.slug} {...i} side="right" />
+					<Feature key={i.slug} {...i} />
 				))}
 			</div>
 		</Root>

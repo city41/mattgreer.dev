@@ -43,7 +43,6 @@ function IndexPage({ items }: IndexPageProps) {
 					return (
 						<Feature
 							key={item.slug}
-							side={index & 1 ? 'left' : 'right'}
 							slug={item.slug}
 							title={item.title}
 							description={item.description}

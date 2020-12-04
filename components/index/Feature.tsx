@@ -5,7 +5,6 @@ import { Tag } from '../Tag';
 
 type FeatureProps = Omit<PortfolioItem, 'featureIndex'> & {
 	className?: string;
-	side: 'left' | 'right';
 };
 
 function buildUrl(classification: string, slug: string): string {
@@ -16,23 +15,19 @@ function Feature({
 	className,
 	title,
 	description,
-	side,
 	classification,
 	type,
 	slug,
 	tags,
 }: FeatureProps) {
-	const gradientAngle = side === 'left' ? '-120deg' : '120deg';
 	const img = require(`../../pages/${classification}/${slug}/feature.png`);
 
 	const style = {
 		minHeight: 500,
 		'--bg-image': `url(${img})`,
-		backgroundImage: `linear-gradient(${gradientAngle},
-										/* hsla(var(--color-bg-h), var(--color-bg-s), var(--color-bg-l), 0.35), */ 
+		backgroundImage: `linear-gradient(120deg,
 										transparent,
 										transparent),
-										/*hsla(var(--color-fg-h), var(--color-fg-s), var(--color-fg-l), 0.9) 60%, var(--color-fg)), */
 								 var(--bg-image)`,
 		backgroundSize: 'cover, cover',
 		backgroundPosition: 'center, center',
@@ -42,11 +37,7 @@ function Feature({
 		<div
 			className={clsx(
 				className,
-				'flex flex-row sm:items-stretch justify-center -mx-6',
-				{
-					'sm:justify-start': side === 'left',
-					'sm:justify-end': side === 'right',
-				}
+				'flex flex-row sm:items-stretch justify-center -mx-6 sm:justify-end'
 			)}
 			style={style}
 		>
