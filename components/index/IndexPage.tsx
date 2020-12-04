@@ -19,7 +19,10 @@ function IndexPage({ items }: IndexPageProps) {
 				Check out my <InternalLink href="/about">about page</InternalLink>,{' '}
 				<InternalLink href="/portfolio">portfolio</InternalLink>, or{' '}
 				<InternalLink href="/MattGreer_resume.pdf">resume</InternalLink>. Or,{' '}
-				<InternalLink href="/contact">get in touch</InternalLink>.
+				<InternalLink href="mailto:matt.e.greer@gmail.com">
+					get in touch
+				</InternalLink>
+				.
 			</p>
 		</>
 	);
