@@ -1,7 +1,7 @@
 import React from 'react';
 import { Root } from '../layouts/Root';
 import { Feature } from './Feature';
-import { InternalLink } from '../InternalLink';
+import { FocalColorLink } from '../FocalColorLink';
 
 type IndexPageProps = {
 	items: PortfolioItem[];
@@ -16,12 +16,13 @@ function IndexPage({ items }: IndexPageProps) {
 				have written.
 			</p>
 			<p>
-				Check out my <InternalLink href="/about">about page</InternalLink>,{' '}
-				<InternalLink href="/portfolio">portfolio</InternalLink>, or{' '}
-				<InternalLink href="/MattGreer_resume.pdf">resume</InternalLink>. Or,{' '}
-				<InternalLink href="mailto:matt.e.greer@gmail.com">
+				Check out my <FocalColorLink href="/about">about page</FocalColorLink>,{' '}
+				<FocalColorLink href="/portfolio">portfolio</FocalColorLink>, or{' '}
+				<FocalColorLink href="/MattGreer_resume.pdf">resume</FocalColorLink>.
+				Or,{' '}
+				<FocalColorLink href="mailto:matt.e.greer@gmail.com">
 					get in touch
-				</InternalLink>
+				</FocalColorLink>
 				.
 			</p>
 		</>
@@ -56,7 +57,7 @@ function IndexPage({ items }: IndexPageProps) {
 			<div className="h-48 grid place-items-center font-bold">
 				<div>
 					Much more in my{' '}
-					<InternalLink href="/portfolio">portfolio</InternalLink>
+					<FocalColorLink href="/portfolio">portfolio</FocalColorLink>
 				</div>
 			</div>
 		</Root>

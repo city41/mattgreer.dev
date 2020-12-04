@@ -16,10 +16,7 @@ type FooterProps = {
 function IconLink({ Icon, href }: { Icon: React.ElementType; href: string }) {
 	return (
 		<Link href={href} passHref>
-			<a
-				rel="noreferrer noopener"
-				className="inline-block p-2 rounded-sm hover:bg-bg"
-			>
+			<a rel="noopener" className="inline-block p-2 rounded-sm hover:bg-bg">
 				<Icon />
 			</a>
 		</Link>

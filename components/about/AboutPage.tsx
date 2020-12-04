@@ -1,5 +1,13 @@
 import React from 'react';
 import { Root } from '../layouts/Root';
+import { MDXComponents } from '../layouts/MDXComponents';
+import { FocalColorLink } from '../FocalColorLink';
+
+import baguettesJpg from './baguettes.jpg';
+import frannyJpg from './franny.jpg';
+import charlieJpg from './charlie.jpg';
+
+const { h2: H2, h3: H3, p: P, img: Img } = MDXComponents;
 
 function AboutPage() {
 	const headerContent = (
@@ -8,7 +16,8 @@ function AboutPage() {
 				My name is Matt Greer and I am based in the Ann Arbor, Michigan area.
 			</p>
 			<p>
-				I have been a software engineer since about the year 2000. My career has
+				I have been a professional software engineer since about the year 2000,
+				but have been programming since I was a small child. My career has
 				spanned many industries and technologies, but lately I've been focused
 				on web tech such as React and Svelte.
 			</p>
@@ -22,14 +31,40 @@ function AboutPage() {
 
 	return (
 		<Root title="About Me" page="about" smallLogo headerContent={headerContent}>
-			<h2 className="font-bold text-2xl">My Interests</h2>
-			<p>My interests go here</p>
-			<h2 className="font-bold text-2xl">This Website</h2>
-			<p>
+			<H2>My Interests</H2>
+			<P>
+				As you can probably tell by many of my{' '}
+				<FocalColorLink href="/portfolio">projects</FocalColorLink>, I really
+				like old video games. I especially find old game console hardware
+				interesting. It's super neat how they were custom built for running
+				games, almost as if they have a game engine built into the hardware
+				itself.
+			</P>
+			<P>
+				Recently I have been exploring baking bread and pizza. These are the
+				first baguettes I ever made, and well, I have a long ways to go. It's
+				pretty interesting just how far down the rabbit hole you can go on
+				flour, hydration, yeast and more.
+				<Img src={baguettesJpg} alt="first baguettes I ever made" />
+			</P>
+
+			<P>
+				I'm a big softy when it comes to animals. Here is our blind dog Franny
+				and our cat Charlie.
+				<Img src={frannyJpg} alt="Franny, my dog" />
+				<Img src={charlieJpg} alt="Charlie, my cat" />
+			</P>
+
+			<H2>This Website</H2>
+			<P>
 				This site was built with Next.JS. It's exported out to a static site and
 				hosted on GitHub pages. I used Tailwind CSS for the styling, and created
-				the illustrations with Inkscape.
-			</p>
+				the illustrations with Inkscape. You can see its source code{' '}
+				<FocalColorLink href="https://github.com/city41/mattgreer.org" external>
+					here
+				</FocalColorLink>
+				.
+			</P>
 		</Root>
 	);
 }
