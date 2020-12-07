@@ -32,7 +32,7 @@ function Header({ className, logo, title, page, img, children }: HeaderProps) {
 					{title}
 				</h1>
 				{children && (
-					<div className="col-start-1 col-end-9 sm:row-start-2 sm:col-start-4 sm:col-end-8 sm:text-2xl space-y-8">
+					<div className="col-start-1 col-end-9 sm:row-start-2 sm:col-start-4 sm:col-end-8 sm:text-2xl space-y-8 leading-6 sm:leading-9">
 						{children}
 					</div>
 				)}
