@@ -1,5 +1,8 @@
 import React, { ElementType, ReactNode } from 'react';
 import clsx from 'clsx';
+import { FiLink } from 'react-icons/fi';
+
+import styles from './MDXComponents.module.css';
 
 function toId(s: string) {
 	return s.toLowerCase().replace(/\s/g, '-');
@@ -36,17 +39,58 @@ function Callout({ className, children }) {
 	);
 }
 
+function HeadingSelfLink({ id }: { id: string }) {
+	return (
+		<a
+			className={clsx(
+				styles.headingSelfLink,
+				'pl-1 text-fg-fade font-bold float-left -mx-8 w-8'
+			)}
+			aria-hidden
+			href={`#${id}`}
+		>
+			<FiLink />
+		</a>
+	);
+}
+
+function Heading({ className, el, id, children }) {
+	const El = el;
+
+	return (
+		<El className={className} id={id}>
+			{children}
+			<HeadingSelfLink id={id} />
+		</El>
+	);
+}
+
 const MDXComponents = {
-	h2: ({ children }) => (
-		<h2 className="text-3xl font-bold mt-16" id={toId(children)}>
-			{children}
-		</h2>
-	),
-	h3: ({ children }) => (
-		<h3 className="text-2xl mt-12" id={toId(children)}>
-			{children}
-		</h3>
-	),
+	h2: ({ children }) => {
+		const id = toId(children);
+
+		return (
+			<Heading el="h2" className="text-3xl font-bold mt-16" id={id}>
+				{children}
+			</Heading>
+		);
+	},
+	h3: ({ children }) => {
+		const id = toId(children);
+		return (
+			<Heading el="h3" className="text-2xl mt-12" id={id}>
+				{children}
+			</Heading>
+		);
+	},
+	h4: ({ children }) => {
+		const id = toId(children);
+		return (
+			<Heading el="h4" className="font-bold mt-12" id={id}>
+				{children}
+			</Heading>
+		);
+	},
 	a: ({ children }) => (
 		<a className="text-focal font-bold underline cursor-pointer" tabIndex={0}>
 			{children}

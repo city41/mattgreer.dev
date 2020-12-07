@@ -1,0 +1,16 @@
+.headingSelfLink {
+    @apply flex flex-col h-auto justify-center;
+}
+
+.headingSelfLink svg {
+    @apply sm:invisible mt-1;
+    font-size: 0.8em;
+}
+
+h1:hover .headingSelfLink svg,
+h2:hover .headingSelfLink svg,
+h3:hover .headingSelfLink svg,
+h4:hover .headingSelfLink svg,
+.headingSelfLink:hover svg {
+    @apply sm:visible;
+}
