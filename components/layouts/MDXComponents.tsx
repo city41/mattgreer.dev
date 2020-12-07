@@ -91,10 +91,12 @@ const MDXComponents = {
 			</Heading>
 		);
 	},
-	a: ({ children }) => (
-		<a className="text-focal font-bold underline cursor-pointer" tabIndex={0}>
-			{children}
-		</a>
+	a: (props) => (
+		<a
+			className="text-focal font-bold underline cursor-pointer hover:bg-yellow-200"
+			{...props}
+			tabIndex={0}
+		/>
 	),
 	img: (props) => (
 		<img className="my-12 max-w-2xl" {...props} style={{ maxWidth: '100%' }} />
