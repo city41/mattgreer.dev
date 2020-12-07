@@ -19,8 +19,7 @@ function IndexPage({ items }: IndexPageProps) {
 			<p>
 				Check out my <FocalColorLink href="/about">about page</FocalColorLink>,{' '}
 				<FocalColorLink href="/portfolio">portfolio</FocalColorLink>, or{' '}
-				<ResumeLink />
-				Or,{' '}
+				<ResumeLink />. Or,{' '}
 				<FocalColorLink href="mailto:matt.e.greer@gmail.com">
 					get in touch
 				</FocalColorLink>
