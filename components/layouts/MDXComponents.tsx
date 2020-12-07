@@ -13,7 +13,7 @@ function TextBlock({
 	children,
 	el,
 }: {
-	className: string;
+	className?: string;
 	children: ReactNode;
 	el: ElementType;
 }) {
