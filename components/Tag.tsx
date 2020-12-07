@@ -6,26 +6,32 @@ type TagProps = {
 	className?: string;
 	children: TagLabel;
 	component?: React.ElementType;
+	classification: 'projects' | 'articles';
 };
 
-function getUrl(tag: TagLabel) {
+function getUrl(classification: TagProps['classification'], tag: TagLabel) {
 	if (tag === 'All') {
-		return '/portfolio';
+		return `/${classification}`;
 	} else {
-		return `/portfolio/${tag}`;
+		return `/${classification}/${tag}`;
 	}
 }
 
-function Tag({ className, children, component = 'div' }: TagProps) {
+function Tag({
+	className,
+	children,
+	component = 'div',
+	classification,
+}: TagProps) {
 	const Component = component;
 
 	return (
-		<Link href={getUrl(children)} passHref>
+		<Link href={getUrl(classification, children)} passHref>
 			<a>
 				<Component
 					className={clsx(
 						className,
-						'bg-focal-alt text-white font-bold py-1 px-2 sm:text-xs hover:underline hover:bg-focal-fade hover:text-white'
+						'bg-focal-alt text-white font-bold py-1 px-2 sm:text-xs hover:underline hover:bg-focal-alt-fade hover:text-white'
 					)}
 				>
 					{children}

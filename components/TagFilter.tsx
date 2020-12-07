@@ -1,22 +1,28 @@
 import React from 'react';
 import clsx from 'clsx';
-import { Tag } from '../Tag';
+import { Tag } from './Tag';
 
 type TagFilterProps = {
 	className?: string;
 	tags: TagLabel[];
 	currentTag?: TagLabel | null;
+	classification: 'projects' | 'articles';
 };
 
-function TagFilter({ className, tags, currentTag }: TagFilterProps) {
+function TagFilter({
+	className,
+	tags,
+	currentTag,
+	classification,
+}: TagFilterProps) {
 	return (
 		<div className={clsx(className)}>
 			<div className="text-2xl space-y-8 max-w-xl mt-4">
 				{!currentTag ? (
-					<p>All of my projects and articles</p>
+					<p>All of my {classification}</p>
 				) : (
 					<p>
-						My projects and articles pertaining to{' '}
+						My {classification} pertaining to{' '}
 						<span className="font-bold text-focal-alt">{currentTag}</span>
 					</p>
 				)}
@@ -34,6 +40,7 @@ function TagFilter({ className, tags, currentTag }: TagFilterProps) {
 						return (
 							<Tag
 								key={t}
+								classification={classification}
 								component="li"
 								className="bg-bg-fade text-fg-fade mb-2 mr-2"
 							>

@@ -4,11 +4,11 @@ import {
 	GetStaticPathsContext,
 	GetStaticPathsResult,
 } from 'next';
-import { PortfolioPage } from '../../components/portfolio/PortfolioPage';
-import { getAllPortfolioTags } from '../../lib/getAllPortfolioTags';
-import { getAllPortfolioItems } from '../../lib/getAllPortfolioItems';
+import { ArticlesPage } from '../../components/articles/ArticlesPage';
+import { getAllArticleTags } from '../../lib/tags';
+import { getAllArticleItems } from '../../lib/items';
 
-type TagPortfolioNextPageProps = {
+type TagArticlesNextPageProps = {
 	tag: TagLabel;
 	allTags: TagLabel[];
 	items: PortfolioItem[];
@@ -16,7 +16,7 @@ type TagPortfolioNextPageProps = {
 
 function findMatchingTag(tagString: string): TagLabel {
 	// TODO: this is reading from the file system every time
-	const allTags = getAllPortfolioTags();
+	const allTags = getAllArticleTags();
 
 	return allTags.find((tag) => tag.toLowerCase() === tagString);
 }
@@ -24,7 +24,7 @@ function findMatchingTag(tagString: string): TagLabel {
 export async function getStaticPaths(
 	_context: GetStaticPathsContext
 ): Promise<GetStaticPathsResult> {
-	const tags = getAllPortfolioTags() as string[];
+	const tags = getAllArticleTags() as string[];
 	const tagsLowercase = tags.map((t) => t.toLowerCase());
 
 	const allTags = Array.from(new Set(tags.concat(tagsLowercase)));
@@ -35,12 +35,12 @@ export async function getStaticPaths(
 
 export async function getStaticProps(
 	context: GetStaticPropsContext
-): Promise<{ props: TagPortfolioNextPageProps }> {
+): Promise<{ props: TagArticlesNextPageProps }> {
 	const currentTagParam = (context.params.tag as string).toLowerCase();
 	const currentTag = findMatchingTag(currentTagParam);
 
-	const allTags = getAllPortfolioTags();
-	const items = getAllPortfolioItems();
+	const allTags = getAllArticleTags();
+	const items = getAllArticleItems();
 
 	const matchingItems = items.filter((item) => {
 		return item.tags.some(
@@ -57,10 +57,10 @@ export async function getStaticProps(
 	};
 }
 
-export default function TagPortfolioNextPage({
+export default function TagProjectsNextPage({
 	tag,
 	allTags,
 	items,
-}: TagPortfolioNextPageProps) {
-	return <PortfolioPage tag={tag} allTags={allTags} items={items} />;
+}: TagArticlesNextPageProps) {
+	return <ArticlesPage tag={tag} allTags={allTags} items={items} />;
 }

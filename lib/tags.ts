@@ -36,12 +36,10 @@ function getTags(root: 'articles' | 'projects'): TagLabel[] {
 	return tags;
 }
 
-export function getAllPortfolioTags(): TagLabel[] {
-	const articleTags = getTags('articles');
-	const projectTags = getTags('projects');
+export function getAllProjectTags(): TagLabel[] {
+	return getTags('projects');
+}
 
-	const allTags = Array.from(
-		new Set<TagLabel>(articleTags.concat(projectTags))
-	);
-	return allTags;
+export function getAllArticleTags(): TagLabel[] {
+	return getTags('articles');
 }

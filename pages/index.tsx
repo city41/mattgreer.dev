@@ -1,6 +1,6 @@
 import React from 'react';
 import { IndexPage } from '../components/index/IndexPage';
-import { getAllPortfolioItems } from '../lib/getAllPortfolioItems';
+import { getAllItems } from '../lib/items';
 
 type IndexNextPageProps = {
 	items: PortfolioItem[];
@@ -9,7 +9,7 @@ type IndexNextPageProps = {
 export async function getStaticProps(): Promise<{
 	props: IndexNextPageProps;
 }> {
-	const items = getAllPortfolioItems();
+	const items = getAllItems();
 
 	const featuredItems = items.filter((item) => item.featureIndex > -1);
 	const sortedFeatureItems = featuredItems.sort((a, b) => {

@@ -38,9 +38,14 @@ function getItems(root: 'articles' | 'projects'): PortfolioItem[] {
 	}, []);
 }
 
-export function getAllPortfolioItems(): PortfolioItem[] {
-	const articleItems = getItems('articles');
-	const projectItems = getItems('projects');
+export function getAllArticleItems(): PortfolioItem[] {
+	return getItems('articles');
+}
 
-	return articleItems.concat(projectItems);
+export function getAllProjectItems(): PortfolioItem[] {
+	return getItems('projects');
+}
+
+export function getAllItems(): PortfolioItem[] {
+	return getAllArticleItems().concat(getAllProjectItems());
 }

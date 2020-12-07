@@ -36,7 +36,7 @@ function AboutPage() {
 			<H2>My Interests</H2>
 			<P>
 				As you can probably tell by many of my{' '}
-				<FocalColorLink href="/portfolio">projects</FocalColorLink>, I really
+				<FocalColorLink href="/projects">projects</FocalColorLink>, I really
 				like old video games. I especially find old game console hardware
 				interesting. It's super neat how they were custom built for running
 				games, almost as if they have a game engine built into the hardware

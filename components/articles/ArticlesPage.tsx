@@ -1,20 +1,22 @@
 import React from 'react';
-import { TagFilter } from './TagFilter';
+import { TagFilter } from '../TagFilter';
 import { Feature } from '../index/Feature';
 import { Root } from '../layouts/Root';
 
-type PortfolioPageProps = {
+type ArticlesPageProps = {
 	tag?: TagLabel;
 	allTags: TagLabel[];
 	items: PortfolioItem[];
 };
 
-function PortfolioPage({ tag, allTags, items }: PortfolioPageProps) {
-	const headerContent = <TagFilter tags={allTags} currentTag={tag} />;
+function ArticlesPage({ tag, allTags, items }: ArticlesPageProps) {
+	const headerContent = (
+		<TagFilter tags={allTags} currentTag={tag} classification="articles" />
+	);
 
 	return (
 		<Root
-			title="Portfolio"
+			title="Articles"
 			page="portfolio"
 			smallLogo
 			headerContent={headerContent}
@@ -28,4 +30,4 @@ function PortfolioPage({ tag, allTags, items }: PortfolioPageProps) {
 	);
 }
 
-export { PortfolioPage };
+export { ArticlesPage };

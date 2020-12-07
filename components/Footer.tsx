@@ -14,6 +14,14 @@ type FooterProps = {
 	className?: string;
 };
 
+function FooterLink({ href, children }) {
+	return (
+		<Link href={href} passHref>
+			<a className="hover:underline">{children}</a>
+		</Link>
+	);
+}
+
 function IconLink({ Icon, href }: { Icon: React.ElementType; href: string }) {
 	return (
 		<Link href={href} passHref>
@@ -34,19 +42,13 @@ function Footer({ className }: FooterProps) {
 		>
 			<ul className="mt-4 flex flex-row space-x-6 text-xs sm:text-base">
 				<li>
-					<Link href="/about" passHref>
-						<a className="hover:underline">About</a>
-					</Link>
+					<FooterLink href="/about">About</FooterLink>
 				</li>
 				<li>
-					<Link href="/portfolio" passHref>
-						<a className="hover:underline">Portfolio</a>
-					</Link>
+					<FooterLink href="/projects">Projects</FooterLink>
 				</li>
 				<li>
-					<Link href="/quick-thoughts" passHref>
-						<a className="hover:underline">Quick Thoughts</a>
-					</Link>
+					<FooterLink href="/articles">Articles</FooterLink>
 				</li>
 				<li>
 					<ResumeLink el="a" className="hover:underline">

@@ -13,13 +13,15 @@ function IndexPage({ items }: IndexPageProps) {
 		<>
 			<p>
 				Hi! I am a freelance software engineer with a focus on web technologies.
-				This website is a collection of projects I have created and articles I
-				have written.
 			</p>
 			<p>
-				Check out my <FocalColorLink href="/about">about page</FocalColorLink>,{' '}
-				<FocalColorLink href="/portfolio">portfolio</FocalColorLink>, or{' '}
-				<ResumeLink />. Or,{' '}
+				Check out my <FocalColorLink href="/projects">projects</FocalColorLink>,{' '}
+				<FocalColorLink href="/articles">articles</FocalColorLink>,{' '}
+				<FocalColorLink href="/about">about page</FocalColorLink>, or my{' '}
+				<ResumeLink />.
+			</p>
+			<p>
+				Or,{' '}
 				<FocalColorLink href="mailto:matt.e.greer@gmail.com">
 					get in touch
 				</FocalColorLink>
@@ -55,8 +57,9 @@ function IndexPage({ items }: IndexPageProps) {
 			</div>
 			<div className="h-48 grid place-items-center font-bold">
 				<div>
-					Much more in my{' '}
-					<FocalColorLink href="/portfolio">portfolio</FocalColorLink>
+					See more of my{' '}
+					<FocalColorLink href="/projects">projects</FocalColorLink>, and{' '}
+					<FocalColorLink href="/articles">articles</FocalColorLink>
 				</div>
 			</div>
 		</Root>
