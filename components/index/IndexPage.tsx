@@ -2,6 +2,7 @@ import React from 'react';
 import { Root } from '../layouts/Root';
 import { Feature } from './Feature';
 import { FocalColorLink } from '../FocalColorLink';
+import { ResumeLink } from '../ResumeLink';
 
 type IndexPageProps = {
 	items: PortfolioItem[];
@@ -18,7 +19,7 @@ function IndexPage({ items }: IndexPageProps) {
 			<p>
 				Check out my <FocalColorLink href="/about">about page</FocalColorLink>,{' '}
 				<FocalColorLink href="/portfolio">portfolio</FocalColorLink>, or{' '}
-				<FocalColorLink href="/MattGreer_resume.pdf">resume</FocalColorLink>.
+				<ResumeLink />
 				Or,{' '}
 				<FocalColorLink href="mailto:matt.e.greer@gmail.com">
 					get in touch

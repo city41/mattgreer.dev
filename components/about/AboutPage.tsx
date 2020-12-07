@@ -2,6 +2,7 @@ import React from 'react';
 import { Root } from '../layouts/Root';
 import { MDXComponents } from '../layouts/MDXComponents';
 import { FocalColorLink } from '../FocalColorLink';
+import { ResumeLink } from '../ResumeLink';
 
 import baguettesJpg from './baguettes.jpg';
 import frannyJpg from './franny.jpg';
@@ -21,16 +22,17 @@ function AboutPage() {
 				spanned many industries and technologies, but lately I've been focused
 				on web tech such as React and Svelte.
 			</p>
-			<p>
-				I have worked for Netflix and Microsoft, amongst other companies. I am
-				now an independent developer, and am interested in working with dynamic
-				teams to help build out cutting edge web experiences.
-			</p>
 		</>
 	);
 
 	return (
 		<Root title="About Me" page="about" smallLogo headerContent={headerContent}>
+			<P>
+				I have worked for Netflix and Microsoft, amongst other companies (here
+				is my <ResumeLink />
+				). I am now an independent developer, and am interested in working with
+				dynamic teams to help build out cutting edge web experiences.
+			</P>
 			<H2>My Interests</H2>
 			<P>
 				As you can probably tell by many of my{' '}
@@ -44,7 +46,7 @@ function AboutPage() {
 				Recently I have been exploring baking bread and pizza. These are the
 				first baguettes I ever made, and well, I have a long ways to go. It's
 				pretty interesting just how far down the rabbit hole you can go on
-				flour, hydration, yeast and more.
+				flour, hydration, fermentation and more.
 				<Img src={baguettesJpg} alt="first baguettes I ever made" />
 			</P>
 

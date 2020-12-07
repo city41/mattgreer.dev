@@ -8,6 +8,7 @@ import {
 	FaStackOverflow,
 	FaTwitter,
 } from 'react-icons/fa';
+import { ResumeLink } from './ResumeLink';
 
 type FooterProps = {
 	className?: string;
@@ -48,9 +49,9 @@ function Footer({ className }: FooterProps) {
 					</Link>
 				</li>
 				<li>
-					<Link href="/MattGreer_resume.pdf" passHref>
-						<a className="hover:underline">Resume</a>
-					</Link>
+					<ResumeLink el="a" className="hover:underline">
+						Resume
+					</ResumeLink>
 				</li>
 			</ul>
 			<ul className="mt-1 sm:mt-4 flex flex-row space-x-1">
