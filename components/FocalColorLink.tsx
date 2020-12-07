@@ -21,7 +21,12 @@ function FocalColorLink({
 
 	return (
 		<Link href={href} passHref>
-			<a className={clsx(className, 'text-focal')} title={title} {...relProps}>
+			<a
+				className={clsx(className, 'text-focal')}
+				title={title}
+				{...relProps}
+				tabIndex={0}
+			>
 				{children}
 			</a>
 		</Link>
