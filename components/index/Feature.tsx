@@ -31,6 +31,8 @@ function Feature({
 								 var(--bg-image)`,
 		backgroundSize: 'cover, cover',
 		backgroundPosition: 'center, center',
+		contentVisibility: 'auto',
+		containIntrinsicSize: 500,
 	};
 
 	return (
