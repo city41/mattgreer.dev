@@ -46,22 +46,22 @@
 }
 
 @media (prefers-color-scheme: light) {
-    .portfolioPageHeaderIllustration {
-        background-image: url(/laptop_light.svg);
+    .projectsPageHeaderIllustration {
+        background-image: url(/laptop_code_light.svg);
     }
 }
 
 @media (prefers-color-scheme: dark) {
-    .portfolioPageHeaderIllustration {
-        background-image: url(/laptop_dark.svg);
+    .projectsPageHeaderIllustration {
+        background-image: url(/laptop_code_dark.svg);
     }
 }
 
-:global(.forcedLight) .portfolioPageHeaderIllustration {
-    background-image: url(/laptop_light.svg);
+:global(.forcedLight) .projectsPageHeaderIllustration {
+    background-image: url(/laptop_code_light.svg);
 }
 
-:global(.forcedDark) .portfolioPageHeaderIllustration {
-    background-image: url(/laptop_dark.svg);
+:global(.forcedDark) .projectsPageHeaderIllustration {
+    background-image: url(/laptop_code_dark.svg);
 }
 
