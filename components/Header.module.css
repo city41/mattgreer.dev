@@ -1,0 +1,67 @@
+.headerIllustration {
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+@media (prefers-color-scheme: light) {
+    .indexPageHeaderIllustration {
+        background-image: url(/meIndex_light.svg);
+    }
+}
+
+
+@media (prefers-color-scheme: dark) {
+    .indexPageHeaderIllustration {
+        background-image: url(/meIndex_dark.svg);
+    }
+}
+
+:global(.forced-light) .indexPageHeaderIllustration {
+    background-image: url(/meIndex_light.svg);
+}
+
+:global(.forced-dark) .indexPageHeaderIllustration {
+    background-image: url(/meIndex_dark.svg);
+}
+
+@media (prefers-color-scheme: light) {
+    .aboutPageHeaderIllustration {
+        background-image: url(/michiganState_light.svg);
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    .aboutPageHeaderIllustration {
+        background-image: url(/michiganState_dark.svg);
+    }
+}
+
+:global(.forced-light) .aboutPageHeaderIllustration {
+    background-image: url(/michiganState_light.svg);
+}
+
+:global(.forced-dark) .aboutPageHeaderIllustration {
+    background-image: url(/michiganState_dark.svg);
+}
+
+@media (prefers-color-scheme: light) {
+    .portfolioPageHeaderIllustration {
+        background-image: url(/laptop_light.svg);
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    .portfolioPageHeaderIllustration {
+        background-image: url(/laptop_dark.svg);
+    }
+}
+
+:global(.forced-light) .portfolioPageHeaderIllustration {
+    background-image: url(/laptop_light.svg);
+}
+
+:global(.forced-dark) .portfolioPageHeaderIllustration {
+    background-image: url(/laptop_dark.svg);
+}
+

@@ -1,0 +1,26 @@
+.smallLogo {
+    display: block;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+@media (prefers-color-scheme: light) {
+    .smallLogo {
+        background-image: url(/mug_light.svg);
+    }
+}
+
+
+@media (prefers-color-scheme: dark) {
+    .smallLogo {
+        background-image: url(/mug_dark.svg);
+    }
+}
+
+:global(.forced-light) .smallLogo {
+    background-image: url(/mug_light.svg);
+}
+
+:global(.forced-dark) .smallLogo {
+    background-image: url(/mug_dark.svg);
+}

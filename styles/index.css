@@ -52,7 +52,7 @@ p {
 
     --color-fg-h: 0;
     --color-fg-s: 0%;
-    --color-fg-l: 93%;
+    --color-fg-l: 90%;
 
 
     --color-bg-fade: hsl(var(--color-bg-h), var(--color-bg-s), calc(var(--color-bg-l) + var(--lighten)));
@@ -92,7 +92,7 @@ p {
 
   --color-fg-h: 0;
   --color-fg-s: 0%;
-  --color-fg-l: 93%;
+  --color-fg-l: 90%;
 
   --color-bg-fade: hsl(var(--color-bg-h), var(--color-bg-s), calc(var(--color-bg-l) + var(--lighten)));
   --color-bg: hsl(var(--color-bg-h), var(--color-bg-s), var(--color-bg-l));
@@ -122,96 +122,3 @@ p {
 }
 
 
-.header_illustration {
-  background-size: contain;
-  background-position: center center;
-  background-repeat: no-repeat;
-}
-
-@media (prefers-color-scheme: light) {
-  .index_page_header_illustration {
-    background-image: url(/meIndex_light.svg);
-  }
-}
-
-
-@media (prefers-color-scheme: dark) {
-  .index_page_header_illustration {
-    background-image: url(/meIndex_dark.svg);
-  }
-}
-
-.forced-light .index_page_header_illustration {
-  background-image: url(/meIndex_light.svg);
-}
-
-.forced-dark .index_page_header_illustration {
-  background-image: url(/meIndex_dark.svg);
-}
-
-@media (prefers-color-scheme: light) {
-  .about_page_header_illustration {
-    background-image: url(/michiganState_light.svg);
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  .about_page_header_illustration {
-    background-image: url(/michiganState_dark.svg);
-  }
-}
-
-.forced-light .about_page_header_illustration {
-  background-image: url(/michiganState_light.svg);
-}
-
-.forced-dark .about_page_header_illustration {
-  background-image: url(/michiganState_dark.svg);
-}
-
-@media (prefers-color-scheme: light) {
-  .portfolio_page_header_illustration {
-    background-image: url(/laptop_light.svg);
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  .portfolio_page_header_illustration {
-    background-image: url(/laptop_dark.svg);
-  }
-}
-
-.forced-light .portfolio_page_header_illustration {
-  background-image: url(/laptop_light.svg);
-}
-
-.forced-dark .portfolio_page_header_illustration {
-  background-image: url(/laptop_dark.svg);
-}
-
-.small_logo {
-  display: block;
-  background-size: contain;
-  background-repeat: no-repeat;
-}
-
-@media (prefers-color-scheme: light) {
-  .small_logo {
-    background-image: url(/mug_light.svg);
-  }
-}
-
-
-@media (prefers-color-scheme: dark) {
-  .small_logo {
-    background-image: url(/mug_dark.svg);
-  }
-}
-
-.forced-light .small_logo {
-  background-image: url(/mug_light.svg);
-}
-
-.forced-dark .small_logo {
-  background-image: url(/mug_dark.svg);
-}

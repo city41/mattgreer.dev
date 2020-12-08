@@ -2,6 +2,8 @@ import React from 'react';
 import clsx from 'clsx';
 import { SmallLogo } from './SmallLogo';
 
+import styles from './Header.module.css';
+
 type HeaderProps = {
 	className?: string;
 	logo?: boolean;
@@ -25,7 +27,11 @@ function Header({ className, logo, title, page, img, children }: HeaderProps) {
 				)}
 			>
 				<div
-					className={`header_illustration ${page}_page_header_illustration col-start-1 col-end-9 h-64 sm:h-auto sm:row-span-2 sm:row-start-1 sm:col-start-1 sm:col-end-4 self-stretch -mx-8 sm:mx-0`}
+					className={clsx(
+						styles.headerIllustration,
+						styles[`${page}PageHeaderIllustration`],
+						'col-start-1 col-end-9 h-64 sm:h-auto sm:row-span-2 sm:row-start-1 sm:col-start-1 sm:col-end-4 self-stretch -mx-8 sm:mx-0'
+					)}
 					style={imgStyle}
 				/>
 				<h1 className="col-start-1 col-end-9 sm:row-start-1 sm:col-start-4 sm:col-end-9 text-4xl sm:text-7xl font-black text-focal">
