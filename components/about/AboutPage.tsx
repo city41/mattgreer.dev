@@ -26,7 +26,13 @@ function AboutPage() {
 	);
 
 	return (
-		<Root title="About Me" page="about" smallLogo headerContent={headerContent}>
+		<Root
+			title="About Me"
+			page="about"
+			metaDescription="Some background about me and this website"
+			smallLogo
+			headerContent={headerContent}
+		>
 			<P>
 				I have worked for Netflix and Microsoft, amongst other companies (here
 				is my <ResumeLink />

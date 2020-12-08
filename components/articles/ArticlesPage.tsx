@@ -17,6 +17,7 @@ function ArticlesPage({ tag, allTags, items }: ArticlesPageProps) {
 	return (
 		<Root
 			title="Articles"
+			metaDescription="Technical articles I have written, mostly related to web tech"
 			page="portfolio"
 			smallLogo
 			headerContent={headerContent}

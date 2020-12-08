@@ -1,7 +1,9 @@
 import { Article } from '../../../components/layouts/Article';
 import meta from './meta.json';
 
-export default ({ children }) => <Article title={meta.title} date={meta.date}>{children}</Article>
+export default ({ children }) => <Article {...meta} img={require('./feature.png')}
+                                          intro='Promise intro goes here'
+>{children}</Article>
 
 promises placeholder
 

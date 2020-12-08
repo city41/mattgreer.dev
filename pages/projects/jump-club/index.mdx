@@ -1,7 +1,7 @@
 import { Project } from '../../../components/layouts/Project';
 import meta from './meta.json';
 
-export default ({ children }) => <Project title={meta.title} url={meta.url} img={require('./feature.png')}>{children}</Project>
+export default ({ children }) => <Project {...meta} img={require('./feature.png')}>{children}</Project>
 
 Jump.Club placeholder
 

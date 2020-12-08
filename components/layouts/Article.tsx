@@ -5,13 +5,21 @@ import { MDXComponents } from './MDXComponents';
 
 type ArticleProps = {
 	title: string;
+	metaDescription: string;
 	date: string;
 	intro: string;
 	img: string;
 	children: React.ReactNode;
 };
 
-function Article({ title, date, intro, img, children }: ArticleProps) {
+function Article({
+	title,
+	metaDescription,
+	date,
+	intro,
+	img,
+	children,
+}: ArticleProps) {
 	const headerContent = (
 		<p>
 			<time className="block mb-8 text-xs text-fg-fade" dateTime={date}>
@@ -26,7 +34,13 @@ function Article({ title, date, intro, img, children }: ArticleProps) {
 	);
 
 	return (
-		<Root title={title} headerContent={headerContent} img={img} smallLogo>
+		<Root
+			title={title}
+			metaDescription={metaDescription}
+			headerContent={headerContent}
+			img={img}
+			smallLogo
+		>
 			<MDXProvider components={MDXComponents}>
 				<div className="sm:mt-32">{children}</div>
 			</MDXProvider>

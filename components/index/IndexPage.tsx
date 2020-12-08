@@ -34,6 +34,7 @@ function IndexPage({ items }: IndexPageProps) {
 		<Root
 			smallLogo={false}
 			title="Matt Greer"
+			metaDescription="My personal website with things I've made and articles I have written"
 			page="index"
 			headerContent={headerContent}
 		>

@@ -17,6 +17,7 @@ function ProjectsPage({ tag, allTags, items }: ProjectsPageProps) {
 	return (
 		<Root
 			title="Projects"
+			metaDescription="Things I have created, mostly webapps"
 			page="portfolio"
 			smallLogo
 			headerContent={headerContent}
