@@ -24,6 +24,18 @@ function getPageTitle(incomingTitle: string): string {
 	}
 }
 
+function getAbsoluteUrl(url: string): string {
+	if (url.startsWith('http')) {
+		return url;
+	}
+
+	if (url.startsWith('/')) {
+		url = url.substring(1);
+	}
+
+	return `https://mattgreer-org.vercel.app/${url}`;
+}
+
 function Root({
 	smallLogo,
 	title,
@@ -33,7 +45,10 @@ function Root({
 	headerContent,
 	children,
 }: RootProps) {
-	const metaImg = img ?? fallbackImg;
+	const metaImg = `${getAbsoluteUrl(img ?? fallbackImg)}?t=${title.substring(
+		0,
+		10
+	)}`;
 
 	return (
 		<>
@@ -46,7 +61,7 @@ function Root({
 
 				{/* Twitter */}
 				<meta name="twitter:creator" content="@mattegreer" key="twhandle" />
-				<meta name="twitter:card" content="summary" />
+				<meta name="twitter:card" content="summary_large_image" />
 				<meta name="twitter:image" content={metaImg} />
 
 				{/* open graph, Twitter also uses some of these */}
