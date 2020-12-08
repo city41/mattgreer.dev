@@ -65,3 +65,23 @@
     background-image: url(/laptop_code_dark.svg);
 }
 
+@media (prefers-color-scheme: light) {
+    .articlesPageHeaderIllustration {
+        background-image: url(/laptop_markdown_light.svg);
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    .articlesPageHeaderIllustration {
+        background-image: url(/laptop_markdown_dark.svg);
+    }
+}
+
+:global(.forcedLight) .articlesPageHeaderIllustration {
+    background-image: url(/laptop_markdown_light.svg);
+}
+
+:global(.forcedDark) .articlesPageHeaderIllustration {
+    background-image: url(/laptop_markdown_dark.svg);
+}
+
