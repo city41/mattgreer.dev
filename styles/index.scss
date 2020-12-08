@@ -1,0 +1,49 @@
+@import './theme';
+
+@tailwind base;
+
+/* Write your own custom base styles here */
+
+/* Start purging... */
+@tailwind components;
+/* Stop purging. */
+
+
+/* Start purging... */
+@tailwind utilities;
+/* Stop purging. */
+
+html,
+body {
+  @apply bg-bg text-fg min-h-screen;
+}
+
+p {
+  font-family: sans-serif;
+}
+
+:root {
+  @include common-theme;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    @include dark-theme;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    @include light-theme;
+  }
+}
+
+.forcedDark {
+  @include dark-theme;
+}
+
+.forcedLight {
+  @include light-theme;
+}
+
+
