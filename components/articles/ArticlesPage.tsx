@@ -1,6 +1,6 @@
 import React from 'react';
 import { TagFilter } from '../TagFilter';
-import { Feature } from '../index/Feature';
+import { Feature } from '../Feature';
 import { Root } from '../layouts/Root';
 
 type ArticlesPageProps = {

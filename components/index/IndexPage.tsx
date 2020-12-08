@@ -1,6 +1,6 @@
 import React from 'react';
 import { Root } from '../layouts/Root';
-import { Feature } from './Feature';
+import { Feature } from '../Feature';
 import { FocalColorLink } from '../FocalColorLink';
 import { ResumeLink } from '../ResumeLink';
 
