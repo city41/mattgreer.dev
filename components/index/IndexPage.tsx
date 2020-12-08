@@ -59,7 +59,7 @@ function IndexPage({ items }: IndexPageProps) {
 			<div className="h-48 grid place-items-center font-bold">
 				<div>
 					See more of my{' '}
-					<FocalColorLink href="/projects">projects</FocalColorLink>, and{' '}
+					<FocalColorLink href="/projects">projects</FocalColorLink> and{' '}
 					<FocalColorLink href="/articles">articles</FocalColorLink>
 				</div>
 			</div>
