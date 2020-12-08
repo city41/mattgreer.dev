@@ -17,10 +17,10 @@
     }
 }
 
-:global(.forced-light) .smallLogo {
+:global(.forcedLight) .smallLogo {
     background-image: url(/mug_light.svg);
 }
 
-:global(.forced-dark) .smallLogo {
+:global(.forcedDark) .smallLogo {
     background-image: url(/mug_dark.svg);
 }

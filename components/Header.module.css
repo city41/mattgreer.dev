@@ -17,11 +17,11 @@
     }
 }
 
-:global(.forced-light) .indexPageHeaderIllustration {
+:global(.forcedLight) .indexPageHeaderIllustration {
     background-image: url(/meIndex_light.svg);
 }
 
-:global(.forced-dark) .indexPageHeaderIllustration {
+:global(.forcedDark) .indexPageHeaderIllustration {
     background-image: url(/meIndex_dark.svg);
 }
 
@@ -37,11 +37,11 @@
     }
 }
 
-:global(.forced-light) .aboutPageHeaderIllustration {
+:global(.forcedLight) .aboutPageHeaderIllustration {
     background-image: url(/michiganState_light.svg);
 }
 
-:global(.forced-dark) .aboutPageHeaderIllustration {
+:global(.forcedDark) .aboutPageHeaderIllustration {
     background-image: url(/michiganState_dark.svg);
 }
 
@@ -57,11 +57,11 @@
     }
 }
 
-:global(.forced-light) .portfolioPageHeaderIllustration {
+:global(.forcedLight) .portfolioPageHeaderIllustration {
     background-image: url(/laptop_light.svg);
 }
 
-:global(.forced-dark) .portfolioPageHeaderIllustration {
+:global(.forcedDark) .portfolioPageHeaderIllustration {
     background-image: url(/laptop_dark.svg);
 }
 

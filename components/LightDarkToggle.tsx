@@ -6,8 +6,8 @@ type LightDarkToggleProps = {
 	className?: string;
 };
 
-const DARK_CLASS = 'forced-dark';
-const LIGHT_CLASS = 'forced-light';
+const DARK_CLASS = 'forcedDark';
+const LIGHT_CLASS = 'forcedLight';
 
 function LightDarkToggle({ className }: LightDarkToggleProps) {
 	const [prefersLightMode, setPrefersLightMode] = useState<boolean | null>(
