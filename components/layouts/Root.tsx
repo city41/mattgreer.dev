@@ -74,7 +74,7 @@ function Root({
 			</Head>
 			{navigation && <Navigation current={currentNav} />}
 			<div className="mx-auto max-w-6xl">
-				<Header className="mt-16" title={title} page={page} img={img}>
+				<Header className="pt-16" title={title} page={page} img={img}>
 					{headerContent}
 				</Header>
 				<main
