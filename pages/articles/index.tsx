@@ -14,6 +14,10 @@ export async function getStaticProps(): Promise<{
 	const allTags = getAllArticleTags();
 	const items = getAllArticleItems();
 
+	const sortedItems = items.sort((a, b) => {
+		return new Date(b.date).getTime() - new Date(a.date).getTime();
+	});
+
 	return { props: { allTags, items } };
 }
 

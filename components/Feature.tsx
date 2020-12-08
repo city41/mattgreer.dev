@@ -19,6 +19,7 @@ function Feature({
 	description,
 	classification,
 	type,
+	date,
 	slug,
 	tags,
 }: FeatureProps) {
@@ -48,7 +49,15 @@ function Feature({
 						<h2 className="text-3xl font-bold hover:underline">{title}</h2>
 					</a>
 				</Link>
-				<div className="mb-2 py-1 text-gray-500 text-xs">{type}</div>
+				<div className="mb-2 py-1 text-gray-500 text-xs">
+					{(date &&
+						new Date(date).toLocaleDateString('en-us', {
+							year: 'numeric',
+							month: 'short',
+							day: 'numeric',
+						})) ||
+						type}
+				</div>
 				<div className="text-sm mb-3">
 					{description.map((paragraph) => (
 						<p key={paragraph} className="my-4">
