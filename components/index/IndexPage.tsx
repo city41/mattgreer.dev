@@ -32,7 +32,7 @@ function IndexPage({ items }: IndexPageProps) {
 
 	return (
 		<Root
-			smallLogo={false}
+			navigation={false}
 			title="Matt Greer"
 			metaDescription="My personal website with things I've made and articles I have written"
 			page="index"

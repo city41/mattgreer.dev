@@ -8,25 +8,17 @@ import {
 	FaStackOverflow,
 	FaTwitter,
 } from 'react-icons/fa';
-import { ResumeLink } from './ResumeLink';
+import { LightDarkToggle } from './LightDarkToggle';
 
 type FooterProps = {
 	className?: string;
 };
 
-function FooterLink({ href, children }) {
-	return (
-		<Link href={href} passHref>
-			<a className="hover:underline">{children}</a>
-		</Link>
-	);
-}
-
 function IconLink({ Icon, href }: { Icon: React.ElementType; href: string }) {
 	return (
 		<Link href={href} passHref>
 			<a rel="noopener" className="inline-block p-2 rounded-sm hover:bg-bg">
-				<Icon />
+				<Icon className="text-2xl sm:text-base" />
 			</a>
 		</Link>
 	);
@@ -37,25 +29,10 @@ function Footer({ className }: FooterProps) {
 		<footer
 			className={clsx(
 				className,
-				'bg-bg-fade p-4 sm:p-16 flex flex-col items-center justify-center text-center text-sm border-t border-bg-fade'
+				'bg-bg-fade py-4 px-2 sm:p-6 flex flex-row justify-between text-center text-sm border-t border-bg-fade'
 			)}
 		>
-			<ul className="mt-4 flex flex-row space-x-6 text-xs sm:text-base">
-				<li>
-					<FooterLink href="/about">About</FooterLink>
-				</li>
-				<li>
-					<FooterLink href="/projects">Projects</FooterLink>
-				</li>
-				<li>
-					<FooterLink href="/articles">Articles</FooterLink>
-				</li>
-				<li>
-					<ResumeLink el="a" className="hover:underline">
-						Resume
-					</ResumeLink>
-				</li>
-			</ul>
+			<LightDarkToggle />
 			<ul className="mt-1 sm:mt-4 flex flex-row space-x-1">
 				<li>
 					<IconLink Icon={FaEnvelope} href="mailto:matt.e.greer@gmail.com" />

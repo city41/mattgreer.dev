@@ -1,13 +1,15 @@
 import React from 'react';
 import Head from 'next/head';
 import { LightDarkToggle } from '../LightDarkToggle';
+import { Navigation } from '../Navigation';
 import { Header } from '../Header';
 import { Footer } from '../Footer';
 
 import fallbackImg from './meIndex_openGraph.png';
 
 type RootProps = {
-	smallLogo?: boolean;
+	navigation?: boolean;
+	currentNav?: string;
 	title: string;
 	metaDescription: string;
 	page?: string;
@@ -37,7 +39,8 @@ function getAbsoluteUrl(url: string): string {
 }
 
 function Root({
-	smallLogo,
+	navigation,
+	currentNav,
 	title,
 	metaDescription,
 	page,
@@ -69,9 +72,9 @@ function Root({
 				<meta property="og:description" content={metaDescription} />
 				<meta property="og:image" content={metaImg} />
 			</Head>
-			<LightDarkToggle className="fixed right-1 top-1 z-10" />
-			<div className="mx-auto max-w-6xl pt-12 sm:pt-32">
-				<Header logo={smallLogo} title={title} page={page} img={img}>
+			{navigation && <Navigation current={currentNav} />}
+			<div className="mx-auto max-w-6xl">
+				<Header className="mt-16" title={title} page={page} img={img}>
 					{headerContent}
 				</Header>
 				<main

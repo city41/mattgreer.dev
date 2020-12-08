@@ -1,25 +1,22 @@
 import React from 'react';
 import clsx from 'clsx';
-import { SmallLogo } from './SmallLogo';
 
 import styles from './Header.module.css';
 
 type HeaderProps = {
 	className?: string;
-	logo?: boolean;
 	title: string;
 	page?: string;
 	img?: string;
 	children?: React.ReactNode;
 };
 
-function Header({ className, logo, title, page, img, children }: HeaderProps) {
+function Header({ className, title, page, img, children }: HeaderProps) {
 	const imgStyle = img
 		? { backgroundImage: `url(${img})`, backgroundSize: 'cover' }
 		: {};
 	return (
 		<>
-			{logo && <SmallLogo className="absolute left-2 top-2 mx-auto mb-4" />}
 			<header
 				className={clsx(
 					className,

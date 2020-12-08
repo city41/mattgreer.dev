@@ -19,7 +19,7 @@ function Project({ title, metaDescription, img, children }: ProjectProps) {
 			metaDescription={metaDescription}
 			headerContent={headerContent}
 			img={img}
-			smallLogo
+			navigation
 		>
 			<MDXProvider components={MDXComponents}>
 				<div className="sm:mt-32">{children}</div>

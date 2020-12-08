@@ -17,9 +17,10 @@ function ArticlesPage({ tag, allTags, items }: ArticlesPageProps) {
 	return (
 		<Root
 			title="Articles"
+			currentNav="/articles"
 			metaDescription="Technical articles I have written, mostly related to web tech"
 			page="articles"
-			smallLogo
+			navigation
 			headerContent={headerContent}
 		>
 			<div className="flex flex-col space-y-48 overflow-x-hidden max-w-6xl -mx-8 sm:mx-auto">

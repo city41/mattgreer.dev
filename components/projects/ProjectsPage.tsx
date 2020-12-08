@@ -17,9 +17,10 @@ function ProjectsPage({ tag, allTags, items }: ProjectsPageProps) {
 	return (
 		<Root
 			title="Projects"
+			currentNav="/projects"
 			metaDescription="Things I have created, mostly webapps"
 			page="projects"
-			smallLogo
+			navigation
 			headerContent={headerContent}
 		>
 			<div className="flex flex-col space-y-48 overflow-x-hidden max-w-6xl -mx-8 sm:mx-auto">

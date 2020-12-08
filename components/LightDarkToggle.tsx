@@ -54,18 +54,20 @@ function LightDarkToggle({ className }: LightDarkToggleProps) {
 
 	return (
 		<button
-			className={clsx(
-				className,
-				'text-2xl p-1 focus:outline-none bg-bg rounded-lg'
-			)}
+			className={clsx(className, 'p-2 flex flex-row items-center text-fg-fade')}
 			onClick={handleClick}
 			aria-label="color scheme toggle"
-			title={prefersLightMode ? 'light mode' : 'dark mode'}
 		>
 			{prefersLightMode ? (
-				<FiSun aria-label="light mode" />
+				<>
+					<FiSun className="text-2xl mr-2" aria-label="light mode" />
+					light theme
+				</>
 			) : (
-				<FiMoon aria-label="dark mode" />
+				<>
+					<FiMoon className="text-2xl mr-2" aria-label="dark mode" />
+					dark theme
+				</>
 			)}
 		</button>
 	);

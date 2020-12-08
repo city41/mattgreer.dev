@@ -28,9 +28,10 @@ function AboutPage() {
 	return (
 		<Root
 			title="About Me"
+			currentNav="/about"
 			page="about"
 			metaDescription="Some background about me and this website"
-			smallLogo
+			navigation
 			headerContent={headerContent}
 		>
 			<P>
