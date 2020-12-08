@@ -16,7 +16,7 @@ function NavLink({ href, children, isCurrent }) {
 			<Link href={href} passHref>
 				<a
 					className={clsx(
-						'border-b-2 px-1, sm:px-2 h-full grid place-items-center',
+						'border-b-2 px-1 sm:px-2 h-full grid place-items-center',
 						{
 							'text-fg-fade border-transparent hover:bg-bg-fade': !isCurrent,
 							'text-focal border-focal': isCurrent,
@@ -39,14 +39,14 @@ function Navigation({ className, current }: NavigationProps) {
 			)}
 		>
 			<Link href="/" passHref>
-				<div className="flex flex-row w-auto cursor-pointer py-1">
-					<a className={clsx(styles.smallLogo, 'w-6 h-6 sm:w-9 sm:h-9')} />
-					<span className="self-center text-xs text-fg-fade ml-1">
+				<div className="flex flex-row w-auto cursor-pointer">
+					<a className={clsx(styles.smallLogo, 'h-full w-6 sm:w-9')} />
+					<div className="self-stretch text-xs text-fg-fade ml-1 hover:bg-bg-fade grid place-items-center px-1 py-3 sm:px-2">
 						Matt Greer
-					</span>
+					</div>
 				</div>
 			</Link>
-			<ul className="flex flex-row space-x-3 sm:space-x-4 text-xs items-stretch">
+			<ul className="flex flex-row space-x-1 sm:space-x-4 text-xs items-stretch">
 				<NavLink href="/projects" isCurrent={current === '/projects'}>
 					Projects
 				</NavLink>
