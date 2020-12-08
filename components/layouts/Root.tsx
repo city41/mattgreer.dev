@@ -33,6 +33,8 @@ function Root({
 	headerContent,
 	children,
 }: RootProps) {
+	const metaImg = img ?? fallbackImg;
+
 	return (
 		<>
 			<Head>
@@ -45,11 +47,12 @@ function Root({
 				{/* Twitter */}
 				<meta name="twitter:creator" content="@mattegreer" key="twhandle" />
 				<meta name="twitter:card" content="summary" />
+				<meta name="twitter:image" content={metaImg} />
 
 				{/* open graph, Twitter also uses some of these */}
 				<meta property="og:title" content={title} />
 				<meta property="og:description" content={metaDescription} />
-				<meta property="og:image" content={img ?? fallbackImg} />
+				<meta property="og:image" content={metaImg} />
 			</Head>
 			<LightDarkToggle className="fixed right-1 top-1 z-10" />
 			<div className="mx-auto max-w-6xl pt-12 sm:pt-32">
