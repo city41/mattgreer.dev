@@ -47,14 +47,14 @@ function Navigation({ className, current }: NavigationProps) {
 				</div>
 			</Link>
 			<ul className="flex flex-row space-x-3 sm:space-x-4 text-xs items-stretch">
-				<NavLink href="/about" isCurrent={current === '/about'}>
-					About
-				</NavLink>
 				<NavLink href="/projects" isCurrent={current === '/projects'}>
 					Projects
 				</NavLink>
 				<NavLink href="/articles" isCurrent={current === '/articles'}>
 					Articles
+				</NavLink>
+				<NavLink href="/about" isCurrent={current === '/about'}>
+					About
 				</NavLink>
 				<NavLink href="/MattGreer_resume.pdf" isCurrent={false}>
 					Resume
