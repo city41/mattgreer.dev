@@ -3,6 +3,10 @@ import { ProjectsPage } from '../../components/projects/ProjectsPage';
 import { getAllProjectTags } from '../../lib/tags';
 import { getAllProjectItems } from '../../lib/items';
 
+export const config = {
+	unstable_runtimeJS: false,
+};
+
 type ProjectsIndexNextPageProps = {
 	allTags: TagLabel[];
 	items: PortfolioItem[];

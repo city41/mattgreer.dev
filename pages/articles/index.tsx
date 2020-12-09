@@ -3,6 +3,10 @@ import { ArticlesPage } from '../../components/articles/ArticlesPage';
 import { getAllArticleTags } from '../../lib/tags';
 import { getAllArticleItems } from '../../lib/items';
 
+export const config = {
+	unstable_runtimeJS: false,
+};
+
 type ArticlesIndexNextPageProps = {
 	allTags: TagLabel[];
 	items: PortfolioItem[];

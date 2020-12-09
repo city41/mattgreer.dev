@@ -2,6 +2,10 @@ import React from 'react';
 import { IndexPage } from '../components/index/IndexPage';
 import { getAllItems } from '../lib/items';
 
+export const config = {
+	unstable_runtimeJS: false,
+};
+
 type IndexNextPageProps = {
 	items: PortfolioItem[];
 };

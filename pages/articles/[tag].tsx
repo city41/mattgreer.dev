@@ -8,6 +8,10 @@ import { ArticlesPage } from '../../components/articles/ArticlesPage';
 import { getAllArticleTags } from '../../lib/tags';
 import { getAllArticleItems } from '../../lib/items';
 
+export const config = {
+	unstable_runtimeJS: false,
+};
+
 type TagArticlesNextPageProps = {
 	tag: TagLabel;
 	allTags: TagLabel[];
