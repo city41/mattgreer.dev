@@ -68,14 +68,11 @@ function Feature({
 				</div>
 				<ul className="flex flex-row flex-wrap -mx-2">
 					{tags.map((t) => (
-						<Tag
-							key={t}
-							component="li"
-							className="m-1"
-							classification={classification}
-						>
-							{t}
-						</Tag>
+						<li key={t}>
+							<Tag className="m-1" classification={classification}>
+								{t}
+							</Tag>
+						</li>
 					))}
 				</ul>
 			</div>
