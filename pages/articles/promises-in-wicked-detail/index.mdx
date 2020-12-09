@@ -1,4 +1,5 @@
 import { Article } from '../../../components/layouts/Article';
+import { Fiddle } from './Fiddle';
 import meta from './meta.json';
 
 export default ({ children }) => <Article {...meta} img={require('./feature.jpg')}
@@ -99,7 +100,7 @@ function doSomething() {
 }
 ```
 
-<a className="fiddle" target="_blank" href="http://jsfiddle.net/city41/zdgrC/1/">fiddle</a>
+<Fiddle>city41/zdgrC/1/</Fiddle>
 
 This is just a little sugar for the callback pattern. It's pretty pointless sugar so far. But it's a start and yet we've already hit upon a core idea behind promises
 
@@ -161,7 +162,7 @@ function Promise(fn) {
 }
 ```
 
-<a className="fiddle" target="_blank" href="http://jsfiddle.net/city41/uQrza/1/">fiddle</a>
+<Fiddle>city41/uQrza/1/</Fiddle>
 
 With the hack in place, this code now works ... sort of.
 
@@ -171,7 +172,7 @@ Our naive, poor promise implementation must use asynchronicity to work. It's eas
 
 Here is an example of what I mean:
 
-<a className="fiddle" target="_blank" href="http://jsfiddle.net/3kku32vp/">fiddle</a>
+<Fiddle>3kku32vp</Fiddle>
 
 If you open up the console, you'll see an error about the callback not being a function, because `then()` was called in a `setTimeout`.
 
@@ -179,12 +180,10 @@ If you open up the console, you'll see an error about the callback not being a f
 
 Our brittle code above revealed something unexpectedly. Promises have state. We need to know what state they are in before proceeding, and make sure we move through the states correctly. Doing so gets rid of the brittleness.
 
-<div className=" callout wisdom">
-    <ul>
-        <li>A promise can be **pending** waiting for a value, or **resolved** with a value.</li>
-        <li>Once a promise resolves to a value, it will always remain at that value and never resolve again.</li>
-    </ul>
-</div>
+<wisdom>
+    A promise can be **pending** waiting for a value, or **resolved** with a value.
+    Once a promise resolves to a value, it will always remain at that value and never resolve again.
+</wisdom>
 
 *(A promise can also be rejected, but we'll get to error handling later)*
 
@@ -222,7 +221,7 @@ function Promise(fn) {
 }
 ```
 
-<a className="fiddle" target="_blank" href="http://jsfiddle.net/city41/QX85J/1/">fiddle</a>
+<Fiddle>city41/QX85J/1/</Fiddle>
 
 It's getting more complicated, but the caller can invoke `then()` whenever they want, and the callee can invoke `resolve()` whenever they want. It fully works with synchronous or asynchronous code.
 
@@ -250,9 +249,9 @@ promise.then(function(value) {
     console.log('Got the same value again:', value);
 });
 ```
-<div className="callout pitfall">
+<pitfall>
     This is not completely true for the promise implementation in this article. If the opposite happens, ie the caller calls `then()` multiple times before `resolve()` is called, only the last call to `then()` will be honored. The fix for this is to keep a running list of deferreds inside of the promise instead of just one. I decided to not do that in the interest of keeping the article more simple, it's long enough as it is :)
-</div>
+</pitfall>
 
 ## Chaining Promises
 
@@ -316,7 +315,7 @@ function Promise(fn) {
 }
 ```
 
-<a className="fiddle" target="_blank" href="http://jsfiddle.net/city41/HdzLv/2/">fiddle</a>
+<Fiddle>city41/HdzLv/2/</Fiddle>
 
 Hoo, it's getting a little squirrelly. Aren't you glad we're building this up slowly? The real key here is that `then()` is returning a new promise.
 
@@ -477,7 +476,7 @@ function resolve(newValue) {
 }
 ```
 
-<a className="fiddle" target="_blank" href="http://jsfiddle.net/city41/38CCb/2/">fiddle</a>
+<Fiddle>city41/38CCb/2/</Fiddle>
 
 We'll keep calling `resolve()` recursively as long as we get a promise back. Once it's no longer a promise, then proceed as before.
 
@@ -603,7 +602,7 @@ function Promise(fn) {
 }
 ```
 
-<a className="fiddle" target="_blank" href="http://jsfiddle.net/city41/rLXsL/2/">fiddle</a>
+<Fiddle>city41/rLXsL/2/</Fiddle>
 
 Other than the addition of `reject()` itself, `handle()` also has to be aware of rejection. Within `handle()`, either the rejection path or resolve path will be taken depending on the value of `state`. This value of `state` gets pushed into the next promise, because calling the next promises' `resolve()` or `reject()` sets its `state` value accordingly.
 
@@ -668,7 +667,7 @@ getSomeJson().then(function(json) {
 });
 ```
 
-<a className="fiddle" target="_blank" href="http://jsfiddle.net/city41/M7SRM/3/">fiddle</a>
+<Fiddle>city41/M7SRM/3/</Fiddle>
 
 What is going to happen here? Our callback inside `then()` is expecting some valid JSON. So it naively tries to parse it, which leads to an exception. But we have an error callback, so we're good, right?
 
@@ -814,10 +813,10 @@ Once I came to understand how promises worked and their caveats, I came to reall
 
 More great articles on promises
 
-* [promisejs.org](http://promisejs.org) -- great tutorial on promises (already mentioned it a few times)
-* [Q's Design Rationale](https://github.com/kriskowal/q/blob/v1/design/README.js) -- an article much like this one, but goes into even more detail. By Kris Kowal, creator of Q
+* [promisejs.org](http://promisejs.org) &mdash; great tutorial on promises (already mentioned it a few times)
+* [Q's Design Rationale](https://github.com/kriskowal/q/blob/v1/design/README.js) &mdash; an article much like this one, but goes into even more detail. By Kris Kowal, creator of Q
 * [Some debate over whether done() is a good thing](https://github.com/domenic/promises-unwrapping/issues/19)
-* [Flattening Promise Chains](http://solutionoptimist.com/2013/12/27/javascript-promise-chains-2/) by Thomas Burleson. A nice article that goes into more advanced usage of promises. If my article is the "what", then Thomas's is a nice look at the "why".
+* [Flattening Promise Chains](http://solutionoptimist.com/2013/12/27/javascript-promise-chains-2/) &mdash; by Thomas Burleson. A nice article that goes into more advanced usage of promises. If my article is the "what", then Thomas's is a nice look at the "why".
 
 **Found a mistake?** if I made an error and you want to let me know, please [email me](mailto:matt.e.greer@gmail.com) or [file an issue](https://github.com/city41/mattgreer.org/issues). Thanks!
 
