@@ -14,8 +14,8 @@
   --color-focal-deep: hsl(var(--color-focal-h), var(--color-focal-s), calc(var(--color-focal-l) + var(--darken) * 4));
 
   --color-focal-alt-h: 12;
-  --color-focal-alt-s: 76%;
-  --color-focal-alt-l: 61%;
+  --color-focal-alt-s: 66%;
+  --color-focal-alt-l: 40%;
 
   --color-focal-alt-fade: hsl(var(--color-focal-alt-h), var(--color-focal-alt-s), calc(var(--color-focal-alt-l) + var(--lighten)));
   --color-focal-alt: hsl(var(--color-focal-alt-h), var(--color-focal-alt-s), var(--color-focal-alt-l));
