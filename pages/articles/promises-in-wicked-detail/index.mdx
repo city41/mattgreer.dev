@@ -232,9 +232,9 @@ This is because of the `state` flag. Both `then()` and `resolve()` hand off to t
 
 Notice `setTimeout` went away? That's temporary, it will be coming back. But one thing at a time.
 
-<div className="callout wisdom">
+<wisdom>
     With promises, the order in which we work with them doesn't matter. We are free to call `then()` and `resolve()` whenever they suit our purposes. This is one of the powerful advantages of capturing the notion of eventual results into an object
-</div>
+</wisdom>
 
 We still have quite a few more things in the spec to implement, but our promises are already pretty powerful. This system allows us to call `then()` as many times as we want, we will always get the same value back
 
