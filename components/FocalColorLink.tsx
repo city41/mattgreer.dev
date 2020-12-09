@@ -2,6 +2,8 @@ import React from 'react';
 import clsx from 'clsx';
 import Link from 'next/link';
 
+import styles from './FocalColorLink.module.css';
+
 type FocalColorLinkProps = {
 	className?: string;
 	href: string;
@@ -26,7 +28,7 @@ function FocalColorLink({
 	return (
 		<Link href={href} passHref>
 			<a
-				className={clsx(className, 'text-focal')}
+				className={clsx(className, styles.FocalColorLink, 'text-focal')}
 				title={title}
 				{...relProps}
 				{...targetProps}

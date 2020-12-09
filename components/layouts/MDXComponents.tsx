@@ -5,6 +5,7 @@ import ReactMarkdown from 'react-markdown';
 import { CodeBlock } from '../CodeBlock';
 
 import styles from './MDXComponents.module.css';
+import { FocalColorLink } from '../FocalColorLink';
 
 function toId(s: string) {
 	return s.toLowerCase().replace(/\s/g, '-');
@@ -93,13 +94,7 @@ const MDXComponents = {
 			</Heading>
 		);
 	},
-	a: (props) => (
-		<a
-			className="text-focal font-bold underline cursor-pointer hover:bg-yellow-200"
-			{...props}
-			tabIndex={0}
-		/>
-	),
+	a: (props) => <FocalColorLink {...props} />,
 	img: (props) => (
 		<img className="my-12 max-w-2xl" {...props} style={{ maxWidth: '100%' }} />
 	),

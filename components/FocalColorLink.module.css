@@ -1,0 +1,12 @@
+.FocalColorLink {
+    --link-border-color: hsl(var(--color-focal-h), var(--color-focal-s), var(--color-focal-l), 0.125);
+
+    background-image: linear-gradient(to right, var(--link-border-color) , var(--link-border-color));
+    background-position:  left bottom;
+    background-repeat: repeat-x;
+    background-size: 100% 3px;
+}
+
+.FocalColorLink:hover, .FocalColorLink:active {
+    background-size: 100% 100%;
+}

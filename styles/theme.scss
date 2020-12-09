@@ -6,8 +6,8 @@
   --color-black-agnostic: hsl(0, 0%, 5%);
 
   --color-focal-h: 173;
-  --color-focal-s: 58%;
-  --color-focal-l: 39%;
+  --color-focal-s: 66%;
+  --color-focal-l: 27%;
 
   --color-focal-fade: hsl(var(--color-focal-h), var(--color-focal-s), calc(var(--color-focal-l) + var(--lighten)));
   --color-focal: hsl(var(--color-focal-h), var(--color-focal-s), var(--color-focal-l));
