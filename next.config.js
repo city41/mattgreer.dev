@@ -1,4 +1,3 @@
-const path = require('path');
 const withPlugins = require('next-compose-plugins');
 
 const withMDX = require('@next/mdx')({
