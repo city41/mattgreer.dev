@@ -16,6 +16,7 @@ function buildUrl(classification: string, slug: string): string {
 function Feature({
 	className,
 	title,
+	imgFile,
 	description,
 	classification,
 	type,
@@ -23,7 +24,7 @@ function Feature({
 	slug,
 	tags,
 }: FeatureProps) {
-	const img = require(`../pages/${classification}/${slug}/feature.png`);
+	const img = require(`../pages/${classification}/${slug}/${imgFile}`);
 
 	const style = {
 		'--bg-image': `url(${img})`,

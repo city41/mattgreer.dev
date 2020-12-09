@@ -1,6 +1,7 @@
 #!/bin/bash
 
-for SVG in $(ls ./public/*.svg)
+for SVG in $(ls ./**/*.svg)
 do
   yarn svgo $SVG
 done
+

@@ -1,6 +1,7 @@
 import React, { ElementType, ReactNode } from 'react';
 import clsx from 'clsx';
 import { FiLink } from 'react-icons/fi';
+import { CodeBlock } from '../CodeBlock';
 
 import styles from './MDXComponents.module.css';
 
@@ -23,7 +24,7 @@ function TextBlock({
 		<El
 			className={clsx(
 				className,
-				'my-4 max-w-xl leading-6 sm:leading-7 text-base sm:text-lg'
+				'my-4 max-w-2xl leading-6 sm:leading-7 text-base sm:text-lg'
 			)}
 		>
 			{children}
@@ -108,6 +109,10 @@ const MDXComponents = {
 	wisdom: ({ children }) => (
 		<Callout className="text-green-900 bg-green-50">{children}</Callout>
 	),
+	code: CodeBlock,
+	ul: (props) => <ul className="space-y-2 my-4 ml-4 list-disc" {...props} />,
+	ol: (props) => <ul className="space-y-2 my-4 ml-4 list-decimal" {...props} />,
+	li: (props) => <li className="ml-4" {...props} />,
 };
 
 export { MDXComponents };

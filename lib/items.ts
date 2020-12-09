@@ -2,6 +2,24 @@ import * as fs from 'fs';
 import * as path from 'path';
 import getConfig from 'next/config';
 
+function determineImage(dir: string): string {
+	const jpg = 'feature.jpg';
+	const png = 'feature.png';
+
+	const jpgPath = path.join(dir, jpg);
+	const pngPath = path.join(dir, png);
+
+	if (fs.existsSync(jpgPath)) {
+		return jpg;
+	}
+
+	if (fs.existsSync(pngPath)) {
+		return png;
+	}
+
+	return '';
+}
+
 function getItems(root: 'articles' | 'projects'): PortfolioItem[] {
 	const pagesPath = path.resolve(
 		getConfig().serverRuntimeConfig.PROJECT_ROOT,
@@ -29,10 +47,13 @@ function getItems(root: 'articles' | 'projects'): PortfolioItem[] {
 		if (meta.draft) {
 			return buildingItems;
 		} else {
+			const imgFile = determineImage(directoryPath);
+
 			return buildingItems.concat({
 				...meta,
 				classification: root,
 				slug: path.basename(directoryPath),
+				imgFile,
 			});
 		}
 	}, []);

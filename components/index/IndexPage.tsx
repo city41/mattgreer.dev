@@ -43,17 +43,7 @@ function IndexPage({ items }: IndexPageProps) {
 			</div>
 			<div className="flex flex-col space-y-48 overflow-x-hidden max-w-6xl -mx-8 sm:mx-auto">
 				{items.map((item, index) => {
-					return (
-						<Feature
-							key={item.slug}
-							slug={item.slug}
-							title={item.title}
-							description={item.description}
-							classification={item.classification}
-							type={item.type}
-							tags={item.tags}
-						/>
-					);
+					return <Feature key={item.slug} {...item} />;
 				})}
 			</div>
 			<div className="h-48 grid place-items-center font-bold">

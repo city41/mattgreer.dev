@@ -20,6 +20,7 @@ type PortfolioItemType =
 
 type PortfolioItem = {
 	title: string;
+	imgFile: string;
 	slug: string;
 	classification: 'articles' | 'projects';
 	date?: string;
