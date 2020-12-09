@@ -110,8 +110,13 @@ const MDXComponents = {
 		<Callout className="text-green-900 bg-green-50">{children}</Callout>
 	),
 	code: CodeBlock,
-	ul: (props) => <ul className="space-y-2 my-4 ml-4 list-disc" {...props} />,
-	ol: (props) => <ul className="space-y-2 my-4 ml-4 list-decimal" {...props} />,
+	pre: ({ children }) => <>{children}</>,
+	ul: (props) => (
+		<ul className="space-y-2 my-4 ml-4 list-disc max-w-2xl" {...props} />
+	),
+	ol: (props) => (
+		<ul className="space-y-2 my-4 ml-4 list-decimal max-w-2xl" {...props} />
+	),
 	li: (props) => <li className="ml-4" {...props} />,
 };
 

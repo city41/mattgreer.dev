@@ -21,8 +21,11 @@ function CodeBlock({ className, children }: CodeBlockProps) {
 			language={language}
 		>
 			{({ className, style, tokens, getLineProps, getTokenProps }) => (
-				<pre
-					className={clsx(className, 'p-4 -mx-4 max-w-2xl')}
+				<code
+					className={clsx(
+						className,
+						'block p-4 -mx-4 max-w-2xl text-sm sm:text-base'
+					)}
 					style={{ ...style }}
 				>
 					{tokens.map((line, i, a) => {
@@ -36,13 +39,31 @@ function CodeBlock({ className, children }: CodeBlockProps) {
 
 						return (
 							<div key={i} {...getLineProps({ line, key: i })}>
-								{line.map((token, key) => (
-									<span key={key} {...getTokenProps({ token, key })} />
-								))}
+								{line.map((token, key) => {
+									// force tabbing to show up without using a <pre>
+									// <pre> is bad as it doesn't line wrap on narrow screens
+									// this really hacky approach enables the indenting to show up using nbsp,
+									// but also allows the spaces to wrap using <wbr>
+									// NOTE: using padding/margin visually gets the same result and feels less hacky,
+									// but the user cannot copy/paste the code correctly
+
+									const content = token.content.replace(/ /g, '&nbsp;<wbr>');
+									token.content = '';
+									const tokenProps = getTokenProps({ token, key });
+									delete tokenProps.children;
+
+									return (
+										<span
+											key={key}
+											{...tokenProps}
+											dangerouslySetInnerHTML={{ __html: content }}
+										/>
+									);
+								})}
 							</div>
 						);
 					})}
-				</pre>
+				</code>
 			)}
 		</Highlight>
 	);
