@@ -2,7 +2,7 @@
 	"title": "JavaScript Promises ... in Wicked Detail",
 	"date": "2014-02-04",
 	"type": "technical article",
-	"tags": ["JavaScript"],
+	"tags": ["JavaScript", "In Depth"],
 	"description": [
 		"A detailed article that implements a simple Promise type from scratch.",
 		"By building the Promise implementation gradually, it shows the why and how of Promises."

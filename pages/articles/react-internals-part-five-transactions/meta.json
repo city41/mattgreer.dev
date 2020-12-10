@@ -1,0 +1,10 @@
+{
+	"title": "React Internals Part Five: Transactions",
+	"date": "2017-08-12",
+	"type": "technical article",
+	"tags": ["React", "In Depth"],
+	"description": [
+		"A look inside React. This article series creates a small clone of React to learn how it works."
+	],
+	"metaDescription": "A look inside React. This article series creates a small clone of React to learn how it works."
+}
