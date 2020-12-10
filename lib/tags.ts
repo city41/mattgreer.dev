@@ -33,7 +33,7 @@ function getTags(root: 'articles' | 'projects'): TagLabel[] {
 		}
 	}, []);
 
-	return tags;
+	return Array.from(new Set(tags));
 }
 
 export function getAllProjectTags(): TagLabel[] {
