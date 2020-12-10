@@ -95,7 +95,9 @@ function onDomContentLoaded() {
 	document.removeEventListener('DOMContentLoaded', onDomContentLoaded);
 }
 
-document.addEventListener('DOMContentLoaded', onDomContentLoaded);
+if (typeof window !== 'undefined') {
+	document.addEventListener('DOMContentLoaded', onDomContentLoaded);
+}
 							`,
 					}}
 				></script>
