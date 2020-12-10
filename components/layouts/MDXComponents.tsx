@@ -124,6 +124,12 @@ const MDXComponents = {
 		<ul className="space-y-2 my-4 ml-4 list-decimal max-w-2xl" {...props} />
 	),
 	li: (props) => <li className="ml-4" {...props} />,
+	blockquote: (props) => (
+		<blockquote
+			{...props}
+			className="border-fg-fade border-l-8 pl-4 py-2 my-8"
+		/>
+	),
 };
 
 export { MDXComponents };
