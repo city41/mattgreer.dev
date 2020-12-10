@@ -1,8 +1,13 @@
 import React from 'react';
 import clsx from 'clsx';
+import Prism from 'prism-react-renderer/prism';
 
 import Highlight, { defaultProps, Language } from 'prism-react-renderer';
 import theme from 'prism-react-renderer/themes/vsDark';
+
+// @ts-ignore
+(typeof global !== 'undefined' ? global : window).Prism = Prism;
+require('prismjs/components/prism-clojure');
 
 type CodeBlockProps = {
 	className?: string;
