@@ -1,0 +1,11 @@
+{
+	"title": "Squeezing the Arduboy For Every Byte",
+	"date": "2018-09-10",
+	"type": "technical article",
+	"tags": ["C++", "Arduino"],
+	"description": [
+		"The Arduboy is an Arduino based game console with very limited storage space.",
+		"This article shows some techniques I used to use the space efficiently."
+	],
+	"metaDescription": "Using compression and other techniques to fit more stuff onto the Arduboy."
+}

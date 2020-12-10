@@ -1,0 +1,199 @@
+import { Article } from '../../../components/layouts/Article';
+import meta from './meta.json';
+
+
+export default ({ children }) => <Article {...meta} img={require('./feature.png')}
+                                                    intro="I have been writing a game for the Arduboy portable game console. Space is very tight, so I thought I'd talk about some of the byte saving techniques I've been using."
+>{children}</Article>
+
+28,672 is a number well known to Arduboy developers. It's the maximum number of bytes your application can be in order to fit onto the tiny game console. I decided to create an [adventure game named Ardynia](https://www.city41.games/ardynia) for the platform, and quickly learned I was going to need to think about this. Never before have I been so happy to shave a byte or two off of the final "bundle" size.
+
+<figure>
+<img src={require('./arduBoyNextToCreditCard.jpg')} alt="an arduboy next to a credit card" />
+<figcaption>the Arduboy is about the size of a credit card</figcaption>
+</figure>
+
+## Drawing Graphics
+
+The Arduboy has a 1 bit display, and so it is able to express 8 pixels in a single byte. This is quite efficient, but there's also the need for *masking*. When you draw something to the screen that is not square, you need to also include another bitmap to tell the rendering function which pixels to change and which ones to skip. 
+
+<figure>
+    <img src={require('./maskVsNoMask.png')} alt="example of how masking works on the Arduboy" />
+    <figcaption>Example of not masking on top, with masking applied on the bottom</figcaption>
+</figure>
+
+So in most situations, your graphic data ends up needing two bits per pixel.
+
+The [Arduboy2](https://github.com/MLXXXp/Arduboy2) library includes functions that enable you to draw masked graphics. There is also the [ArdBitmap](https://github.com/igvina/ArdBitmap) library which enables you to draw graphics mirrored vertically and horizontally, but offers no masking support. I ended up essentially combining both approaches into one uber [`drawBitmap`](https://gist.github.com/city41/9f057bb5e27836a787694d50d4a546f3) function that allowed me to draw graphics:
+
+* overwriting the destination (ie no mask)
+* using masks that are stored separate from the graphic data
+* using masks that are stored along with the graphic data
+* mirrored horizontal and/or vertically
+* inverted (ie black pixels becomes white and vice versa)
+
+### Mirroring
+
+Mirroring was a huge win and greatly increased the utility of my sprites. The boomerang is a great example. Only one frame was needed for the boomerang, then rotating it as it flew was done with mirroring
+
+<pitfall>
+The mirroring is pretty expensive, CPU wise. I am lucky in that my game does not tax the CPU much. But in more intensive games, it may prove better to not mirror and instead take the sprite storage hit
+</pitfall>
+
+<figure>
+<img src={require('./mirroredBoomerang.png')} alt="boomerang frames being mirrored" />
+<figcaption>mirroring the boomerang sprite</figcaption>
+</figure>
+
+Since the boomerang is 8x8, one frame takes 16 bytes (8 bytes for the sprite, plus 8 more for the mask). Using mirroring, I saved 48 bytes of space.
+
+I was able to use mirroring to animate characters walking, show switches get activated, make explosions more interesting and much more. Altogether mirroring enabled me to store 1,036 fewer bytes than I would have otherwise. 
+
+<pitfall>
+The savings was actually slightly less, as in some scenarios, it takes more code to figure out which mirror to use versus just picking a certain frame of animation. So this added code at the `drawBitmap` call sites ate into my savings a little bit.
+</pitfall>
+
+### Inverting the colors
+
+By inverting sprites, I was able to use them in more situations. For example, I got away with a single map tile set for both the overworld and dungeons by inverting
+
+<figure>
+<img src={require('./invertedMapTiles.png')} alt="example of inverted map tiles" />
+<figcaption>overworld on left, dungeon on the right</figcaption>
+</figure>
+
+Sure, it's a little cheesy, but the byte savings is hard to deny!
+
+Inverting a sprite is accomplished with this code in `drawBitmap`
+
+
+```c
+if (invert) {
+    data = ~data & mask_data;
+}
+```
+
+which cost 10 bytes in opcodes, plus the added bytes of sending a boolean `invert` parameter to the function. But inverting the map tiles alone saved 352 bytes, and I invert almost every sprite in the game at some point. Inverting was truly a wonderful space savings technique for the tiny amount of effort it required.
+
+### Changing how "plus mask" and "external mask" work
+
+"External mask" means you are storing the mask data separately from the graphic data. You need to give the drawing function two pointers. "Plus mask" means the graphic data and mask data are in the same array. You only send one pointer to the function, and it extracts out each kind of data as needed. In Arduboy2's `drawPlusMask()`, the data must be interlaced: One byte of graphic data, one byte of mask data, one byte of graphic data... 
+
+My game needs both drawing modes. But I changed "plus mask" to be "entire frame of graphic data, followed by an entire frame of mask data". By doing this, I can use the same single drawing function for both modes. In plus mask mode, I move the mask pointer to be right after the graphics, then from there proceed as if I am in "external mask" mode. The interlaced approach requires more code to accomplish. So despite adding mirroring and inverting, my final `drawBitmap` required fewer opcodes than the draw functions in Arduboy2.
+
+### Make them smaller
+
+This one is simple and easy, I just made my sprites smaller.
+
+<figure>
+<img src={require('./bombResize.png')} alt="large bomb and small bomb" />
+<figcaption>bomb before and after</figcaption>
+</figure>
+
+Sure the second bomb lost some detail, but it still works well and doesn't feel off or cheap when in the context of the game. I ended up shaving down the size of almost every sprite in the game. I even carved sprites from 16x16 to 15x16 in several cases, as every byte counts!
+
+
+
+## Storing the game's maps
+
+The map data that describes all the rooms and what they contain uses a lot of space, right up there with the graphics. Like most games on systems like this, Ardynia is tile based. A room is made up of 28 16x16 tiles (7 across and 4 down)
+
+Each tile gets its own number, and a map is just a one dimensional array of tile IDs.
+
+### Stick them in nibbles
+
+Normally the tiles in the map data each take one byte. But by limiting the game to only 16 unique tile types, you can jam two tiles into a byte, cutting the map data storage requirement in half. Only having 16 tile types is very limiting, but it proved to be enough. It also helped with the other map optimization I did.
+
+### Run-length encoding compression
+
+I then used RLE compression to further shrink the map data down. I took one of the tile types and designated it the "compression tile", and whenever it is encountered, the next tile after it is the "template", and then the value after that is how many times to repeat the template.
+
+<figure>
+<img src={require('./RLE.png')} alt="example of RLE compression" />
+<figcaption>here the original data was 12 nibbles, and became 8 nibbles after RLE compression</figcaption>
+</figure>
+
+So in the above, `F` indicates a RLE compression run is starting. After `F` is which tile will be repeated, in this case `3`. Then after that is how many times to repeat it, in this case six `3`'s and later on four `3`'s. A run can at most be 15 long, as all of these values need to fit in nibbles. A run must be at least 4 tiles long to be worth compressing.
+
+I define my game's maps in the [Tiled Map Editor](https://www.mapeditor.org/), and then I run a small program to convert the Tiled format into what my game can consume. Afterwards a report is printed showing the savings
+
+```bash
+about to process /home/matt/dev/ardynia/src/tiled/dungeons.json
+original data length 1680
+length if only did nibbles 840
+compressed length 599
+compression ratio 0.29000000000000004
+wrote:  /home/matt/dev/ardynia/src/dungeons.h
+about to process /home/matt/dev/ardynia/src/tiled/overworld.json
+original data length 1372
+length if only did nibbles 686
+compressed length 479
+compression ratio 0.30000000000000004
+wrote:  /home/matt/dev/ardynia/src/overworld.h
+```
+
+So RLE saved 448 bytes. However, I now have to uncompress the data at run time. The decompression code is quite large, and in the end RLE only managed to save me about 200 bytes overall. However, I do suspect my RLE code could be optimized to take less space. 
+
+Only having 15 tile types helped with compression, as it enables longer runs of the same tile.
+
+<wisdom>
+We can do even better with RLE. For example, take the count value and add `4` to it at runtime, so the range is now 4-19. This can eek out a few more bytes. A good approach is to have the compression tool compress the maps in various variants of RLE, then pick the variant that compressed your particular maps the most.
+</wisdom>
+
+### 2 bytes per entity instead of 3
+
+Now with the map defined, it's time to fill it with enemies, items, switches and more. Next to the map data are arrays telling what entities are found in each room. Each entity entry in the array takes 3 bytes: what the entity type is, its x coordinate and its y coordinate. Three bytes doesn't sound like much, but there will be hundreds of these entries.
+
+I decided to save some space by storing each entity's x/y coordinates in one byte. Since the Arduboy's screen is 128x64, this meant the top four bits encoded to "final x coordinate divided by 8", and the bottom four bits is "final y coordinate divided by 4". So if an enemy should be located at `(24, 20)` on the screen, it will get stored in the byte as `3 << 4 | 5` or `0x35`. This means entities can only be positioned on an invisible grid where each cell is 8x4. This may sound limiting but it is actually a boon. A lot of entities need to be on 16 pixel boundaries to work correctly. With this approach, I can drop the entity about where it should be in Tiled, then the conversion program nudges it exactly into place for me, far less tedious! This system does mean entities cannot be placed on the right edge or bottom of the screen, but that is OK.
+
+Saving one byte per entity overall nets about a 100-200 bytes of savings, depending on how populated the rooms end up in the final version of the game.
+
+<wisdom>
+Incidentally, this is a big reason why I'm interested in saving any byte I can. Just two saved bytes means one more "thing" in the game!
+</wisdom>
+
+### Using the top 3 bits of the entity type
+
+I have about 24 unique entity types in the game, meaning the entity type bytes in this data only use the bottom 5 bits. This leaves 3 bits of unused space per entity. I ended up using those three bits for two things:
+
+* **Doors:** the three bits are their index into a separate door array. Whenever the player goes through the door, this array is consulted to see where on the map the player should go to. This does limit me to eight doors per map, but I'm just barely able to pull that off (phew!)
+* **Treasure chests:** the top three bits are the entity type of what is found inside the chest. This means any entity that can live inside a chest must have its type ID be 7 or less.
+
+### All the dungeons in the same map
+
+The game ultimately has two maps, the overworld and the dungeons. The dungeons are shaped such that when combined they form a rectangle. ~~I borrowed this idea from Nintendo, who did the same thing for The Legend of Zelda on the NES~~
+
+<pitfall>
+This is not how Zelda stored its dungeons, as [Borncoding pointed out to me on Reddit.](https://old.reddit.com/r/gamedev/comments/9eyhni/squeezing_the_arduboy_for_every_byte/e5t7a3j/) However, seeing the dungeons laid out this way did inspire me to put them all in one map, so I am grateful for the image regardless.
+</pitfall>
+
+<figure>
+    <img src={require('./zeldaDungeons.png')} alt="all Zelda dungeons combined" />
+    <figcaption>All NES Zelda dungeons shown combined together, taken from <a href="http://ian-albert.com/games/legend_of_zelda_maps/">ian-albert.com</a></figcaption>
+</figure>
+
+This means I can have oddly shaped dungeon without worrying about wasting bytes. Just like Nintendo has the occassional gap (the black rooms above) my dungeon map does too. But I used those gaps to be secret bonus rooms for the player to find. So in the end, no byte was wasted on map data.
+
+## Fonts and text
+
+<figure>
+<img src={require('./titleScreen.png')} alt="title screen of the game" />
+</figure>
+
+Drawing text to the screen on the Arduboy is pretty expensive in general. The Arduboy2 library ships with `print()`, which can print strings, characters and numbers to the screen. It can even handle tabs and newlines. There are also a lot of font libraries out there which work similarly, but the actual font itself is usually more stylish than what `print` gives you. These fonts are convenient to use, but they usually have their own rendering routines built in to accomplish said convenience. They also ship with at least all capital and lowercase letter glyphs, and often punctuation and symbols. What if your game doesn't use every character?
+
+My game has very little text, but it still does have some for the title screen, game over screen, and some other odds and ends. I ended up defining the strings in my game in a JSON file. I then made a little tool that figures out what characters I actually used in order to create a custom character encoding. From there, byte arrays are created with this encoding to store the string data, and a bitmap of just the glyphs needed is also created. From there I can call `drawString(const uint8_t* string)`, which ultimately just uses my already defined `drawBitmap` (as described above) to draw the glyphs to the screen just like any other sprite.
+
+Compared to using the built in `print()` or font libraries, this was about a 900 byte savings. Only including the needed glyphs was modest savings (each glyph is only 2 bytes), the real win was reusing `drawBitmap` instead of having a totally separate drawing function just for text.
+
+<wisdom>
+Bonus! My custom encoding only needs 5 bits per character. So I could go further and store three characters per 16bit word. I have not implemented this as I don't have many strings, but I'd probably save about 10 bytes or so. I may do this by the time the game is done. Thanks to Filmote and Pharap on the Arduboy forums for the idea!
+</wisdom>
+
+## And more
+
+The ideas here are just the more interesting techniques I employed. I also found lots of micro savings throughout the game. I'm pretty sure I could find a way to squeeze yet another byte out of this game for the rest of my life. It's a fun little puzzle in its own way. As it stands now, the game is nearly done and I have about 4k of space left to work with to finish it. I am feeling pretty good about that, but if I run out of space (again), I am pretty confident I can make it work given enough perseverance. 
+
+If you are interested in the game, I made a small website for it at https://www.city41.games/ardynia. I will keep that site updated as I progress.
+
+
