@@ -68,6 +68,23 @@ function onDomContentLoaded() {
 	var lightDarkToggleButton = document.getElementById('${BUTTON_ID}');
 	lightDarkToggleButton.addEventListener('click', ${handleClick.toString()});
 	
+	var lightLabel = lightDarkToggleButton.querySelector('#lightLabel');
+	var darkLabel = lightDarkToggleButton.querySelector('#darkLabel');
+	
+	
+	if (localStorage.prefersLightMode === 'true') {
+		lightLabel.classList.remove('hidden');
+		darkLabel.classList.add('hidden');
+	} else {
+		lightLabel.classList.add('hidden');
+		darkLabel.classList.remove('hidden');
+	}
+	
+	setTimeout(function() {
+		lightDarkToggleButton.classList.remove('invisible');
+		lightDarkToggleButton.disabled = false;
+	}, 1);
+	
 	document.removeEventListener('DOMContentLoaded', onDomContentLoaded);
 }
 
@@ -80,15 +97,22 @@ document.addEventListener('DOMContentLoaded', onDomContentLoaded);
 				id={BUTTON_ID}
 				className={clsx(
 					className,
-					'p-2 flex flex-row items-center text-fg-fade'
+					'invisible p-2 flex flex-row items-center text-fg-fade'
 				)}
 				aria-label="color scheme toggle"
+				disabled
 			>
-				<div id="prefersLightModeDisplay">
+				<div
+					id="lightLabel"
+					className="hidden p-2 flex flex-row items-center text-fg-fade"
+				>
 					<FiSun className="text-2xl mr-2" aria-label="light mode" />
 					light theme
 				</div>
-				<div id="prefersDarkModeDisplay">
+				<div
+					id="darkLabel"
+					className="hidden p-2 flex flex-row items-center text-fg-fade"
+				>
 					<FiMoon className="text-2xl mr-2" aria-label="dark mode" />
 					dark theme
 				</div>
