@@ -1,0 +1,10 @@
+{
+	"title": "Electron, Redux and Persistence",
+	"date": "2016-01-31",
+	"type": "technical article",
+	"tags": ["JavaScript", "React", "Redux", "Electron"],
+	"description": [
+		"A strategy for persisting state in a Redux based Electron app."
+	],
+	"metaDescription": "A strategy for persisting state in a Redux based Electron app."
+}
