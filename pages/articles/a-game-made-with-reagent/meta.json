@@ -1,0 +1,10 @@
+{
+	"title": "A Game Made With Reagent",
+	"date": "2015-02-03",
+	"type": "technical article",
+	"tags": ["ClojureScript", "React"],
+	"description": [
+		"For the heck of it, I made a simple breakout game with Reagent"
+	],
+	"metaDescription": "A simple breakout game made with Reagent"
+}
