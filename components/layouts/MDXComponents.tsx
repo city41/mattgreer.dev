@@ -95,18 +95,24 @@ const MDXComponents = {
 		);
 	},
 	a: (props) => <FocalColorLink {...props} />,
-	img: (props) => (
-		<img className="my-12 max-w-2xl" {...props} style={{ maxWidth: '100%' }} />
-	),
+	img: (props) => {
+		return (
+			<img
+				className="my-12 max-w-2xl"
+				{...props}
+				style={{ maxWidth: '100%' }}
+			/>
+		);
+	},
 	p: ({ children }) => <TextBlock el="p">{children}</TextBlock>,
 	pitfall: ({ children }) => (
 		<Callout className="text-red-900 bg-red-50">
-			<ReactMarkdown>{children}</ReactMarkdown>
+			<ReactMarkdown renderers={MDXComponents}>{children}</ReactMarkdown>
 		</Callout>
 	),
 	wisdom: ({ children }) => (
 		<Callout className="text-green-900 bg-green-50">
-			<ReactMarkdown>{children}</ReactMarkdown>
+			<ReactMarkdown renderers={MDXComponents}>{children}</ReactMarkdown>
 		</Callout>
 	),
 	code: CodeBlock,

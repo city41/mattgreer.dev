@@ -24,7 +24,7 @@ function CodeBlock({ className, children }: CodeBlockProps) {
 				<code
 					className={clsx(
 						className,
-						'block p-4 -mx-4 max-w-2xl text-sm sm:text-base'
+						'block p-4 -mx-4 my-8 max-w-2xl text-sm sm:text-base'
 					)}
 					style={{ ...style }}
 				>
