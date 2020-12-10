@@ -18,6 +18,12 @@ body {
   @apply bg-bg text-fg min-h-screen;
 }
 
+* {
+  --transition-speed: 0.2s;
+  transition: background-color var(--transition-speed) ease-in,
+              border-color var(--transition-speed) ease-in;
+}
+
 p {
   font-family: sans-serif;
 }

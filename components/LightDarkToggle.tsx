@@ -30,24 +30,6 @@ function LightDarkToggle({ className }: LightDarkToggleProps) {
 	// 	return () => queryList.removeEventListener('change', handleQueryChange);
 	// }, []);
 
-	const handleClick = () => {
-		const body = document.body;
-
-		body.classList.remove(DARK_CLASS, LIGHT_CLASS);
-
-		const prefersLightMode = localStorage.prefersLightMode === 'true';
-
-		if (prefersLightMode) {
-			console.log('going dark');
-			body.classList.add(DARK_CLASS);
-			localStorage.prefersLightMode = 'false';
-		} else {
-			console.log('going light');
-			body.classList.add(LIGHT_CLASS);
-			localStorage.prefersLightMode = 'true';
-		}
-	};
-
 	return (
 		<>
 			<Head>
@@ -55,35 +37,60 @@ function LightDarkToggle({ className }: LightDarkToggleProps) {
 					type="text/javascript"
 					dangerouslySetInnerHTML={{
 						__html: `
-DARK_CLASS = '${DARK_CLASS}';
-LIGHT_CLASS = '${LIGHT_CLASS}';
+var DARK_CLASS = '${DARK_CLASS}';
+var LIGHT_CLASS = '${LIGHT_CLASS}';
 							
+// purposely global so things don't blow up during HMR in dev mode
 __queryList = window.matchMedia('(prefers-color-scheme: light)');
 
 if (typeof localStorage.prefersLightMode !== 'string') {
 	localStorage.prefersLightMode = __queryList.matches.toString();
 }
 
-function onDomContentLoaded() {
-	var lightDarkToggleButton = document.getElementById('${BUTTON_ID}');
-	lightDarkToggleButton.addEventListener('click', ${handleClick.toString()});
+function setColorScheme() {
+	document.body.classList.remove(DARK_CLASS, LIGHT_CLASS);
 	
+	var lightDarkToggleButton = document.getElementById('${BUTTON_ID}');
 	var lightLabel = lightDarkToggleButton.querySelector('#lightLabel');
 	var darkLabel = lightDarkToggleButton.querySelector('#darkLabel');
-	
 	
 	if (localStorage.prefersLightMode === 'true') {
 		lightLabel.classList.remove('hidden');
 		darkLabel.classList.add('hidden');
+		document.body.classList.add(LIGHT_CLASS);
 	} else {
 		lightLabel.classList.add('hidden');
 		darkLabel.classList.remove('hidden');
+		document.body.classList.add(DARK_CLASS);
 	}
+}
+	
+function handleButtonClick() {
+	const prefersLightMode = localStorage.prefersLightMode === 'true';
+	localStorage.prefersLightMode = (!prefersLightMode).toString();
+	setColorScheme();
+};
+	
+function handleQueryChange() {
+	localStorage.prefersLightMode = __queryList.matches.toString();
+	setColorScheme();
+}
+	
+function onDomContentLoaded() {
+	var lightDarkToggleButton = document.getElementById('${BUTTON_ID}');
+	lightDarkToggleButton.addEventListener('click', handleButtonClick);
+	
+	var lightLabel = lightDarkToggleButton.querySelector('#lightLabel');
+	var darkLabel = lightDarkToggleButton.querySelector('#darkLabel');
+	
+	setColorScheme();
 	
 	setTimeout(function() {
 		lightDarkToggleButton.classList.remove('invisible');
 		lightDarkToggleButton.disabled = false;
 	}, 1);
+	
+	__queryList.addEventListener('change', handleQueryChange);
 	
 	document.removeEventListener('DOMContentLoaded', onDomContentLoaded);
 }
@@ -97,8 +104,9 @@ document.addEventListener('DOMContentLoaded', onDomContentLoaded);
 				id={BUTTON_ID}
 				className={clsx(
 					className,
-					'invisible p-2 flex flex-row items-center text-fg-fade'
+					'invisible text-fg-fade hover:bg-bg rounded'
 				)}
+				style={{ outline: 'none' }}
 				aria-label="color scheme toggle"
 				disabled
 			>
@@ -106,15 +114,15 @@ document.addEventListener('DOMContentLoaded', onDomContentLoaded);
 					id="lightLabel"
 					className="hidden p-2 flex flex-row items-center text-fg-fade"
 				>
-					<FiSun className="text-2xl mr-2" aria-label="light mode" />
-					light theme
+					<FiMoon className="text-2xl mr-2" aria-label="dark mode" />
+					switch to dark theme
 				</div>
 				<div
 					id="darkLabel"
 					className="hidden p-2 flex flex-row items-center text-fg-fade"
 				>
-					<FiMoon className="text-2xl mr-2" aria-label="dark mode" />
-					dark theme
+					<FiSun className="text-2xl mr-2" aria-label="light mode" />
+					switch to light theme
 				</div>
 			</button>
 		</>
