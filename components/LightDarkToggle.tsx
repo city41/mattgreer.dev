@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Head from 'next/head';
 import clsx from 'clsx';
 import { FiMoon, FiSun } from 'react-icons/fi';
 
@@ -6,70 +7,107 @@ type LightDarkToggleProps = {
 	className?: string;
 };
 
-const DARK_CLASS = 'forcedDark';
-const LIGHT_CLASS = 'forcedLight';
+const BUTTON_ID = 'LightDarkToggleButton';
 
 function LightDarkToggle({ className }: LightDarkToggleProps) {
-	const [prefersLightMode, setPrefersLightMode] = useState<boolean | null>(
-		null
-	);
-
-	useEffect(() => {
-		const queryList = window.matchMedia('(prefers-color-scheme: light)');
-
-		function handleQueryChange() {
-			// since the user changed their system pref,
-			// remove any manual overrides they may have set earlier
-			document.body.classList.remove(DARK_CLASS, LIGHT_CLASS);
-			setPrefersLightMode(queryList.matches);
-		}
-
-		queryList.addEventListener('change', handleQueryChange);
-
-		// call right away to sync initial state
-		handleQueryChange();
-
-		return () => queryList.removeEventListener('change', handleQueryChange);
-	}, []);
-
-	const handleClick = () => {
-		const body = document.body;
-
-		body.classList.remove(DARK_CLASS, LIGHT_CLASS);
-
-		if (prefersLightMode) {
-			body.classList.add(DARK_CLASS);
-		} else {
-			body.classList.add(LIGHT_CLASS);
-		}
-
-		setPrefersLightMode(body.classList.contains(LIGHT_CLASS));
-	};
-
-	// if this value never leaves null, then the user has JS disabled,
-	// so in that case no need to render the toggle at all
-	if (prefersLightMode === null) {
-		return null;
-	}
-
 	return (
-		<button
-			className={clsx(className, 'p-2 flex flex-row items-center text-fg-fade')}
-			onClick={handleClick}
-			aria-label="color scheme toggle"
-		>
-			{prefersLightMode ? (
-				<>
-					<FiSun className="text-2xl mr-2" aria-label="light mode" />
-					light theme
-				</>
-			) : (
-				<>
+		<>
+			<Head>
+				<script
+					type="text/javascript"
+					dangerouslySetInnerHTML={{
+						__html: `
+var DARK_CLASS = 'forcedDark';
+var LIGHT_CLASS = 'forcedLight';
+							
+// purposely global so things don't blow up during HMR in dev mode
+__queryList = window.matchMedia('(prefers-color-scheme: light)');
+
+if (typeof localStorage.prefersLightMode !== 'string') {
+	localStorage.prefersLightMode = __queryList.matches.toString();
+}
+
+function setColorScheme() {
+	document.body.classList.remove(DARK_CLASS, LIGHT_CLASS);
+	
+	var lightDarkToggleButton = document.getElementById('${BUTTON_ID}');
+	var lightLabel = lightDarkToggleButton.querySelector('#lightLabel');
+	var darkLabel = lightDarkToggleButton.querySelector('#darkLabel');
+	
+	if (localStorage.prefersLightMode === 'true') {
+		lightLabel.classList.remove('hidden');
+		darkLabel.classList.add('hidden');
+		document.body.classList.add(LIGHT_CLASS);
+	} else {
+		lightLabel.classList.add('hidden');
+		darkLabel.classList.remove('hidden');
+		document.body.classList.add(DARK_CLASS);
+	}
+}
+	
+function handleButtonClick() {
+	const prefersLightMode = localStorage.prefersLightMode === 'true';
+	localStorage.prefersLightMode = (!prefersLightMode).toString();
+	setColorScheme();
+};
+	
+function handleQueryChange() {
+	localStorage.prefersLightMode = __queryList.matches.toString();
+	setColorScheme();
+}
+	
+function onDomContentLoaded() {
+	var lightDarkToggleButton = document.getElementById('${BUTTON_ID}');
+	lightDarkToggleButton.addEventListener('click', handleButtonClick);
+	
+	var lightLabel = lightDarkToggleButton.querySelector('#lightLabel');
+	var darkLabel = lightDarkToggleButton.querySelector('#darkLabel');
+	
+	setColorScheme();
+	
+	setTimeout(function() {
+		lightDarkToggleButton.classList.remove('invisible');
+		lightDarkToggleButton.disabled = false;
+	}, 1);
+	
+	__queryList.addEventListener('change', handleQueryChange);
+	
+	document.removeEventListener('DOMContentLoaded', onDomContentLoaded);
+}
+
+if (typeof window !== 'undefined') {
+	document.addEventListener('DOMContentLoaded', onDomContentLoaded);
+}
+							`,
+					}}
+				></script>
+			</Head>
+			<button
+				id={BUTTON_ID}
+				className={clsx(
+					className,
+					'invisible text-fg-fade hover:bg-bg rounded'
+				)}
+				style={{ outline: 'none' }}
+				aria-label="color scheme toggle"
+				disabled
+			>
+				<div
+					id="lightLabel"
+					className="hidden p-2 flex flex-row items-center text-fg-fade"
+				>
 					<FiMoon className="text-2xl mr-2" aria-label="dark mode" />
-					dark theme
-				</>
-			)}
-		</button>
+					switch to dark theme
+				</div>
+				<div
+					id="darkLabel"
+					className="hidden p-2 flex flex-row items-center text-fg-fade"
+				>
+					<FiSun className="text-2xl mr-2" aria-label="light mode" />
+					switch to light theme
+				</div>
+			</button>
+		</>
 	);
 }
 
