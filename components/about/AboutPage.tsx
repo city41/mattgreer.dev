@@ -7,8 +7,9 @@ import { ResumeLink } from '../ResumeLink';
 import baguettesJpg from './baguettes.jpg';
 import frannyJpg from './franny.jpg';
 import charlieJpg from './charlie.jpg';
+import { FiSmile } from 'react-icons/fi';
 
-const { h2: H2, h3: H3, p: P, img: Img } = MDXComponents;
+const { h2: H2, p: P, img: Img } = MDXComponents;
 
 function AboutPage() {
 	const headerContent = (
@@ -50,17 +51,20 @@ function AboutPage() {
 				itself.
 			</P>
 			<P>
-				Recently I have been exploring baking bread and pizza. These are the
-				first baguettes I ever made, and well, I have a long ways to go. It's
-				pretty interesting just how far down the rabbit hole you can go on
-				flour, hydration, fermentation and more.
-				<Img src={baguettesJpg} alt="first baguettes I ever made" />
+				Recently I have been exploring baking bread and pizza. Here is a recent
+				baguette I made, and well, I have a long ways to go{' '}
+				<FiSmile className="inline" />. It's pretty interesting just how far
+				down the rabbit hole you can go on flour, hydration, fermentation and
+				more. And eating delicious bread regularly is okay by me.
+				<Img src={baguettesJpg} alt="a baguette I made" />
 			</P>
 
 			<P>
-				I'm a big softy when it comes to animals. Here is our blind dog Franny
-				and our cat Charlie.
+				I'm a big softy when it comes to animals. Here is our blind dog Franny,
 				<Img src={frannyJpg} alt="Franny, my dog" />
+			</P>
+			<P>
+				and our cat Charlie.
 				<Img src={charlieJpg} alt="Charlie, my cat" />
 			</P>
 
