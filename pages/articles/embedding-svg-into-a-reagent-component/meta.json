@@ -1,0 +1,10 @@
+{
+	"title": "Embedding SVG Into a Reagent Component",
+	"date": "2015-02-09",
+	"type": "technical article",
+	"tags": ["ClojureScript"],
+	"description": [
+		"Using Clojure macros to embed an SVG into a Reagent component."
+	],
+	"metaDescription": "Using Clojure macros to embed an SVG into a Reagent component."
+}
