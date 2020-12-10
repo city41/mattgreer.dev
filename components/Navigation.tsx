@@ -39,12 +39,12 @@ function Navigation({ className, current }: NavigationProps) {
 			)}
 		>
 			<Link href="/" passHref>
-				<div className="flex flex-row w-auto cursor-pointer">
-					<a className={clsx(styles.smallLogo, 'h-full w-6 sm:w-9')} />
+				<a className="flex flex-row w-auto cursor-pointer">
+					<div className={clsx(styles.smallLogo, 'h-full w-6 sm:w-9')} />
 					<div className="self-stretch text-xs text-fg-fade ml-1 hover:bg-bg-fade grid place-items-center px-1 py-3 sm:px-2">
 						Matt Greer
 					</div>
-				</div>
+				</a>
 			</Link>
 			<ul className="flex flex-row space-x-1 sm:space-x-4 text-xs items-stretch">
 				<NavLink href="/projects" isCurrent={current === '/projects'}>
