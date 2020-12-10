@@ -1,0 +1,10 @@
+{
+	"title": "ClojureScript Internals: Vectors",
+	"date": "2015-01-26",
+	"type": "technical article",
+	"tags": ["ClojureScript", "In Depth"],
+	"description": [
+		"A detailed dive into how vectors in ClojureScript work."
+	],
+	"metaDescription": "A detailed dive into how vectors in ClojureScript work."
+}
