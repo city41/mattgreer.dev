@@ -1,0 +1,51 @@
+import { Article } from '../../../components/layouts/Article';
+import meta from './meta.json';
+
+export const config = {
+    unstable_runtimeJS: false
+}
+
+export default ({ children }) => <Article {...meta} img={require('./feature.jpg')}
+ intro="I'm a huge fan of the i3 window manager, but I find pairing it up with the MATE Desktop Environment is the best of all worlds."
+>{children}</Article>
+
+## i3
+
+[i3](https://i3wm.org/) is a tiling window manager, mostly used in Linux. Windows always take up the entire desktop and do not overlap. Whenever you create a new window the existing ones make room for it. i3 uses a lot of key commands to manipulate and work with the windows. I've now been using it for over a year and I'm in love. It has made me so much more productive and happier.
+
+## But i3 is only a window manager
+
+The downside to i3 is it only manages windows. If you launch directly into i3, then it's up to you to figure out how to get your wifi, bluetooth, system preferences, suspend/resume, etc working. I couldn't be bothered with all of that, so that's where MATE comes in.
+
+## Enter MATE
+
+[MATE](https://mate-desktop.org/) is a desktop environment. It's a fork of GNOME 2, so it's got an old school feel but is actively maintained and supported. MATE handles wifi, bluetooth, switching monitors, all of that stuff. Overall it's very solid. The best thing about MATE is it has no problem if you tell it to use i3 as its window manager. The two get along beautifully and so you can have your cake and eat it too.
+
+## How to use i3 as your MATE window manager
+
+First install i3 and MATE in whichever way makes sense for your distro. I'm lazy and don't want to tinker, so I just use Ubuntu MATE.
+
+You will need to use the dconf-editor. You may need to install it as seems most distros don't provide it by default. Once you've got it open, head to `org > mate > desktop > session > required-components`. Change **windowmanager** from `marco` to `i3`.
+
+<img src={require('./dconf-i3.png')} alt="setting i3 in dconf-editor" />
+
+Then head up one level to `org > mate > desktop > session` and in **required-component-list**, delete `filemanager`. This is needed otherwise MATE will open a background window for your desktop that will cover everything.
+
+<img src={require('./dconf-delete-filemanager.png')} alt="deleting filemanager from dconf-editor" />
+
+Now log out and back in, and you should find yourself in MATE, but with i3 running too. I delete the taskbar panel at the bottom.
+
+## Getting rid of i3bar
+
+I prefer to just use the top MATE panel for stuff like the time, wifi, etc. So I go into my i3 config and I delete the bar config section. That leaves me with no i3bar, which is fine since the top MATE panel provides everything I need ... almost.
+
+## MATE i3 panel applet
+
+By deleting the i3bar I lost i3's workspace switcher. That sucks, and I hate having an entire bar just for a little workspace switcher in the corner. So I wrote a [MATE panel applet](https://github.com/city41/mate-i3-applet) that brings an i3 style workspace switcher up into my MATE panel. 
+
+<img src={require('./mate-i3-applet.png')} alt="vanilla MATE i3 desktop" />
+
+The panel applet is the cherry on top, giving me a truly perfect MATE/i3 integration. If interested in the applet just head to its [github page](https://github.com/city41/mate-i3-applet), the README has all the details.
+
+
+
