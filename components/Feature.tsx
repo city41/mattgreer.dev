@@ -35,7 +35,7 @@ function Feature({
 			className={clsx(
 				className,
 				styles.feature,
-				'flex flex-row sm:items-stretch justify-center -mx-6 sm:justify-end'
+				'flex flex-row sm:items-stretch justify-center -mx-6 sm:justify-start'
 			)}
 			style={style}
 		>
