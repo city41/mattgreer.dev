@@ -61,7 +61,7 @@ function Heading({ className, el, id, children }) {
 	const El = el;
 
 	return (
-		<El className={className} id={id}>
+		<El className={clsx(className, styles.heading)} id={id}>
 			{children}
 			<HeadingSelfLink id={id} />
 		</El>
