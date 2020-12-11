@@ -3,7 +3,7 @@
 	"title": "Jump.Club",
 	"date": "2021-01-23",
 	"type": "website",
-	"tags": ["React", "TypeScript", "Redux", "NodeJS", "Godot", "wasm"],
+	"tags": ["React", "TypeScript", "Redux", "NodeJS", "Godot", "Web Assembly"],
 	"description": [
 		"A web based game creator inspired by Nintendo's Mario Maker.",
 		"Players can create their own levels using a very intuitive level editor. Once a level is published, it's easily shared with others with a url."

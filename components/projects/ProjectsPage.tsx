@@ -11,7 +11,12 @@ type ProjectsPageProps = {
 
 function ProjectsPage({ tag, allTags, items }: ProjectsPageProps) {
 	const headerContent = (
-		<TagFilter tags={allTags} currentTag={tag} classification="projects" />
+		<TagFilter
+			tags={allTags}
+			currentTag={tag}
+			classification="projects"
+			count={items.length}
+		/>
 	);
 
 	return (
