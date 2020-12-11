@@ -16,10 +16,8 @@ export async function getStaticProps(): Promise<{
 	props: ArticlesIndexNextPageProps;
 }> {
 	const allTags = getAllArticleTags();
-	const items = getAllArticleItems();
-
-	const sortedItems = items.sort((a, b) => {
-		return new Date(b.date).getTime() - new Date(a.date).getTime();
+	const items = getAllArticleItems({
+		sortByDateDescending: true,
 	});
 
 	return { props: { allTags, items } };

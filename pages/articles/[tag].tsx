@@ -44,7 +44,9 @@ export async function getStaticProps(
 	const currentTag = findMatchingTag(currentTagParam);
 
 	const allTags = getAllArticleTags();
-	const items = getAllArticleItems();
+	const items = getAllArticleItems({
+		sortByDateDescending: true,
+	});
 
 	const matchingItems = items.filter((item) => {
 		return item.tags.some(

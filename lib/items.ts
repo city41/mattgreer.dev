@@ -2,6 +2,10 @@ import * as fs from 'fs';
 import * as path from 'path';
 import getConfig from 'next/config';
 
+type GetAllArticleItemsOptions = {
+	sortByDateDescending?: boolean;
+};
+
 function determineImage(dir: string): string {
 	const jpg = 'feature.jpg';
 	const png = 'feature.png';
@@ -24,6 +28,12 @@ type MetaAndDescriptionData = {
 	description: string[];
 	metaDescription?: string;
 };
+
+function sortItemsByDateDescending(items: PortfolioItem[]): PortfolioItem[] {
+	return items.sort((a, b) => {
+		return new Date(b.date).getTime() - new Date(a.date).getTime();
+	});
+}
 
 /**
  * Often description (used on the website), and metaDescription (used in social media)
@@ -78,8 +88,16 @@ function getItems(root: 'articles' | 'projects'): PortfolioItem[] {
 	}, []);
 }
 
-export function getAllArticleItems(): PortfolioItem[] {
-	return getItems('articles');
+export function getAllArticleItems(
+	options: GetAllArticleItemsOptions = {}
+): PortfolioItem[] {
+	const items = getItems('articles');
+
+	if (options.sortByDateDescending) {
+		return sortItemsByDateDescending(items);
+	} else {
+		return items;
+	}
 }
 
 export function getAllProjectItems(): PortfolioItem[] {
