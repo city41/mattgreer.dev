@@ -5,6 +5,5 @@
 	"tags": ["ClojureScript"],
 	"description": [
 		"Using Clojure macros to embed an SVG into a Reagent component."
-	],
-	"metaDescription": "Using Clojure macros to embed an SVG into a Reagent component."
+	]
 }

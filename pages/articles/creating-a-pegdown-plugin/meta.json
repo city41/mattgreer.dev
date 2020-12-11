@@ -5,6 +5,5 @@
 	"tags": ["Java"],
 	"description": [
 		"How to create a plugin for Pegdown."
-	],
-	"metaDescription": "How to create a plugin for Pegdown."
+	]
 }

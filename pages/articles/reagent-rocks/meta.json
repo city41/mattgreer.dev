@@ -4,7 +4,6 @@
 	"type": "technical article",
 	"tags": ["React", "ClojureScript"],
 	"description": [
-		"Reagent is a ClojureScript interface to React, and it's incredible."
-	],
-	"metaDescription": "Reagent is a ClojureScript interface to React, and it's incredible."
+		"Reagent is a ClojureScript interface to React, and it is incredible."
+	]
 }

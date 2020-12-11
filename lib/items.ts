@@ -20,6 +20,24 @@ function determineImage(dir: string): string {
 	return '';
 }
 
+type MetaAndDescriptionData = {
+	description: string[];
+	metaDescription?: string;
+};
+
+/**
+ * Often description (used on the website), and metaDescription (used in social media)
+ * are the same, in that case, metaDescription is left blank, so fallback to description
+ * in those cases
+ */
+function getMetaDescription(meta: MetaAndDescriptionData): string {
+	if (meta.metaDescription) {
+		return meta.metaDescription;
+	} else {
+		return meta.description.join(' ');
+	}
+}
+
 function getItems(root: 'articles' | 'projects'): PortfolioItem[] {
 	const pagesPath = path.resolve(
 		getConfig().serverRuntimeConfig.PROJECT_ROOT,
@@ -54,6 +72,7 @@ function getItems(root: 'articles' | 'projects'): PortfolioItem[] {
 				classification: root,
 				slug: path.basename(directoryPath),
 				imgFile,
+				metaDescription: getMetaDescription(meta),
 			});
 		}
 	}, []);

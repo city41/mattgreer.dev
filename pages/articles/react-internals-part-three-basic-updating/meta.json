@@ -5,6 +5,5 @@
 	"tags": ["React", "In Depth"],
 	"description": [
 		"A look inside React. This article series creates a small clone of React to learn how it works."
-	],
-	"metaDescription": "A look inside React. This article series creates a small clone of React to learn how it works."
+	]
 }

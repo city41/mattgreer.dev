@@ -5,6 +5,5 @@
 	"tags": ["JavaScript", "React", "Redux", "Electron"],
 	"description": [
 		"A strategy for persisting state in a Redux based Electron app."
-	],
-	"metaDescription": "A strategy for persisting state in a Redux based Electron app."
+	]
 }
