@@ -12,6 +12,10 @@ type TagFilterProps = {
 };
 
 function toCapitalizedWord(n: number): string {
+	if (n === 2) {
+		return 'Both of my';
+	}
+
 	const asWord = toWords(n);
 
 	return asWord[0].toUpperCase() + asWord.slice(1);
