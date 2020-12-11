@@ -42,12 +42,14 @@ function Feature({
 			<div
 				className={clsx(
 					styles.callout,
-					'p-8 sm:p-12 w-72 my-16 sm:my-0 flex flex-col justify-center text-white bg-black'
+					'p-8 sm:p-12 w-72 sm:w-80 my-16 sm:my-0 flex flex-col justify-center text-white bg-black'
 				)}
 			>
 				<Link href={buildUrl(classification, slug)} passHref>
 					<a>
-						<h2 className="text-3xl font-bold hover:underline">{title}</h2>
+						<h2 className="text-2xl sm:text-3xl font-bold hover:underline">
+							{title}
+						</h2>
 					</a>
 				</Link>
 				<div className="mb-2 py-1 text-gray-500 text-xs">
