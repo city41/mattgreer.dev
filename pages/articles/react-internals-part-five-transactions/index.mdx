@@ -34,32 +34,9 @@ But if you decide to dive into React's source, you'll quickly notice all these "
 
 The good news is transactions are simple. They are just a pattern the React team has adopted to make the framework more robust and easier to maintain.
 
-Whenever React decides it needs to do something, that "something" usually needs to do a little bit of prep work before, do its main logic, then some clean up work afterwards. This diagram showing how transactions work is taken straight from the React source code
+Whenever React decides it needs to do something, that "something" usually needs to do a little bit of prep work before, do its main logic, then some clean up work afterwards. This diagram showing how transactions work is found in the React source code as ASCII art, I recreated it to make it easier to read
 
-```
- *                       wrappers (injected at creation time)
- *                                      +        +
- *                                      |        |
- *                    +-----------------|--------|--------------+
- *                    |                 v        |              |
- *                    |      +---------------+   |              |
- *                    |   +--|    wrapper1   |---|----+         |
- *                    |   |  +---------------+   v    |         |
- *                    |   |          +-------------+  |         |
- *                    |   |     +----|   wrapper2  |--------+   |
- *                    |   |     |    +-------------+  |     |   |
- *                    |   |     |                     |     |   |
- *                    |   v     v                     v     v   | wrapper
- *                    | +---+ +---+   +---------+   +---+ +---+ | invariants
- * perform(anyMethod) | |   | |   |   |         |   |   | |   | | maintained
- * +----------------->|-|---|-|---|-->|anyMethod|---|---|-|---|-|-------->
- *                    | |   | |   |   |         |   |   | |   | |
- *                    | |   | |   |   |         |   |   | |   | |
- *                    | |   | |   |   |         |   |   | |   | |
- *                    | +---+ +---+   +---------+   +---+ +---+ |
- *                    |  initialize                    close    |
- *                    +-----------------------------------------+
-```
+<img src={require('./transactionsDiagram.svg')} alt="transactions diagram" />
 
 If Feact was to add transactions, its (very) simple take would be something like this:
 
