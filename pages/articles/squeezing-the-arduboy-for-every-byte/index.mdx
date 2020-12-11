@@ -18,7 +18,7 @@ export default ({ children }) => <Article {...meta} img={require('./feature.png'
 The Arduboy has a 1 bit display, and so it is able to express 8 pixels in a single byte. This is quite efficient, but there's also the need for *masking*. When you draw something to the screen that is not square, you need to also include another bitmap to tell the rendering function which pixels to change and which ones to skip. 
 
 <figure>
-    <img src={require('./maskVsNoMask.png')} alt="example of how masking works on the Arduboy" />
+    <img src={require('./maskVsNoMask.png')} alt="example of how masking works on the Arduboy" pixelated />
     <figcaption>Example of not masking on top, with masking applied on the bottom</figcaption>
 </figure>
 
@@ -41,7 +41,7 @@ The mirroring is pretty expensive, CPU wise. I am lucky in that my game does not
 </pitfall>
 
 <figure>
-<img src={require('./mirroredBoomerang.png')} alt="boomerang frames being mirrored" />
+<img src={require('./mirroredBoomerang.png')} alt="boomerang frames being mirrored" pixelated />
 <figcaption>mirroring the boomerang sprite</figcaption>
 </figure>
 
@@ -58,7 +58,7 @@ The savings was actually slightly less, as in some scenarios, it takes more code
 By inverting sprites, I was able to use them in more situations. For example, I got away with a single map tile set for both the overworld and dungeons by inverting
 
 <figure>
-<img src={require('./invertedMapTiles.png')} alt="example of inverted map tiles" />
+<img src={require('./invertedMapTiles.png')} alt="example of inverted map tiles" pixelated />
 <figcaption>overworld on left, dungeon on the right</figcaption>
 </figure>
 
@@ -86,7 +86,7 @@ My game needs both drawing modes. But I changed "plus mask" to be "entire frame 
 This one is simple and easy, I just made my sprites smaller.
 
 <figure>
-<img src={require('./bombResize.png')} alt="large bomb and small bomb" />
+<img src={require('./bombResize.png')} alt="large bomb and small bomb" pixelated />
 <figcaption>bomb before and after</figcaption>
 </figure>
 
@@ -172,12 +172,13 @@ This is not how Zelda stored its dungeons, as [Borncoding pointed out to me on R
     <figcaption>All NES Zelda dungeons shown combined together, taken from <a href="http://ian-albert.com/games/legend_of_zelda_maps/">ian-albert.com</a></figcaption>
 </figure>
 
-This means I can have oddly shaped dungeon without worrying about wasting bytes. Just like Nintendo has the occassional gap (the black rooms above) my dungeon map does too. But I used those gaps to be secret bonus rooms for the player to find. So in the end, no byte was wasted on map data.
+This means I can have oddly shaped dungeon without worrying about wasting bytes. Just like Nintendo has the occasional gap (the black rooms above) my dungeon map does too. I used those gaps to be secret bonus rooms for the player to find. So in the end, no byte is wasted.
 
 ## Fonts and text
 
 <figure>
-<img src={require('./titleScreen.png')} alt="title screen of the game" />
+    <img src={require('./titleScreen.png')} alt="title screen of the game" pixelated />
+    <figcaption>The title screen has the most text in the game</figcaption>
 </figure>
 
 Drawing text to the screen on the Arduboy is pretty expensive in general. The Arduboy2 library ships with `print()`, which can print strings, characters and numbers to the screen. It can even handle tabs and newlines. There are also a lot of font libraries out there which work similarly, but the actual font itself is usually more stylish than what `print` gives you. These fonts are convenient to use, but they usually have their own rendering routines built in to accomplish said convenience. They also ship with at least all capital and lowercase letter glyphs, and often punctuation and symbols. What if your game doesn't use every character?

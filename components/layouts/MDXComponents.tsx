@@ -98,13 +98,12 @@ const MDXComponents = {
 	img: (props) => {
 		return (
 			<img
-				className="my-12 max-w-2xl"
+				className={clsx(styles.img, { [styles.imgPixelated]: props.pixelated })}
 				{...props}
-				style={{ maxWidth: '100%' }}
 			/>
 		);
 	},
-	p: ({ children }) => <TextBlock el="p">{children}</TextBlock>,
+	p: (props) => <TextBlock el="p" {...props} />,
 	pitfall: ({ children }) => (
 		<Callout className="text-red-900 bg-red-50">
 			<ReactMarkdown renderers={MDXComponents}>{children}</ReactMarkdown>
@@ -130,6 +129,7 @@ const MDXComponents = {
 			className="border-fg-fade border-l-8 pl-4 py-2 my-8"
 		/>
 	),
+	figure: (props) => <figure className={styles.figure} {...props} />,
 };
 
 export { MDXComponents };

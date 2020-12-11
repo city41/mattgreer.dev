@@ -18,3 +18,26 @@ h4:hover .headingSelfLink svg,
 .headingSelfLink:hover svg {
     @apply sm:visible;
 }
+
+.img {
+    @apply my-12;
+    max-width: 100%;
+}
+
+.imgPixelated {
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+}
+
+.figure {
+    @apply my-16 p-4 -mx-4 pb-2 mx-auto max-w-2xl shadow;
+}
+
+.figure img {
+    @apply m-auto;
+    width: 100%;
+}
+
+.figure figcaption {
+    @apply text-sm text-center pt-4;
+}
