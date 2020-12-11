@@ -1,7 +1,6 @@
 {
 	"draft": false,
 	"title": "Jump.Club",
-	"date": "2021-01-23",
 	"type": "website",
 	"tags": ["React", "TypeScript", "Redux", "NodeJS", "Godot", "Web Assembly"],
 	"description": [
