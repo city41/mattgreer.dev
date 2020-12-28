@@ -84,22 +84,22 @@ function IndexPage({ items }: IndexPageProps) {
 					</p>
 				</div>
 			</div>
-			<div className="h-64 w-screen bg-focal-alt text-white grid place-items-center text-2xl">
+			<div className="h-48 w-screen bg-focal-alt text-white grid place-items-center text-2xl">
 				Some things I have created{' '}
 			</div>
-			<div className="flex flex-col space-y-48 overflow-x-hidden max-w-6xl -mx-8 sm:mx-auto sm:-my-16">
+			<div className="flex flex-col space-y-48 overflow-x-hidden max-w-6xl -mx-8 sm:mx-auto sm:mt-32">
 				{items.map((item, index) => {
 					return <Feature key={item.slug} {...item} />;
 				})}
 			</div>
-			<div className="h-64 w-screen bg-focal-alt text-white grid place-items-center text-2xl">
+			<div className="h-32 w-screen text-fg grid place-items-center text-2xl">
 				<div>
 					See more of my{' '}
 					<FocalColorLink href="/projects">projects</FocalColorLink> and{' '}
 					<FocalColorLink href="/articles">articles</FocalColorLink>
 				</div>
 			</div>
-			<Footer />
+			<Footer className="mt-16" />
 		</div>
 	);
 }
