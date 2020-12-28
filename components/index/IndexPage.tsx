@@ -52,7 +52,7 @@ function IndexPage({ items }: IndexPageProps) {
 			</div>
 			<div
 				className={clsx(
-					'grid grid-cols-8 gap-8 auto-rows-min max-w-4xl mx-auto px-8 sm:px-0 my-24'
+					'grid grid-cols-8 gap-8 auto-rows-min max-w-6xl mx-auto px-8 sm:px-0 my-24'
 				)}
 			>
 				<div
@@ -89,7 +89,7 @@ function IndexPage({ items }: IndexPageProps) {
 			</div>
 			<div className="flex flex-col space-y-48 max-w-6xl sm:mx-auto mt-16 sm:mt-32">
 				{items.map((item, index) => {
-					return <Feature key={item.slug} {...item} />;
+					return <Feature key={item.slug} {...item} suppressDate />;
 				})}
 			</div>
 			<div className="h-32 w-full text-fg grid place-items-center text-2xl">

@@ -7,6 +7,7 @@ import styles from './Feature.module.css';
 
 type FeatureProps = Omit<PortfolioItem, 'featureIndex'> & {
 	className?: string;
+	suppressDate?: boolean;
 };
 
 function buildUrl(classification: string, slug: string): string {
@@ -21,6 +22,7 @@ function Feature({
 	classification,
 	type,
 	date,
+	suppressDate,
 	slug,
 	tags,
 }: FeatureProps) {
@@ -33,10 +35,32 @@ function Feature({
 	return (
 		<div className={clsx(styles.feature, 'flex flex-row flex-wrap')}>
 			<div
-				className={clsx(styles.image, 'h-72 sm:h-96 w-full sm:w-1/2')}
+				className={clsx(styles.image, 'h-72 sm:h-96 w-full sm:w-1/2 sm:pr-8')}
 				style={style}
 			/>
-			<div>{title}</div>
+			<div className="w-full sm:w-1/2 sm:pl-8">
+				<h2 className="text-5xl font-bold">{title}</h2>
+				<div className="mb-2 py-1 text-gray-500 text-xs mb-8">
+					{(date &&
+						!suppressDate &&
+						new Date(date).toLocaleDateString('en-us', {
+							year: 'numeric',
+							month: 'short',
+							day: 'numeric',
+						})) ||
+						type}
+				</div>
+				<p className="sm:text-2xl">{description}</p>
+				<ul className="flex flex-row flex-wrap -mx-2">
+					{tags.map((t) => (
+						<li key={t}>
+							<Tag className="m-1" classification={classification}>
+								{t}
+							</Tag>
+						</li>
+					))}
+				</ul>
+			</div>
 		</div>
 	);
 
