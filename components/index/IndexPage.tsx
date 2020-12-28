@@ -1,41 +1,68 @@
 import React from 'react';
 import clsx from 'clsx';
-import styles from '../Header.module.css';
 import { FocalColorLink } from '../FocalColorLink';
 import { ResumeLink } from '../ResumeLink';
 import { Feature } from '../Feature';
 import { Footer } from '../Footer';
+import Link from 'next/link';
+
+import styles from './IndexPage.module.css';
+import headerStyles from '../Header.module.css';
 
 type IndexPageProps = {
 	items: PortfolioItem[];
 };
 
+function NavLink({ href, children }) {
+	return (
+		<li style={{ marginBottom: -2 }}>
+			<Link href={href} passHref>
+				<a className="border-b-2 px-1 sm:px-2 h-full grid place-items-center text-white border-transparent hover:bg-bg-fade">
+					{children}
+				</a>
+			</Link>
+		</li>
+	);
+}
 function IndexPage({ items }: IndexPageProps) {
 	return (
-		<div>
+		<div className="overflow-x-hidden">
 			<div
-				className="h-screen flex flex-col items-center justify-center text-white bg-fixed"
-				style={{
-					backgroundImage:
-						'url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIj48ZGVmcz48cGF0dGVybiBpZD0icGF0dGVybiIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiB2aWV3Qm94PSIwIDAgNDAsNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSgxMzUpICI+PHJlY3QgaWQ9InBhdHRlcm4tYmFja2dyb3VuZCIgd2lkdGg9IjQwMCUiIGhlaWdodD0iNDAwJSIgZmlsbD0iIzJhNDM2NSI+PC9yZWN0PiA8Y2lyY2xlIGZpbGw9IiMxYTIwMmMiIGN4PSI0MCIgY3k9IjIwIiByPSIwLjI1Ij48L2NpcmNsZT48Y2lyY2xlIGZpbGw9IiNlY2M5NGIiIGN4PSIwIiBjeT0iMjAiIHI9IjEiPjwvY2lyY2xlPjxjaXJjbGUgZmlsbD0iI2VjYzk0YiIgY3g9IjQwIiBjeT0iMjAiIHI9IjEiPjwvY2lyY2xlPjwvcGF0dGVybj4gIDwvZGVmcz4gPHJlY3QgZmlsbD0idXJsKCNwYXR0ZXJuKSIgaGVpZ2h0PSIxMDAlIiB3aWR0aD0iMTAwJSI+PC9yZWN0Pjwvc3ZnPg==")',
-				}}
+				className={clsx(
+					styles.mainBleed,
+					'flex flex-col items-center justify-between text-white bg-fixed bg-focal-alt'
+				)}
 			>
-				<h1 className="text-7xl">Matt Greer</h1>
-				<h2 className="text-2xl">software creator</h2>
+				<nav
+					className={clsx(
+						'flex flex-row px-2 sm:px-4 py-4 items-stretch justify-between self-end'
+					)}
+				>
+					<ul className="flex flex-row space-x-1 sm:space-x-4 text-xs items-stretch">
+						<NavLink href="/projects">Projects</NavLink>
+						<NavLink href="/articles">Articles</NavLink>
+						<NavLink href="/about">About</NavLink>
+						<NavLink href="/MattGreer_resume.pdf">Resume</NavLink>
+					</ul>
+				</nav>
+				<div className="flex-1 flex flex-col justify-center items-center">
+					<h1 className="text-5xl sm:text-7xl font-bold">Matt Greer</h1>
+					<h2 className="sm:text-2xl">software creator</h2>
+				</div>
 			</div>
 			<div
 				className={clsx(
-					'grid grid-cols-8 gap-8 auto-rows-min max-w-4xl mx-auto px-8 sm:px-0 my-52'
+					'grid grid-cols-8 gap-8 auto-rows-min max-w-4xl mx-auto px-8 sm:px-0 my-32'
 				)}
 			>
 				<div
 					className={clsx(
-						styles.headerIllustration,
-						styles.indexPageHeaderIllustration,
-						'col-start-1 col-end-9 h-64 sm:h-auto sm:row-span-2 sm:row-start-1 sm:col-start-1 sm:col-end-4 self-stretch'
+						headerStyles.headerIllustration,
+						headerStyles.indexPageHeaderIllustration,
+						'col-start-1 col-end-9 h-64 sm:h-auto sm:row-span-2 sm:row-start-1 sm:col-start-1 sm:col-end-5 self-stretch'
 					)}
 				/>
-				<div className="col-start-1 col-end-9 sm:row-start-2 sm:col-start-4 sm:col-end-8 sm:text-2xl space-y-8 leading-6 sm:leading-9">
+				<div className="col-start-1 col-end-9 sm:row-start-2 sm:col-start-5 sm:col-end-8 sm:text-2xl space-y-8 leading-6 sm:leading-9">
 					<p>
 						Hi! I am a freelance software engineer with a focus on web
 						technologies.
@@ -56,22 +83,22 @@ function IndexPage({ items }: IndexPageProps) {
 					</p>
 				</div>
 			</div>
-			<div className="h-32 grid place-items-center font-bold">
+			<div className="h-64 w-screen bg-focal-alt text-white grid place-items-center text-2xl">
 				Some things I have created{' '}
 			</div>
-			<div className="flex flex-col space-y-48 overflow-x-hidden max-w-6xl -mx-8 sm:mx-auto">
+			<div className="flex flex-col space-y-48 overflow-x-hidden max-w-6xl -mx-8 sm:mx-auto sm:-my-16">
 				{items.map((item, index) => {
 					return <Feature key={item.slug} {...item} />;
 				})}
 			</div>
-			<div className="h-48 grid place-items-center font-bold">
+			<div className="h-64 w-screen bg-focal-alt text-white grid place-items-center text-2xl">
 				<div>
 					See more of my{' '}
 					<FocalColorLink href="/projects">projects</FocalColorLink> and{' '}
 					<FocalColorLink href="/articles">articles</FocalColorLink>
 				</div>
 			</div>
-			<Footer className="mt-16 sm:mt-24" />
+			<Footer />
 		</div>
 	);
 }

@@ -1,0 +1,9 @@
+.mainBleed {
+    @apply h-screen;
+}
+
+@media (max-width: 639px) {
+    .mainBleed {
+        height: 30vh;
+    }
+}
