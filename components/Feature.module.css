@@ -1,20 +1,15 @@
 .feature {
+    max-width: 90vw;
+}
+
+.image {
     @apply bg-cover bg-center;
 
-    min-height: 500px;
     background-image: var(--bg-image);
     content-visibility: auto;
     contain-intrinsic-size: 500px;
 }
 
-
-.callout {
-    backdrop-filter: blur(20px);
-    --tw-bg-opacity: 0.85;
-}
-
-@supports (backdrop-filter: blur(20px)) {
-    .callout {
-        --tw-bg-opacity: 0.65;
-    }
+@media (max-width: 639px) {
+    width: 100%;
 }
