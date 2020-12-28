@@ -52,7 +52,7 @@ function IndexPage({ items }: IndexPageProps) {
 			</div>
 			<div
 				className={clsx(
-					'grid grid-cols-8 gap-8 auto-rows-min max-w-4xl mx-auto px-8 sm:px-0 my-32'
+					'grid grid-cols-8 gap-8 auto-rows-min max-w-4xl mx-auto px-8 sm:px-0 my-24'
 				)}
 			>
 				<div
@@ -64,18 +64,19 @@ function IndexPage({ items }: IndexPageProps) {
 				/>
 				<div className="col-start-1 col-end-9 sm:row-start-2 sm:col-start-5 sm:col-end-8 sm:text-2xl space-y-8 leading-6 sm:leading-9">
 					<p>
-						Hi! I am a freelance software engineer with a focus on web
-						technologies.
+						<span className="text-4xl font-bold">Hi!</span> I'm Matt, a
+						freelance software engineer based in Michigan. I tend to focus on
+						web technologies, but enjoy working with all types of software.
 					</p>
 					<p>
 						Check out my{' '}
 						<FocalColorLink href="/projects">projects</FocalColorLink>,{' '}
-						<FocalColorLink href="/articles">articles</FocalColorLink>,{' '}
-						<FocalColorLink href="/about">about page</FocalColorLink>, or my{' '}
+						<FocalColorLink href="/articles">articles</FocalColorLink>, or my{' '}
 						<ResumeLink />.
 					</p>
 					<p>
-						Or,{' '}
+						I am always looking for interesting projects. If you are in need of
+						some help,{' '}
 						<FocalColorLink href="mailto:matt.e.greer@gmail.com">
 							get in touch
 						</FocalColorLink>
