@@ -10,6 +10,8 @@ import styles from './IndexPage.module.css';
 import headerStyles from '../Header.module.css';
 import { FullBleedScript } from './FullBleedScript';
 
+import skylinePng from './skyline.png';
+
 type IndexPageProps = {
 	items: PortfolioItem[];
 };
@@ -112,6 +114,7 @@ function IndexPage({ items }: IndexPageProps) {
 			<FullBleedScript
 				rootId={FULL_BLEED_ROOT_ID}
 				titleId={FULL_BLEED_TITLE_ID}
+				imgSrc={skylinePng}
 			/>
 		</>
 	);
