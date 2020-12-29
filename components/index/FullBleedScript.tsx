@@ -45,13 +45,29 @@ function animateFullBleed(args: FullBleedScriptProps) {
 	if (nextInPage) {
 		nextInPage.classList.remove('mt-24');
 		nextInPage.classList.add('-mt-72');
-		document.addEventListener('scroll', () => {
-			const margin = Math.min(
-				document.scrollingElement.scrollTop,
-				bounds.height
-			);
 
-			fullBleedRoot.style.setProperty('transform', `translateY(-${margin}px)`);
+		let scrollTop;
+		let ticking = false;
+
+		document.addEventListener('scroll', () => {
+			scrollTop = document.scrollingElement.scrollTop;
+
+			if (!ticking) {
+				requestAnimationFrame(() => {
+					const margin = Math.min(
+						document.scrollingElement.scrollTop,
+						bounds.height
+					);
+					fullBleedRoot.style.setProperty(
+						'transform',
+						`translateY(-${margin}px)`
+					);
+
+					ticking = false;
+				});
+
+				ticking = true;
+			}
 		});
 	}
 
