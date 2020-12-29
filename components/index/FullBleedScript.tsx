@@ -5,7 +5,13 @@ type FullBleedScriptProps = {
 };
 
 function animateFullBleed(fullBleedId: string) {
-	const fullBleedRoot = document.getElementById(fullBleedId);
+	function isInMobileMode(root: HTMLDivElement): boolean {
+		const { height } = root.getBoundingClientRect();
+
+		return height < window.innerHeight / 2;
+	}
+
+	const fullBleedRoot = document.getElementById(fullBleedId) as HTMLDivElement;
 
 	if (!fullBleedRoot) {
 		return;
@@ -22,7 +28,9 @@ function animateFullBleed(fullBleedId: string) {
 		return;
 	}
 
-	console.log('width', bounds.width, 'height', bounds.height);
+	if (isInMobileMode(fullBleedRoot)) {
+		return;
+	}
 
 	const canvas = document.createElement('canvas');
 	canvas.width = bounds.width;
