@@ -74,7 +74,7 @@ function animateFullBleed(fullBleedRootId: string, fullBleedTitleId: string) {
 	const context = canvas.getContext('2d');
 
 	const COMMON_FILL = '#BA654F22';
-	const EDGE_FILL = '#BA654Fdd';
+	const EDGE_FILL = '#c9765f';
 	const SHADOW_FILL = '#50180b';
 
 	const SQUARE_SIZE = 10;
@@ -120,27 +120,27 @@ function animateFullBleed(fullBleedRootId: string, fullBleedTitleId: string) {
 		const leftBounds = {
 			left: bounds.left - SQUARE_SIZE,
 			right: bounds.left,
-			top: bounds.top - SQUARE_SIZE,
-			bottom: bounds.bottom + SQUARE_SIZE,
+			top: bounds.top,
+			bottom: bounds.bottom,
 		};
 
 		const rightBounds = {
 			left: bounds.right,
 			right: bounds.right + SQUARE_SIZE,
-			top: bounds.top - SQUARE_SIZE,
-			bottom: bounds.bottom + SQUARE_SIZE,
+			top: bounds.top,
+			bottom: bounds.bottom,
 		};
 
 		const topBounds = {
-			left: bounds.left - SQUARE_SIZE,
-			right: bounds.right + SQUARE_SIZE,
+			left: bounds.left,
+			right: bounds.right,
 			top: bounds.top - SQUARE_SIZE,
 			bottom: bounds.top,
 		};
 
 		const bottomBounds = {
-			left: bounds.left - SQUARE_SIZE,
-			right: bounds.right + SQUARE_SIZE,
+			left: bounds.left,
+			right: bounds.right,
 			top: bounds.bottom,
 			bottom: bounds.bottom + SQUARE_SIZE,
 		};
@@ -150,6 +150,7 @@ function animateFullBleed(fullBleedRootId: string, fullBleedTitleId: string) {
 		);
 	}
 	function isShadowBounds(spot: Spot, bounds: Bounds): boolean {
+		return false;
 		const shadowBounds = {
 			left: bounds.left,
 			right: bounds.right,
