@@ -93,7 +93,7 @@ function animateFullBleed(
 
 		const COMMON_FILL = '#BA654F';
 		const EDGE_FILL = '#c9765f';
-		const IMG_FILL = '#50180b';
+		const IMG_FILL = '#aa391f';
 
 		const SQUARE_SIZE = 10;
 
