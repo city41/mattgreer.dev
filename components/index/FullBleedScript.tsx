@@ -24,7 +24,7 @@ function animateFullBleed(fullBleedId: string) {
 	const bounds = fullBleedRoot.getBoundingClientRect();
 
 	if (bounds.width === 0) {
-		setTimeout(() => animateFullBleed(fullBleedId), 10);
+		setTimeout(() => animateFullBleed(fullBleedId), 25);
 		return;
 	}
 
