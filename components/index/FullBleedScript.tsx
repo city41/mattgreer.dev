@@ -7,8 +7,16 @@ type FullBleedScriptProps = {
 	imgSrc: string;
 };
 
-type Spot = { x: number; y: number };
+type Point = { x: number; y: number };
 type Bounds = { left: number; top: number; right: number; bottom: number };
+
+type Particle = {
+	x: number;
+	y: number;
+	color: string;
+	targetAlpha: number;
+	currentAlpha: number;
+};
 
 function animateFullBleed(args: FullBleedScriptProps) {
 	const { rootId, titleId, nextInPageId, imgSrc } = args;
@@ -129,18 +137,42 @@ function animateFullBleed(args: FullBleedScriptProps) {
 
 		console.log({ MAX_X, MAX_Y });
 
-		const toDraw: Array<Spot> = [
-			{ x: 0, y: 0 },
-			{ x: MAX_X, y: MAX_Y },
-			{ x: MAX_X, y: 0 },
-			{ x: 0, y: MAX_Y },
+		const particles: Array<Particle> = [
+			{
+				x: 0,
+				y: 0,
+				color: EDGE_FILL,
+				currentAlpha: 0,
+				targetAlpha: Math.random(),
+			},
+			{
+				x: MAX_X,
+				y: MAX_Y,
+				color: EDGE_FILL,
+				currentAlpha: 0,
+				targetAlpha: Math.random(),
+			},
+			{
+				x: MAX_X,
+				y: 0,
+				color: EDGE_FILL,
+				currentAlpha: 0,
+				targetAlpha: Math.random(),
+			},
+			{
+				x: 0,
+				y: MAX_Y,
+				color: EDGE_FILL,
+				currentAlpha: 0,
+				targetAlpha: Math.random(),
+			},
 		];
 
 		let squaresPerDraw = 1;
 
-		function isInBounds(spot: Spot, bounds: Bounds): boolean {
-			const x = spot.x * SQUARE_SIZE;
-			const y = spot.y * SQUARE_SIZE;
+		function isInBounds(p: Point, bounds: Bounds): boolean {
+			const x = p.x * SQUARE_SIZE;
+			const y = p.y * SQUARE_SIZE;
 
 			if (x > bounds.right) {
 				return false;
@@ -161,7 +193,7 @@ function animateFullBleed(args: FullBleedScriptProps) {
 			return true;
 		}
 
-		function isEdgeOfBounds(spot: Spot, bounds: Bounds): boolean {
+		function isEdgeOfBounds(p: Point, bounds: Bounds): boolean {
 			const leftBounds = {
 				left: bounds.left - SQUARE_SIZE,
 				right: bounds.left,
@@ -191,35 +223,46 @@ function animateFullBleed(args: FullBleedScriptProps) {
 			};
 
 			return [leftBounds, rightBounds, topBounds, bottomBounds].some((b) =>
-				isInBounds(spot, b)
+				isInBounds(p, b)
 			);
 		}
 
-		function isImgBounds(spot: Spot, imgData: ImageData): boolean {
-			const dataIndex = spot.y * imgData.width + spot.x;
+		function isImgBounds(p: Point, imgData: ImageData): boolean {
+			const dataIndex = p.y * imgData.width + p.x;
 
 			const pixel = imgData.data[dataIndex * 4 + 3];
 
 			return pixel !== 0 && pixel !== undefined;
 		}
 
-		function canDraw(x: number, y: number): boolean {
-			return !drawn[y]?.[x] && !toDraw.some((s) => s.x === x && s.y === y);
+		function doesParticleHave(x: number, y: number): boolean {
+			return particles.some((s) => s.x === x && s.y === y);
+		}
+
+		function getColorAndAlpha(x: number, y: number) {
+			const p = { x, y };
+			if (isEdgeOfBounds(p, titleBounds)) {
+				return { color: EDGE_FILL, targetAlpha: 1 };
+			} else if (isImgBounds(p, imgData)) {
+				return { color: IMG_FILL, targetAlpha: 1 };
+			} else {
+				return { color: COMMON_FILL, targetAlpha: Math.random() };
+			}
 		}
 
 		function drawSquare() {
-			for (let i = 0; i < squaresPerDraw && toDraw.length > 0; ++i) {
-				const randomIndex = Math.floor(Math.random() * toDraw.length);
-				const spot = toDraw.splice(randomIndex, 1)[0];
+			for (let i = 0; i < squaresPerDraw && particles.length > 0; ++i) {
+				const randomIndex = Math.floor(Math.random() * particles.length);
+				const particle = particles.splice(randomIndex, 1)[0];
 
-				const { x, y } = spot;
+				const { x, y } = particle;
 
-				if (!isInBounds(spot, titleBounds)) {
+				if (!isInBounds(particle, titleBounds)) {
 					context.globalAlpha = 1;
 
-					if (isEdgeOfBounds(spot, titleBounds)) {
+					if (isEdgeOfBounds(particle, titleBounds)) {
 						context.fillStyle = EDGE_FILL;
-					} else if (isImgBounds(spot, imgData)) {
+					} else if (isImgBounds(particle, imgData)) {
 						context.fillStyle = IMG_FILL;
 					} else {
 						context.fillStyle = COMMON_FILL;
@@ -237,26 +280,28 @@ function animateFullBleed(args: FullBleedScriptProps) {
 				drawn[y] = drawn[y] ?? [];
 				drawn[y][x] = true;
 
-				const nextSpots: Array<{ x: number; y: number }> = [];
-
-				if (x < MAX_X - 1 && canDraw(x + 1, y)) {
-					toDraw.push({ x: x + 1, y });
+				if (x < MAX_X - 1 && !doesParticleHave(x + 1, y)) {
+					const { color, targetAlpha } = getColorAndAlpha(x + 1, y);
+					particles.push({ x: x + 1, y, color, currentAlpha: 0, targetAlpha });
 				}
 
-				if (x > 0 && canDraw(x - 1, y)) {
-					toDraw.push({ x: x - 1, y });
+				if (x > 0 && !doesParticleHave(x - 1, y)) {
+					const { color, targetAlpha } = getColorAndAlpha(x - 1, y);
+					particles.push({ x: x - 1, y, color, currentAlpha: 0, targetAlpha });
 				}
 
-				if (y < MAX_Y - 1 && canDraw(x, y + 1)) {
-					toDraw.push({ x, y: y + 1 });
+				if (y < MAX_Y - 1 && !doesParticleHave(x, y + 1)) {
+					const { color, targetAlpha } = getColorAndAlpha(x, y + 1);
+					particles.push({ x, y: y + 1, color, currentAlpha: 0, targetAlpha });
 				}
 
-				if (y > 0 && canDraw(x, y - 1)) {
-					toDraw.push({ x, y: y - 1 });
+				if (y > 0 && !doesParticleHave(x, y - 1)) {
+					const { color, targetAlpha } = getColorAndAlpha(x, y - 1);
+					particles.push({ x, y: y - 1, color, currentAlpha: 0, targetAlpha });
 				}
 			}
 
-			if (toDraw.length > 0) {
+			if (particles.length > 0) {
 				squaresPerDraw += 1;
 				setTimeout(() => {
 					requestAnimationFrame(drawSquare);
