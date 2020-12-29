@@ -36,6 +36,21 @@ function animateFullBleed(fullBleedId: string) {
 
 	const context = canvas.getContext('2d');
 
+	// function drawSquare() {
+	// 	const channel = Math.floor(Math.random() * 255);
+	// 	context.fillStyle = `rgb(${channel}, ${channel}, ${channel})`;
+	// 	context.fillRect(
+	// 		Math.random() * canvas.width,
+	// 		Math.random() * canvas.height,
+	// 		10,
+	// 		10
+	// 	);
+	//
+	// 	requestAnimationFrame(drawSquare);
+	// }
+	//
+	// requestAnimationFrame(drawSquare);
+
 	context.fillStyle = 'blue';
 	context.fillRect(0, 0, canvas.width, canvas.height);
 }
