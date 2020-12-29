@@ -8,6 +8,7 @@ import Link from 'next/link';
 
 import styles from './IndexPage.module.css';
 import headerStyles from '../Header.module.css';
+import { FullBleedScript } from './FullBleedScript';
 
 type IndexPageProps = {
 	items: PortfolioItem[];
@@ -24,18 +25,22 @@ function NavLink({ href, children }) {
 		</li>
 	);
 }
+
+const FULL_BLEED_ID = '__full_bleed_id__';
+
 function IndexPage({ items }: IndexPageProps) {
 	return (
-		<div>
+		<>
 			<div
+				id={FULL_BLEED_ID}
 				className={clsx(
 					styles.mainBleed,
-					'flex flex-col items-center justify-between text-white bg-fixed bg-focal-alt'
+					'relative flex flex-col items-center justify-between text-white bg-fixed bg-focal-alt'
 				)}
 			>
 				<nav
 					className={clsx(
-						'flex flex-row px-2 sm:px-4 py-4 items-stretch justify-between self-end'
+						'flex flex-row px-2 sm:px-4 py-4 items-stretch justify-between self-end z-10'
 					)}
 				>
 					<ul className="flex flex-row space-x-1 sm:space-x-4 text-xs items-stretch">
@@ -45,7 +50,7 @@ function IndexPage({ items }: IndexPageProps) {
 						<NavLink href="/MattGreer_resume.pdf">Resume</NavLink>
 					</ul>
 				</nav>
-				<div className="flex-1 flex flex-col justify-center items-center">
+				<div className="flex-1 flex flex-col justify-center items-center z-10">
 					<h1 className="text-5xl sm:text-7xl font-bold">Matt Greer</h1>
 					<h2 className="sm:text-2xl">software creator</h2>
 				</div>
@@ -100,7 +105,8 @@ function IndexPage({ items }: IndexPageProps) {
 				</div>
 			</div>
 			<Footer className="mt-16" />
-		</div>
+			<FullBleedScript id={FULL_BLEED_ID} />
+		</>
 	);
 }
 
