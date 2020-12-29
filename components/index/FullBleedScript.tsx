@@ -1,17 +1,23 @@
 import React from 'react';
 
 type FullBleedScriptProps = {
-	id: string;
+	rootId: string;
+	titleId: string;
 };
 
-function animateFullBleed(fullBleedId: string) {
+type Spot = { x: number; y: number };
+type Bounds = { left: number; top: number; right: number; bottom: number };
+
+function animateFullBleed(fullBleedRootId: string, fullBleedTitleId: string) {
 	function isInMobileMode(root: HTMLDivElement): boolean {
 		const { height } = root.getBoundingClientRect();
 
 		return height < window.innerHeight / 2;
 	}
 
-	const fullBleedRoot = document.getElementById(fullBleedId) as HTMLDivElement;
+	const fullBleedRoot = document.getElementById(
+		fullBleedRootId
+	) as HTMLDivElement;
 
 	if (!fullBleedRoot) {
 		return;
@@ -24,9 +30,32 @@ function animateFullBleed(fullBleedId: string) {
 	const bounds = fullBleedRoot.getBoundingClientRect();
 
 	if (bounds.width === 0) {
-		setTimeout(() => animateFullBleed(fullBleedId), 25);
+		setTimeout(() => animateFullBleed(fullBleedRootId, fullBleedTitleId), 25);
 		return;
 	}
+
+	const title = fullBleedRoot.querySelector(`#${fullBleedTitleId}`);
+
+	const titleChildren = Array.from(title.children);
+
+	const titleBounds = titleChildren.reduce<Bounds>(
+		(buildingBounds, child) => {
+			const childBounds = child.getBoundingClientRect();
+
+			return {
+				left: Math.min(buildingBounds.left, childBounds.left) - 20,
+				right: Math.max(buildingBounds.right, childBounds.right) + 20,
+				top: Math.min(buildingBounds.top, childBounds.top),
+				bottom: Math.max(buildingBounds.bottom, childBounds.bottom) + 20,
+			};
+		},
+		{
+			left: Number.MAX_SAFE_INTEGER,
+			right: Number.MIN_SAFE_INTEGER,
+			top: Number.MAX_SAFE_INTEGER,
+			bottom: Number.MIN_SAFE_INTEGER,
+		}
+	);
 
 	if (isInMobileMode(fullBleedRoot)) {
 		return;
@@ -44,49 +73,154 @@ function animateFullBleed(fullBleedId: string) {
 
 	const context = canvas.getContext('2d');
 
-	// u(t) is called 60 times per second.
-	// t: Elapsed time in seconds.
-	// S: Shorthand for Math.sin.
-	// C: Shorthand for Math.cos.
-	// T: Shorthand for Math.tan.
-	// R: Function that generates rgba-strings, usage ex.: R(255, 255, 255, 0.5)
-	// c: A 1920x1080 canvas.
-	// x: A 2D context for that canvas.
+	const COMMON_FILL = '#BA654F22';
+	const EDGE_FILL = '#BA654Fdd';
+	const SHADOW_FILL = '#50180b';
 
-	const T = Math.tan;
-	const x = context;
-	let skip = 5;
+	const SQUARE_SIZE = 10;
 
-	function u(t: number) {
-		let i, d, e;
-		if (!skip) {
-			skip = 5;
-			for (
-				T[2931] = i = 6001;
-				i--;
-				// @ts-ignore
-				T[i] & !(T[(d += i)] | T[d + e] | T[d - e]) &&
-				x.fillRect((i % 99) * 20, i / 5, 21, (T[d] = 21))
-			)
-				// @ts-ignore
-				(d = ((Math.random((e = 1)) * 4) | 0) * 2 - 1),
-					d > 1 ? (d = (d - 4) * 99) : (e = 99);
+	let drawn: boolean[][] = [[]];
+
+	const MAX_X = Math.floor(canvas.width / SQUARE_SIZE);
+	const MAX_Y = Math.floor(canvas.height / SQUARE_SIZE);
+
+	const toDraw: Array<Spot> = [
+		{ x: 0, y: 0 },
+		{ x: MAX_X, y: MAX_Y },
+		{ x: MAX_X, y: 0 },
+		{ x: 0, y: MAX_Y },
+	];
+
+	let squaresPerDraw = 1;
+
+	function isInBounds(spot: Spot, bounds: Bounds): boolean {
+		const x = spot.x * SQUARE_SIZE;
+		const y = spot.y * SQUARE_SIZE;
+
+		if (x > bounds.right) {
+			return false;
 		}
-		skip -= 1;
-		requestAnimationFrame(u);
+
+		if (x + SQUARE_SIZE < bounds.left) {
+			return false;
+		}
+
+		if (y > bounds.bottom) {
+			return false;
+		}
+
+		if (y + SQUARE_SIZE < bounds.top) {
+			return false;
+		}
+
+		return true;
 	}
 
-	requestAnimationFrame(u);
+	function isEdgeOfBounds(spot: Spot, bounds: Bounds): boolean {
+		const leftBounds = {
+			left: bounds.left - SQUARE_SIZE,
+			right: bounds.left,
+			top: bounds.top - SQUARE_SIZE,
+			bottom: bounds.bottom + SQUARE_SIZE,
+		};
 
-	context.fillStyle = '#BA654F22';
+		const rightBounds = {
+			left: bounds.right,
+			right: bounds.right + SQUARE_SIZE,
+			top: bounds.top - SQUARE_SIZE,
+			bottom: bounds.bottom + SQUARE_SIZE,
+		};
+
+		const topBounds = {
+			left: bounds.left - SQUARE_SIZE,
+			right: bounds.right + SQUARE_SIZE,
+			top: bounds.top - SQUARE_SIZE,
+			bottom: bounds.top,
+		};
+
+		const bottomBounds = {
+			left: bounds.left - SQUARE_SIZE,
+			right: bounds.right + SQUARE_SIZE,
+			top: bounds.bottom,
+			bottom: bounds.bottom + SQUARE_SIZE,
+		};
+
+		return [leftBounds, rightBounds, topBounds, bottomBounds].some((b) =>
+			isInBounds(spot, b)
+		);
+	}
+	function isShadowBounds(spot: Spot, bounds: Bounds): boolean {
+		const shadowBounds = {
+			left: bounds.left,
+			right: bounds.right,
+			top: bounds.bottom + SQUARE_SIZE,
+			bottom: bounds.bottom + 2 * SQUARE_SIZE,
+		};
+
+		return isInBounds(spot, shadowBounds);
+	}
+
+	function drawSquare() {
+		for (let i = 0; i < squaresPerDraw && toDraw.length > 0; ++i) {
+			const randomIndex = Math.floor(Math.random() * toDraw.length);
+			const spot = toDraw.splice(randomIndex, 1)[0];
+			const { x, y } = spot;
+
+			if (!isInBounds(spot, titleBounds)) {
+				if (isEdgeOfBounds(spot, titleBounds)) {
+					context.fillStyle = EDGE_FILL;
+				} else if (isShadowBounds(spot, titleBounds)) {
+					context.fillStyle = SHADOW_FILL;
+				} else {
+					context.fillStyle = COMMON_FILL;
+				}
+				context.fillRect(
+					x * SQUARE_SIZE,
+					y * SQUARE_SIZE,
+					SQUARE_SIZE,
+					SQUARE_SIZE
+				);
+			}
+
+			drawn[y] = drawn[y] ?? [];
+			drawn[y][x] = true;
+
+			const nextSpots: Array<{ x: number; y: number }> = [];
+
+			if (x < MAX_X - 1 && !drawn[y][x + 1]) {
+				toDraw.push({ x: x + 1, y });
+			}
+
+			if (x > 0 && !drawn[y][x - 1]) {
+				toDraw.push({ x: x - 1, y });
+			}
+
+			if (y < MAX_Y - 1 && !drawn[y + 1]?.[x]) {
+				toDraw.push({ x, y: y + 1 });
+			}
+
+			if (y > 0 && !drawn[y - 1]?.[x]) {
+				toDraw.push({ x, y: y - 1 });
+			}
+		}
+
+		if (toDraw.length > 0) {
+			squaresPerDraw += 1;
+			setTimeout(() => {
+				requestAnimationFrame(drawSquare);
+			}, 1);
+		}
+	}
+
+	requestAnimationFrame(drawSquare);
 }
 
-function FullBleedScript({ id }: FullBleedScriptProps) {
+function FullBleedScript({ rootId, titleId }: FullBleedScriptProps) {
 	return (
 		<script
 			type="text/javascript"
 			dangerouslySetInnerHTML={{
-				__html: `${animateFullBleed.toString()}; animateFullBleed('${id}');`,
+				__html: `${animateFullBleed.toString()}; animateFullBleed('${rootId}', '${titleId}');`,
 			}}
 		></script>
 	);

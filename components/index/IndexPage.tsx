@@ -26,13 +26,14 @@ function NavLink({ href, children }) {
 	);
 }
 
-const FULL_BLEED_ID = '__full_bleed_id__';
+const FULL_BLEED_ROOT_ID = '__full_bleed_id__';
+const FULL_BLEED_TITLE_ID = '__full_bleed_title_id__';
 
 function IndexPage({ items }: IndexPageProps) {
 	return (
 		<>
 			<div
-				id={FULL_BLEED_ID}
+				id={FULL_BLEED_ROOT_ID}
 				className={clsx(
 					styles.mainBleed,
 					'relative flex flex-col items-center justify-between text-white bg-fixed bg-focal-alt'
@@ -50,7 +51,10 @@ function IndexPage({ items }: IndexPageProps) {
 						<NavLink href="/MattGreer_resume.pdf">Resume</NavLink>
 					</ul>
 				</nav>
-				<div className="flex-1 flex flex-col justify-center items-center z-10">
+				<div
+					id={FULL_BLEED_TITLE_ID}
+					className="flex-1 flex flex-col justify-center items-center z-10"
+				>
 					<h1 className="text-5xl sm:text-7xl font-bold">Matt Greer</h1>
 					<h2 className="sm:text-2xl">software creator</h2>
 				</div>
@@ -105,7 +109,10 @@ function IndexPage({ items }: IndexPageProps) {
 				</div>
 			</div>
 			<Footer className="mt-16" />
-			<FullBleedScript id={FULL_BLEED_ID} />
+			<FullBleedScript
+				rootId={FULL_BLEED_ROOT_ID}
+				titleId={FULL_BLEED_TITLE_ID}
+			/>
 		</>
 	);
 }
