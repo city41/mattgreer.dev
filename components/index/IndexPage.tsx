@@ -61,6 +61,10 @@ function IndexPage({ items }: IndexPageProps) {
 					<h1 className="text-5xl sm:text-7xl font-bold">Matt Greer</h1>
 					<h2 className="sm:text-2xl">software creator</h2>
 				</div>
+				<div
+					className={clsx(styles.moreArrow, 'justify-self-end z-10')}
+					aria-label="scroll down to see more"
+				/>
 			</div>
 			<div
 				id={INTRO_ROOT_ID}

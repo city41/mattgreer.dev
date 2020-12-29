@@ -7,3 +7,17 @@
         height: 30vh;
     }
 }
+
+.moreArrow {
+    --size: 6px;
+    --up-down-amount: 20px;
+
+    @apply hidden sm:inline-block border-white;
+
+    border-width: 0 var(--size) var(--size) 0;
+    padding: var(--size);
+
+    margin-bottom: calc(var(--size) * 3);
+
+    transform: rotate(45deg);
+}
