@@ -44,21 +44,6 @@ function animateFullBleed(fullBleedId: string) {
 
 	const context = canvas.getContext('2d');
 
-	// function drawSquare() {
-	// 	const channel = Math.floor(Math.random() * 255);
-	// 	context.fillStyle = `rgb(${channel}, ${channel}, ${channel})`;
-	// 	context.fillRect(
-	// 		Math.random() * canvas.width,
-	// 		Math.random() * canvas.height,
-	// 		10,
-	// 		10
-	// 	);
-	//
-	// 	requestAnimationFrame(drawSquare);
-	// }
-	//
-	// requestAnimationFrame(drawSquare);
-
 	// u(t) is called 60 times per second.
 	// t: Elapsed time in seconds.
 	// S: Shorthand for Math.sin.
