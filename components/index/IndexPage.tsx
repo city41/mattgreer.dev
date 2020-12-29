@@ -30,6 +30,7 @@ function NavLink({ href, children }) {
 
 const FULL_BLEED_ROOT_ID = '__full_bleed_id__';
 const FULL_BLEED_TITLE_ID = '__full_bleed_title_id__';
+const INTRO_ROOT_ID = '__intro_root_id__';
 
 function IndexPage({ items }: IndexPageProps) {
 	return (
@@ -62,8 +63,9 @@ function IndexPage({ items }: IndexPageProps) {
 				</div>
 			</div>
 			<div
+				id={INTRO_ROOT_ID}
 				className={clsx(
-					'grid grid-cols-8 gap-8 auto-rows-min max-w-6xl mx-auto px-8 sm:px-0 my-24'
+					'grid grid-cols-8 gap-8 auto-rows-min max-w-6xl mx-auto px-8 sm:px-0 mt-24 mb-24'
 				)}
 			>
 				<div
@@ -114,6 +116,7 @@ function IndexPage({ items }: IndexPageProps) {
 			<FullBleedScript
 				rootId={FULL_BLEED_ROOT_ID}
 				titleId={FULL_BLEED_TITLE_ID}
+				nextInPageId={INTRO_ROOT_ID}
 				imgSrc={skylinePng}
 			/>
 		</>

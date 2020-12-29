@@ -3,26 +3,23 @@ import React from 'react';
 type FullBleedScriptProps = {
 	rootId: string;
 	titleId: string;
+	nextInPageId: string;
 	imgSrc: string;
 };
 
 type Spot = { x: number; y: number };
 type Bounds = { left: number; top: number; right: number; bottom: number };
 
-function animateFullBleed(
-	fullBleedRootId: string,
-	fullBleedTitleId: string,
-	imgSrc: string
-) {
+function animateFullBleed(args: FullBleedScriptProps) {
+	const { rootId, titleId, nextInPageId, imgSrc } = args;
+
 	function isInMobileMode(root: HTMLDivElement): boolean {
 		const { height } = root.getBoundingClientRect();
 
 		return height < window.innerHeight / 2;
 	}
 
-	const fullBleedRoot = document.getElementById(
-		fullBleedRootId
-	) as HTMLDivElement;
+	const fullBleedRoot = document.getElementById(rootId) as HTMLDivElement;
 
 	if (!fullBleedRoot) {
 		return;
@@ -35,21 +32,33 @@ function animateFullBleed(
 	const bounds = fullBleedRoot.getBoundingClientRect();
 
 	if (bounds.width === 0) {
-		setTimeout(
-			() => animateFullBleed(fullBleedRootId, fullBleedTitleId, imgSrc),
-			25
-		);
+		setTimeout(() => animateFullBleed(args), 25);
 		return;
+	}
+
+	if (isInMobileMode(fullBleedRoot)) {
+		return;
+	}
+
+	const nextInPage = document.getElementById(nextInPageId);
+
+	if (nextInPage) {
+		nextInPage.classList.remove('mt-24');
+		nextInPage.classList.add('-mt-72');
+		document.addEventListener('scroll', () => {
+			const margin = Math.min(
+				document.scrollingElement.scrollTop,
+				bounds.height
+			);
+
+			fullBleedRoot.style.setProperty('transform', `translateY(-${margin}px)`);
+		});
 	}
 
 	const img = new Image();
 	img.src = imgSrc;
 	img.onload = () => {
-		if (isInMobileMode(fullBleedRoot)) {
-			return;
-		}
-
-		const title = fullBleedRoot.querySelector(`#${fullBleedTitleId}`);
+		const title = fullBleedRoot.querySelector(`#${titleId}`);
 		const titleChildren = Array.from(title.children);
 
 		const titleBounds = titleChildren.reduce<Bounds>(
@@ -243,12 +252,14 @@ function animateFullBleed(
 	};
 }
 
-function FullBleedScript({ rootId, titleId, imgSrc }: FullBleedScriptProps) {
+function FullBleedScript(props: FullBleedScriptProps) {
 	return (
 		<script
 			type="text/javascript"
 			dangerouslySetInnerHTML={{
-				__html: `${animateFullBleed.toString()}; animateFullBleed('${rootId}', '${titleId}', '${imgSrc}');`,
+				__html: `${animateFullBleed.toString()}; animateFullBleed(${JSON.stringify(
+					props
+				)})`,
 			}}
 		></script>
 	);
