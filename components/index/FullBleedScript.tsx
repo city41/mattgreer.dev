@@ -51,8 +51,41 @@ function animateFullBleed(fullBleedId: string) {
 	//
 	// requestAnimationFrame(drawSquare);
 
-	context.fillStyle = 'blue';
-	context.fillRect(0, 0, canvas.width, canvas.height);
+	// u(t) is called 60 times per second.
+	// t: Elapsed time in seconds.
+	// S: Shorthand for Math.sin.
+	// C: Shorthand for Math.cos.
+	// T: Shorthand for Math.tan.
+	// R: Function that generates rgba-strings, usage ex.: R(255, 255, 255, 0.5)
+	// c: A 1920x1080 canvas.
+	// x: A 2D context for that canvas.
+
+	const T = Math.tan;
+	const x = context;
+	let skip = 5;
+
+	function u(t: number) {
+		let i, d, e;
+		if (!skip) {
+			skip = 5;
+			for (
+				T[2931] = i = 6001;
+				i--;
+				// @ts-ignore
+				T[i] & !(T[(d += i)] | T[d + e] | T[d - e]) &&
+				x.fillRect((i % 99) * 20, i / 5, 21, (T[d] = 21))
+			)
+				// @ts-ignore
+				(d = ((Math.random((e = 1)) * 4) | 0) * 2 - 1),
+					d > 1 ? (d = (d - 4) * 99) : (e = 99);
+		}
+		skip -= 1;
+		requestAnimationFrame(u);
+	}
+
+	requestAnimationFrame(u);
+
+	context.fillStyle = '#BA654F22';
 }
 
 function FullBleedScript({ id }: FullBleedScriptProps) {
