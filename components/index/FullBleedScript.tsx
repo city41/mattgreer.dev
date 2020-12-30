@@ -116,6 +116,43 @@ function animateFullBleed(args: FullBleedScriptProps) {
 	fullBleedRoot.appendChild(canvas);
 
 	const context = canvas.getContext('2d');
+
+	const S = Math.sin;
+
+	const BAR_COUNT = 200;
+	const totalBarSpace = Math.round(canvas.width / BAR_COUNT);
+	const barWidth = Math.round(totalBarSpace * 1);
+	const overlap = 20;
+
+	function u(t: number) {
+		context.clearRect(0, 0, canvas.width, canvas.height);
+		for (let i = 0; i < BAR_COUNT; i++) {
+			// @ts-ignore
+			let o = S(S(t * (i + 1)) * (S(t) - 0.5)) * (window.xxx ?? 200);
+			o = S(i / 40) * (canvas.height / 4);
+			let x = i * totalBarSpace;
+
+			// context.fillStyle =
+			// 	i === 0 ? 'yellow' : i === BAR_COUNT - 1 ? 'yellow' : 'white';
+
+			context.fillStyle = 'rgba(255, 255, 200, 0.08)';
+			context.fillRect(x, 0, barWidth, canvas.height / 2 + o + overlap);
+
+			context.fillStyle = 'rgba(100, 100, 255, 0.08)';
+			context.fillRect(
+				x,
+				canvas.height / 2 + o - overlap,
+				barWidth,
+				canvas.height / 2 - o + overlap
+			);
+		}
+
+		setTimeout(() => {
+			requestAnimationFrame(u);
+		}, 1000);
+	}
+
+	requestAnimationFrame(u);
 }
 
 function FullBleedScript(props: FullBleedScriptProps) {
