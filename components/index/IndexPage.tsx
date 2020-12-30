@@ -10,6 +10,8 @@ import styles from './IndexPage.module.css';
 import headerStyles from '../Header.module.css';
 import { FullBleedScript } from './FullBleedScript';
 
+import otterPng from './otter.png';
+
 type IndexPageProps = {
 	items: PortfolioItem[];
 };
@@ -37,7 +39,7 @@ function IndexPage({ items }: IndexPageProps) {
 				id={FULL_BLEED_ROOT_ID}
 				className={clsx(
 					styles.mainBleed,
-					'relative flex flex-col items-center justify-between text-white bg-fixed bg-focal-alt'
+					'relative flex flex-col items-center justify-between text-white bg-fixed bg-focal-alt overflow-x-hidden'
 				)}
 			>
 				<nav
@@ -122,6 +124,7 @@ function IndexPage({ items }: IndexPageProps) {
 				rootId={FULL_BLEED_ROOT_ID}
 				titleId={FULL_BLEED_TITLE_ID}
 				nextInPageId={INTRO_ROOT_ID}
+				floatingImgSrc={otterPng}
 			/>
 		</>
 	);
