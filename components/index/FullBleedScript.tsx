@@ -142,17 +142,30 @@ function animateFullBleed(args: FullBleedScriptProps) {
 		context.fill();
 	}
 
-	function drawWave(t: number) {
-		tick += 0.05;
-		context.clearRect(0, 0, canvas.width, canvas.height);
-		for (let i = 0; i < BAR_COUNT; i++) {
-			let leftWaveHeight =
-				S((i + tick) / (BAR_COUNT / 10)) * (canvas.height / 4);
-			leftWaveHeight /= (i + 1) * 0.04;
+	function getWaveHeight(seed: number): number {
+		const height =
+			(Math.sin((seed + tick) / (BAR_COUNT / 10)) * canvas.height) / 4;
 
-			let rightWaveHeight =
-				S((i + 1 + tick) / (BAR_COUNT / 10)) * (canvas.height / 4);
-			rightWaveHeight /= (i + 2) * 0.04;
+		return height / ((seed + 1) * 0.04);
+	}
+
+	let last;
+
+	function drawWave(timestamp: number) {
+		if (last === undefined) {
+			last = timestamp;
+		}
+
+		const delta = timestamp - last;
+		last = timestamp;
+
+		tick += 0.005 * delta;
+
+		context.clearRect(0, 0, canvas.width, canvas.height);
+
+		for (let i = 0; i < BAR_COUNT; i++) {
+			const leftWaveHeight = getWaveHeight(i);
+			const rightWaveHeight = getWaveHeight(i + 1);
 
 			const x = i * barWidth;
 
