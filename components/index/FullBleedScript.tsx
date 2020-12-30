@@ -120,31 +120,24 @@ function animateFullBleed(args: FullBleedScriptProps) {
 	const S = Math.sin;
 
 	const BAR_COUNT = 100;
-	const totalBarSpace = Math.round(canvas.width / BAR_COUNT);
-	const barWidth = Math.round(totalBarSpace * 1);
-	const overlap = 10;
+	const barWidth = Math.round(canvas.width / BAR_COUNT);
+	const yOverlap = 20;
 	let tick = 0;
 
 	const waveOffset = canvas.height * 0.4;
 
-	function drawUpperPolygon(x: number, leftY: number, rightY: number) {
+	function drawPolygon(
+		x: number,
+		baseY: number,
+		overlap: number,
+		leftY: number,
+		rightY: number
+	) {
 		context.beginPath();
-		context.moveTo(x, 0);
-		context.lineTo(x, leftY + waveOffset);
-		context.lineTo(x + barWidth, rightY + waveOffset);
-		context.lineTo(x + barWidth, 0);
-		context.closePath();
-		context.fill();
-	}
-
-	function drawLowerPolygon(x: number, leftY: number, rightY: number) {
-		const h = canvas.height;
-
-		context.beginPath();
-		context.moveTo(x, h);
-		context.lineTo(x, leftY + waveOffset);
-		context.lineTo(x + barWidth, rightY + waveOffset);
-		context.lineTo(x + barWidth, h);
+		context.moveTo(x, baseY);
+		context.lineTo(x, leftY + waveOffset + overlap);
+		context.lineTo(x + barWidth, rightY + waveOffset + overlap);
+		context.lineTo(x + barWidth, baseY);
 		context.closePath();
 		context.fill();
 	}
@@ -161,13 +154,13 @@ function animateFullBleed(args: FullBleedScriptProps) {
 				S((i + 1 + tick) / (BAR_COUNT / 10)) * (canvas.height / 4);
 			rightWaveHeight /= (i + 2) * 0.04;
 
-			const x = i * totalBarSpace;
+			const x = i * barWidth;
 
 			context.fillStyle = 'rgba(255, 255, 255, 0.05)';
-			drawUpperPolygon(x, leftWaveHeight + overlap, rightWaveHeight + overlap);
+			drawPolygon(x, 0, yOverlap, leftWaveHeight, rightWaveHeight);
 
 			context.fillStyle = 'rgba(255, 255, 255, 0.08)';
-			drawLowerPolygon(x, leftWaveHeight, rightWaveHeight);
+			drawPolygon(x, canvas.height, 0, leftWaveHeight, rightWaveHeight);
 		}
 
 		requestAnimationFrame(drawWave);
