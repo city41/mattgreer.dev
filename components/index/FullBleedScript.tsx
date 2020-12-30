@@ -121,10 +121,22 @@ function animateFullBleed(args: FullBleedScriptProps) {
 	const S = Math.sin;
 
 	const BAR_COUNT = 200;
-	const barWidth = Math.round(canvas.width / BAR_COUNT);
+	let barWidth = Math.ceil(canvas.width / BAR_COUNT);
 	const yOverlap = 20;
 	const tickRate = 0.003;
 	let tick = 0;
+
+	window.addEventListener('resize', () => {
+		if (isInMobileMode(fullBleedRoot)) {
+			canvas.style.display = 'none';
+		} else {
+			canvas.width = window.innerWidth;
+			canvas.height = window.innerHeight;
+			barWidth = Math.ceil(canvas.width / BAR_COUNT);
+
+			canvas.style.display = 'block';
+		}
+	});
 
 	// draw the polygons just slightly bigger so they overlap a bit.
 	// since all colors are opaque, this won't cause any ill effects, and helps
@@ -205,6 +217,13 @@ function animateFullBleed(args: FullBleedScriptProps) {
 
 		const delta = timestamp - last;
 		last = timestamp;
+
+		if (isInMobileMode(fullBleedRoot)) {
+			setTimeout(() => {
+				requestAnimationFrame(drawWave);
+			}, 1000);
+			return;
+		}
 
 		tick += tickRate * delta;
 
