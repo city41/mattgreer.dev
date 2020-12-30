@@ -2,9 +2,9 @@
     @apply h-screen;
 }
 
-@media (max-width: 639px) {
+@media (max-width: 780px) {
     .mainBleed {
-        height: 30vh;
+        height: 50vh;
     }
 }
 
@@ -12,7 +12,7 @@
     --size: 6px;
     --up-down-amount: 20px;
 
-    @apply hidden sm:inline-block border-white;
+    @apply border-white;
 
     border-width: 0 var(--size) var(--size) 0;
     padding: var(--size);

@@ -24,7 +24,7 @@ function animateFullBleed(args: FullBleedScriptProps) {
 	function isInMobileMode(root: HTMLDivElement): boolean {
 		const { height } = root.getBoundingClientRect();
 
-		return height < window.innerHeight / 2;
+		return height < window.innerHeight * 0.75;
 	}
 
 	const fullBleedRoot = document.getElementById(rootId) as HTMLDivElement;
@@ -52,7 +52,10 @@ function animateFullBleed(args: FullBleedScriptProps) {
 
 	if (nextInPage) {
 		nextInPage.classList.remove('mt-24');
-		nextInPage.classList.add('-mt-72');
+		nextInPage.style.setProperty(
+			'margin-top',
+			`-${Math.round(window.innerHeight / 3)}px`
+		);
 
 		let scrollTop;
 		let ticking = false;
@@ -128,16 +131,14 @@ function animateFullBleed(args: FullBleedScriptProps) {
 		const EDGE_FILL = '#c9765f';
 		const IMG_FILL = '#aa391f';
 
-		const SQUARE_SIZE = 10;
-
-		let drawn: boolean[][] = [[]];
+		const SQUARE_SIZE = 20;
 
 		const MAX_X = Math.floor(canvas.width / SQUARE_SIZE);
 		const MAX_Y = Math.floor(canvas.height / SQUARE_SIZE);
 
 		console.log({ MAX_X, MAX_Y });
 
-		const particles: Array<Particle> = [
+		let particles: Array<Particle> = [
 			{
 				x: 0,
 				y: 0,
@@ -145,30 +146,28 @@ function animateFullBleed(args: FullBleedScriptProps) {
 				currentAlpha: 0,
 				targetAlpha: Math.random(),
 			},
-			{
-				x: MAX_X,
-				y: MAX_Y,
-				color: EDGE_FILL,
-				currentAlpha: 0,
-				targetAlpha: Math.random(),
-			},
-			{
-				x: MAX_X,
-				y: 0,
-				color: EDGE_FILL,
-				currentAlpha: 0,
-				targetAlpha: Math.random(),
-			},
-			{
-				x: 0,
-				y: MAX_Y,
-				color: EDGE_FILL,
-				currentAlpha: 0,
-				targetAlpha: Math.random(),
-			},
+			// {
+			// 	x: MAX_X,
+			// 	y: MAX_Y,
+			// 	color: EDGE_FILL,
+			// 	currentAlpha: 0,
+			// 	targetAlpha: Math.random(),
+			// },
+			// {
+			// 	x: MAX_X,
+			// 	y: 0,
+			// 	color: EDGE_FILL,
+			// 	currentAlpha: 0,
+			// 	targetAlpha: Math.random(),
+			// },
+			// {
+			// 	x: 0,
+			// 	y: MAX_Y,
+			// 	color: EDGE_FILL,
+			// 	currentAlpha: 0,
+			// 	targetAlpha: Math.random(),
+			// },
 		];
-
-		let squaresPerDraw = 1;
 
 		function isInBounds(p: Point, bounds: Bounds): boolean {
 			const x = p.x * SQUARE_SIZE;
@@ -235,8 +234,15 @@ function animateFullBleed(args: FullBleedScriptProps) {
 			return pixel !== 0 && pixel !== undefined;
 		}
 
-		function doesParticleHave(x: number, y: number): boolean {
-			return particles.some((s) => s.x === x && s.y === y);
+		function doesParticleHave(
+			x: number,
+			y: number,
+			otherParticles: Array<Particle>
+		): boolean {
+			return (
+				particles.some((p) => p.x === x && p.y === y) ||
+				otherParticles.some((p) => p.x === x && p.y === y)
+			);
 		}
 
 		function getColorAndAlpha(x: number, y: number) {
@@ -250,62 +256,94 @@ function animateFullBleed(args: FullBleedScriptProps) {
 			}
 		}
 
+		const totalParticles = MAX_X * MAX_Y;
+		const doneParticles = new Set<Particle>();
+
 		function drawSquare() {
-			for (let i = 0; i < squaresPerDraw && particles.length > 0; ++i) {
-				const randomIndex = Math.floor(Math.random() * particles.length);
-				const particle = particles.splice(randomIndex, 1)[0];
+			const newParticles: Array<Particle> = [];
+
+			for (let i = 0; i < particles.length; ++i) {
+				const particle = particles[i];
 
 				const { x, y } = particle;
 
-				if (!isInBounds(particle, titleBounds)) {
-					context.globalAlpha = 1;
-
-					if (isEdgeOfBounds(particle, titleBounds)) {
-						context.fillStyle = EDGE_FILL;
-					} else if (isImgBounds(particle, imgData)) {
-						context.fillStyle = IMG_FILL;
-					} else {
-						context.fillStyle = COMMON_FILL;
-						context.globalAlpha = Math.random();
-					}
-
+				if (particle.currentAlpha < particle.targetAlpha) {
+					context.globalAlpha = particle.currentAlpha;
+					context.fillStyle = particle.color;
+					context.clearRect(
+						x * SQUARE_SIZE,
+						y * SQUARE_SIZE,
+						SQUARE_SIZE,
+						SQUARE_SIZE
+					);
 					context.fillRect(
 						x * SQUARE_SIZE,
 						y * SQUARE_SIZE,
 						SQUARE_SIZE,
 						SQUARE_SIZE
 					);
+
+					particle.currentAlpha += 0.01;
 				}
 
-				drawn[y] = drawn[y] ?? [];
-				drawn[y][x] = true;
+				if (
+					particle.currentAlpha >= particle.targetAlpha &&
+					!doneParticles.has(particle)
+				) {
+					doneParticles.add(particle);
+				}
 
-				if (x < MAX_X - 1 && !doesParticleHave(x + 1, y)) {
+				if (x < MAX_X - 1 && !doesParticleHave(x + 1, y, newParticles)) {
 					const { color, targetAlpha } = getColorAndAlpha(x + 1, y);
-					particles.push({ x: x + 1, y, color, currentAlpha: 0, targetAlpha });
+					newParticles.push({
+						x: x + 1,
+						y,
+						color,
+						currentAlpha: 0,
+						targetAlpha,
+					});
 				}
 
-				if (x > 0 && !doesParticleHave(x - 1, y)) {
+				if (x > 0 && !doesParticleHave(x - 1, y, newParticles)) {
 					const { color, targetAlpha } = getColorAndAlpha(x - 1, y);
-					particles.push({ x: x - 1, y, color, currentAlpha: 0, targetAlpha });
+					newParticles.push({
+						x: x - 1,
+						y,
+						color,
+						currentAlpha: 0,
+						targetAlpha,
+					});
 				}
 
-				if (y < MAX_Y - 1 && !doesParticleHave(x, y + 1)) {
+				if (y < MAX_Y - 1 && !doesParticleHave(x, y + 1, newParticles)) {
 					const { color, targetAlpha } = getColorAndAlpha(x, y + 1);
-					particles.push({ x, y: y + 1, color, currentAlpha: 0, targetAlpha });
+					newParticles.push({
+						x,
+						y: y + 1,
+						color,
+						currentAlpha: 0,
+						targetAlpha,
+					});
 				}
 
-				if (y > 0 && !doesParticleHave(x, y - 1)) {
+				if (y > 0 && !doesParticleHave(x, y - 1, newParticles)) {
 					const { color, targetAlpha } = getColorAndAlpha(x, y - 1);
-					particles.push({ x, y: y - 1, color, currentAlpha: 0, targetAlpha });
+					newParticles.push({
+						x,
+						y: y - 1,
+						color,
+						currentAlpha: 0,
+						targetAlpha,
+					});
 				}
 			}
 
-			if (particles.length > 0) {
-				squaresPerDraw += 1;
-				setTimeout(() => {
-					requestAnimationFrame(drawSquare);
-				}, 1);
+			particles = particles.concat(newParticles);
+
+			if (doneParticles.size < totalParticles) {
+				// setTimeout(() => {
+				requestAnimationFrame(drawSquare);
+				// }, 1);
 			}
 		}
 

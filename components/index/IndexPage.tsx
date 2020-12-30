@@ -58,11 +58,14 @@ function IndexPage({ items }: IndexPageProps) {
 					id={FULL_BLEED_TITLE_ID}
 					className="flex-1 flex flex-col justify-center items-center z-10"
 				>
-					<h1 className="text-5xl sm:text-7xl font-bold">Matt Greer</h1>
+					<h1 className="text-5xl md:text-7xl font-bold">Matt Greer</h1>
 					<h2 className="sm:text-2xl">software creator</h2>
 				</div>
 				<div
-					className={clsx(styles.moreArrow, 'justify-self-end z-10')}
+					className={clsx(
+						styles.moreArrow,
+						'justify-self-end z-10 hidden md:inline-block'
+					)}
 					aria-label="scroll down to see more"
 				/>
 			</div>
