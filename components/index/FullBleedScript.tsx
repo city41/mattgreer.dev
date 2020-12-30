@@ -122,6 +122,7 @@ function animateFullBleed(args: FullBleedScriptProps) {
 	const BAR_COUNT = 100;
 	const barWidth = Math.round(canvas.width / BAR_COUNT);
 	const yOverlap = 20;
+	const tickRate = 0.005;
 	let tick = 0;
 
 	const waveOffset = canvas.height * 0.4;
@@ -159,7 +160,7 @@ function animateFullBleed(args: FullBleedScriptProps) {
 		const delta = timestamp - last;
 		last = timestamp;
 
-		tick += 0.005 * delta;
+		tick += tickRate * delta;
 
 		context.clearRect(0, 0, canvas.width, canvas.height);
 
