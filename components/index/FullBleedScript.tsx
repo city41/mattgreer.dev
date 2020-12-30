@@ -119,43 +119,61 @@ function animateFullBleed(args: FullBleedScriptProps) {
 
 	const S = Math.sin;
 
-	const BAR_COUNT = 400;
+	const BAR_COUNT = 100;
 	const totalBarSpace = Math.round(canvas.width / BAR_COUNT);
 	const barWidth = Math.round(totalBarSpace * 1);
-	const overlap = 2;
+	const overlap = 10;
 	let tick = 0;
 
-	function u(t: number) {
+	const waveOffset = canvas.height * 0.4;
+
+	function drawUpperPolygon(x: number, leftY: number, rightY: number) {
+		context.beginPath();
+		context.moveTo(x, 0);
+		context.lineTo(x, leftY + waveOffset);
+		context.lineTo(x + barWidth, rightY + waveOffset);
+		context.lineTo(x + barWidth, 0);
+		context.closePath();
+		context.fill();
+	}
+
+	function drawLowerPolygon(x: number, leftY: number, rightY: number) {
+		const h = canvas.height;
+
+		context.beginPath();
+		context.moveTo(x, h);
+		context.lineTo(x, leftY + waveOffset);
+		context.lineTo(x + barWidth, rightY + waveOffset);
+		context.lineTo(x + barWidth, h);
+		context.closePath();
+		context.fill();
+	}
+
+	function drawWave(t: number) {
 		tick += 0.05;
 		context.clearRect(0, 0, canvas.width, canvas.height);
 		for (let i = 0; i < BAR_COUNT; i++) {
-			let waveHeight = S((i + tick) / (BAR_COUNT / 10)) * (canvas.height / 4);
-			waveHeight /= (i + 1) * 0.015;
+			let leftWaveHeight =
+				S((i + tick) / (BAR_COUNT / 10)) * (canvas.height / 4);
+			leftWaveHeight /= (i + 1) * 0.04;
+
+			let rightWaveHeight =
+				S((i + 1 + tick) / (BAR_COUNT / 10)) * (canvas.height / 4);
+			rightWaveHeight /= (i + 2) * 0.04;
+
 			const x = i * totalBarSpace;
 
 			context.fillStyle = 'rgba(255, 255, 255, 0.05)';
-			context.fillRect(
-				x,
-				0,
-				barWidth,
-				canvas.height / 2 + waveHeight + overlap
-			);
+			drawUpperPolygon(x, leftWaveHeight + overlap, rightWaveHeight + overlap);
 
 			context.fillStyle = 'rgba(255, 255, 255, 0.08)';
-			context.fillRect(
-				x,
-				canvas.height / 2 + waveHeight - overlap,
-				barWidth,
-				canvas.height / 2 - waveHeight + overlap
-			);
+			drawLowerPolygon(x, leftWaveHeight, rightWaveHeight);
 		}
 
-		// setTimeout(() => {
-		requestAnimationFrame(u);
-		// }, 1000);
+		requestAnimationFrame(drawWave);
 	}
 
-	requestAnimationFrame(u);
+	requestAnimationFrame(drawWave);
 }
 
 function FullBleedScript(props: FullBleedScriptProps) {
