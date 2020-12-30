@@ -119,37 +119,40 @@ function animateFullBleed(args: FullBleedScriptProps) {
 
 	const S = Math.sin;
 
-	const BAR_COUNT = 200;
+	const BAR_COUNT = 400;
 	const totalBarSpace = Math.round(canvas.width / BAR_COUNT);
 	const barWidth = Math.round(totalBarSpace * 1);
-	const overlap = 20;
+	const overlap = 2;
+	let tick = 0;
 
 	function u(t: number) {
+		tick += 0.05;
 		context.clearRect(0, 0, canvas.width, canvas.height);
 		for (let i = 0; i < BAR_COUNT; i++) {
-			// @ts-ignore
-			let o = S(S(t * (i + 1)) * (S(t) - 0.5)) * (window.xxx ?? 200);
-			o = S(i / 40) * (canvas.height / 4);
-			let x = i * totalBarSpace;
+			let waveHeight = S((i + tick) / 40) * (canvas.height / 4);
+			waveHeight /= (i + 1) * 0.015;
+			const x = i * totalBarSpace;
 
-			// context.fillStyle =
-			// 	i === 0 ? 'yellow' : i === BAR_COUNT - 1 ? 'yellow' : 'white';
-
-			context.fillStyle = 'rgba(255, 255, 200, 0.08)';
-			context.fillRect(x, 0, barWidth, canvas.height / 2 + o + overlap);
-
-			context.fillStyle = 'rgba(100, 100, 255, 0.08)';
+			context.fillStyle = 'rgba(255, 255, 255, 0.05)';
 			context.fillRect(
 				x,
-				canvas.height / 2 + o - overlap,
+				0,
 				barWidth,
-				canvas.height / 2 - o + overlap
+				canvas.height / 2 + waveHeight + overlap
+			);
+
+			context.fillStyle = 'rgba(255, 255, 255, 0.08)';
+			context.fillRect(
+				x,
+				canvas.height / 2 + waveHeight - overlap,
+				barWidth,
+				canvas.height / 2 - waveHeight + overlap
 			);
 		}
 
-		setTimeout(() => {
-			requestAnimationFrame(u);
-		}, 1000);
+		// setTimeout(() => {
+		requestAnimationFrame(u);
+		// }, 1000);
 	}
 
 	requestAnimationFrame(u);
