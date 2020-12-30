@@ -129,7 +129,7 @@ function animateFullBleed(args: FullBleedScriptProps) {
 		tick += 0.05;
 		context.clearRect(0, 0, canvas.width, canvas.height);
 		for (let i = 0; i < BAR_COUNT; i++) {
-			let waveHeight = S((i + tick) / 40) * (canvas.height / 4);
+			let waveHeight = S((i + tick) / (BAR_COUNT / 10)) * (canvas.height / 4);
 			waveHeight /= (i + 1) * 0.015;
 			const x = i * totalBarSpace;
 
