@@ -119,10 +119,10 @@ function animateFullBleed(args: FullBleedScriptProps) {
 
 	const S = Math.sin;
 
-	const BAR_COUNT = 80;
+	const BAR_COUNT = 200;
 	const barWidth = Math.round(canvas.width / BAR_COUNT);
-	const yOverlap = 0;
-	const tickRate = 0.0008;
+	const yOverlap = 20;
+	const tickRate = 0.005;
 	let tick = 0;
 
 	const waveOffset = canvas.height * 0.4;
@@ -143,11 +143,13 @@ function animateFullBleed(args: FullBleedScriptProps) {
 		context.fill();
 	}
 
+	let heightTweak = 0.5;
+
 	function getWaveHeight(seed: number): number {
 		const height =
 			(Math.sin((seed + tick) / (BAR_COUNT / 10)) * canvas.height) / 4;
 
-		return height / ((seed + 1) * 0.04);
+		return (height * Math.sin(heightTweak) * seed) / BAR_COUNT; // * Math.cos((tick * seed) / BAR_COUNT); // / ((seed + 1) * 0.04);
 	}
 
 	let last;
@@ -163,6 +165,8 @@ function animateFullBleed(args: FullBleedScriptProps) {
 		tick += tickRate * delta;
 
 		context.clearRect(0, 0, canvas.width, canvas.height);
+
+		heightTweak += Math.random() / 50;
 
 		for (let i = 0; i < BAR_COUNT; i++) {
 			const leftWaveHeight = getWaveHeight(i);
