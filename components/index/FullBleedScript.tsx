@@ -29,9 +29,7 @@ function animateFullBleed(args: FullBleedScriptProps) {
 	} = args;
 
 	function isInMobileMode(root: HTMLDivElement): boolean {
-		const { height } = root.getBoundingClientRect();
-
-		return height < window.innerHeight * 0.75;
+		return window.innerWidth < 800;
 	}
 
 	const fullBleedRoot = document.getElementById(
@@ -141,6 +139,7 @@ function animateFullBleed(args: FullBleedScriptProps) {
 	window.addEventListener('resize', () => {
 		if (isInMobileMode(fullBleedRoot)) {
 			canvas.style.display = 'none';
+			fullBleedRoot.style.removeProperty('height');
 		} else {
 			fullBleedRoot.style.setProperty('height', `${window.innerHeight}px`);
 			canvas.width = window.innerWidth;
