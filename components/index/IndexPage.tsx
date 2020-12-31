@@ -11,6 +11,7 @@ import headerStyles from '../Header.module.css';
 import { FullBleedScript } from './FullBleedScript';
 
 import otterPng from './otter.png';
+import reflectionPng from './reflection.png';
 
 type IndexPageProps = {
 	items: PortfolioItem[];
@@ -125,6 +126,7 @@ function IndexPage({ items }: IndexPageProps) {
 				titleId={FULL_BLEED_TITLE_ID}
 				nextInPageId={INTRO_ROOT_ID}
 				floatingImgSrc={otterPng}
+				reflectionImgSrc={reflectionPng}
 			/>
 		</>
 	);

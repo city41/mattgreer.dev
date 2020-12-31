@@ -5,6 +5,7 @@ type FullBleedScriptProps = {
 	titleId: string;
 	nextInPageId: string;
 	floatingImgSrc: string;
+	reflectionImgSrc: string;
 };
 
 type Point = { x: number; y: number };
@@ -19,7 +20,13 @@ type Particle = {
 };
 
 function animateFullBleed(args: FullBleedScriptProps) {
-	const { rootId, titleId, nextInPageId, floatingImgSrc } = args;
+	const {
+		rootId,
+		titleId,
+		nextInPageId,
+		floatingImgSrc,
+		reflectionImgSrc,
+	} = args;
 
 	function isInMobileMode(root: HTMLDivElement): boolean {
 		const { height } = root.getBoundingClientRect();
@@ -175,9 +182,11 @@ function animateFullBleed(args: FullBleedScriptProps) {
 
 	const img = new Image();
 	img.src = floatingImgSrc;
+	const reflectionImg = new Image();
+	reflectionImg.src = reflectionImgSrc;
 
 	function drawFloater(waveOffset: number) {
-		if (!img.width) {
+		if (!img.width || !reflectionImg.width) {
 			return;
 		}
 
@@ -196,6 +205,21 @@ function animateFullBleed(args: FullBleedScriptProps) {
 		context.save();
 		context.translate(x, y);
 		context.rotate(angle);
+
+		const reflectionWidthTweakAmount =
+			reflectionImg.width * 0.2 * Math.abs(Math.sin(angle));
+
+		context.drawImage(
+			reflectionImg,
+			0,
+			0,
+			reflectionImg.width,
+			reflectionImg.height,
+			-reflectionWidthTweakAmount / 2,
+			32,
+			reflectionImg.width * 0.8 + reflectionWidthTweakAmount,
+			reflectionImg.height * 0.8
+		);
 
 		context.drawImage(
 			img,
