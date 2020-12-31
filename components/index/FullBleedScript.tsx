@@ -118,7 +118,10 @@ function animateFullBleed(args: FullBleedScriptProps) {
 
 	const context = canvas.getContext('2d');
 
-	const S = Math.sin;
+	const seaGradient = context.createLinearGradient(0, 0, 0, canvas.height);
+	seaGradient.addColorStop(0, '#118a8b');
+	seaGradient.addColorStop(0.25, '#118a8b');
+	seaGradient.addColorStop(1, '#063232');
 
 	const BAR_COUNT = 200;
 	let barWidth = Math.ceil(canvas.width / BAR_COUNT);
@@ -165,7 +168,7 @@ function animateFullBleed(args: FullBleedScriptProps) {
 		const height =
 			(Math.sin((seed + tick) / (BAR_COUNT / 10)) * canvas.height) / 4;
 
-		return (height * Math.sin(heightTweak) * seed) / BAR_COUNT; // * Math.cos((tick * seed) / BAR_COUNT); // / ((seed + 1) * 0.04);
+		return (height * Math.sin(heightTweak) * seed) / BAR_COUNT / 2; // * Math.cos((tick * seed) / BAR_COUNT); // / ((seed + 1) * 0.04);
 	}
 
 	const floaterIndex = Math.floor(BAR_COUNT * 0.75);
@@ -229,7 +232,7 @@ function animateFullBleed(args: FullBleedScriptProps) {
 
 		context.clearRect(0, 0, canvas.width, canvas.height);
 
-		heightTweak += Math.random() / 50;
+		heightTweak += 1 / 100;
 
 		const waveOffset = canvas.height * 0.4;
 
@@ -239,7 +242,7 @@ function animateFullBleed(args: FullBleedScriptProps) {
 
 			const x = i * barWidth;
 
-			context.fillStyle = '#cb6b53';
+			context.fillStyle = '#489393';
 
 			drawPolygon(
 				x,
@@ -249,7 +252,8 @@ function animateFullBleed(args: FullBleedScriptProps) {
 				rightWaveHeight + waveOffset
 			);
 
-			context.fillStyle = '#B04D34';
+			context.fillStyle = seaGradient;
+
 			drawPolygon(
 				x,
 				leftWaveHeight + waveOffset,

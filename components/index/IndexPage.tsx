@@ -39,7 +39,7 @@ function IndexPage({ items }: IndexPageProps) {
 				id={FULL_BLEED_ROOT_ID}
 				className={clsx(
 					styles.mainBleed,
-					'relative flex flex-col items-center justify-between text-white bg-fixed bg-focal-alt overflow-x-hidden'
+					'relative flex flex-col items-center justify-between text-white bg-fixed overflow-x-hidden'
 				)}
 			>
 				<nav
@@ -56,7 +56,7 @@ function IndexPage({ items }: IndexPageProps) {
 				</nav>
 				<div
 					id={FULL_BLEED_TITLE_ID}
-					className="flex-1 flex flex-col justify-center items-center z-10"
+					className="flex-1 flex flex-col justify-center items-center z-10 md:mt-48"
 				>
 					<h1 className="text-5xl md:text-7xl font-bold">Matt Greer</h1>
 					<h2 className="sm:text-2xl">software creator</h2>

@@ -1,5 +1,6 @@
 .mainBleed {
     @apply h-screen;
+    background-color: #B8ECFF;
 }
 
 @media (max-width: 780px) {
