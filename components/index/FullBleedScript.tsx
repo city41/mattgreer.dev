@@ -205,8 +205,8 @@ function animateFullBleed(args: FullBleedScriptProps) {
 			img.height,
 			0,
 			0,
-			img.width / 14,
-			img.height / 14
+			img.width * 0.8,
+			img.height * 0.8
 		);
 		context.restore();
 	}
