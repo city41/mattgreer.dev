@@ -116,6 +116,7 @@ function animateFullBleed(args: FullBleedScriptProps) {
 	const canvas = document.createElement('canvas');
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
+	fullBleedRoot.style.setProperty('height', `${window.innerHeight}px`);
 	canvas.style.setProperty('position', 'absolute');
 	canvas.style.setProperty('z-index', '0');
 	canvas.style.setProperty('top', '0');
@@ -140,6 +141,7 @@ function animateFullBleed(args: FullBleedScriptProps) {
 		if (isInMobileMode(fullBleedRoot)) {
 			canvas.style.display = 'none';
 		} else {
+			fullBleedRoot.style.setProperty('height', `${window.innerHeight}px`);
 			canvas.width = window.innerWidth;
 			canvas.height = window.innerHeight;
 			barWidth = Math.ceil(canvas.width / BAR_COUNT);
