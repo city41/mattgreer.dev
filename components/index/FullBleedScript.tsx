@@ -135,6 +135,7 @@ function animateFullBleed(args: FullBleedScriptProps) {
 	let barWidth = Math.ceil(canvas.width / BAR_COUNT);
 	const yOverlap = 20;
 	const tickRate = 0.003;
+	const reflectionRate = 0.003;
 	let tick = 0;
 
 	window.addEventListener('resize', () => {
@@ -187,7 +188,7 @@ function animateFullBleed(args: FullBleedScriptProps) {
 	const reflectionImg = new Image();
 	reflectionImg.src = reflectionImgSrc;
 
-	function drawFloater(waveOffset: number) {
+	function drawFloater(waveOffset: number, tick: number) {
 		if (!img.width || !reflectionImg.width) {
 			return;
 		}
@@ -208,20 +209,21 @@ function animateFullBleed(args: FullBleedScriptProps) {
 		context.translate(x, y);
 		context.rotate(angle);
 
-		const reflectionWidthTweakAmount =
-			reflectionImg.width * 0.2 * Math.abs(Math.sin(angle));
+		for (let y = 5; y < reflectionImg.height; ++y) {
+			const rowXOffset = Math.sin(y / 4 + tick * 0.5) * 8;
 
-		context.drawImage(
-			reflectionImg,
-			0,
-			0,
-			reflectionImg.width,
-			reflectionImg.height,
-			-reflectionWidthTweakAmount / 2,
-			32,
-			reflectionImg.width * 0.8 + reflectionWidthTweakAmount,
-			reflectionImg.height * 0.8
-		);
+			context.drawImage(
+				reflectionImg,
+				0,
+				y,
+				reflectionImg.width,
+				1,
+				8 + rowXOffset,
+				24 + y,
+				reflectionImg.width * 0.7,
+				1
+			);
+		}
 
 		context.drawImage(
 			img,
@@ -289,7 +291,7 @@ function animateFullBleed(args: FullBleedScriptProps) {
 			);
 		}
 
-		drawFloater(waveOffset);
+		drawFloater(waveOffset, tick);
 
 		requestAnimationFrame(drawWave);
 	}
