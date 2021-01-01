@@ -1,0 +1,23 @@
+.mainBleed {
+    @apply h-screen bg-focal-alt;
+}
+
+@media (max-width: 780px) {
+    .mainBleed {
+        height: 50vh;
+    }
+}
+
+.moreArrow {
+    --size: 6px;
+    --up-down-amount: 20px;
+
+    @apply border-white;
+
+    border-width: 0 var(--size) var(--size) 0;
+    padding: var(--size);
+
+    margin-bottom: calc(var(--size) * 3);
+
+    transform: rotate(45deg);
+}
