@@ -18,11 +18,14 @@ type IndexPageProps = {
 	items: PortfolioItem[];
 };
 
-function NavLink({ href, children }) {
+/**
+ * NOTE: this is meant to mimic the NavLink found in Root as far as spacing/size/etc
+ */
+function IndexPageNavLink({ href, children }) {
 	return (
 		<li style={{ marginBottom: -2 }}>
 			<Link href={href} passHref>
-				<a className="border-b-2 px-1 sm:px-2 h-full grid place-items-center text-white border-transparent hover:bg-bg-fade">
+				<a className="border-b-2 px-1 sm:px-2 py-3 h-full grid place-items-center text-white border-transparent hover:bg-focal-alt-fade">
 					{children}
 				</a>
 			</Link>
@@ -47,14 +50,16 @@ function IndexPage({ items }: IndexPageProps) {
 			>
 				<nav
 					className={clsx(
-						'flex flex-row px-2 sm:px-4 py-4 items-stretch justify-between self-end z-10'
+						'flex flex-row px-2 sm:px-4 items-stretch justify-between self-end z-10'
 					)}
 				>
 					<ul className="flex flex-row space-x-1 sm:space-x-4 text-xs items-stretch">
-						<NavLink href="/projects">Projects</NavLink>
-						<NavLink href="/articles">Articles</NavLink>
-						<NavLink href="/about">About</NavLink>
-						<NavLink href="/MattGreer_resume.pdf">Resume</NavLink>
+						<IndexPageNavLink href="/projects">Projects</IndexPageNavLink>
+						<IndexPageNavLink href="/articles">Articles</IndexPageNavLink>
+						<IndexPageNavLink href="/about">About</IndexPageNavLink>
+						<IndexPageNavLink href="/MattGreer_resume.pdf">
+							Resume
+						</IndexPageNavLink>
 					</ul>
 				</nav>
 				<div
