@@ -55,6 +55,7 @@ function animateFullBleed(args: FullBleedScriptProps) {
 		return;
 	}
 
+	const title = fullBleedRoot.querySelector(`#${titleId}`) as HTMLDivElement;
 	const nextInPage = document.getElementById(nextInPageId);
 
 	if (nextInPage) {
@@ -80,7 +81,7 @@ function animateFullBleed(args: FullBleedScriptProps) {
 						'transform',
 						`translateY(-${margin}px)`
 					);
-					canvas.style.setProperty('z-index', '0');
+					title.style.setProperty('z-index', '100');
 
 					ticking = false;
 				});
@@ -89,28 +90,6 @@ function animateFullBleed(args: FullBleedScriptProps) {
 			}
 		});
 	}
-
-	const title = fullBleedRoot.querySelector(`#${titleId}`);
-	const titleChildren = Array.from(title.children);
-
-	const titleBounds = titleChildren.reduce<Bounds>(
-		(buildingBounds, child) => {
-			const childBounds = child.getBoundingClientRect();
-
-			return {
-				left: Math.min(buildingBounds.left, childBounds.left) - 20,
-				right: Math.max(buildingBounds.right, childBounds.right) + 20,
-				top: Math.min(buildingBounds.top, childBounds.top),
-				bottom: Math.max(buildingBounds.bottom, childBounds.bottom) + 20,
-			};
-		},
-		{
-			left: Number.MAX_SAFE_INTEGER,
-			right: Number.MIN_SAFE_INTEGER,
-			top: Number.MAX_SAFE_INTEGER,
-			bottom: Number.MIN_SAFE_INTEGER,
-		}
-	);
 
 	const canvas = document.createElement('canvas');
 	canvas.width = window.innerWidth;
