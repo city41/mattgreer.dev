@@ -219,7 +219,7 @@ function animateFullBleed(args: FullBleedScriptProps) {
 				1,
 				rowXOffset - 5,
 				23 + y,
-				reflectionImg.width * 0.75,
+				reflectionImg.width * 0.8,
 				1
 			);
 		}
