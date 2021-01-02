@@ -119,7 +119,7 @@ function animateFullBleed(args: FullBleedScriptProps) {
 	seaGradient.addColorStop(0.25, '#118a8b');
 	seaGradient.addColorStop(1, '#063232');
 
-	const BAR_COUNT = 200;
+	const BAR_COUNT = 50;
 	let barWidth = Math.ceil(canvas.width / BAR_COUNT);
 	const yOverlap = 20;
 	const tickRate = 0.003;
