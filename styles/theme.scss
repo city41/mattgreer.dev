@@ -26,7 +26,7 @@
 
   --color-fg-h: 0;
   --color-fg-s: 0%;
-  --color-fg-l: 90%;
+  --color-fg-l: 80%;
 
   --color-focal-fade: hsl(var(--color-focal-h), var(--color-focal-s), calc(var(--color-focal-l) + var(--lighten)));
   --color-focal: hsl(var(--color-focal-h), var(--color-focal-s), var(--color-focal-l));
