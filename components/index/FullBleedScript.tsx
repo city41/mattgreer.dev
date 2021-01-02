@@ -81,7 +81,8 @@ function animateFullBleed(args: FullBleedScriptProps) {
 						'transform',
 						`translateY(-${margin}px)`
 					);
-					title.style.setProperty('z-index', '100');
+					title.style.setProperty('display', 'none');
+					title.style.setProperty('display', 'block');
 
 					ticking = false;
 				});
