@@ -33,7 +33,12 @@ function Feature({
 	} as CSSProperties;
 
 	return (
-		<div className={clsx(className, styles.feature, 'flex flex-row flex-wrap')}>
+		<div
+			className={clsx(
+				className,
+				'flex flex-row flex-wrap mx-4 sm:mx-16 md:mx-0'
+			)}
+		>
 			<div
 				className={clsx(styles.image, 'h-72 sm:h-96 w-full sm:w-1/2 sm:pr-8')}
 				style={style}
@@ -41,10 +46,12 @@ function Feature({
 			<div className="w-full sm:w-1/2 sm:pl-8">
 				<Link href={buildUrl(classification, slug)} passHref>
 					<a>
-						<h2 className="text-5xl font-bold">{title}</h2>
+						<h2 className="text-5xl font-bold mt-4 sm:mt-0 text-center sm:text-left">
+							{title}
+						</h2>
 					</a>
 				</Link>
-				<div className="mb-2 py-1 text-gray-500 text-xs mb-8">
+				<div className="mb-2 py-1 text-gray-500 text-xs mb-8 text-center sm:text-left">
 					{(date &&
 						!suppressDate &&
 						new Date(date).toLocaleDateString('en-us', {
@@ -55,7 +62,7 @@ function Feature({
 						type}
 				</div>
 				<p className="sm:text-2xl">{description}</p>
-				<ul className="flex flex-row flex-wrap -mx-2">
+				<ul className="flex flex-row flex-wrap -mx-2 mt-8">
 					{tags.map((t) => (
 						<li key={t}>
 							<Tag className="m-1" classification={classification}>
@@ -67,57 +74,6 @@ function Feature({
 			</div>
 		</div>
 	);
-
-	// return (
-	// 	<div
-	// 		className={clsx(
-	// 			className,
-	// 			styles.feature,
-	// 			'flex flex-row sm:items-stretch justify-center -mx-6 sm:justify-start'
-	// 		)}
-	// 		style={style}
-	// 	>
-	// 		<div
-	// 			className={clsx(
-	// 				styles.callout,
-	// 				'p-8 sm:p-12 w-72 sm:w-80 my-16 sm:my-0 flex flex-col justify-center text-white bg-black'
-	// 			)}
-	// 		>
-	// 			<Link href={buildUrl(classification, slug)} passHref>
-	// 				<a>
-	// 					<h2 className="text-2xl sm:text-3xl font-bold hover:underline">
-	// 						{title}
-	// 					</h2>
-	// 				</a>
-	// 			</Link>
-	// 			<div className="mb-2 py-1 text-gray-500 text-xs">
-	// 				{(date &&
-	// 					new Date(date).toLocaleDateString('en-us', {
-	// 						year: 'numeric',
-	// 						month: 'short',
-	// 						day: 'numeric',
-	// 					})) ||
-	// 					type}
-	// 			</div>
-	// 			<div className="text-sm mb-3">
-	// 				{description.map((paragraph) => (
-	// 					<p key={paragraph} className="my-4">
-	// 						{paragraph}
-	// 					</p>
-	// 				))}
-	// 			</div>
-	// 			<ul className="flex flex-row flex-wrap -mx-2">
-	// 				{tags.map((t) => (
-	// 					<li key={t}>
-	// 						<Tag className="m-1" classification={classification}>
-	// 							{t}
-	// 						</Tag>
-	// 					</li>
-	// 				))}
-	// 			</ul>
-	// 		</div>
-	// 	</div>
-	// );
 }
 
 export { Feature };

@@ -93,17 +93,11 @@ function IndexPage({ items }: IndexPageProps) {
 						'col-start-1 col-end-9 h-64 sm:h-auto sm:row-span-2 sm:row-start-1 sm:col-start-1 sm:col-end-5 self-stretch'
 					)}
 				/>
-				<div className="col-start-1 col-end-9 sm:row-start-2 sm:col-start-5 sm:col-end-8 sm:text-2xl space-y-8 leading-6 sm:leading-9">
+				<div className="col-start-1 col-end-9 sm:row-start-2 sm:col-start-5 sm:col-end-8 sm:text-2xl space-y-8 leading-6 sm:leading-9 sm:my-16">
 					<p>
 						<span className="text-4xl font-bold">Hi!</span> I'm Matt, a
 						freelance software engineer based in Michigan. I tend to focus on
-						web technologies, but enjoy working with all types of software.
-					</p>
-					<p>
-						Check out my{' '}
-						<FocalColorLink href="/projects">projects</FocalColorLink>,{' '}
-						<FocalColorLink href="/articles">articles</FocalColorLink>, or my{' '}
-						<ResumeLink />.
+						web technologies, but enjoy tackling all types of problems.
 					</p>
 					<p>
 						I am always looking for interesting projects. If you are in need of
@@ -115,15 +109,15 @@ function IndexPage({ items }: IndexPageProps) {
 					</p>
 				</div>
 			</div>
-			<div className="h-48 w-full bg-focal-alt text-white grid place-items-center text-3xl">
+			<div className="h-48 w-full bg-focal-alt text-white grid place-items-center text-2xl sm:text-3xl">
 				Some things I have created{' '}
 			</div>
 			<div className="flex flex-col space-y-48 max-w-6xl sm:mx-auto mt-16 sm:mt-32">
 				{items.map((item, index) => {
-					return <Feature key={item.slug} {...item} suppressDate />;
+					return <Feature key={item.slug} {...item} tags={[]} suppressDate />;
 				})}
 			</div>
-			<div className="h-32 w-full text-fg grid place-items-center text-2xl">
+			<div className="h-32 w-full text-fg grid place-items-center sm:text-2xl">
 				<div>
 					See more of my{' '}
 					<FocalColorLink href="/projects">projects</FocalColorLink> and{' '}
