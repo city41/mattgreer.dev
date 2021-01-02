@@ -1,7 +1,6 @@
 import React from 'react';
-import Head from 'next/head';
-import { LightDarkToggle } from '../LightDarkToggle';
 import { Navigation } from '../Navigation';
+import { Head } from './Head';
 import { Header } from '../Header';
 import { Footer } from '../Footer';
 
@@ -17,14 +16,6 @@ type RootProps = {
 	headerContent: React.ReactNode;
 	children: React.ReactNode;
 };
-
-function getPageTitle(incomingTitle: string): string {
-	if (incomingTitle.toLowerCase().includes('greer')) {
-		return incomingTitle;
-	} else {
-		return `${incomingTitle} | Matt Greer`;
-	}
-}
 
 function getAbsoluteUrl(url: string): string {
 	if (url.startsWith('http')) {
@@ -55,23 +46,7 @@ function Root({
 
 	return (
 		<>
-			<Head>
-				<title>{getPageTitle(title)}</title>
-
-				<meta charSet="utf-8" />
-				<meta name="viewport" content="width=device-width, initial-scale=1" />
-				<meta name="description" content={metaDescription} />
-
-				{/* Twitter */}
-				<meta name="twitter:creator" content="@mattegreer" key="twhandle" />
-				<meta name="twitter:card" content="summary_large_image" />
-				<meta name="twitter:image" content={metaImg} />
-
-				{/* open graph, Twitter also uses some of these */}
-				<meta property="og:title" content={title} />
-				<meta property="og:description" content={metaDescription} />
-				<meta property="og:image" content={metaImg} />
-			</Head>
+			<Head title={title} metaDescription={metaDescription} metaImg={metaImg} />
 			{navigation && <Navigation current={currentNav} />}
 			<div className="mx-auto max-w-6xl">
 				<Header className="pt-16" title={title} page={page} img={img}>

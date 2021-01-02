@@ -2,6 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import { FocalColorLink } from '../FocalColorLink';
 import { ResumeLink } from '../ResumeLink';
+import { Head } from '../layouts/Head';
 import { Feature } from '../Feature';
 import { Footer } from '../Footer';
 import Link from 'next/link';
@@ -11,6 +12,7 @@ import headerStyles from '../Header.module.css';
 import { FullBleedScript } from './FullBleedScript';
 
 import otterPng from './otter.png';
+import otterMetaPng from './otterMeta.png';
 import reflectionPng from './reflection.png';
 
 type IndexPageProps = {
@@ -36,6 +38,11 @@ const INTRO_ROOT_ID = '__intro_root_id__';
 function IndexPage({ items }: IndexPageProps) {
 	return (
 		<>
+			<Head
+				title="Matt Greer"
+				metaDescription="Matt Greer's portfolio and blog"
+				metaImg={otterMetaPng}
+			/>
 			<div
 				id={FULL_BLEED_ROOT_ID}
 				className={clsx(
@@ -57,7 +64,10 @@ function IndexPage({ items }: IndexPageProps) {
 				</nav>
 				<div
 					id={FULL_BLEED_TITLE_ID}
-					className="flex-1 flex flex-col justify-center items-center z-10 md:mt-48"
+					className={clsx(
+						styles.title,
+						'flex-1 flex flex-col justify-center items-center z-10 md:mt-48'
+					)}
 				>
 					<h1 className="text-5xl md:text-7xl font-bold">Matt Greer</h1>
 					<h2 className="sm:text-2xl">software creator</h2>
@@ -105,7 +115,7 @@ function IndexPage({ items }: IndexPageProps) {
 					</p>
 				</div>
 			</div>
-			<div className="h-48 w-full bg-focal-alt text-white grid place-items-center text-2xl">
+			<div className="h-48 w-full bg-focal-alt text-white grid place-items-center text-3xl">
 				Some things I have created{' '}
 			</div>
 			<div className="flex flex-col space-y-48 max-w-6xl sm:mx-auto mt-16 sm:mt-32">

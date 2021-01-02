@@ -1,5 +1,6 @@
 .mainBleed {
     @apply h-screen bg-focal-alt;
+    --bleed-fg-color: hsl(45, 8%, 80%);
 }
 
 @media (max-width: 780px) {
@@ -8,11 +9,10 @@
     }
 }
 
-.moreArrow {
-    --size: 6px;
+.moreArrow { --size: 6px;
     --up-down-amount: 20px;
 
-    @apply border-white;
+    border-color: var(--bleed-fg-color);
 
     border-width: 0 var(--size) var(--size) 0;
     padding: var(--size);
@@ -20,4 +20,8 @@
     margin-bottom: calc(var(--size) * 3);
 
     transform: rotate(45deg);
+}
+
+.title {
+    color: var(--bleed-fg-color);
 }
