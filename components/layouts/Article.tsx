@@ -21,8 +21,8 @@ function Article({
 	children,
 }: ArticleProps) {
 	const headerContent = (
-		<p>
-			<time className="block mb-8 text-xs text-fg-fade" dateTime={date}>
+		<p className="text-white">
+			<time className="block mb-8 text-xs text-gray-200" dateTime={date}>
 				{new Date(date).toLocaleDateString('en-us', {
 					year: 'numeric',
 					month: 'short',

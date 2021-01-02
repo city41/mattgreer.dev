@@ -12,20 +12,6 @@ import { FiSmile } from 'react-icons/fi';
 const { h2: H2, p: P, img: Img } = MDXComponents;
 
 function AboutPage() {
-	const headerContent = (
-		<>
-			<p>
-				My name is Matt Greer and I am based in the Ann Arbor, Michigan area.
-			</p>
-			<p>
-				I have been a professional software engineer since about the year 2000,
-				but have been programming since I was a small child. My career has
-				spanned many industries and technologies, but lately I've been focused
-				on web tech such as React and Svelte.
-			</p>
-		</>
-	);
-
 	return (
 		<Root
 			title="About Me"
@@ -33,8 +19,16 @@ function AboutPage() {
 			page="about"
 			metaDescription="Some background about me and this website"
 			navigation
-			headerContent={headerContent}
 		>
+			<P>
+				My name is Matt Greer and I am based in the Ann Arbor, Michigan area.
+			</P>
+			<P>
+				I have been a professional software engineer since about the year 2000,
+				but have been programming since I was a small child. My career has
+				spanned many industries and technologies, but lately I've been focused
+				on web tech such as React and Svelte.
+			</P>
 			<P>
 				I have worked for Netflix and Microsoft, amongst other companies (here
 				is my <ResumeLink />

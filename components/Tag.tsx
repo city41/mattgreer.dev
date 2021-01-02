@@ -31,7 +31,7 @@ function Tag({
 				<Component
 					className={clsx(
 						className,
-						'bg-focal-alt text-white font-bold py-1 px-2 sm:text-xs hover:underline hover:bg-focal-alt-fade hover:text-white'
+						'font-bold py-1 px-2 sm:text-xs hover:underline hover:bg-focal-alt-fade hover:text-white'
 					)}
 				>
 					{children}

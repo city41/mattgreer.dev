@@ -9,15 +9,23 @@ type HeaderProps = {
 	page?: string;
 	img?: string;
 	children?: React.ReactNode;
+	childrenUnderTitle?: boolean;
 };
 
-function Header({ className, title, page, img, children }: HeaderProps) {
+function Header({
+	className,
+	title,
+	page,
+	img,
+	children,
+	childrenUnderTitle,
+}: HeaderProps) {
 	const imgStyle = img
 		? { backgroundImage: `url(${img})`, backgroundSize: 'cover' }
 		: {};
 	return (
-		<>
-			<header
+		<header className="bg-focal-alt w-full py-12">
+			<div
 				className={clsx(
 					className,
 					'grid grid-cols-8 gap-8 auto-rows-min max-w-4xl mx-auto px-8 sm:px-0'
@@ -27,20 +35,34 @@ function Header({ className, title, page, img, children }: HeaderProps) {
 					className={clsx(
 						styles.headerIllustration,
 						styles[`${page}PageHeaderIllustration`],
-						'col-start-1 col-end-9 h-64 sm:h-auto sm:row-span-2 sm:row-start-1 sm:col-start-1 sm:col-end-4 self-stretch -mx-8 sm:mx-0'
+						'col-start-1 col-end-9 h-64 sm:h-auto sm:row-start-1 sm:col-start-1 sm:col-end-4 self-stretch -mx-8 sm:mx-0',
+						{
+							'sm:row-span-2': childrenUnderTitle,
+						}
 					)}
 					style={imgStyle}
 				/>
-				<h1 className="col-start-1 col-end-9 sm:row-start-1 sm:col-start-4 sm:col-end-9 text-4xl sm:text-7xl font-black text-focal">
+				<h1
+					className="col-start-1 col-end-9 sm:row-start-1 sm:col-start-4 sm:col-end-9 text-4xl sm:text-7xl font-black text-white"
+					style={{ alignSelf: 'center' }}
+				>
 					{title}
 				</h1>
 				{children && (
-					<div className="col-start-1 col-end-9 sm:row-start-2 sm:col-start-4 sm:col-end-8 sm:text-2xl space-y-8 leading-6 sm:leading-9">
+					<div
+						className={clsx(
+							'col-start-1 col-end-9 sm:row-start-2 sm:col-start-1 sm:col-end-8 sm:text-2xl space-y-8 leading-6 sm:leading-9',
+							{
+								'sm:col-start-1': !childrenUnderTitle,
+								'sm:col-start-4': childrenUnderTitle,
+							}
+						)}
+					>
 						{children}
 					</div>
 				)}
-			</header>
-		</>
+			</div>
+		</header>
 	);
 }
 

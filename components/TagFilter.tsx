@@ -40,8 +40,7 @@ function TagFilter({
 			<div className="text-2xl space-y-8 max-w-xl mt-4">
 				{!currentTag ? (
 					<p>
-						All{' '}
-						<span className="font-bold text-focal-alt">{toWords(count)}</span>{' '}
+						All <span className="font-bold text-white">{toWords(count)}</span>{' '}
 						of my {classification}
 					</p>
 				) : (
@@ -52,7 +51,7 @@ function TagFilter({
 					</p>
 				)}
 			</div>
-			<p className="mt-16 sm:mt-12 mb-2 text-gray-500 text-sm">or filter by </p>
+			<p className="mt-16 sm:mt-12 mb-2 text-gray-300 text-sm">or filter by </p>
 			<ul className="flex flex-row flex-wrap">
 				{['All']
 					.concat(tags)
@@ -67,7 +66,7 @@ function TagFilter({
 								key={t}
 								classification={classification}
 								component="li"
-								className="bg-bg-fade text-fg-fade mb-2 mr-2"
+								className="bg-gray-200 text-gray-700 mb-2 mr-2"
 							>
 								{t}
 							</Tag>

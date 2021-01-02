@@ -13,7 +13,8 @@ type RootProps = {
 	metaDescription: string;
 	page?: string;
 	img?: string;
-	headerContent: React.ReactNode;
+	headerContent?: React.ReactNode;
+	headerContentUnderTitle?: boolean;
 	children: React.ReactNode;
 };
 
@@ -25,23 +26,24 @@ function Root({
 	page,
 	img,
 	headerContent,
+	headerContentUnderTitle,
 	children,
 }: RootProps) {
 	return (
 		<>
 			<Head title={title} metaDescription={metaDescription} metaImg={img} />
 			{navigation && <Navigation current={currentNav} />}
-			<div className="mx-auto max-w-6xl">
-				<Header className="pt-16" title={title} page={page} img={img}>
-					{headerContent}
-				</Header>
-				<main
-					role="main"
-					className="mt-16 px-8 sm:px-0 sm:max-w-4xl sm:mx-auto"
-				>
-					{children}
-				</main>
-			</div>
+			<Header
+				title={title}
+				page={page}
+				img={img}
+				childrenUnderTitle={headerContentUnderTitle}
+			>
+				{headerContent}
+			</Header>
+			<main role="main" className="mt-32 px-8 sm:px-0 sm:max-w-4xl sm:mx-auto">
+				{children}
+			</main>
 			<Footer className="mt-16 sm:mt-24" />
 		</>
 	);

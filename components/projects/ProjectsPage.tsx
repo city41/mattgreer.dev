@@ -27,6 +27,7 @@ function ProjectsPage({ tag, allTags, items }: ProjectsPageProps) {
 			page="projects"
 			navigation
 			headerContent={headerContent}
+			headerContentUnderTitle
 		>
 			<div className="flex flex-col space-y-48 overflow-x-hidden max-w-6xl -mx-8 sm:mx-auto">
 				{items.map((i) => (

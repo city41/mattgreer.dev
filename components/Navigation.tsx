@@ -18,8 +18,8 @@ function NavLink({ href, children, isCurrent }) {
 					className={clsx(
 						'border-b-2 px-1 sm:px-2 h-full grid place-items-center',
 						{
-							'text-fg-fade border-transparent hover:bg-bg-fade': !isCurrent,
-							'text-focal border-focal': isCurrent,
+							'border-transparent hover:bg-focal-alt': !isCurrent,
+							'border-white': isCurrent,
 						}
 					)}
 				>
@@ -35,13 +35,13 @@ function Navigation({ className, current }: NavigationProps) {
 		<nav
 			className={clsx(
 				className,
-				'flex flex-row px-2 sm:px-4 items-stretch justify-between border-bg-fade border-b'
+				'flex flex-row px-2 sm:px-4 items-stretch justify-between bg-focal-alt-fade text-white'
 			)}
 		>
 			<Link href="/" passHref>
-				<a className="flex flex-row w-auto cursor-pointer">
+				<a className="flex flex-row w-auto cursor-pointer hover:bg-focal-alt pl-4 -ml-4">
 					<div className={clsx(styles.smallLogo, 'h-full w-6 sm:w-9')} />
-					<div className="self-stretch text-xs text-fg-fade ml-1 hover:bg-bg-fade grid place-items-center px-1 py-3 sm:px-2">
+					<div className="self-stretch text-xs ml-1 h-full grid place-items-center px-1 py-3 sm:px-2">
 						Matt Greer
 					</div>
 				</a>
