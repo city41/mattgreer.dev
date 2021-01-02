@@ -12,7 +12,6 @@ import headerStyles from '../Header.module.css';
 import { FullBleedScript } from './FullBleedScript';
 
 import otterPng from './otter.png';
-import otterMetaPng from './otterMeta.png';
 import reflectionPng from './reflection.png';
 
 type IndexPageProps = {
@@ -41,7 +40,6 @@ function IndexPage({ items }: IndexPageProps) {
 			<Head
 				title="Matt Greer"
 				metaDescription="Matt Greer's portfolio and blog"
-				metaImg={otterMetaPng}
 			/>
 			<div
 				id={FULL_BLEED_ROOT_ID}

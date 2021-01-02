@@ -1,10 +1,11 @@
 import NextHead from 'next/head';
 import React from 'react';
+import fallbackImg from './meIndex_openGraph.png';
 
 type HeadProps = {
 	title: string;
 	metaDescription: string;
-	metaImg: string;
+	metaImg?: string;
 };
 
 function getPageTitle(incomingTitle: string): string {
@@ -15,7 +16,24 @@ function getPageTitle(incomingTitle: string): string {
 	}
 }
 
+function getAbsoluteUrl(url: string): string {
+	if (url.startsWith('http')) {
+		return url;
+	}
+
+	if (url.startsWith('/')) {
+		url = url.substring(1);
+	}
+
+	// TODO: parameterize this somewhere
+	return `https://mattgreer-org.vercel.app/${url}`;
+}
+
 function Head({ title, metaDescription, metaImg }: HeadProps) {
+	const finalMetaImg = `${getAbsoluteUrl(
+		metaImg ?? fallbackImg
+	)}?t=${title.substring(0, 10)}`;
+
 	return (
 		<NextHead>
 			<title>{getPageTitle(title)}</title>
@@ -27,12 +45,12 @@ function Head({ title, metaDescription, metaImg }: HeadProps) {
 			{/* Twitter */}
 			<meta name="twitter:creator" content="@mattegreer" key="twhandle" />
 			<meta name="twitter:card" content="summary_large_image" />
-			<meta name="twitter:image" content={metaImg} />
+			<meta name="twitter:image" content={finalMetaImg} />
 
 			{/* open graph, Twitter also uses some of these */}
 			<meta property="og:title" content={title} />
 			<meta property="og:description" content={metaDescription} />
-			<meta property="og:image" content={metaImg} />
+			<meta property="og:image" content={finalMetaImg} />
 		</NextHead>
 	);
 }

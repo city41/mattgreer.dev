@@ -17,18 +17,6 @@ type RootProps = {
 	children: React.ReactNode;
 };
 
-function getAbsoluteUrl(url: string): string {
-	if (url.startsWith('http')) {
-		return url;
-	}
-
-	if (url.startsWith('/')) {
-		url = url.substring(1);
-	}
-
-	return `https://mattgreer-org.vercel.app/${url}`;
-}
-
 function Root({
 	navigation,
 	currentNav,
@@ -39,14 +27,9 @@ function Root({
 	headerContent,
 	children,
 }: RootProps) {
-	const metaImg = `${getAbsoluteUrl(img ?? fallbackImg)}?t=${title.substring(
-		0,
-		10
-	)}`;
-
 	return (
 		<>
-			<Head title={title} metaDescription={metaDescription} metaImg={metaImg} />
+			<Head title={title} metaDescription={metaDescription} metaImg={img} />
 			{navigation && <Navigation current={currentNav} />}
 			<div className="mx-auto max-w-6xl">
 				<Header className="pt-16" title={title} page={page} img={img}>
