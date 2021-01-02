@@ -37,10 +37,7 @@ const INTRO_ROOT_ID = '__intro_root_id__';
 function IndexPage({ items }: IndexPageProps) {
 	return (
 		<>
-			<Head
-				title="Matt Greer"
-				metaDescription="Matt Greer's portfolio and blog"
-			/>
+			<Head title="Matt Greer" metaDescription="My portfolio and blog" />
 			<div
 				id={FULL_BLEED_ROOT_ID}
 				className={clsx(
