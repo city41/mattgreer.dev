@@ -80,6 +80,7 @@ function animateFullBleed(args: FullBleedScriptProps) {
 						'transform',
 						`translateY(-${margin}px)`
 					);
+					canvas.style.setProperty('z-index', '0');
 
 					ticking = false;
 				});
