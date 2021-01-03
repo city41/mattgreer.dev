@@ -9,9 +9,11 @@ type GetAllArticleItemsOptions = {
 function determineImage(dir: string): string {
 	const jpg = 'feature.jpg';
 	const png = 'feature.png';
+	const svg = 'feature.svg';
 
 	const jpgPath = path.join(dir, jpg);
 	const pngPath = path.join(dir, png);
+	const svgPath = path.join(dir, svg);
 
 	if (fs.existsSync(jpgPath)) {
 		return jpg;
@@ -21,7 +23,11 @@ function determineImage(dir: string): string {
 		return png;
 	}
 
-	return '';
+	if (fs.existsSync(svgPath)) {
+		return svg;
+	}
+
+	throw new Error(`determineImage: did not find a feature image for ${dir}`);
 }
 
 type MetaAndDescriptionData = {

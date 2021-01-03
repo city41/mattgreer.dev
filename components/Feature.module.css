@@ -1,5 +1,5 @@
 .image {
-    @apply bg-cover bg-center;
+    @apply bg-contain bg-center bg-no-repeat;
 
     background-image: var(--bg-image);
     content-visibility: auto;
@@ -7,5 +7,7 @@
 }
 
 @media (max-width: 639px) {
-    width: 100%;
+    .image {
+        width: 100%;
+    }
 }

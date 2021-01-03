@@ -23,7 +23,7 @@ export async function getStaticProps(): Promise<{
 	return { props: { allTags, items } };
 }
 
-export default function ProjectsIndexNextPage({
+export default function ArticlesIndexNextPage({
 	allTags,
 	items,
 }: ArticlesIndexNextPageProps) {
