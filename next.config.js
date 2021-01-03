@@ -6,10 +6,21 @@ const withMDX = require('@next/mdx')({
 
 const withOptimizedImages = require('next-optimized-images');
 
-module.exports = withPlugins([[withOptimizedImages, {}], [withMDX]], {
-	pageExtensions: ['tsx', 'mdx'],
-	trailingSlash: true,
-	serverRuntimeConfig: {
-		PROJECT_ROOT: __dirname,
-	},
-});
+module.exports = withPlugins(
+	[
+		[
+			withOptimizedImages,
+			{
+				inlineImageLimit: -1,
+			},
+		],
+		[withMDX],
+	],
+	{
+		pageExtensions: ['tsx', 'mdx'],
+		trailingSlash: true,
+		serverRuntimeConfig: {
+			PROJECT_ROOT: __dirname,
+		},
+	}
+);
