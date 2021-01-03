@@ -4,14 +4,11 @@ import { Head } from './Head';
 import { Header } from '../Header';
 import { Footer } from '../Footer';
 
-import fallbackImg from './meIndex_openGraph.png';
-
 type RootProps = {
 	navigation?: boolean;
 	currentNav?: string;
 	title: string;
 	metaDescription: string;
-	page?: string;
 	img?: string;
 	headerContent?: React.ReactNode;
 	headerContentUnderTitle?: boolean;
@@ -23,7 +20,6 @@ function Root({
 	currentNav,
 	title,
 	metaDescription,
-	page,
 	img,
 	headerContent,
 	headerContentUnderTitle,
@@ -35,7 +31,6 @@ function Root({
 			{navigation && <Navigation current={currentNav} />}
 			<Header
 				title={title}
-				page={page}
 				img={img}
 				childrenUnderTitle={headerContentUnderTitle}
 			>
