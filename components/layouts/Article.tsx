@@ -39,6 +39,7 @@ function Article({
 			metaDescription={metaDescription}
 			headerContent={headerContent}
 			img={img}
+			imgAlt="Illustration representing the article"
 			navigation
 		>
 			<MDXProvider components={MDXComponents}>

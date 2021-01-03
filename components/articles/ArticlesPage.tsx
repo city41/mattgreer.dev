@@ -27,6 +27,7 @@ function ArticlesPage({ tag, allTags, items }: ArticlesPageProps) {
 			currentNav="/articles"
 			metaDescription="Technical articles I have written, mostly related to web tech"
 			img={laptopSvg}
+			imgAlt="Illustration of a laptop"
 			navigation
 			headerContent={headerContent}
 			headerContentUnderTitle

@@ -19,6 +19,7 @@ function AboutPage() {
 			title="About Me"
 			currentNav="/about"
 			img={michiganSvg}
+			imgAlt="Illustration of the state of Michigan"
 			metaDescription="Some background about me and this website"
 			navigation
 		>

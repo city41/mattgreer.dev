@@ -9,7 +9,8 @@ type RootProps = {
 	currentNav?: string;
 	title: string;
 	metaDescription: string;
-	img?: string;
+	img: string;
+	imgAlt: string;
 	headerContent?: React.ReactNode;
 	headerContentUnderTitle?: boolean;
 	children: React.ReactNode;
@@ -21,6 +22,7 @@ function Root({
 	title,
 	metaDescription,
 	img,
+	imgAlt,
 	headerContent,
 	headerContentUnderTitle,
 	children,
@@ -32,6 +34,7 @@ function Root({
 			<Header
 				title={title}
 				img={img}
+				imgAlt={imgAlt}
 				childrenUnderTitle={headerContentUnderTitle}
 			>
 				{headerContent}

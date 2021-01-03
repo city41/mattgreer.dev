@@ -27,6 +27,7 @@ function ProjectsPage({ tag, allTags, items }: ProjectsPageProps) {
 			currentNav="/projects"
 			metaDescription="Things I have created, mostly webapps"
 			img={laptopSvg}
+			imgAlt="Illustration of a laptop"
 			navigation
 			headerContent={headerContent}
 			headerContentUnderTitle

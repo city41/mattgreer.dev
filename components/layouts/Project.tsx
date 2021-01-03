@@ -19,6 +19,7 @@ function Project({ title, metaDescription, img, children }: ProjectProps) {
 			metaDescription={metaDescription}
 			headerContent={headerContent}
 			img={img}
+			imgAlt="Illustration representing the project"
 			navigation
 		>
 			<MDXProvider components={MDXComponents}>
