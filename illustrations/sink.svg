@@ -83,6 +83,10 @@
        position="611.75411,28.067244"
        orientation="0,-1"
        id="guide3807" />
+    <sodipodi:guide
+       position="252.92461,173.52734"
+       orientation="1,0"
+       id="guide3809" />
   </sodipodi:namedview>
   <metadata
      id="metadata5">
@@ -133,27 +137,27 @@
      style="display:inline">
     <path
        style="fill:#fefefe;fill-opacity:1;stroke:none;stroke-width:0.181876px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 227.4244,473.42991 27.45489,-57.55465 h 32.22558 l 25.32664,57.66525 z"
+       d="m 209.09497,473.42991 27.45489,-57.55465 h 32.22558 l 25.32664,57.66525 z"
        id="path1103"
        sodipodi:nodetypes="ccccc" />
     <ellipse
        style="fill:#fefefe;fill-opacity:1;stroke:none;stroke-width:1.73559;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="path3799"
-       cx="230.69797"
+       cx="212.36855"
        cy="408.13232"
        rx="17.369471"
        ry="16.705999" />
     <ellipse
        style="fill:#fefefe;fill-opacity:1;stroke:none;stroke-width:1.73559;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="circle3801"
-       cx="311.1377"
+       cx="292.80826"
        cy="408.13232"
        rx="17.369471"
        ry="16.705999" />
     <ellipse
        style="fill:#fefefe;fill-opacity:1;stroke:none;stroke-width:1.44537;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="circle3803"
-       cx="270.78235"
+       cx="252.45293"
        cy="399.39874"
        rx="14.46499"
        ry="13.912464" />
@@ -162,7 +166,7 @@
        id="rect3805"
        width="73.443108"
        height="15.993797"
-       x="230.4286"
+       x="212.09918"
        y="402.13318" />
   </g>
 </svg>
