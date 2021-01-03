@@ -1,0 +1,20 @@
+:global(.forcedLight) .html5 {
+    background-image: url(/html5_light.svg);
+}
+
+:global(.forcedDark) .html5 {
+    background-image: url(/html5_dark.svg);
+}
+
+@media (prefers-color-scheme: light) {
+    .html5 {
+        background-image: url(/html5_light.svg);
+    }
+}
+
+@media (prefers-color-scheme: light) {
+    .html5 {
+        background-image: url(/html5_dark.svg);
+    }
+}
+
