@@ -3,6 +3,8 @@ import { TagFilter } from '../TagFilter';
 import { Feature } from '../Feature';
 import { Root } from '../layouts/Root';
 
+import laptopSvg from './laptop.svg';
+
 type ArticlesPageProps = {
 	tag?: TagLabel;
 	allTags: TagLabel[];
@@ -24,7 +26,7 @@ function ArticlesPage({ tag, allTags, items }: ArticlesPageProps) {
 			title="Articles"
 			currentNav="/articles"
 			metaDescription="Technical articles I have written, mostly related to web tech"
-			page="articles"
+			img={laptopSvg}
 			navigation
 			headerContent={headerContent}
 			headerContentUnderTitle

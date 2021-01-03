@@ -40,13 +40,16 @@ function Feature({
 			)}
 		>
 			<div
-				className={clsx(styles.image, 'h-72 sm:h-96 w-full sm:w-1/2 sm:pr-8')}
+				className={clsx(
+					styles.image,
+					'h-72 sm:h-96 w-screen sm:w-1/2 sm:pr-8 -mx-4 sm:mx-0'
+				)}
 				style={style}
 			/>
 			<div className="w-full sm:w-1/2 sm:pl-8">
 				<Link href={buildUrl(classification, slug)} passHref>
 					<a>
-						<h2 className="text-5xl font-bold mt-4 sm:mt-0 text-center sm:text-left">
+						<h2 className="text-5xl font-bold mt-8 sm:mt-0 text-center sm:text-left">
 							{title}
 						</h2>
 					</a>

@@ -1,14 +1,12 @@
 import React from 'react';
 import clsx from 'clsx';
 import { FocalColorLink } from '../FocalColorLink';
-import { ResumeLink } from '../ResumeLink';
 import { Head } from '../layouts/Head';
 import { Feature } from '../Feature';
 import { Footer } from '../Footer';
 import Link from 'next/link';
 
 import styles from './IndexPage.module.css';
-import headerStyles from '../Header.module.css';
 import { FullBleedScript } from './FullBleedScript';
 
 import otterPng from './otter.png';
@@ -23,9 +21,9 @@ type IndexPageProps = {
  */
 function IndexPageNavLink({ href, children }) {
 	return (
-		<li style={{ marginBottom: -2 }}>
+		<li>
 			<Link href={href} passHref>
-				<a className="border-b-2 px-1 sm:px-2 py-3 h-full grid place-items-center text-white border-transparent hover:bg-focal-alt-fade">
+				<a className="border-b-2 border-t-2 px-1 sm:px-2 py-2 grid place-items-center text-white border-transparent hover:bg-focal-alt-fade">
 					{children}
 				</a>
 			</Link>
@@ -50,10 +48,10 @@ function IndexPage({ items }: IndexPageProps) {
 			>
 				<nav
 					className={clsx(
-						'flex flex-row px-2 sm:px-4 items-stretch justify-between self-end z-10'
+						'flex flex-row px-2 items-stretch justify-between self-end z-10'
 					)}
 				>
-					<ul className="flex flex-row space-x-1 sm:space-x-4 text-xs items-stretch">
+					<ul className="flex flex-row space-x-1 sm:space-x-4 text-xs items-stretch sm:border-transparent sm:border-b-2">
 						<IndexPageNavLink href="/projects">Projects</IndexPageNavLink>
 						<IndexPageNavLink href="/articles">Articles</IndexPageNavLink>
 						<IndexPageNavLink href="/about">About</IndexPageNavLink>
@@ -66,7 +64,7 @@ function IndexPage({ items }: IndexPageProps) {
 					id={FULL_BLEED_TITLE_ID}
 					className={clsx(
 						styles.title,
-						'flex-1 flex flex-col justify-center items-center z-10 md:mt-48'
+						'flex-1 flex flex-col justify-center items-center z-10 lg:mt-48 text-white'
 					)}
 				>
 					<h1 className="text-5xl md:text-7xl font-bold">Matt Greer</h1>
@@ -75,7 +73,7 @@ function IndexPage({ items }: IndexPageProps) {
 				<div
 					className={clsx(
 						styles.moreArrow,
-						'justify-self-end z-10 hidden md:inline-block'
+						'justify-self-end z-10 hidden lg:inline-block'
 					)}
 					aria-label="scroll down to see more"
 				/>
@@ -88,8 +86,7 @@ function IndexPage({ items }: IndexPageProps) {
 			>
 				<div
 					className={clsx(
-						headerStyles.headerIllustration,
-						headerStyles.indexPageHeaderIllustration,
+						styles.portraitIllustration,
 						'col-start-1 col-end-9 h-64 sm:h-auto sm:row-span-2 sm:row-start-1 sm:col-start-1 sm:col-end-5 self-stretch'
 					)}
 				/>

@@ -41,3 +41,16 @@ h4:hover .headingSelfLink svg,
 .figure figcaption {
     @apply text-sm text-center pt-4;
 }
+
+.figure iframe {
+    width: 530px;
+    max-width: 100% !important;
+    height: 400px;
+}
+
+@media (max-width: 530px) {
+    .figure iframe {
+        width: auto !important;
+        height: auto !important;
+    }
+}

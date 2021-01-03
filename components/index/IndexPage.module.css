@@ -3,7 +3,7 @@
     --bleed-fg-color: hsl(45, 8%, 80%);
 }
 
-@media (max-width: 780px) {
+@media (max-width: 1023px) {
     .mainBleed {
         height: 50vh;
     }
@@ -22,6 +22,34 @@
     transform: rotate(45deg);
 }
 
-.title {
-    color: var(--bleed-fg-color);
+@media (min-width: 1024px) {
+    .title {
+        color: var(--bleed-fg-color);
+    }
+}
+
+.portraitIllustration {
+    @apply bg-contain bg-center bg-no-repeat;
+
+    min-height: 24rem;
+}
+
+@media (prefers-color-scheme: light) {
+    .portraitIllustration {
+        background-image: url(/meIndex_light.svg);
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    .portraitIllustration {
+        background-image: url(/meIndex_dark.svg);
+    }
+}
+
+:global(.forcedLight) .portraitIllustration {
+    background-image: url(/meIndex_light.svg);
+}
+
+:global(.forcedDark) .portraitIllustration {
+    background-image: url(/meIndex_dark.svg);
 }

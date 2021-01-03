@@ -42,7 +42,7 @@ function Article({
 			navigation
 		>
 			<MDXProvider components={MDXComponents}>
-				<div className="sm:mt-32">{children}</div>
+				<div className="mx-auto max-w-2xl sm:mt-32">{children}</div>
 			</MDXProvider>
 		</Root>
 	);

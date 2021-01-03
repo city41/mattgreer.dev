@@ -41,7 +41,7 @@ function Root({
 			>
 				{headerContent}
 			</Header>
-			<main role="main" className="mt-32 px-8 sm:px-0 sm:max-w-4xl sm:mx-auto">
+			<main role="main" className="mt-32 px-8 sm:px-0 sm:max-w-6xl sm:mx-auto">
 				{children}
 			</main>
 			<Footer className="mt-16 sm:mt-24" />

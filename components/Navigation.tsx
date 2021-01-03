@@ -12,13 +12,13 @@ type NavigationProps = {
 
 function NavLink({ href, children, isCurrent }) {
 	return (
-		<li style={{ marginBottom: -2 }}>
+		<li>
 			<Link href={href} passHref>
 				<a
 					className={clsx(
 						'border-b-2 px-1 sm:px-2 h-full grid place-items-center',
 						{
-							'border-transparent hover:bg-focal-alt': !isCurrent,
+							'border-transparent hover:bg-focal-alt-fade': !isCurrent,
 							'border-white': isCurrent,
 						}
 					)}
@@ -35,7 +35,7 @@ function Navigation({ className, current }: NavigationProps) {
 		<nav
 			className={clsx(
 				className,
-				'flex flex-row px-2 sm:px-4 items-stretch justify-between bg-focal-alt-fade text-white'
+				'flex flex-row px-2 sm:-mr-4 sm:px-4 items-stretch justify-between bg-focal-alt text-white border-focal-alt-fade border-b-2 sm:border-b-0'
 			)}
 		>
 			<Link href="/" passHref>
@@ -46,7 +46,7 @@ function Navigation({ className, current }: NavigationProps) {
 					</div>
 				</a>
 			</Link>
-			<ul className="flex flex-row space-x-1 sm:space-x-4 text-xs items-stretch">
+			<ul className="flex flex-row space-x-1 sm:space-x-4 sm:pr-2 text-xs items-stretch sm:border-focal-alt-fade sm:border-b-2">
 				<NavLink href="/projects" isCurrent={current === '/projects'}>
 					Projects
 				</NavLink>
