@@ -48,7 +48,7 @@ function TagFilter({
 				) : (
 					<p>
 						{toCapitalizedWord(count)}{' '}
-						<span className="font-bold text-focal-alt">{currentTag}</span>{' '}
+						<span className="font-bold text-white">{currentTag}</span>{' '}
 						{singular(classification, count)}
 					</p>
 				)}
@@ -68,7 +68,7 @@ function TagFilter({
 								key={t}
 								classification={classification}
 								component="li"
-								className={clsx(styles.tag, 'mb-2 mr-2')}
+								className="mb-2 mr-2"
 							>
 								{t}
 							</Tag>
