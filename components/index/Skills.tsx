@@ -27,7 +27,6 @@ function Skill({ img, children }: { img?: string; children: string }) {
 function Skills({ className }: SkillsProps) {
 	return (
 		<div className={className}>
-			<h2 className="text-3xl text-center mb-8">My Skills</h2>
 			<div className="flex flex-col sm:flex-row justify-between items-start mx-8 sm:mx-16">
 				<Skill img={html5Svg}>
 					Deep understanding of HTML, CSS and HTTP including the many features
