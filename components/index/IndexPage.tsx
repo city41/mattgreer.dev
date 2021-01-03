@@ -82,7 +82,7 @@ function IndexPage({ items }: IndexPageProps) {
 			<div
 				id={INTRO_ROOT_ID}
 				className={clsx(
-					'grid grid-cols-8 gap-8 auto-rows-min max-w-6xl mx-auto px-8 sm:px-0 mt-24 mb-24'
+					'grid grid-cols-8 gap-8 auto-rows-min max-w-6xl mx-auto px-8 sm:px-0 mt-24 mb-8 sm:mb-24'
 				)}
 			>
 				<div
