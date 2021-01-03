@@ -6,7 +6,12 @@ type GetAllArticleItemsOptions = {
 	sortByDateDescending?: boolean;
 };
 
-function determineImage(dir: string): string {
+type ImgExtension = 'jpg' | 'png' | 'svg';
+
+function determineImage(dir: string, extensions: ImgExtension[]): string {
+	const paths = extensions.map((ext) => {
+		return path.join(dir, `feature.${ext}`);
+	});
 	const jpg = 'feature.jpg';
 	const png = 'feature.png';
 	const svg = 'feature.svg';
@@ -15,19 +20,17 @@ function determineImage(dir: string): string {
 	const pngPath = path.join(dir, png);
 	const svgPath = path.join(dir, svg);
 
-	if (fs.existsSync(jpgPath)) {
-		return jpg;
+	const pathIndex = paths.findIndex((p) => fs.existsSync(p));
+
+	if (pathIndex === -1) {
+		throw new Error(
+			`determineImage: failed to find a feature image with extensions: ${extensions.join(
+				', '
+			)}`
+		);
 	}
 
-	if (fs.existsSync(pngPath)) {
-		return png;
-	}
-
-	if (fs.existsSync(svgPath)) {
-		return svg;
-	}
-
-	throw new Error(`determineImage: did not find a feature image for ${dir}`);
+	return `feature.${extensions[pathIndex]}`;
 }
 
 type MetaAndDescriptionData = {
@@ -81,13 +84,16 @@ function getItems(root: 'articles' | 'projects'): PortfolioItem[] {
 		if (meta.draft) {
 			return buildingItems;
 		} else {
-			const imgFile = determineImage(directoryPath);
+			// it is important svg come first, as if feature.svg exists, feature.png should too
+			const imgFile = determineImage(directoryPath, ['svg', 'png', 'jpg']);
+			const socialMediaFile = determineImage(directoryPath, ['png', 'jpg']);
 
 			return buildingItems.concat({
 				...meta,
 				classification: root,
 				slug: path.basename(directoryPath),
 				imgFile,
+				socialMediaFile,
 				metaDescription: getMetaDescription(meta),
 			});
 		}

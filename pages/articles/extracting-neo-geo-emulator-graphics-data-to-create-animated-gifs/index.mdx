@@ -5,7 +5,7 @@ export const config = {
     unstable_runtimeJS: false
 }
 
-export default ({ children }) => <Article {...meta} img={require('./feature.svg')}
+export default ({ children }) => <Article {...meta} img={require('./feature.svg')} socialMediaImg={require('./feature.png')}
                                           intro="I recently built a tool that creates animated gifs for Neo Geo video games by extracting the data out of a running emulator. It turned out to be a pretty interesting project, so I thought I'd blog about it.">
     {children}
 </Article>

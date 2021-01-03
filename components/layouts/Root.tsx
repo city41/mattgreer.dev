@@ -10,6 +10,7 @@ type RootProps = {
 	title: string;
 	metaDescription: string;
 	img: string;
+	socialMediaImg?: string;
 	imgAlt: string;
 	headerContent?: React.ReactNode;
 	headerContentUnderTitle?: boolean;
@@ -21,6 +22,7 @@ function Root({
 	currentNav,
 	title,
 	metaDescription,
+	socialMediaImg,
 	img,
 	imgAlt,
 	headerContent,
@@ -29,7 +31,11 @@ function Root({
 }: RootProps) {
 	return (
 		<>
-			<Head title={title} metaDescription={metaDescription} metaImg={img} />
+			<Head
+				title={title}
+				metaDescription={metaDescription}
+				metaImg={socialMediaImg ?? img}
+			/>
 			{navigation && <Navigation current={currentNav} />}
 			<Header
 				title={title}

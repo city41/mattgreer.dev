@@ -9,6 +9,7 @@ type ArticleProps = {
 	date: string;
 	intro: string;
 	img: string;
+	socialMediaImg: string;
 	children: React.ReactNode;
 };
 
@@ -18,6 +19,7 @@ function Article({
 	date,
 	intro,
 	img,
+	socialMediaImg,
 	children,
 }: ArticleProps) {
 	const headerContent = (
@@ -39,6 +41,7 @@ function Article({
 			metaDescription={metaDescription}
 			headerContent={headerContent}
 			img={img}
+			socialMediaImg={socialMediaImg}
 			imgAlt="Illustration representing the article"
 			navigation
 		>
