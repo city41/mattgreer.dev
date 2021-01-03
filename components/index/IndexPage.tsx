@@ -98,7 +98,7 @@ function IndexPage({ items }: IndexPageProps) {
 					</p>
 					<p>
 						I am always looking for interesting projects. If you are in need of
-						some help,{' '}
+						some help, let's{' '}
 						<FocalColorLink href="mailto:matt.e.greer@gmail.com">
 							get in touch
 						</FocalColorLink>
