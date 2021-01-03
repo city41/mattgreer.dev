@@ -18,6 +18,10 @@ body {
   @apply bg-bg text-fg min-h-screen;
 }
 
+#__next {
+  @apply overflow-x-hidden;
+}
+
 * {
   --transition-speed: 0.2s;
   transition: background-color var(--transition-speed) ease-in,

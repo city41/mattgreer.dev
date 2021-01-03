@@ -3,6 +3,8 @@ import clsx from 'clsx';
 import { Tag } from './Tag';
 import { toWords } from 'number-to-words';
 
+import styles from './TagFilter.module.css';
+
 type TagFilterProps = {
 	className?: string;
 	tags: TagLabel[];
@@ -66,7 +68,7 @@ function TagFilter({
 								key={t}
 								classification={classification}
 								component="li"
-								className="bg-gray-200 text-gray-700 mb-2 mr-2"
+								className={clsx(styles.tag, 'mb-2 mr-2')}
 							>
 								{t}
 							</Tag>

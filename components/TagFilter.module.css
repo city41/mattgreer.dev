@@ -1,0 +1,7 @@
+.tag {
+    @apply border-transparent border;
+}
+
+.tag:hover {
+    @apply border-white;
+}
