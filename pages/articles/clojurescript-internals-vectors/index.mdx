@@ -6,7 +6,7 @@ export const config = {
     unstable_runtimeJS: false
 }
 
-export default ({ children }) => <Article {...meta} img={require('./feature.jpg')}
+export default ({ children }) => <Article {...meta} img={require('./feature.svg')} socialMediaImg={require('./feature.png')}
                                           intro="Today we're taking a look at how vectors are implemented in ClojureScript. We'll explore some of the trade offs made between performance and immutability, and we'll get a feel for how a language like Clojure gets mapped into a language like JavaScript.">
     {children}
 </Article>
