@@ -7,7 +7,7 @@ export const config = {
     unstable_runtimeJS: false
 }
 
-export default ({ children }) => <Article {...meta} img={require('./feature.jpg')}
+export default ({ children }) => <Article {...meta} img={require('./feature.svg')}
 intro={<>In <FocalColorLink href="/articles/react-internals-part-one-basic-rendering">part one</FocalColorLink> we established basic rendering in Feact. That touched upon the most important lifecycle method, <code>render</code>, and now we are going to add in <code>componentWillMount</code> and <code>componentDidMount</code> support to Feact.</>}
 >{children}</Article>
 
