@@ -5,6 +5,7 @@ import { Tag } from './Tag';
 
 import styles from './Feature.module.css';
 import pixelatedStyles from './pixelated.module.css';
+import { dateToHumanString } from '../util/dates';
 
 type FeatureProps = Omit<PortfolioItem, 'featureIndex'> & {
 	className?: string;
@@ -61,14 +62,7 @@ function Feature({
 					</a>
 				</Link>
 				<div className="mb-2 py-1 text-gray-500 text-xs mb-8 text-center sm:text-left">
-					{(date &&
-						!suppressDate &&
-						new Date(date).toLocaleDateString('en-us', {
-							year: 'numeric',
-							month: 'short',
-							day: 'numeric',
-						})) ||
-						type}
+					{(date && !suppressDate && dateToHumanString(date)) || type}
 				</div>
 				<p className="sm:text-2xl">{description}</p>
 				<ul className="flex flex-row flex-wrap -mx-2 mt-8">

@@ -8,6 +8,7 @@ type RootProps = {
 	navigation?: boolean;
 	currentNav?: string;
 	title: string;
+	metaForTitle?: string;
 	metaDescription: string;
 	img: string;
 	pixelateImage?: boolean;
@@ -22,6 +23,7 @@ function Root({
 	navigation,
 	currentNav,
 	title,
+	metaForTitle,
 	metaDescription,
 	socialMediaImg,
 	img,
@@ -41,6 +43,7 @@ function Root({
 			{navigation && <Navigation current={currentNav} />}
 			<Header
 				title={title}
+				metaForTitle={metaForTitle}
 				img={img}
 				imgAlt={imgAlt}
 				pixelateImage={pixelateImage}

@@ -6,6 +6,7 @@ import pixelatedStyles from './pixelated.module.css';
 type HeaderProps = {
 	className?: string;
 	title: string;
+	metaForTitle?: string;
 	img: string;
 	pixelateImage?: boolean;
 	imgAlt: string;
@@ -16,6 +17,7 @@ type HeaderProps = {
 function Header({
 	className,
 	title,
+	metaForTitle,
 	img,
 	pixelateImage,
 	imgAlt,
@@ -53,12 +55,17 @@ function Header({
 					role="img"
 					aria-label={imgAlt}
 				/>
-				<h1
-					className="col-start-1 col-end-9 sm:row-start-1 sm:col-start-4 sm:col-end-9 text-5xl sm:text-7xl font-black text-white"
+				<div
+					className="col-start-1 col-end-9 sm:row-start-1 sm:col-start-4 sm:col-end-9"
 					style={{ alignSelf: 'center' }}
 				>
-					{title}
-				</h1>
+					{metaForTitle && (
+						<div className="text-xs text-white mb-2">{metaForTitle}</div>
+					)}
+					<h1 className="text-3xl sm:text-6xl font-black text-white">
+						{title}
+					</h1>
+				</div>
 				{children && (
 					<div
 						className={clsx(

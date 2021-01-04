@@ -2,6 +2,7 @@ import React from 'react';
 import { MDXProvider } from '@mdx-js/react';
 import { Root } from './Root';
 import { MDXComponents } from './MDXComponents';
+import { dateToHumanString } from '../../util/dates';
 
 type ArticleProps = {
 	title: string;
@@ -24,22 +25,12 @@ function Article({
 	socialMediaImg,
 	children,
 }: ArticleProps) {
-	const headerContent = (
-		<p className="text-white">
-			<time className="block mb-8 text-xs text-gray-200" dateTime={date}>
-				{new Date(date).toLocaleDateString('en-us', {
-					year: 'numeric',
-					month: 'short',
-					day: 'numeric',
-				})}
-			</time>
-			{intro}
-		</p>
-	);
+	const headerContent = <p className="text-white">{intro}</p>;
 
 	return (
 		<Root
 			title={title}
+			metaForTitle={dateToHumanString(date)}
 			metaDescription={metaDescription}
 			headerContent={headerContent}
 			img={img}
