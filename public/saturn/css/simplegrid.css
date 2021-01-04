@@ -1,6 +1,6 @@
 /*
-  Simple Grid
-  Project Page - http://thisisdallas.github.com/Simple-Grid/
+  Simple simplegrid
+  Project Page - http://thisisdallas.github.com/Simple-simplegrid/
   Author - Dallas Bass
   Site - http://ninenineteen.co
 */
@@ -21,24 +21,24 @@ body {
 	padding-right: 20px; /* column-space */
 }
 
-.grid {
+.simplegrid {
 	width: 100%;
 	max-width: 1140px;
-	min-width: 748px; /* when using padded grid on ipad in portrait mode, width should be viewport-width - padding = (768 - 20) = 748. actually, it should be even smaller to allow for padding of grid containing element */
+	min-width: 748px; /* when using padded simplegrid on ipad in portrait mode, width should be viewport-width - padding = (768 - 20) = 748. actually, it should be even smaller to allow for padding of simplegrid containing element */
 	margin: 0 auto;
 	overflow: hidden;
 }
 
-.grid:after {
+.simplegrid:after {
 	content: "";
 	display: table;
 	clear: both;
 }
 
-.grid-pad {
+.simplegrid-pad {
 	padding-top: 20px;
-	padding-left: 20px; /* grid-space to left */
-	padding-right: 0; /* grid-space to right: (grid-space-left - column-space) e.g. 20px-20px=0 */
+	padding-left: 20px; /* simplegrid-space to left */
+	padding-right: 0; /* simplegrid-space to right: (simplegrid-space-left - column-space) e.g. 20px-20px=0 */
 }
 
 .push-right {
@@ -171,13 +171,13 @@ body {
 }
 
 @media handheld, only screen and (max-width: 767px) {
-	.grid {
+	.simplegrid {
 		width: 100%;
 		min-width: 0;
 		margin-left: 0;
 		margin-right: 0;
-		padding-left: 20px; /* grid-space to left */
-		padding-right: 10px; /* grid-space to right: (grid-space-left - column-space) e.g. 20px-10px=10px */
+		padding-left: 20px; /* simplegrid-space to left */
+		padding-right: 10px; /* simplegrid-space to right: (simplegrid-space-left - column-space) e.g. 20px-10px=10px */
 	}
 
 	[class*='col-'] {
