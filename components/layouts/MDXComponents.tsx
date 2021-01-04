@@ -1,7 +1,6 @@
 import React, { ElementType, ReactNode } from 'react';
 import clsx from 'clsx';
 import { FiLink } from 'react-icons/fi';
-import ReactMarkdown from 'react-markdown';
 import { CodeBlock } from '../CodeBlock';
 
 import styles from './MDXComponents.module.css';
@@ -105,14 +104,10 @@ const MDXComponents = {
 	},
 	p: (props) => <TextBlock el="p" {...props} />,
 	pitfall: ({ children }) => (
-		<Callout className="text-red-900 bg-red-50">
-			<ReactMarkdown renderers={MDXComponents}>{children}</ReactMarkdown>
-		</Callout>
+		<Callout className="text-red-900 bg-red-50">{children}</Callout>
 	),
 	wisdom: ({ children }) => (
-		<Callout className="text-green-900 bg-green-50">
-			<ReactMarkdown renderers={MDXComponents}>{children}</ReactMarkdown>
-		</Callout>
+		<Callout className="text-green-900 bg-green-50">{children}</Callout>
 	),
 	code: CodeBlock,
 	pre: ({ children }) => <>{children}</>,
