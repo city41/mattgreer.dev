@@ -6,7 +6,7 @@ export const config = {
     unstable_runtimeJS: false
 }
 
-export default ({ children }) => <Article {...meta} img={require('./feature.svg')}
+export default ({ children }) => <Article {...meta} img={require('./feature.svg')} socialMediaImg={require('./feature.png')}
     intro={<>In part four of this series we finally add <code>setState</code> to our little React clone. <code>setState</code> is a beast, so grab your favorite beverage and get comfortable!</>}
 >{children}</Article>
 

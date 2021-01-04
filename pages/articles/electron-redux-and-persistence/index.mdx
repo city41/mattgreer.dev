@@ -5,7 +5,7 @@ export const config = {
     unstable_runtimeJS: false
 }
 
-export default ({ children }) => <Article {...meta} img={require('./feature.jpg')}
+export default ({ children }) => <Article {...meta} img={require('./feature.svg')} socialMediaImg={require('./feature.png')}
                                                     intro="Redux is a nice pattern for React apps. But when I wanted to persist my redux state across sessions for an Electron app, I hit some hurdles.">
     {children}
 </Article>
