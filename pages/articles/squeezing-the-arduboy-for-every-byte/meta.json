@@ -7,5 +7,6 @@
 		"The Arduboy is an Arduino based game console with very limited storage space.",
 		"This article shows some techniques I used to use the space efficiently."
 	],
-	"metaDescription": "Using compression and other techniques to fit more things into an Arduboy game."
+	"metaDescription": "Using compression and other techniques to fit more things into an Arduboy game.",
+	"pixelateImage": true
 }

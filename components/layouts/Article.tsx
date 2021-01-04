@@ -9,6 +9,7 @@ type ArticleProps = {
 	date: string;
 	intro: string;
 	img: string;
+	pixelateImage?: boolean;
 	socialMediaImg: string;
 	children: React.ReactNode;
 };
@@ -19,6 +20,7 @@ function Article({
 	date,
 	intro,
 	img,
+	pixelateImage,
 	socialMediaImg,
 	children,
 }: ArticleProps) {
@@ -41,6 +43,7 @@ function Article({
 			metaDescription={metaDescription}
 			headerContent={headerContent}
 			img={img}
+			pixelateImage={pixelateImage}
 			socialMediaImg={socialMediaImg}
 			imgAlt="Illustration representing the article"
 			navigation

@@ -1,10 +1,13 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import pixelatedStyles from './pixelated.module.css';
+
 type HeaderProps = {
 	className?: string;
 	title: string;
 	img: string;
+	pixelateImage?: boolean;
 	imgAlt: string;
 	children?: React.ReactNode;
 	childrenUnderTitle?: boolean;
@@ -14,6 +17,7 @@ function Header({
 	className,
 	title,
 	img,
+	pixelateImage,
 	imgAlt,
 	children,
 	childrenUnderTitle,
@@ -24,7 +28,8 @@ function Header({
 		<header className="bg-focal-alt w-full py-12">
 			<div
 				className={clsx(
-					'sm:hidden h-64 bg-contain bg-center bg-no-repeat w-full h-64 mb-16'
+					'sm:hidden h-64 bg-contain bg-center bg-no-repeat w-full h-64 mb-16',
+					{ [pixelatedStyles.pixelated]: pixelateImage }
 				)}
 				style={imgStyle}
 				role="img"
@@ -41,6 +46,7 @@ function Header({
 						'hidden sm:block h-64 sm:h-auto sm:row-start-1 sm:col-start-1 sm:col-end-4 self-stretch sm:mx-0 bg-contain bg-center bg-no-repeat',
 						{
 							'sm:row-span-2': childrenUnderTitle,
+							[pixelatedStyles.pixelated]: pixelateImage,
 						}
 					)}
 					style={imgStyle}

@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Tag } from './Tag';
 
 import styles from './Feature.module.css';
+import pixelatedStyles from './pixelated.module.css';
 
 type FeatureProps = Omit<PortfolioItem, 'featureIndex'> & {
 	className?: string;
@@ -18,6 +19,7 @@ function Feature({
 	className,
 	title,
 	imgFile,
+	pixelateImage,
 	description,
 	classification,
 	type,
@@ -42,7 +44,8 @@ function Feature({
 			<div
 				className={clsx(
 					styles.image,
-					'h-72 sm:h-96 w-screen sm:w-1/2 sm:pr-8 -mx-4 sm:mx-0'
+					'h-72 sm:h-96 w-screen sm:w-1/2 sm:pr-8 -mx-4 sm:mx-0',
+					{ [pixelatedStyles.pixelated]: pixelateImage }
 				)}
 				style={style}
 			/>

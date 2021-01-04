@@ -10,6 +10,7 @@ type RootProps = {
 	title: string;
 	metaDescription: string;
 	img: string;
+	pixelateImage?: boolean;
 	socialMediaImg?: string;
 	imgAlt: string;
 	headerContent?: React.ReactNode;
@@ -24,6 +25,7 @@ function Root({
 	metaDescription,
 	socialMediaImg,
 	img,
+	pixelateImage,
 	imgAlt,
 	headerContent,
 	headerContentUnderTitle,
@@ -41,6 +43,7 @@ function Root({
 				title={title}
 				img={img}
 				imgAlt={imgAlt}
+				pixelateImage={pixelateImage}
 				childrenUnderTitle={headerContentUnderTitle}
 			>
 				{headerContent}

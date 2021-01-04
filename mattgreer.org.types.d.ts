@@ -21,6 +21,7 @@ type PortfolioItemType =
 type PortfolioItem = {
 	title: string;
 	imgFile: string;
+	pixelateImage?: boolean;
 	socialMediaFile: string;
 	slug: string;
 	classification: 'articles' | 'projects';

@@ -2,7 +2,7 @@ import { Article } from '../../../components/layouts/Article';
 import meta from './meta.json';
 
 
-export default ({ children }) => <Article {...meta} img={require('./feature.png')}
+export default ({ children }) => <Article {...meta} img={require('./feature.png')} pixelateImage
                                                     intro="I have been writing a game for the Arduboy portable game console. Space is very tight, so I thought I'd talk about some of the byte saving techniques I've been using."
 >{children}</Article>
 
