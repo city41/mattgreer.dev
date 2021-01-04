@@ -3,7 +3,7 @@ import clsx from 'clsx';
 
 import html5Svg from './html5.svg';
 import tsLogoSvg from './tsLogo.svg';
-import kitchenSinkSvg from './sink.svg';
+import polyglotSvg from './polyglot.svg';
 
 import styles from './Skills.module.css';
 
@@ -52,7 +52,7 @@ function Skills({ className }: SkillsProps) {
 					Expertise on all aspects of JavaScript. Extensive experience with
 					TypeScript.
 				</Skill>
-				<Skill img={kitchenSinkSvg} imgAlt="Kitchen sink illustration">
+				<Skill img={polyglotSvg} imgAlt="Kitchen sink illustration">
 					Polyglot experience in many environments from backend architecture to
 					game dev.
 				</Skill>
