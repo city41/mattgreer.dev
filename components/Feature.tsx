@@ -29,6 +29,7 @@ function Feature({
 	tags,
 }: FeatureProps) {
 	const img = require(`../pages/${classification}/${slug}/${imgFile}`);
+	const url = buildUrl(classification, slug);
 
 	const style = {
 		'--bg-image': `url(${img})`,
@@ -41,16 +42,18 @@ function Feature({
 				'flex flex-row flex-wrap mx-4 sm:mx-16 md:mx-0'
 			)}
 		>
-			<div
-				className={clsx(
-					styles.image,
-					'h-72 sm:h-96 w-screen sm:w-1/2 sm:pr-8 -mx-4 sm:mx-0',
-					{ [pixelatedStyles.pixelated]: pixelateImage }
-				)}
-				style={style}
-			/>
+			<Link href={url} passHref>
+				<a className="block h-72 sm:h-96 w-screen sm:w-1/2 sm:pr-8 -mx-4 sm:mx-0 cursor-pointer">
+					<div
+						className={clsx(styles.image, 'w-full h-full', {
+							[pixelatedStyles.pixelated]: pixelateImage,
+						})}
+						style={style}
+					/>
+				</a>
+			</Link>
 			<div className="w-full sm:w-1/2 sm:pl-8">
-				<Link href={buildUrl(classification, slug)} passHref>
+				<Link href={url} passHref>
 					<a>
 						<h2 className="text-5xl font-bold mt-8 sm:mt-0 text-center sm:text-left">
 							{title}
