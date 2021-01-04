@@ -1,5 +1,4 @@
 .image {
-    @apply bg-contain bg-center bg-no-repeat;
 
     background-image: var(--bg-image);
     content-visibility: auto;

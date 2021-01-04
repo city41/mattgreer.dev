@@ -46,9 +46,13 @@ function Feature({
 			<Link href={url} passHref>
 				<a className="block h-72 sm:h-96 w-screen sm:w-1/2 sm:pr-8 -mx-4 sm:mx-0 cursor-pointer">
 					<div
-						className={clsx(styles.image, 'w-full h-full', {
-							[pixelatedStyles.pixelated]: pixelateImage,
-						})}
+						className={clsx(
+							styles.image,
+							'w-full h-full  sm:border-bg-fade sm:border bg-center bg-contain bg-no-repeat',
+							{
+								[pixelatedStyles.pixelated]: pixelateImage,
+							}
+						)}
 						style={style}
 					/>
 				</a>
@@ -56,12 +60,12 @@ function Feature({
 			<div className="w-full sm:w-1/2 sm:pl-8">
 				<Link href={url} passHref>
 					<a>
-						<h2 className="text-5xl font-bold mt-8 sm:mt-0 text-center sm:text-left">
+						<h2 className="text-5xl font-bold mt-8 sm:mt-0 xtext-center sm:text-left">
 							{title}
 						</h2>
 					</a>
 				</Link>
-				<div className="mb-2 py-1 text-gray-500 text-xs mb-8 text-center sm:text-left">
+				<div className="my-2 py-1 text-gray-500 text-xs mb-8 xtext-center sm:text-left">
 					{(date && !suppressDate && dateToHumanString(date)) || type}
 				</div>
 				<p className="sm:text-2xl">{description}</p>
