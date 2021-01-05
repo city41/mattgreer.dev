@@ -53,8 +53,8 @@ function TagFilter({
 					</p>
 				)}
 			</div>
-			<p className="mt-16 sm:mt-12 mb-2 text-gray-300 text-sm">or filter by </p>
-			<ul className="flex flex-row flex-wrap">
+			<p className="mt-16 sm:mt-12 mb-2 text-white text-sm">or filter by </p>
+			<div className="flex flex-row flex-wrap">
 				{['All']
 					.concat(tags)
 					.sort()
@@ -67,14 +67,13 @@ function TagFilter({
 							<Tag
 								key={t}
 								classification={classification}
-								component="li"
 								className="mb-2 mr-2"
 							>
 								{t}
 							</Tag>
 						);
 					})}
-			</ul>
+			</div>
 		</div>
 	);
 }
