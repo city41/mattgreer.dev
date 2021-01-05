@@ -5,5 +5,6 @@
 	"tags": ["Game Dev", "WebGL"],
 	"description": [
 		"How I used shaders in WebGL to accomplish lighting and shadows in a 2D game."
-	]
+	],
+	"pixelateImage": true
 }

@@ -3,7 +3,6 @@ import clsx from 'clsx';
 import Link from 'next/link';
 import { Tag } from './Tag';
 
-import styles from './Feature.module.css';
 import pixelatedStyles from './pixelated.module.css';
 import { dateToHumanString } from '../util/dates';
 
@@ -32,28 +31,20 @@ function Feature({
 	const img = require(`../pages/${classification}/${slug}/${imgFile}`);
 	const url = buildUrl(classification, slug);
 
-	const style = {
-		'--bg-image': `url(${img})`,
-	} as CSSProperties;
-
 	return (
 		<div
 			className={clsx(
 				className,
-				'flex flex-row flex-wrap mx-4 sm:mx-16 md:mx-0'
+				'flex flex-row flex-wrap mx-4 sm:mx-16 md:mx-0 justify-center'
 			)}
 		>
 			<Link href={url} passHref>
-				<a className="block h-72 sm:h-96 w-screen sm:w-1/2 sm:pr-8 -mx-4 sm:mx-0 cursor-pointer">
-					<div
-						className={clsx(
-							styles.image,
-							'w-full h-full bg-center bg-contain bg-no-repeat',
-							{
-								[pixelatedStyles.pixelated]: pixelateImage,
-							}
-						)}
-						style={style}
+				<a className="block w-screen sm:w-96 sm:h-96 sm:mr-8 -mx-4 sm:ml-0 cursor-pointer">
+					<img
+						className={clsx('block w-full h-full', {
+							[pixelatedStyles.pixelated]: pixelateImage,
+						})}
+						src={img}
 					/>
 				</a>
 			</Link>
@@ -68,7 +59,13 @@ function Feature({
 				<div className="my-2 py-1 text-gray-500 text-xs mb-8 xtext-center sm:text-left">
 					{(date && !suppressDate && dateToHumanString(date)) || type}
 				</div>
-				<p className="sm:text-2xl">{description}</p>
+				<div className="space-y-4">
+					{description.map((para, i) => (
+						<p key={i} className="sm:text-2xl">
+							{para}
+						</p>
+					))}
+				</div>
 				<ul className="flex flex-row flex-wrap -mx-2 mt-8">
 					{tags.map((t) => (
 						<li key={t}>
