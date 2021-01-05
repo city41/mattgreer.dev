@@ -30,7 +30,7 @@ h4:hover .headingSelfLink svg,
 }
 
 .figure {
-    @apply my-16 p-4 -mx-4 pb-2 mx-auto max-w-2xl shadow;
+    @apply my-16 p-4 -mx-4 pb-2 mx-auto max-w-2xl border border-bg-fade italic;
 }
 
 .figure img {

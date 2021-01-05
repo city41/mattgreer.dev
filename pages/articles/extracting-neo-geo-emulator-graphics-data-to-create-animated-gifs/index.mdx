@@ -44,7 +44,7 @@ Dedicated video game hardware from around the 90s is really fascinating to me. I
 It's this commonality amongst Neo Geo games that enabled me to create a single tool that works with the entire library.
 
 <pitfall>
-    It's true the hardware dictates the game's make up quite a bit, but developers still had a lot of leeway in how they coded their game. This tool needs to address a lot of little differences between games to truly work on the entire library. See the [next steps for the tool]("#next-steps-for-the-tool") section below for more info on that.
+    It's true the hardware dictates the game's make up quite a bit, but developers still had a lot of leeway in how they coded their game. This tool needs to address a lot of little differences between games to truly work on the entire library. See the <a href="#next-steps-for-the-tool">next steps for the tool</a> section below for more info on that.
 </pitfall>
 
 ### Tile graphics stored in C ROMs
@@ -60,7 +60,7 @@ And here are some tiles that make up this screen as shown in a [tile viewer I cr
 
 <figure>
     <img src={require('./rbffTilesInViewer.png')} alt="Real Bout Fatal Fury tiles loaded into the tile viewer" />
-    <figcaption>My sprite tile viewer tool</figcaption>
+    <figcaption>My sprite tile viewer tool with Real Bout's tiles loaded</figcaption>
 </figure>
 
 All scenes in Neo Geo games are built by piecing these tiles together. Each tile is 16x16 pixels in size, and each tile can have up to 16 unique colors. They are stored one after another inside the C ROMs, in a rather convoluted manner. Decoding the data and turning it into a usable format is a bit of work.
@@ -82,10 +82,10 @@ Storing the tile data separate from the palettes lets the developer get more use
 
 <figure>
     <img src={require('./rbffSameCharacters.png')} alt="Playing Real Bout Fatal Fury with both players using the same character" pixelated />
-    <figcaption>Same character tiles using different palettes</figcaption>
+    <figcaption>Same character tiles using different palettes. Let's go Bob!</figcaption>
 </figure>
 
-This is just a simple example, Developers got really clever here and pulled off all kinds of neat tricks with palettes.
+This is just a simple example, Developers got really clever and pulled off all kinds of neat tricks with palettes.
 
 ### Palettes are dynamic
 
@@ -97,7 +97,7 @@ Each game generates its palettes differently. The only way to get a hold of the 
 
 To put something onto the screen in a Neo Geo game, you simply tell the Neo Geo which tiles and palettes to use. You also need to specify the x/y coordinate and various other pieces of metadata about the sprite. This is all specified in a specific area of the Neo Geo's video memory. By simply setting these values in memory, the Neo Geo's graphic unit will make it all happen, as if by magic. The Neo Geo does not have the concept of drawing lines, shapes or bitmaps. The only way to get anything on the screen is to tell the hardware what configuration to put the tiles in.
 
-If you want the nitty gritty details, the [Neo Geo dev wiki's page on sprites](https://wiki.neogeodev.org/index.php?title=Sprites) has it all. It's pretty obtuse, as the target audience is someone who's pretty entrenched in Neo Geo development.
+If you want the nitty gritty details, the [Neo Geo dev wiki's page on sprites](https://wiki.neogeodev.org/index.php?title=Sprites) has it all. It's pretty obtuse, as the target audience is someone who's entrenched in Neo Geo development.
 
 ### Automatic looping animations
 
@@ -179,7 +179,7 @@ Now with the background captured, we have all the information we need to render 
 
 #### Capturing the animations
 
-The loop animations are easy to capture in the gif. I simulated what the Neo Geo does to progress the animation by one frame -- setting the video RAM values accordingly -- then capture the HTML canvas's new state to be the next frame of the gif.
+The loop animations are easy to capture in the gif. I simulated what the Neo Geo does to progress the animation by one frame — setting the video RAM values accordingly — then capture the HTML canvas's new state to be the next frame of the gif.
 
 ### Next steps for the tool
 
