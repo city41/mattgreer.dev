@@ -1,0 +1,13 @@
+{
+	"draft": false,
+	"title": "Breakouts",
+	"type": "website",
+	"tags": ["Game Dev", "JavaScript"],
+	"description": [
+		"A collection of the game breakout, implemented in many JavaScript game engines.",
+		"Inspired by TodoMVC, it provides a level playing field for comparing engines."
+	],
+	"metaDescription": "A collection of the game breakout, implemented in many JavaScript game engines.",
+	"url": "https://jsbreakouts.org",
+	"imgAlt": "Breakouts logo"
+}
