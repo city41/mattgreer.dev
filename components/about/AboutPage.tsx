@@ -31,7 +31,7 @@ function AboutPage() {
 					I have been a professional software engineer since about the year
 					2000, but have been programming since I was a small child. My career
 					has spanned many industries and technologies, but lately I've been
-					focused on web tech such as React and Svelte.
+					focused on web tech such as React, Web Assembly and Svelte.
 				</P>
 				<P>
 					I have worked for Netflix and Microsoft, amongst other companies (here

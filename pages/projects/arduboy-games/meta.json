@@ -1,11 +1,11 @@
 {
 	"draft": false,
 	"title": "Arduboy Games",
-	"type": "Video Game",
+	"type": "video game",
 	"tags": ["Game Dev"],
 	"description": [
-		"Two games I created for the Arduboy.",
-		"A unique challenge revolving around fitting everything into 26kb."
+		"I created two games for the Arduboy portable console.",
+		"It's really challening fitting an entire game into the Arduboy's 26kb of space!"
 	],
 	"metaDescription": "A look at two Arduboy games I made: Ardynia and Tacklebox",
 	"url": "https://city41.games",

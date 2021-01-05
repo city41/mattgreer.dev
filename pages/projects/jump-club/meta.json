@@ -4,10 +4,8 @@
 	"type": "website",
 	"tags": ["React", "TypeScript", "NodeJS", "Godot", "Web Assembly", "Game Dev"],
 	"description": [
-		"A web based game creator inspired by Nintendo's Mario Maker.",
-		"Players can create their own levels using a very intuitive level editor. Once a level is published, it's easily shared with others with a url."
+		"A web based game creator inspired by Nintendo's Mario Maker."
 	],
-	"metaDescription": "Online platformer level creator, inspired by Mario Maker",
 	"url": "https://jump.club",
 	"featureIndex": 0,
 	"imgAlt": "Screenshot of my game maker, Jump.Club"

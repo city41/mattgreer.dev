@@ -4,7 +4,7 @@
 	"type": "technical article",
 	"tags": ["React", "In Depth"],
 	"description": [
-		"A look inside React. This part explores how React updates the DOM after props change."
+		"This part explores how React updates the DOM after props change."
 	],
 	"imgAlt": "React logo"
 }

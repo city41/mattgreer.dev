@@ -1,0 +1,22 @@
+jumpclub description could be better
+
+remove "A look inside React" from all react internal article descriptions
+
+projects page: need to sort projects better somehow
+
+for feature type, Video Game is capitalized, but website and others are not
+
+arduboy project: better description needed. bit about 26kb is awkward.
+
+breakouts: "A collection" -> "A community created collection"
+
+particle systems description: link to the article
+
+extracting: "to build gifs" -> "to build animated gifs"
+
+
+
+dates are formatted as en-us. probably due to rendering with node versus the browser
+
+about: "such as React" -> "such as React, Svelte and Web Assembly
+

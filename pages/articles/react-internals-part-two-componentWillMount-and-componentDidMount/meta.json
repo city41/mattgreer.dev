@@ -4,7 +4,7 @@
 	"type": "technical article",
 	"tags": ["React", "In Depth"],
 	"description": [
-		"A look inside React. Today we are looking at React's lifecycle methods."
+		"Today we are looking at how lifecycle methods in React work."
 	],
 	"imgAlt": "React logo"
 }

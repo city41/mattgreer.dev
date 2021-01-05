@@ -4,7 +4,7 @@
 	"type": "technical article",
 	"tags": ["React", "In Depth"],
 	"description": [
-		"A look inside React. This article series creates a small clone of React to learn how it works. We kick things off with the most basic of rendering."
+		"This article series creates a small clone of React to learn how it works. We kick things off with the most basic of rendering."
 	],
 	"imgAlt": "React logo",
 	"featureIndex": 3
