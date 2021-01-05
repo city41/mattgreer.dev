@@ -39,16 +39,19 @@ function TagFilter({
 }: TagFilterProps) {
 	return (
 		<div className={clsx(className)}>
-			<div className="text-2xl space-y-8 max-w-xl mt-4">
+			<div className="text-2xl space-y-8 max-w-xl mt-4 text-white">
 				{!currentTag ? (
 					<p>
-						All <span className="font-bold text-white">{toWords(count)}</span>{' '}
+						All{' '}
+						<span className="font-bold text-white italic">
+							{toWords(count)}
+						</span>{' '}
 						of my {classification}
 					</p>
 				) : (
 					<p>
 						{toCapitalizedWord(count)}{' '}
-						<span className="font-bold text-white">{currentTag}</span>{' '}
+						<span className="font-bold text-white italic">{currentTag}</span>{' '}
 						{singular(classification, count)}
 					</p>
 				)}
