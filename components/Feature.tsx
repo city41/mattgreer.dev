@@ -19,6 +19,7 @@ function Feature({
 	className,
 	title,
 	imgFile,
+	imgAlt,
 	pixelateImage,
 	description,
 	classification,
@@ -47,6 +48,7 @@ function Feature({
 						src={img}
 						width={384}
 						height={384}
+						alt={imgAlt}
 					/>
 				</a>
 			</Link>

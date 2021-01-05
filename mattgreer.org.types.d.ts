@@ -21,6 +21,7 @@ type PortfolioItemType =
 type PortfolioItem = {
 	title: string;
 	imgFile: string;
+	imgAlt: string;
 	pixelateImage?: boolean;
 	socialMediaFile: string;
 	slug: string;

@@ -9,5 +9,6 @@
 	],
 	"metaDescription": "Online platformer level creator, inspired by Mario Maker",
 	"url": "https://jump.club",
-	"featureIndex": 0
+	"featureIndex": 0,
+	"imgAlt": "Screenshot of my game maker, Jump.Club"
 }

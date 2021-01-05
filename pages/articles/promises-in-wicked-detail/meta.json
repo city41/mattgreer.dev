@@ -8,5 +8,6 @@
 		"By building the Promise implementation gradually, it shows the why and how of Promises."
 	],
 	"metaDescription": "A detailed article that implements Promises from scratch.",
-	"featureIndex": 1
+	"featureIndex": 1,
+	"imgAlt": "JavaScript logo"
 }

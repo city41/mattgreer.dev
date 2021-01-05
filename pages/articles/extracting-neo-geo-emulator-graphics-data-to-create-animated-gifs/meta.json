@@ -7,5 +7,6 @@
 		"Web Assembly lets us bring native applications right into the browser.",
 		"By porting a game emulator to wasm, I was able to reach into its memory to build gifs."
 	],
-	"metaDescription": "Using a game emulator to build animated gifs."
+	"metaDescription": "Using a game emulator to build animated gifs.",
+	"imgAlt": "Illustration of a mashup of the Neo Geo and Web Assembly logos"
 }

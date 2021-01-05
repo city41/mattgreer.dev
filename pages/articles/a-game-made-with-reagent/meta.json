@@ -6,5 +6,6 @@
 	"description": [
 		"For the heck of it, I made a simple breakout game with Reagent"
 	],
-	"metaDescription": "A simple breakout game made with Reagent"
+	"metaDescription": "A simple breakout game made with Reagent",
+	"imgAlt": "Illustration with mashup of React and Clojure logos"
 }

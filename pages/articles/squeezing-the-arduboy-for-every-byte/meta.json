@@ -8,5 +8,6 @@
 		"This article shows some techniques I used to use the space efficiently."
 	],
 	"metaDescription": "Using compression and other techniques to fit more things into an Arduboy game.",
-	"pixelateImage": true
+	"pixelateImage": true,
+	"imgAlt": "Screenshot of my Arduboy game, Ardynia"
 }

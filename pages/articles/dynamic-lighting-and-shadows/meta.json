@@ -6,5 +6,6 @@
 	"description": [
 		"How I used shaders in WebGL to accomplish lighting and shadows in a 2D game."
 	],
-	"pixelateImage": true
+	"pixelateImage": true,
+	"imgAlt": "Illustration showing a shadow created in the article"
 }
