@@ -1,0 +1,13 @@
+{
+	"draft": false,
+	"title": "Super Mario World Rocks",
+	"type": "website",
+	"tags": ["React", "ClojureScript"],
+	"description": [
+		"A detailed look at one of Nintendo's best video games."
+	],
+	"url": "https://supermarioworld.rocks",
+	"featureIndex": 4,
+	"imgAlt": "Screenshot of the overworld map in Super Mario World",
+	"pixelateImage": true
+}

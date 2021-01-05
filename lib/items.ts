@@ -100,10 +100,19 @@ function getItems(root: 'articles' | 'projects'): FeatureItem[] {
 	}, []);
 }
 
+function buildUrl(classification: string, slug: string): string {
+	return `/${classification}/${slug}`;
+}
+
 export function getAllArticleItems(
 	options: GetAllArticleItemsOptions = {}
 ): FeatureItem[] {
-	const items = getItems('articles');
+	const items = getItems('articles').map((i) => {
+		return {
+			...i,
+			url: buildUrl('articles', i.slug),
+		};
+	});
 
 	if (options.sortByDateDescending) {
 		return sortItemsByDateDescending(items);

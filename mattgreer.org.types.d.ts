@@ -6,8 +6,9 @@ type FeatureItem = {
 	imgAlt: string;
 	pixelateImage?: boolean;
 	socialMediaFile: string;
-	slug: string;
 	classification: 'articles' | 'projects';
+	slug: string;
+	url: string;
 	date?: string;
 	type?: FeatureItemType;
 	description: string[];
