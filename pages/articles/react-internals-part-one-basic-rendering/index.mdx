@@ -46,7 +46,7 @@ A virtual React element (just called an "element" in the source code), is an in 
 You are already familiar with one type of component: the composite component. Whenever you call `React.createClass()`, or have an es6 class extend `React.Component`, you are creating a Composite Component class. It turns out our view of the component lifecycle with methods like `componentWillMount`, `shouldComponentUpdate` is just one piece of the puzzle. These are the lifecycle methods that we hook into because they benefit us. But React components have other lifecycle methods such as `mountComponent` and `receiveComponent`. We never implement, call, or even know these other lifecycle methods exist. They are only used internally by React.
 
 <wisdom>
-The truth is the components we create are incomplete. React will take our component class, and wrap it in a `ReactCompositeComponentWrapper`, which then gives the components we wrote the full lifecycle hooks and ability to participate in React.
+The truth is the components we create are incomplete. React will take our component class, and wrap it in a ReactCompositeComponentWrapper, which then gives the components we wrote the full lifecycle hooks and ability to participate in React.
 </wisdom>
 
 ## React is declarative
@@ -156,7 +156,7 @@ class FeactDOMComponent {
 ```
 
 <wisdom>
-`mountComponent` stores the DOM element it creates in `this._hostNode`. We don't need that in part one, but we will in part three.
+mountComponent stores the DOM element it creates in `this._hostNode`. We don't need that in part one, but we will in part three.
 </wisdom>
 
 <Fiddle>city41/ohmzvb4o/9</Fiddle>
@@ -168,7 +168,7 @@ In about 40 lines of pretty crappy code we've got an incredibly limited and path
 We want to be able to render more than just a single, hardcoded, DOM element. So let's add support for defining component classes:
 
 <wisdom>
-    `Feact.createElement()` is good to go, so I won't keep repeating it in code snippets.
+    Feact.createElement() is good to go, so I won't keep repeating it in code snippets.
 </wisdom>
 
 ```javascript
@@ -246,7 +246,7 @@ class FeactCompositeComponentWrapper {
 By giving users the ability to define their own components, Feact can now create dynamic DOM nodes that can change depending on the value of the props. There's a lot going on in this upgrade to Feact, but if you trace through it, it's not too bad. You can see where we call `componentInstance.render()`, to get our hands on an element that we can then pass into FeactDOMComponent.
 
 <pitfall>
-Notice how `FeactCompositeComponentWrapper` is directly creating a `FeactDOMComponent`? That's a tight coupling which isn't so great. We'll fix this later. If React was this tightly coupled, it'd only ever be able to build web apps. Keeping `ReactCompositeComponentWrapper` in the dark about other component types surely made building React Native easier.
+Notice how FeactCompositeComponentWrapper is directly creating a FeactDOMComponent? That's a tight coupling which isn't so great. We'll fix this later. If React was this tightly coupled, it'd only ever be able to build web apps. Keeping ReactCompositeComponentWrapper in the dark about other component types surely made building React Native easier.
 </pitfall>
 
 ### An improvement for composite components
@@ -292,7 +292,7 @@ class FeactCompositeComponentWrapper {
 ```
 
 <pitfall>
-Heads up, this "fix" is a short cut that's just good enough to meet our current needs. Notice how it repeatedly calls `render` until it gets down to a primitive element? That's not good enough, because those subcomponents need to participate in the entire lifecycle. For example, if we had support for `componentWillMount`, those subcomponents would never get their's called. We'll fix this later.
+Heads up, this "fix" is a short cut that's just good enough to meet our current needs. Notice how it repeatedly calls render until it gets down to a primitive element? That's not good enough, because those subcomponents need to participate in the entire lifecycle. For example, if we had support for componentWillMount, those subcomponents would never get theirs called. We'll fix this later.
 </pitfall>
 
 

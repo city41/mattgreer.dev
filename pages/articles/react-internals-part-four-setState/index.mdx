@@ -56,10 +56,10 @@ const Feact = {
 Just like props, we set the state on the instance.
 
 <pitfall>
-Notice if the component does not have `getInitialState` defined, the initial state will be `null`?
+Notice if the component does not have getInitialState defined, the initial state will be null?
 React won't default initial state to an empty object, so if you want to use state, chances are you
 need to implement this method and return an object, otherwise your first render will blow up if it
-tries to do `this.state.foo`
+tries to do this.state.foo
 </pitfall>
 
 Now with `getInitialState` defined, Feact components can start using `this.state` whenever they'd like.
@@ -202,7 +202,7 @@ class FeactCompositeComponentWrapper {
 That isn't the entirety of `updateComponent`, (check the fiddle at the end of the article for all the code), just enough to show that calling `setState()` does not cause `componentWillReceiveProps` to get called before the render happens. Which does make sense, `setState` has no means of influencing props, just state.
 
 <wisdom>
-If you want a heads up on every render, whether caused by prop changes or state changes, then implement `componentWillUpdate` in your component. We won't add it to Feact since this blog series is already too long, but it's called right before a render, no matter what caused the render. The only exception is the first render, where you can hook into `componentWillMount` instead.
+If you want a heads up on every render, whether caused by prop changes or state changes, then implement componentWillUpdate in your component. We won't add it to Feact since this blog series is already too long, but it's called right before a render, no matter what caused the render. The only exception is the first render, where you can hook into componentWillMount instead.
 </wisdom>
 
 
@@ -339,7 +339,7 @@ class FeactCompositeComponentWrapper {
 ### batching step two, batching up the state changes into one render
 
 <pitfall>
-The batching mechanism we're about to add to Feact is very simple and not at all what React does. The point is to just show the general idea of how batching works (and later, show why it can make `setState` tricky).
+The batching mechanism we're about to add to Feact is very simple and not at all what React does. The point is to just show the general idea of how batching works (and later, show why it can make setState tricky).
 </pitfall>
 
 For Feact, we will batch updates while rendering, otherwise, we won't batch them. So during `updateComponent`, we just set a flag that tells the world we are rendering, then unset it at the end. If `setState` sees we are rendering, it will set the pending state, but not cause a new render, as it knows the current render that is going on will pick up this state change
