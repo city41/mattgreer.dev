@@ -54,17 +54,27 @@ function AboutPage() {
 					<FiSmile className="inline" />. It's pretty interesting just how far
 					down the rabbit hole you can go on flour, hydration, fermentation and
 					more. And eating delicious bread regularly is okay by me.
-					<Img src={baguettesJpg} alt="a baguette I made" />
+					<Img
+						src={baguettesJpg}
+						alt="a baguette I made"
+						width={800}
+						height={600}
+					/>
 				</P>
 
 				<P>
 					I'm a big softy when it comes to animals. Here is our blind dog
 					Franny,
-					<Img src={frannyJpg} alt="Franny, my dog" />
+					<Img src={frannyJpg} alt="Franny, my dog" width={800} height={600} />
 				</P>
 				<P>
 					and our cat Charlie.
-					<Img src={charlieJpg} alt="Charlie, my cat" />
+					<Img
+						src={charlieJpg}
+						alt="Charlie, my cat"
+						width={800}
+						height={600}
+					/>
 				</P>
 
 				<H2>This Website</H2>
