@@ -13,6 +13,7 @@ type RootProps = {
 	img: string;
 	pixelateImage?: boolean;
 	socialMediaImg?: string;
+	twitterSize?: 'small' | 'large';
 	imgAlt: string;
 	headerContent?: React.ReactNode;
 	headerContentUnderTitle?: boolean;
@@ -26,6 +27,7 @@ function Root({
 	metaForTitle,
 	metaDescription,
 	socialMediaImg,
+	twitterSize,
 	img,
 	pixelateImage,
 	imgAlt,
@@ -39,6 +41,7 @@ function Root({
 				title={title}
 				metaDescription={metaDescription}
 				metaImg={socialMediaImg ?? img}
+				twitterSize={twitterSize}
 			/>
 			{navigation && <Navigation current={currentNav} />}
 			<Header

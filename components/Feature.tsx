@@ -48,7 +48,7 @@ function Feature({
 					<div
 						className={clsx(
 							styles.image,
-							'w-full h-full  sm:border-bg-fade sm:border bg-center bg-contain bg-no-repeat',
+							'w-full h-full bg-center bg-contain bg-no-repeat',
 							{
 								[pixelatedStyles.pixelated]: pixelateImage,
 							}
