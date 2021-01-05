@@ -1,6 +1,9 @@
 import { Article } from '../../../components/layouts/Article';
 import meta from './meta.json';
 
+export const config = {
+    unstable_runtimeJS: false
+}
 
 export default ({ children }) => <Article {...meta} img={require('./feature.png')}
   intro='The Sega Saturn is notorious for not being able to pull off transparency effects as well as its competitors. Sometimes developers resorted to a “mesh” effect. Why was this compromise needed?'
