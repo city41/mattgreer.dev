@@ -185,7 +185,7 @@ If you open up the console, you'll see an error about the callback not being a f
 Our brittle code above revealed something unexpectedly. Promises have state. We need to know what state they are in before proceeding, and make sure we move through the states correctly. Doing so gets rid of the brittleness.
 
 <wisdom>
-    A promise can be **pending** waiting for a value, or **resolved** with a value.
+    A promise can be <i>pending</i> waiting for a value, or <i>resolved</i> with a value.
     Once a promise resolves to a value, it will always remain at that value and never resolve again.
 </wisdom>
 
@@ -237,7 +237,7 @@ This is because of the `state` flag. Both `then()` and `resolve()` hand off to t
 Notice `setTimeout` went away? That's temporary, it will be coming back. But one thing at a time.
 
 <wisdom>
-    With promises, the order in which we work with them doesn't matter. We are free to call `then()` and `resolve()` whenever they suit our purposes. This is one of the powerful advantages of capturing the notion of eventual results into an object
+    With promises, the order in which we work with them doesn't matter. We are free to call then() and resolve() whenever they suit our purposes. This is one of the powerful advantages of capturing the notion of eventual results into an object
 </wisdom>
 
 We still have quite a few more things in the spec to implement, but our promises are already pretty powerful. This system allows us to call `then()` as many times as we want, we will always get the same value back
@@ -254,7 +254,7 @@ promise.then(function(value) {
 });
 ```
 <pitfall>
-    This is not completely true for the promise implementation in this article. If the opposite happens, ie the caller calls `then()` multiple times before `resolve()` is called, only the last call to `then()` will be honored. The fix for this is to keep a running list of deferreds inside of the promise instead of just one. I decided to not do that in the interest of keeping the article more simple, it's long enough as it is :)
+    This is not completely true for the promise implementation in this article. If the opposite happens, ie the caller calls then() multiple times before resolve() is called, only the last call to then() will be honored. The fix for this is to keep a running list of deferreds inside of the promise instead of just one. I decided to not do that in the interest of keeping the article more simple, it's long enough as it is :)
 </pitfall>
 
 ## Chaining Promises
@@ -271,7 +271,7 @@ getSomeData()
 `getSomeData` is returning a promise, as evidenced by the call to `then()`, but the result of that first then must also be a promise, as we call `then()` again (and yet again!) That's exactly what happens, if we can convince `then()` to return a promise, things get more interesting.
 
 <wisdom>
-    `then()` always returns a promise
+    then() always returns a promise
 </wisdom>
 
 Here is our promise type with chaining added in
@@ -324,7 +324,7 @@ function Promise(fn) {
 Hoo, it's getting a little squirrelly. Aren't you glad we're building this up slowly? The real key here is that `then()` is returning a new promise.
 
 <pitfall>
-    Since `then()` always returns a new promise object, there will always be at least one promise object that gets created, resolved and then ignored. Which can be seen as wasteful. The callback approach does not have this problem. Another ding against promises. You can start to appreciate why some in the JavaScript community have shunned them.
+    Since then() always returns a new promise object, there will always be at least one promise object that gets created, resolved and then ignored. Which can be seen as wasteful. The callback approach does not have this problem. Another ding against promises. You can start to appreciate why some in the JavaScript community have shunned them.
 </pitfall>
 
 What value does the second promise resolve to? *It receives the return value of the first promise.* This is happening at the bottom of `handle()`, The `handler` object carries around both an `onResolved` callback as well as a reference to `resolve()`. There is more than one copy of `resolve()` floating around, each promise gets their own copy of this function, and a closure for it to run within. This is the bridge from the first promise to the second. We are concluding the first promise at this line:
@@ -485,11 +485,11 @@ function resolve(newValue) {
 We'll keep calling `resolve()` recursively as long as we get a promise back. Once it's no longer a promise, then proceed as before.
 
 <pitfall>
-    It *is* possible for this to be an infinite loop. The Promises/A+ spec recommends implementations detect infinite loops, but it's not required.
+    It <i>is</i> possible for this to be an infinite loop. The Promises/A+ spec recommends implementations detect infinite loops, but it's not required.
 </pitfall>
 
 <pitfall>
-    Also worth pointing out, this implementation does not meet the spec. Nor will we fully meet the spec in this regard in the article. For the more curious, I recommend reading the [promise resolution procedure](http://promises-aplus.github.io/promises-spec/#the_promise_resolution_procedure).
+    Also worth pointing out, this implementation does not meet the spec. Nor will we fully meet the spec in this regard in the article. For the more curious, I recommend reading the <a href="http://promises-aplus.github.io/promises-spec/#the_promise_resolution_procedure">promise resolution procedure</a>.
 </pitfall>
 
 Notice how loose the check is to see if `newValue` is a promise? We are only looking for a `then()` method. This duck typing is intentional, it allows different promise implementations to interopt with each other. It's actually quite common for promise libraries to intermingle, as different third party libraries you use can each use different promise implementations.
@@ -512,7 +512,7 @@ doSomething().then(function(value) {
 ```
 
 <wisdom>
-    As mentioned earlier, the promise will transition from **pending** to either **resolved** or **rejected**, never both. In other words, only one of the above callbacks ever gets called.
+    As mentioned earlier, the promise will transition from <i>pending</i> to either <i>resolved</i> or <i>rejected</i> never both. In other words, only one of the above callbacks ever gets called.
 </wisdom>
 
 Promises enable rejection by means of `reject()`, the evil twin of `resolve()`. Here is `doSomething()` with error handling support added
@@ -611,7 +611,7 @@ function Promise(fn) {
 Other than the addition of `reject()` itself, `handle()` also has to be aware of rejection. Within `handle()`, either the rejection path or resolve path will be taken depending on the value of `state`. This value of `state` gets pushed into the next promise, because calling the next promises' `resolve()` or `reject()` sets its `state` value accordingly.
 
 <pitfall>
-    When using promises, it's very easy to omit the error callback. But if you do, you'll never get *any* indication something went wrong. At the very least, the final promise in your chain should have an error callback. See the section further down about swallowed errors for more info.
+    When using promises, it's very easy to omit the error callback. But if you do, you'll never get <i>any</i> indication something went wrong. At the very least, the final promise in your chain should have an error callback. See the section further down about swallowed errors for more info.
 </pitfall>
 
 ### Unexpected Errors Should Also Lead to Rejection
@@ -676,13 +676,13 @@ getSomeJson().then(function(json) {
 What is going to happen here? Our callback inside `then()` is expecting some valid JSON. So it naively tries to parse it, which leads to an exception. But we have an error callback, so we're good, right?
 
 <pitfall>
-    **Nope.** *That error callback will not be invoked!* If you run this example via the above fiddle, you will get no output at all. No errors, no nothing. Pure *chilling* silence.
+    <b>Nope.</b> <i>That error callback will not be invoked!</i> If you run this example via the above fiddle, you will get no output at all. No errors, no nothing. Pure <i>chilling</i> silence.
 </pitfall>
 
 Why is this? Since the unhandled exception took place in our callback to `then()`, it is being caught inside of `handle()`. This causes `handle()` to reject the promise that `then()` returned, not the promise we are already responding to, as that promise has already properly resolved.
 
 <wisdom>
-    Always remember, inside of `then()`'s callback, the promise you are responding to has already resolved. The result of your callback will have no influence on this promise
+    Always remember, inside of then()'s callback, the promise you are responding to has already resolved. The result of your callback will have no influence on this promise
 </wisdom>
 
 If you want to capture the above error, you need an error callback further downstream
@@ -719,7 +719,7 @@ getSomeJson().done(function(json) {
 `done()` also takes an error callback, `done(callback, errback)`, just like `then()` does, and since the entire promise resolution is, well, done, you are assured of being informed of any errors that erupted.
 
 <pitfall>
-    `done()` is not part of the Promises/A+ spec (at least not yet), so your promise library of choice might not have it.
+    done() is not part of the Promises/A+ spec (at least not yet), so your promise library of choice might not have it. I have worked with one implementation as recently as 2018, you just never know with all the legacy code out there!
 </pitfall>
 
 ### Recovering from Rejection
