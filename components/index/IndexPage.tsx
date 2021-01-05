@@ -24,7 +24,7 @@ function IndexPageNavLink({ href, children }) {
 	return (
 		<li>
 			<Link href={href} passHref>
-				<a className="border-b-2 border-t-2 px-1 sm:px-2 py-2 grid place-items-center text-white border-transparent hover:bg-focal-alt-fade">
+				<a className="px-1 sm:px-2 py-2 grid place-items-center text-white hover:bg-focal-alt-fade">
 					{children}
 				</a>
 			</Link>
