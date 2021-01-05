@@ -4,7 +4,7 @@
 	"type": "technical article",
 	"tags": ["React", "In Depth"],
 	"description": [
-		"A look inside React. This article series creates a small clone of React to learn how it works."
+		"A look inside React. In this final installment, we take a quick look at transactions and how they help React do its job."
 	],
 	"imgAlt": "React logo"
 }
