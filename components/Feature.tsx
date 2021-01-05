@@ -45,6 +45,8 @@ function Feature({
 							[pixelatedStyles.pixelated]: pixelateImage,
 						})}
 						src={img}
+						width={384}
+						height={384}
 					/>
 				</a>
 			</Link>
