@@ -57,7 +57,7 @@ Array.from(document.querySelectorAll('tr'))
 ```
 
 <pitfall>
-I got really lucky here, on some webpages narrowing down your query to just the relevant data can be tricky. You'll usually need a much more clever query for `querySelectorAll`
+I got really lucky here, on some webpages narrowing down your query to just the relevant data can be tricky. You'll usually need a much more clever query for querySelectorAll
 </pitfall>
 
 from here, each `<td>` child inside of the `<tr>` contains a piece of data I want. So I can `reduce` the whole shebang into an object
@@ -112,5 +112,5 @@ Blue":{"id":135,"officialName":"Sand Blue","color":"rgb(94, 116, 140)"}
 Then just copy and paste the entire result of the stringify into my code, have my editor format it, and that's it. Much easier than tediously copying each color over, and a little fun too.
 
 <wisdom>
-You can also have `stringify` format the result for you by making use of the [space argument](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#space_argument). `JSON.stringify(colors, null, 2)` will format the resulting string nicely.
+You can also have stringify format the result for you by making use of the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#space_argument">space argument</a>. JSON.stringify(colors, null, 2) will format the resulting string nicely.
 </wisdom>
