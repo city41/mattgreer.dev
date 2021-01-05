@@ -24,7 +24,7 @@ The Arduboy has a 1 bit display, and so it is able to express 8 pixels in a sing
 
 So in most situations, your graphic data ends up needing two bits per pixel.
 
-The [Arduboy2](https://github.com/MLXXXp/Arduboy2) library includes functions that enable you to draw masked graphics. There is also the [ArdBitmap](https://github.com/igvina/ArdBitmap) library which enables you to draw graphics mirrored vertically and horizontally, but offers no masking support. I ended up essentially combining both approaches into one uber [`drawBitmap`](https://gist.github.com/city41/9f057bb5e27836a787694d50d4a546f3) function that allowed me to draw graphics:
+The [Arduboy2](https://github.com/MLXXXp/Arduboy2) library includes functions that enable you to draw masked graphics. There is also the [ArdBitmap](https://github.com/igvina/ArdBitmap) library which enables you to draw graphics mirrored vertically and horizontally, but offers no masking support. I ended up essentially combining both approaches into one uber [`drawBitmap`](https://gist.github.com/city41/9f057bb5e27836a787694d50d4a546f3) function that allowed me to draw graphics ...
 
 * overwriting the destination (ie no mask)
 * using masks that are stored separate from the graphic data
@@ -50,7 +50,7 @@ Since the boomerang is 8x8, one frame takes 16 bytes (8 bytes for the sprite, pl
 I was able to use mirroring to animate characters walking, show switches get activated, make explosions more interesting and much more. Altogether mirroring enabled me to store 1,036 fewer bytes than I would have otherwise. 
 
 <pitfall>
-The savings was actually slightly less, as in some scenarios, it takes more code to figure out which mirror to use versus just picking a certain frame of animation. So this added code at the `drawBitmap` call sites ate into my savings a little bit.
+The savings was actually slightly less, as in some scenarios, it takes more code to figure out which mirror to use versus just picking a certain frame of animation. So this added code at the drawBitmap call sites ate into my savings a little bit.
 </pitfall>
 
 ### Inverting the colors
@@ -137,7 +137,7 @@ So RLE saved 448 bytes. However, I now have to uncompress the data at run time. 
 Only having 15 tile types helped with compression, as it enables longer runs of the same tile.
 
 <wisdom>
-We can do even better with RLE. For example, take the count value and add `4` to it at runtime, so the range is now 4-19. This can eek out a few more bytes. A good approach is to have the compression tool compress the maps in various variants of RLE, then pick the variant that compressed your particular maps the most.
+We can do even better with RLE. For example, take the count value and add 4 to it at runtime, so the range is now 4-19. This can eek out a few more bytes. A good approach is to have the compression tool compress the maps in various variants of RLE, then pick the variant that compressed your particular maps the most.
 </wisdom>
 
 ### 2 bytes per entity instead of 3
@@ -164,7 +164,7 @@ I have about 24 unique entity types in the game, meaning the entity type bytes i
 The game ultimately has two maps, the overworld and the dungeons. The dungeons are shaped such that when combined they form a rectangle. ~~I borrowed this idea from Nintendo, who did the same thing for The Legend of Zelda on the NES~~
 
 <pitfall>
-This is not how Zelda stored its dungeons, as [Borncoding pointed out to me on Reddit.](https://old.reddit.com/r/gamedev/comments/9eyhni/squeezing_the_arduboy_for_every_byte/e5t7a3j/) However, seeing the dungeons laid out this way did inspire me to put them all in one map, so I am grateful for the image regardless.
+This is not how Zelda stored its dungeons, as <a href="https://old.reddit.com/r/gamedev/comments/9eyhni/squeezing_the_arduboy_for_every_byte/e5t7a3j/">Borncoding pointed out to me on Reddit.</a> However, seeing the dungeons laid out this way did inspire me to put them all in one map, so I am grateful for the image regardless.
 </pitfall>
 
 <figure>
@@ -172,7 +172,7 @@ This is not how Zelda stored its dungeons, as [Borncoding pointed out to me on R
     <figcaption>All NES Zelda dungeons shown combined together, taken from <a href="http://ian-albert.com/games/legend_of_zelda_maps/">ian-albert.com</a></figcaption>
 </figure>
 
-This means I can have oddly shaped dungeon without worrying about wasting bytes. Just like Nintendo has the occasional gap (the black rooms above) my dungeon map does too. I used those gaps to be secret bonus rooms for the player to find. So in the end, no byte is wasted.
+This means I can have oddly shaped dungeons without worrying about wasting bytes. Just like Nintendo has the occasional gap (the black rooms above) my dungeon map does too. I used those gaps to be secret bonus rooms for the player to find. So in the end, no byte is wasted.
 
 ## Fonts and text
 
@@ -196,5 +196,9 @@ Bonus! My custom encoding only needs 5 bits per character. So I could go further
 The ideas here are just the more interesting techniques I employed. I also found lots of micro savings throughout the game. I'm pretty sure I could find a way to squeeze yet another byte out of this game for the rest of my life. It's a fun little puzzle in its own way. As it stands now, the game is nearly done and I have about 4k of space left to work with to finish it. I am feeling pretty good about that, but if I run out of space (again), I am pretty confident I can make it work given enough perseverance. 
 
 If you are interested in the game, I made a small website for it at https://www.city41.games/ardynia. I will keep that site updated as I progress.
+
+## Lots of fun
+
+I really enjoyed making this game (so much so I made [another one](https://city41.games/tacklebox)). If you like a good challenge and enjoy game dev, I recommend giving it a go.
 
 
