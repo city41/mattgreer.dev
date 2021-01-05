@@ -55,6 +55,8 @@ function Head({
 
 			{/* Twitter */}
 			<meta name="twitter:creator" content="@mattegreer" key="twhandle" />
+			<meta name="twitter:site" content="@mattegreer" />
+			<meta name="twitter:title" content={title} />
 			<meta name="twitter:card" content={SUMMARY_IMAGE_VALUE[twitterSize]} />
 			<meta name="twitter:image" content={finalMetaImg} />
 
