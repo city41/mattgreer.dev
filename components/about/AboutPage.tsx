@@ -81,12 +81,12 @@ function AboutPage() {
 				<P>
 					This site was built with Next.JS and hosted by Vercel. I used Tailwind
 					CSS for the styling, and created the illustrations with Inkscape. You
-					can see its source code{' '}
+					can see its{' '}
 					<FocalColorLink
 						href="https://github.com/city41/mattgreer.org"
 						external
 					>
-						here
+						source code here
 					</FocalColorLink>
 					.
 				</P>
