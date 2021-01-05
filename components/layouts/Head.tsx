@@ -45,6 +45,10 @@ function Head({
 		metaImg ?? fallbackImg
 	)}?t=${title.substring(0, 10)}`;
 
+	if (!metaImg) {
+		twitterSize = 'large';
+	}
+
 	return (
 		<NextHead>
 			<title>{getPageTitle(title)}</title>
