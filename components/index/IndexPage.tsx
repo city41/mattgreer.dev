@@ -14,7 +14,7 @@ import otterPng from './otter.png';
 import reflectionPng from './reflection.png';
 
 type IndexPageProps = {
-	items: PortfolioItem[];
+	items: FeatureItem[];
 };
 
 /**

@@ -6,9 +6,9 @@ import { Root } from '../layouts/Root';
 import laptopSvg from './laptop.svg';
 
 type ProjectsPageProps = {
-	tag?: TagLabel;
-	allTags: TagLabel[];
-	items: PortfolioItem[];
+	tag?: string;
+	allTags: string[];
+	items: FeatureItem[];
 };
 
 function ProjectsPage({ tag, allTags, items }: ProjectsPageProps) {

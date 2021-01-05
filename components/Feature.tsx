@@ -6,7 +6,7 @@ import { Tag } from './Tag';
 import pixelatedStyles from './pixelated.module.css';
 import { dateToHumanString } from '../util/dates';
 
-type FeatureProps = Omit<PortfolioItem, 'featureIndex'> & {
+type FeatureProps = Omit<FeatureItem, 'featureIndex'> & {
 	className?: string;
 	suppressDate?: boolean;
 };

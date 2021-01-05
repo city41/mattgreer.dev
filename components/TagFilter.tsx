@@ -7,8 +7,8 @@ import styles from './TagFilter.module.css';
 
 type TagFilterProps = {
 	className?: string;
-	tags: TagLabel[];
-	currentTag?: TagLabel | null;
+	tags: string[];
+	currentTag?: string | null;
 	classification: 'projects' | 'articles';
 	count: number;
 };
@@ -61,7 +61,7 @@ function TagFilter({
 				{['All']
 					.concat(tags)
 					.sort()
-					.map((t: TagLabel) => {
+					.map((t: string) => {
 						if (t === currentTag || (t === 'All' && !currentTag)) {
 							return null;
 						}

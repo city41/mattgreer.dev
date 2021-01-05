@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import getConfig from 'next/config';
 
-function getTags(root: 'articles' | 'projects'): TagLabel[] {
+function getTags(root: 'articles' | 'projects'): string[] {
 	const pagesPath = path.resolve(
 		getConfig().serverRuntimeConfig.PROJECT_ROOT,
 		'pages',
@@ -21,7 +21,7 @@ function getTags(root: 'articles' | 'projects'): TagLabel[] {
 			}
 		}, []);
 
-	const tags = directories.reduce<TagLabel[]>((buildingTags, directory) => {
+	const tags = directories.reduce<string[]>((buildingTags, directory) => {
 		const metaPath = path.join(directory, 'meta.json');
 		const metaSource = fs.readFileSync(metaPath).toString();
 		const pageMeta = JSON.parse(metaSource);
@@ -36,10 +36,10 @@ function getTags(root: 'articles' | 'projects'): TagLabel[] {
 	return Array.from(new Set(tags));
 }
 
-export function getAllProjectTags(): TagLabel[] {
+export function getAllProjectTags(): string[] {
 	return getTags('projects');
 }
 
-export function getAllArticleTags(): TagLabel[] {
+export function getAllArticleTags(): string[] {
 	return getTags('articles');
 }

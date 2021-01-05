@@ -38,7 +38,7 @@ type MetaAndDescriptionData = {
 	metaDescription?: string;
 };
 
-function sortItemsByDateDescending(items: PortfolioItem[]): PortfolioItem[] {
+function sortItemsByDateDescending(items: FeatureItem[]): FeatureItem[] {
 	return items.sort((a, b) => {
 		return new Date(b.date).getTime() - new Date(a.date).getTime();
 	});
@@ -57,7 +57,7 @@ function getMetaDescription(meta: MetaAndDescriptionData): string {
 	}
 }
 
-function getItems(root: 'articles' | 'projects'): PortfolioItem[] {
+function getItems(root: 'articles' | 'projects'): FeatureItem[] {
 	const pagesPath = path.resolve(
 		getConfig().serverRuntimeConfig.PROJECT_ROOT,
 		'pages',
@@ -76,7 +76,7 @@ function getItems(root: 'articles' | 'projects'): PortfolioItem[] {
 			}
 		}, []);
 
-	return directories.reduce<PortfolioItem[]>((buildingItems, directoryPath) => {
+	return directories.reduce<FeatureItem[]>((buildingItems, directoryPath) => {
 		const metaPath = path.join(directoryPath, 'meta.json');
 		const metaSource = fs.readFileSync(metaPath).toString();
 		const meta = JSON.parse(metaSource);
@@ -102,7 +102,7 @@ function getItems(root: 'articles' | 'projects'): PortfolioItem[] {
 
 export function getAllArticleItems(
 	options: GetAllArticleItemsOptions = {}
-): PortfolioItem[] {
+): FeatureItem[] {
 	const items = getItems('articles');
 
 	if (options.sortByDateDescending) {
@@ -112,10 +112,10 @@ export function getAllArticleItems(
 	}
 }
 
-export function getAllProjectItems(): PortfolioItem[] {
+export function getAllProjectItems(): FeatureItem[] {
 	return getItems('projects');
 }
 
-export function getAllItems(): PortfolioItem[] {
+export function getAllItems(): FeatureItem[] {
 	return getAllArticleItems().concat(getAllProjectItems());
 }

@@ -4,12 +4,12 @@ import clsx from 'clsx';
 
 type TagProps = {
 	className?: string;
-	children: TagLabel;
+	children: string;
 	component?: React.ElementType;
 	classification: 'projects' | 'articles';
 };
 
-function getUrl(classification: TagProps['classification'], tag: TagLabel) {
+function getUrl(classification: TagProps['classification'], tag: string) {
 	if (tag === 'All') {
 		return `/${classification}`;
 	} else {

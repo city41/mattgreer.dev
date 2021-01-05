@@ -13,12 +13,12 @@ export const config = {
 };
 
 type TagArticlesNextPageProps = {
-	tag: TagLabel;
-	allTags: TagLabel[];
-	items: PortfolioItem[];
+	tag: string;
+	allTags: string[];
+	items: FeatureItem[];
 };
 
-function findMatchingTag(tagString: string): TagLabel {
+function findMatchingTag(tagString: string): string {
 	// TODO: this is reading from the file system every time
 	const allTags = getAllArticleTags();
 

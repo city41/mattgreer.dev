@@ -8,8 +8,8 @@ export const config = {
 };
 
 type ProjectsIndexNextPageProps = {
-	allTags: TagLabel[];
-	items: PortfolioItem[];
+	allTags: string[];
+	items: FeatureItem[];
 };
 
 export async function getStaticProps(): Promise<{

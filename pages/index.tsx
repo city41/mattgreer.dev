@@ -7,7 +7,7 @@ export const config = {
 };
 
 type IndexNextPageProps = {
-	items: PortfolioItem[];
+	items: FeatureItem[];
 };
 
 export async function getStaticProps(): Promise<{

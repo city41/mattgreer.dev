@@ -1,24 +1,6 @@
-type TagLabel =
-	| 'All'
-	| 'JavaScript'
-	| 'React'
-	| 'TypeScript'
-	| 'Redux'
-	| 'NodeJS'
-	| 'Godot'
-	| 'wasm';
+type FeatureItemType = 'website' | 'technical article' | 'interactive article';
 
-type Article = {
-	name: string;
-	url: string;
-};
-
-type PortfolioItemType =
-	| 'website'
-	| 'technical article'
-	| 'interactive article';
-
-type PortfolioItem = {
+type FeatureItem = {
 	title: string;
 	imgFile: string;
 	imgAlt: string;
@@ -27,9 +9,9 @@ type PortfolioItem = {
 	slug: string;
 	classification: 'articles' | 'projects';
 	date?: string;
-	type?: PortfolioItemType;
+	type?: FeatureItemType;
 	description: string[];
 	metaDescription: string;
-	tags: TagLabel[];
+	tags: string[];
 	featureIndex: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | -1;
 };
