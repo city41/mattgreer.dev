@@ -6,6 +6,7 @@ import { dateToHumanString } from '../../util/dates';
 
 type ArticleProps = {
 	title: string;
+	description: string;
 	metaDescription: string;
 	date: string;
 	intro: string;
@@ -17,6 +18,7 @@ type ArticleProps = {
 
 function Article({
 	title,
+	description,
 	metaDescription,
 	date,
 	intro,
@@ -31,7 +33,7 @@ function Article({
 		<Root
 			title={title}
 			metaForTitle={dateToHumanString(date)}
-			metaDescription={metaDescription}
+			metaDescription={metaDescription || description}
 			headerContent={headerContent}
 			img={img}
 			pixelateImage={pixelateImage}
