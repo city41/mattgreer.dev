@@ -122,7 +122,11 @@ export function getAllArticleItems(
 }
 
 export function getAllProjectItems(): FeatureItem[] {
-	return getItems('projects');
+	const projects = getItems('projects');
+
+	return projects.sort((a, b) => {
+		return a.projectPagePriority - b.projectPagePriority;
+	});
 }
 
 export function getAllItems(): FeatureItem[] {

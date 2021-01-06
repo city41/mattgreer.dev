@@ -4,10 +4,11 @@
 	"type": "website",
 	"tags": ["Game Dev", "JavaScript"],
 	"description": [
-		"A collection of the game breakout, implemented in many JavaScript game engines.",
-		"Inspired by TodoMVC, it provides a level playing field for comparing engines."
+		"A community created collection of the game breakout, implemented in many JavaScript game engines.",
+		"Inspired by TodoMVC, it provides a good way to find an engine that resonates with you."
 	],
 	"metaDescription": "A community created collection of the game breakout, implemented in many JavaScript game engines.",
 	"url": "https://jsbreakouts.org",
-	"imgAlt": "Breakouts logo"
+	"imgAlt": "Breakouts logo",
+  "projectPagePriority": 1
 }

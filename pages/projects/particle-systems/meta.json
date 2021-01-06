@@ -9,5 +9,6 @@
 	],
 	"metaDescription": "An article on how particle systems work.",
 	"url": "http://buildnewgames.com/particle-systems/",
-	"imgAlt": "A diagram showing how a particle moves"
+	"imgAlt": "A diagram showing how a particle moves",
+  "projectPagePriority": 1
 }

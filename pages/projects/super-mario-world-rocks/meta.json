@@ -8,5 +8,6 @@
 	],
 	"url": "https://supermarioworld.rocks",
 	"imgAlt": "Screenshot of the overworld map in Super Mario World",
-	"pixelateImage": true
+	"pixelateImage": true,
+  "projectPagePriority": 2
 }
