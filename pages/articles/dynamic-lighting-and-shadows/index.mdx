@@ -21,7 +21,7 @@ export default ({ children }) => <Article {...meta} img={require('./feature.png'
 <iframe width={560} height={315} style={{margin: '3em 0' }} src="https://www.youtube.com/embed/ZMyg5erp-vk" frameBorder={0} allowFullScreen></iframe>
 
 ## Part one: dynamic lighting
-I was inspired by [this post](http://www.reddit.com/r/gamedev/comments/115f3y/how_to_dynamic_lighting_on_sprites/) on Reddit, where aionskull used normal maps in Unity to dynamically light up his sprites. gpillow also posted in the comments how he had done [something similar](https://love2d.org/forums/viewtopic.php?f=5&t=11076) in Love2D. [Here's a large gif illustrating gpillow's results](pixel_shading.gif). I'd just include the gif here, but it's 8 megs. Thanks to jusksmit for making the gif.
+I was inspired by [this post](http://www.reddit.com/r/gamedev/comments/115f3y/how_to_dynamic_lighting_on_sprites/) on Reddit, where aionskull used normal maps in Unity to dynamically light up his sprites. gpillow also posted in the comments how he had done [something similar](https://love2d.org/forums/viewtopic.php?f=5&t=11076) in Love2D. <a href={require('./pixel_shading.gif')}>Here's a large gif illustrating gpillow's results</a>. I'd just include the gif here, but it's 8 megs. Thanks to jusksmit for making the gif.
 
 So, what is dynamic lighting? It's a 3D graphics technique where a light source lights up objects in the scene. It's dynamic as the lighting effects update in real time as the light source moves around. This is pretty standard stuff in the 3D world and easy to translate into a 2D environment, assuming you can take advantage of shaders.
 
