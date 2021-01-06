@@ -3,6 +3,7 @@ import { MDXProvider } from '@mdx-js/react';
 import { Root } from './Root';
 import { MDXComponents } from './MDXComponents';
 import { dateToHumanString } from '../../util/dates';
+import { FollowMe } from './FollowMe';
 
 type ArticleProps = {
 	title: string;
@@ -45,6 +46,7 @@ function Article({
 			<MDXProvider components={MDXComponents}>
 				<div className="mx-auto max-w-2xl sm:mt-32">{children}</div>
 			</MDXProvider>
+			<FollowMe />
 		</Root>
 	);
 }
