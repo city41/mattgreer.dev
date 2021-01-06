@@ -234,7 +234,17 @@ function animateFullBleed(args: FullBleedScriptProps) {
 
 	let last;
 
-	function drawWave(timestamp: number) {
+	// run at 30fps instead of 60 to help reduce cpu load
+	let everyOther = false;
+
+	function mainDraw(timestamp: number) {
+		everyOther = !everyOther;
+
+		if (everyOther) {
+			requestAnimationFrame(mainDraw);
+			return;
+		}
+
 		if (last === undefined) {
 			last = timestamp;
 		}
@@ -244,7 +254,7 @@ function animateFullBleed(args: FullBleedScriptProps) {
 
 		if (isInMobileMode(fullBleedRoot)) {
 			setTimeout(() => {
-				requestAnimationFrame(drawWave);
+				requestAnimationFrame(mainDraw);
 			}, 1000);
 			return;
 		}
@@ -286,10 +296,10 @@ function animateFullBleed(args: FullBleedScriptProps) {
 
 		drawFloater(waveOffset, tick);
 
-		requestAnimationFrame(drawWave);
+		requestAnimationFrame(mainDraw);
 	}
 
-	requestAnimationFrame(drawWave);
+	requestAnimationFrame(mainDraw);
 }
 
 function FullBleedScript(props: FullBleedScriptProps) {
