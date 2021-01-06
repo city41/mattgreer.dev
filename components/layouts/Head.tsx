@@ -1,5 +1,6 @@
 import NextHead from 'next/head';
 import React from 'react';
+import getConfig from 'next/config';
 import fallbackImg from './meIndex_openGraph.png';
 
 type HeadProps = {
@@ -26,8 +27,9 @@ function getAbsoluteUrl(url: string): string {
 		url = url.substring(1);
 	}
 
-	// TODO: parameterize this somewhere
-	return `https://mattgreer-org.vercel.app/${url}`;
+	const domain = getConfig().serverRuntimeConfig.ROOT_DOMAIN;
+
+	return `https://${domain}/${url}`;
 }
 
 const SUMMARY_IMAGE_VALUE = {

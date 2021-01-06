@@ -21,6 +21,7 @@ module.exports = withPlugins(
 		trailingSlash: true,
 		serverRuntimeConfig: {
 			PROJECT_ROOT: __dirname,
+			ROOT_DOMAIN: 'mattgreer.dev',
 		},
 	}
 );
