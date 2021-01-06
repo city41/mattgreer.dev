@@ -70,35 +70,39 @@ function animateFullBleed(args: FullBleedScriptProps) {
 		let scrollTop;
 		let ticking = false;
 
-		document.addEventListener('scroll', () => {
-			scrollTop = document.scrollingElement.scrollTop;
+		document.addEventListener(
+			'scroll',
+			() => {
+				scrollTop = document.scrollingElement.scrollTop;
 
-			if (!ticking) {
-				requestAnimationFrame(() => {
-					const margin = Math.min(
-						document.scrollingElement.scrollTop,
-						bounds.height
-					);
-					fullBleedRoot.style.setProperty(
-						'transform',
-						`translateY(-${margin}px)`
-					);
+				if (!ticking) {
+					requestAnimationFrame(() => {
+						const margin = Math.min(
+							document.scrollingElement.scrollTop,
+							bounds.height
+						);
+						fullBleedRoot.style.setProperty(
+							'transform',
+							`translateY(-${margin}px)`
+						);
 
-					if (isSafari) {
-						// fix a safari specific bug where the title/arrow disappear
-						// when scrolling back up to the top of the page
-						// they seem to disappear because the canvas gets z ordered on top of them
-						// removing then re-adding the canvas is the only hack I could find that works
-						fullBleedRoot.removeChild(canvas);
-						fullBleedRoot.appendChild(canvas);
-					}
+						if (isSafari) {
+							// fix a safari specific bug where the title/arrow disappear
+							// when scrolling back up to the top of the page
+							// they seem to disappear because the canvas gets z ordered on top of them
+							// removing then re-adding the canvas is the only hack I could find that works
+							fullBleedRoot.removeChild(canvas);
+							fullBleedRoot.appendChild(canvas);
+						}
 
-					ticking = false;
-				});
+						ticking = false;
+					});
 
-				ticking = true;
-			}
-		});
+					ticking = true;
+				}
+			},
+			{ passive: true }
+		);
 	}
 
 	const canvas = document.createElement('canvas');
