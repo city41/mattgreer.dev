@@ -1,7 +1,7 @@
-# MattGreer.org
+# MattGreer.dev
 
-This is my personal portfolio/blog site, found at https://mattgreer.org
+This is my personal portfolio/blog site, found at https://mattgreer.dev
 
 ## Status
 
-It's not quite deployed yet, my old website is still at mattgreer.org. Will switch over as soon as all the articles and projects are ported over.
+Deployed and functional. Still needs some fixes and tweaks. Also really not happy with MDX and need to do something else (ugh).
