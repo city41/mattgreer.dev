@@ -27,7 +27,7 @@ function Header({
 	const imgStyle = { backgroundImage: `url(${img})`, minHeight: '16rem' };
 
 	return (
-		<header className="bg-focal-alt w-full py-12">
+		<header className="Header bg-focal-alt w-full py-12">
 			<img
 				className={clsx(
 					'sm:hidden h-auto bg-contain bg-center bg-no-repeat w-screen h-64 mb-16',

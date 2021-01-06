@@ -1,10 +1,20 @@
 .FocalColorLink {
-    background-image: linear-gradient(to right, var(--link-border-color) , var(--link-border-color));
-    background-position:  left bottom;
-    background-repeat: repeat-x;
-    background-size: 100% 6px;
+	background-image: linear-gradient(
+		to right,
+		var(--link-border-color),
+		var(--link-border-color)
+	);
+	background-position: left bottom;
+	background-repeat: repeat-x;
+	background-size: 100% 6px;
 }
 
-.FocalColorLink:hover, .FocalColorLink:active {
-    background-size: 100% 100%;
+.FocalColorLink:hover,
+.FocalColorLink:active {
+	background-size: 100% 100%;
+}
+
+:global(.Header) .FocalColorLink {
+	color: white;
+	--link-border-color: rgba(255, 255, 255, 0.5);
 }
