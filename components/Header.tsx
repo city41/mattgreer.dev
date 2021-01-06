@@ -28,14 +28,13 @@ function Header({
 
 	return (
 		<header className="bg-focal-alt w-full py-12">
-			<div
+			<img
 				className={clsx(
-					'sm:hidden h-64 bg-contain bg-center bg-no-repeat w-full h-64 mb-16',
+					'sm:hidden h-auto bg-contain bg-center bg-no-repeat w-screen h-64 mb-16',
 					{ [pixelatedStyles.pixelated]: pixelateImage }
 				)}
-				style={imgStyle}
-				role="img"
-				aria-label={imgAlt}
+				src={img}
+				alt={imgAlt}
 			/>
 			<div
 				className={clsx(
@@ -62,7 +61,7 @@ function Header({
 					{metaForTitle && (
 						<div className="text-xs text-white mb-2">{metaForTitle}</div>
 					)}
-					<h1 className="text-3xl sm:text-6xl font-black text-white">
+					<h1 className="text-4xl sm:text-6xl font-black text-white">
 						{title}
 					</h1>
 				</div>

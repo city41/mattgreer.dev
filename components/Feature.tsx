@@ -59,7 +59,7 @@ function Feature({
 			<div className="w-full sm:w-1/2 sm:pl-8">
 				<Link href={url} passHref>
 					<a {...linkProps}>
-						<h2 className="text-5xl font-bold mt-8 sm:mt-0 xtext-center sm:text-left hover:text-focal-alt">
+						<h2 className="text-4xl sm:text-5xl font-bold mt-8 sm:mt-0 xtext-center sm:text-left hover:text-focal-alt">
 							{title}
 							{external && (
 								<HiExternalLink className="inline text-2xl text-fg-fade -mb-2" />

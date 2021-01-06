@@ -72,7 +72,7 @@ const MDXComponents = {
 		const id = toId(children);
 
 		return (
-			<Heading el="h2" className="text-3xl font-bold mt-16" id={id}>
+			<Heading el="h2" className="text-3xl font-bold mt-16 first:mt-0" id={id}>
 				{children}
 			</Heading>
 		);
