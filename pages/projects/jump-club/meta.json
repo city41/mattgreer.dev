@@ -1,5 +1,5 @@
 {
-	"draft": false,
+	"draft": true,
 	"title": "Jump.Club",
 	"type": "website",
 	"tags": ["React", "TypeScript", "NodeJS", "Godot", "Web Assembly", "Game Dev"],
