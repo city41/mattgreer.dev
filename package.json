@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "develop": "next --hostname 0.0.0.0",
-    "build": "next build",
+    "build": "node scripts/generateRssFeed.js && sh scripts/minimgs.sh && next build",
     "start": "next start",
     "export-static": "sh scripts/minimgs.sh && rm -rf .next out && next build && next export",
     "type-check": "tsc --noemit"
@@ -13,6 +13,7 @@
     "@mdx-js/react": "^1.6.21",
     "@next/mdx": "^10.0.3",
     "clsx": "^1.1.1",
+    "feed": "^4.2.1",
     "imagemin-mozjpeg": "^9.0.0",
     "imagemin-optipng": "^8.0.0",
     "imagemin-svgo": "^8.0.0",

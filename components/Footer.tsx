@@ -7,6 +7,7 @@ import {
 	FaLinkedin,
 	FaStackOverflow,
 	FaTwitter,
+	FaRss,
 } from 'react-icons/fa';
 import { LightDarkToggle } from './LightDarkToggle';
 
@@ -52,6 +53,9 @@ function Footer({ className }: FooterProps) {
 						href="mailto:matt.e.greer@gmail.com"
 						label="email me"
 					/>
+				</li>
+				<li>
+					<IconLink Icon={FaRss} href="/feed.xml" label="RSS feed" />
 				</li>
 				<li>
 					<IconLink
