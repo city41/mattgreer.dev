@@ -44,9 +44,11 @@ function Article({
 			navigation
 		>
 			<MDXProvider components={MDXComponents}>
-				<div className="mx-auto max-w-2xl sm:mt-32">{children}</div>
+				<div className="mx-auto max-w-2xl sm:mt-32">
+					{children}
+					<FollowMe className="my-16" />
+				</div>
 			</MDXProvider>
-			<FollowMe />
 		</Root>
 	);
 }
