@@ -1,1 +1,171 @@
-my feed goes here
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Matt Greer's blog</title>
+        <link>https://mattgreer.dev</link>
+        <description>Mostly web dev related articles</description>
+        <lastBuildDate>Wed, 13 May 2020 00:00:00 GMT</lastBuildDate>
+        <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
+        <generator>https://github.com/jpmonette/feed</generator>
+        <language>en</language>
+        <image>
+            <title>Matt Greer's blog</title>
+            <url>http://example.com/image.png</url>
+            <link>https://mattgreer.dev</link>
+        </image>
+        <copyright>Copyright Matt Greer</copyright>
+        <atom:link href="https://mattgreer.dev/feed.xml" rel="self" type="application/rss+xml"/>
+        <item>
+            <title><![CDATA[Extracting Neo Geo Emulator Graphics Data to Create Animated gifs]]></title>
+            <link>https://mattgreer.dev/articles/extracting-neo-geo-emulator-graphics-data-to-create-animated-gifs</link>
+            <guid>https://mattgreer.dev/articles/extracting-neo-geo-emulator-graphics-data-to-create-animated-gifs</guid>
+            <pubDate>Wed, 13 May 2020 00:00:00 GMT</pubDate>
+            <description><![CDATA[Web Assembly lets us bring native applications right into the browser. By porting a game emulator to Web Assembly, I was able to reach into its memory to animated build gifs.]]></description>
+            <author>matt.e.greer@gmail.com (Matt Greer)</author>
+        </item>
+        <item>
+            <title><![CDATA[Squeezing the Arduboy For Every Byte]]></title>
+            <link>https://mattgreer.dev/articles/squeezing-the-arduboy-for-every-byte</link>
+            <guid>https://mattgreer.dev/articles/squeezing-the-arduboy-for-every-byte</guid>
+            <pubDate>Mon, 10 Sep 2018 00:00:00 GMT</pubDate>
+            <description><![CDATA[The Arduboy is an Arduino based game console with very limited storage space. This article shows some techniques I used to use the space efficiently.]]></description>
+            <author>matt.e.greer@gmail.com (Matt Greer)</author>
+        </item>
+        <item>
+            <title><![CDATA[MATE and i3]]></title>
+            <link>https://mattgreer.dev/articles/mate-and-i3</link>
+            <guid>https://mattgreer.dev/articles/mate-and-i3</guid>
+            <pubDate>Thu, 30 Nov 2017 00:00:00 GMT</pubDate>
+            <description><![CDATA[How to use i3 with MATE to get an excellent tiling desktop experience in Linux.]]></description>
+            <author>matt.e.greer@gmail.com (Matt Greer)</author>
+        </item>
+        <item>
+            <title><![CDATA[React Internals Part Five: Transactions]]></title>
+            <link>https://mattgreer.dev/articles/react-internals-part-five-transactions</link>
+            <guid>https://mattgreer.dev/articles/react-internals-part-five-transactions</guid>
+            <pubDate>Sat, 12 Aug 2017 00:00:00 GMT</pubDate>
+            <description><![CDATA[In this final installment, we take a quick look at transactions and how they help React do its job.]]></description>
+            <author>matt.e.greer@gmail.com (Matt Greer)</author>
+        </item>
+        <item>
+            <title><![CDATA[React Internals Part Four: setState]]></title>
+            <link>https://mattgreer.dev/articles/react-internals-part-four-setState</link>
+            <guid>https://mattgreer.dev/articles/react-internals-part-four-setState</guid>
+            <pubDate>Mon, 17 Jul 2017 00:00:00 GMT</pubDate>
+            <description><![CDATA[Part four implements setState, an important function that drives much of what React does.]]></description>
+            <author>matt.e.greer@gmail.com (Matt Greer)</author>
+        </item>
+        <item>
+            <title><![CDATA[React Internals Part Three: Basic Updating]]></title>
+            <link>https://mattgreer.dev/articles/react-internals-part-three-basic-updating</link>
+            <guid>https://mattgreer.dev/articles/react-internals-part-three-basic-updating</guid>
+            <pubDate>Sun, 16 Jul 2017 00:00:00 GMT</pubDate>
+            <description><![CDATA[This part explores how React updates the DOM after props change.]]></description>
+            <author>matt.e.greer@gmail.com (Matt Greer)</author>
+        </item>
+        <item>
+            <title><![CDATA[React Internals Part Two: component­Will­Mount and component­Did­Mount]]></title>
+            <link>https://mattgreer.dev/articles/react-internals-part-two-componentWillMount-and-componentDidMount</link>
+            <guid>https://mattgreer.dev/articles/react-internals-part-two-componentWillMount-and-componentDidMount</guid>
+            <pubDate>Sat, 15 Jul 2017 00:00:00 GMT</pubDate>
+            <description><![CDATA[Today we are looking at how lifecycle methods in React work.]]></description>
+            <author>matt.e.greer@gmail.com (Matt Greer)</author>
+        </item>
+        <item>
+            <title><![CDATA[React Internals Part One: Basic Rendering]]></title>
+            <link>https://mattgreer.dev/articles/react-internals-part-one-basic-rendering</link>
+            <guid>https://mattgreer.dev/articles/react-internals-part-one-basic-rendering</guid>
+            <pubDate>Fri, 14 Jul 2017 00:00:00 GMT</pubDate>
+            <description><![CDATA[This article series creates a small clone of React to learn how it works. We kick things off with the most basic of rendering.]]></description>
+            <author>matt.e.greer@gmail.com (Matt Greer)</author>
+        </item>
+        <item>
+            <title><![CDATA[Electron, Redux and Persistence]]></title>
+            <link>https://mattgreer.dev/articles/electron-redux-and-persistence</link>
+            <guid>https://mattgreer.dev/articles/electron-redux-and-persistence</guid>
+            <pubDate>Sun, 31 Jan 2016 00:00:00 GMT</pubDate>
+            <description><![CDATA[A strategy for persisting state in a Redux based Electron app.]]></description>
+            <author>matt.e.greer@gmail.com (Matt Greer)</author>
+        </item>
+        <item>
+            <title><![CDATA[The Sega Saturn and Transparency]]></title>
+            <link>https://mattgreer.dev/articles/sega-saturn-and-transparency</link>
+            <guid>https://mattgreer.dev/articles/sega-saturn-and-transparency</guid>
+            <pubDate>Sat, 23 Jan 2016 00:00:00 GMT</pubDate>
+            <description><![CDATA[The Saturn's complex hardware architecture meant implementing semi-transparent entities in a game was challenging. This interactive article explains the conundrum, and shows why game developers often settled for inferior alternatives.]]></description>
+            <author>matt.e.greer@gmail.com (Matt Greer)</author>
+        </item>
+        <item>
+            <title><![CDATA[Impromptu Web Scraping]]></title>
+            <link>https://mattgreer.dev/articles/impromptu-web-scraping</link>
+            <guid>https://mattgreer.dev/articles/impromptu-web-scraping</guid>
+            <pubDate>Sat, 04 Jul 2015 00:00:00 GMT</pubDate>
+            <description><![CDATA[The browser's dev console can be a nice tool to extract data from a webpage.]]></description>
+            <author>matt.e.greer@gmail.com (Matt Greer)</author>
+        </item>
+        <item>
+            <title><![CDATA[Embedding SVG Into a Reagent Component]]></title>
+            <link>https://mattgreer.dev/articles/embedding-svg-into-a-reagent-component</link>
+            <guid>https://mattgreer.dev/articles/embedding-svg-into-a-reagent-component</guid>
+            <pubDate>Mon, 09 Feb 2015 00:00:00 GMT</pubDate>
+            <description><![CDATA[Using Clojure macros to embed an SVG into a Reagent component.]]></description>
+            <author>matt.e.greer@gmail.com (Matt Greer)</author>
+        </item>
+        <item>
+            <title><![CDATA[A Game Made With Reagent]]></title>
+            <link>https://mattgreer.dev/articles/a-game-made-with-reagent</link>
+            <guid>https://mattgreer.dev/articles/a-game-made-with-reagent</guid>
+            <pubDate>Tue, 03 Feb 2015 00:00:00 GMT</pubDate>
+            <description><![CDATA[For the heck of it, I made a simple breakout game with Reagent]]></description>
+            <author>matt.e.greer@gmail.com (Matt Greer)</author>
+        </item>
+        <item>
+            <title><![CDATA[ClojureScript Internals: Vectors]]></title>
+            <link>https://mattgreer.dev/articles/clojurescript-internals-vectors</link>
+            <guid>https://mattgreer.dev/articles/clojurescript-internals-vectors</guid>
+            <pubDate>Mon, 26 Jan 2015 00:00:00 GMT</pubDate>
+            <description><![CDATA[A detailed dive into how vectors in ClojureScript work.]]></description>
+            <author>matt.e.greer@gmail.com (Matt Greer)</author>
+        </item>
+        <item>
+            <title><![CDATA[Reagent Rocks!]]></title>
+            <link>https://mattgreer.dev/articles/reagent-rocks</link>
+            <guid>https://mattgreer.dev/articles/reagent-rocks</guid>
+            <pubDate>Sat, 24 Jan 2015 00:00:00 GMT</pubDate>
+            <description><![CDATA[Reagent is a ClojureScript interface to React, and it is incredible.]]></description>
+            <author>matt.e.greer@gmail.com (Matt Greer)</author>
+        </item>
+        <item>
+            <title><![CDATA[Pair Programming Is Not a Panacea]]></title>
+            <link>https://mattgreer.dev/articles/pair-programming-is-not-a-panacea</link>
+            <guid>https://mattgreer.dev/articles/pair-programming-is-not-a-panacea</guid>
+            <pubDate>Wed, 27 Aug 2014 00:00:00 GMT</pubDate>
+            <description><![CDATA[Pair programming can be great, but it can also be terrible. This article explores when to pair, when not to, and why some of us don't like it.]]></description>
+            <author>matt.e.greer@gmail.com (Matt Greer)</author>
+        </item>
+        <item>
+            <title><![CDATA[JavaScript Promises ... in Wicked Detail]]></title>
+            <link>https://mattgreer.dev/articles/promises-in-wicked-detail</link>
+            <guid>https://mattgreer.dev/articles/promises-in-wicked-detail</guid>
+            <pubDate>Tue, 04 Feb 2014 00:00:00 GMT</pubDate>
+            <description><![CDATA[A detailed article that implements a simple Promise type from scratch. By building the Promise implementation gradually, it shows the why and how of Promises.]]></description>
+            <author>matt.e.greer@gmail.com (Matt Greer)</author>
+        </item>
+        <item>
+            <title><![CDATA[Dynamic Lighting and Shadows In My 2D Game]]></title>
+            <link>https://mattgreer.dev/articles/dynamic-lighting-and-shadows</link>
+            <guid>https://mattgreer.dev/articles/dynamic-lighting-and-shadows</guid>
+            <pubDate>Wed, 17 Oct 2012 00:00:00 GMT</pubDate>
+            <description><![CDATA[How I used shaders in WebGL to accomplish lighting and shadows in a 2D game.]]></description>
+            <author>matt.e.greer@gmail.com (Matt Greer)</author>
+        </item>
+        <item>
+            <title><![CDATA[Waking Up At 5am To Code]]></title>
+            <link>https://mattgreer.dev/articles/waking-up-at-5am-to-code</link>
+            <guid>https://mattgreer.dev/articles/waking-up-at-5am-to-code</guid>
+            <pubDate>Mon, 23 Jan 2012 00:00:00 GMT</pubDate>
+            <description><![CDATA[For a while I woke up early to work on projects before going to work. Here's a quick summary of how it went.]]></description>
+            <author>matt.e.greer@gmail.com (Matt Greer)</author>
+        </item>
+    </channel>
+</rss>
