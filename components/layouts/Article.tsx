@@ -28,7 +28,9 @@ function Article({
 	socialMediaImg,
 	children,
 }: ArticleProps) {
-	const headerContent = <p className="text-white">{intro}</p>;
+	const headerContent = (
+		<p className="text-white sm:mx-auto sm:max-w-2xl">{intro}</p>
+	);
 
 	return (
 		<Root
