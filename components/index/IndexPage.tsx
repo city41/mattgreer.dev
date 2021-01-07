@@ -72,7 +72,7 @@ function IndexPage({ items }: IndexPageProps) {
 				<div
 					className={clsx(
 						styles.moreArrow,
-						'justify-self-end z-10 hidden lg:inline-block'
+						'justify-self-end z-10 hidden md:inline-block'
 					)}
 					aria-label="scroll down to see more"
 				/>
