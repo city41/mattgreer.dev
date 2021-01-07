@@ -68,7 +68,6 @@ function IndexPage({ items }: IndexPageProps) {
 					)}
 				>
 					<h1 className="text-5xl md:text-7xl font-bold">Matt Greer</h1>
-					<h2 className="sm:text-2xl">software creator</h2>
 				</div>
 				<div
 					className={clsx(
