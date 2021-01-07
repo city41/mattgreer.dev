@@ -4,7 +4,7 @@
 	"type": "technical article",
 	"tags": ["React"],
 	"description": [
-		"A quick look at how I made a site that almost has no JavaScript, using a JavaScript framework."
+		"A quick look at how I made a site that has almost no JavaScript, using a JavaScript framework."
 	],
 	"imgAlt": "Next.JS logo"
 }
