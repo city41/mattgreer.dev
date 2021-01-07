@@ -31,12 +31,6 @@ const sortedArticleDirs = articleDirs.sort((a, b) => {
 	return bDate.getTime() - aDate.getTime();
 });
 
-const mostRecentArticleDate = require(path.join(
-	ARTICLE_DIR,
-	sortedArticleDirs[0],
-	'meta.json'
-)).date;
-
 const feed = new Feed({
 	title: 'Matt Greer',
 	description: 'Mostly web dev related articles',
@@ -46,7 +40,6 @@ const feed = new Feed({
 	image: 'http://example.com/image.png',
 	favicon: 'https://mattgreer.dev/favicon.ico',
 	copyright: 'Copyright Matt Greer',
-	updated: new Date(mostRecentArticleDate),
 	feedLinks: {
 		rss: 'https://mattgreer.dev/feed.xml',
 	},
