@@ -7,7 +7,10 @@ import styles from './MDXComponents.module.css';
 import { FocalColorLink } from '../FocalColorLink';
 
 function toId(s: string) {
-	return s.toLowerCase().replace(/\s/g, '-');
+	return s
+		.toLowerCase()
+		.replace(/\s/g, '-')
+		.replace(/[^a-zA-Z0-9-]/g, '');
 }
 
 function TextBlock({
@@ -25,6 +28,7 @@ function TextBlock({
 		<El
 			className={clsx(
 				className,
+				styles.textBlock,
 				'my-4 max-w-2xl leading-6 sm:leading-7 text-base sm:text-lg'
 			)}
 		>
@@ -35,7 +39,7 @@ function TextBlock({
 
 function Callout({ className, children }) {
 	return (
-		<TextBlock el="div" className={clsx(className, 'p-4 -mx-4')}>
+		<TextBlock el="div" className={clsx(className, 'p-4 -mx-4 my-12')}>
 			{children}
 		</TextBlock>
 	);
@@ -68,6 +72,15 @@ function Heading({ className, el, id, children }) {
 }
 
 const MDXComponents = {
+	h1: ({ children }) => {
+		const id = toId(children);
+
+		return (
+			<Heading el="h1" className="text-4xl font-bold mt-16 first:mt-0" id={id}>
+				{children}
+			</Heading>
+		);
+	},
 	h2: ({ children }) => {
 		const id = toId(children);
 
@@ -112,12 +125,12 @@ const MDXComponents = {
 	code: CodeBlock,
 	pre: ({ children }) => <>{children}</>,
 	ul: (props) => (
-		<ul className="space-y-2 my-4 ml-4 list-disc max-w-2xl" {...props} />
+		<ul className="space-y-2 my-8 ml-4 list-disc max-w-2xl" {...props} />
 	),
 	ol: (props) => (
 		<ul className="space-y-2 my-4 ml-4 list-decimal max-w-2xl" {...props} />
 	),
-	li: (props) => <li className="ml-4" {...props} />,
+	li: (props) => <li className="ml-8" {...props} />,
 	blockquote: (props) => (
 		<blockquote
 			{...props}

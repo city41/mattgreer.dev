@@ -1,0 +1,126 @@
+import { Article } from '../../../components/layouts/Article';
+import meta from './meta.json';
+
+export const config = {
+    unstable_runtimeJS: false
+}
+
+export default ({ children }) => <Article {...meta} img={require('./feature.svg')} socialMediaImg={require('./feature.png')}
+                                          intro="If you poke around this site's source, you'll pretty much only find HTML and CSS. But I built it with Next.JS, a React framework. Seems odd? Here's why.">
+    {children}</Article>
+
+## Some quick terminology
+
+There are a few terms commonly used with Next to explain how a page's HTML gets rendered
+
+* **Client Side Rendering:** <span class="text-fg-fade">(CSR)</span> This is the default way React renders all HTML, inside the user's browser.
+* **Server Side Rendering:** <span class="text-fg-fade">(SSR)</span> With SSR a server is used to build the page when a user requests it. The page gets rendered on the server, but deciding what to render can happen on the fly.
+* **Static Site Generation:** <span class="text-fg-fade">(SSG)</span> SSG has the pages render their HTML at build time. They then get served up to users as plain old HTML files.
+
+## A standard Next.JS site
+
+If you take a look at this site's [codebase](https://github.com/city41/mattgreer.dev), you'll find a very typical Next.JS site. In order to keep the site static, I ensure every page is capable of using SSG, which pretty much boils down to never using [`getServerSideProps`](https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering). Its presence tells Next a page should use SSR.
+
+<wisdom>
+    If you want to know more, Next has good documentation. Their <a href="https://nextjs.org/learn/basics/create-nextjs-app">Create a Next.JS App tutorial</a> will get you familiar with Next itself, then from there you can learn about how to do <a href="https://nextjs.org/docs/basic-features/pages#static-generation-recommended">SSG here</a> and <a href="https://nextjs.org/docs/basic-features/data-fetching">SSR here</a>.
+</wisdom>
+
+## next export
+
+If your entire site can be statically built, then you can tell Next to do just that with the command `next build && next export`. After running this command, you will find the site output at `<project root>/.next/server/pages`. You can take this directory and host it on say GitHub pages.
+
+### But, I just use Vercel
+
+Vercel, the creators of Next, provide a hosting solution that handles Next apps perfectly (as you would expect). Since it's free for hobby and personal sites, I just use that instead of using `next export`.
+
+## Removing the React JavaScript
+
+Static Next pages still load React at runtime. Just like any other Next page, React will kick in and walk the DOM, integrating itself into the page and turning the page into a live React app. This is known as hydration.
+
+Hydration is wasteful and not needed if the page is truly static. Take this page you're on now, it's just a bunch of text. React offers no benefit. You can tell Next to skip all of this by adding this config object to the page:
+
+```typescript
+export const config = {
+    unstable_runtimeJS: false
+};
+```
+
+[Here is an example](https://github.com/city41/mattgreer.dev/blob/main/pages/about.tsx#L4).
+
+This is prefixed with `unstable` because this config setting [was recently introduced](https://github.com/vercel/next.js/pull/11949). It is experimental at this point and likely to change, I would not recommend it for something mission critical.
+
+With this config in place, the page will only have HTML, CSS ... and any bespoke JavaScript you add yourself.
+
+## Sprinkling in a little JS
+
+With React removed, I need to add JS myself for any interactivity I want. At the bottom of every page is a theme switcher, which uses JavaScript. The [front page](/) also uses JavaScript for a canvas graphic (if you are not on a phone). For these, I just added in JavaScript the old fashion way. Remember `querySelector` and `addEventListener`? 😃
+
+To do this, I write the needed JavaScript in a standalone file, and then bring it into the page with `dangerouslySetInnerHTML`.
+
+<wisdom>
+    It's not very dangerous as this is being done at build time.
+</wisdom>
+
+```typescript tsx
+import React from 'react';
+
+type = {
+  prop1: string;
+  prop2: boolean;
+};
+
+function myBespokeJavaScript(props: BespokeJavaScriptProps) {
+  // do stuff
+}
+
+function BespokeJavaScript(props: BespokeJavaScriptProps) {
+  return (
+    <script
+      type="text/javascript"
+      dangerouslySetInnerHTML={{
+         __html: `${myBespokeJavaScript.toString()};
+                  myBespokeJavaScript(${JSON.stringify(props)})`,
+      }}>
+    </script>
+  );
+}
+
+export { BespokeJavaScript };
+```
+
+Then somewhere else, I just add it to the page as a standard React component, ie `<BespokeJavaScript/>`
+
+## Using Next's Link component
+
+Normall, Next's `<Link>` is how you link between pages in your app. Using it for a fully static site is questionable though, as it ends up doing nothing at all. If you do use it, keep in mind you *must* set the `passHref` prop
+
+```typescript tsx
+<Link href="http://zombo.com" passHref>
+    <a>checkout Zombo</a>
+</Link>
+```
+
+Otherwise the `a` tag will not get the href, making the link dead when you build the site.
+
+
+### Downsides and Gotchas
+
+This approach has several problems, some more thought is needed.
+
+* The JavaScript gets inlined into every page that needs it. Every page on this site has its own copy of the theme switcher code. Since it's very short, I don't mind too much in this case.
+
+* The bespoke code does not get minimized or polyfilled. If you look at the source for this page, you can see the theme switcher code exactly as I wrote it, whitespace and all.
+
+* Also, NextJS does not understand this code. During development, it does not get updated with fast refresh, and I also need to account for dev mode in the code itself. This admittedly is a pretty annoying gotcha.
+
+* I might plug away at this more and see if I can make improvements. But since my bespoke JS is so minimal, I'm not too bothered (yet...). I am also going to wait to see how [server side components](https://reactjs.org/blog/2020/12/21/data-fetching-with-react-server-components.html) play out, as they may impact my approach.
+
+## Opting back into React
+
+`unstable_Runtimejs` is applied per page. If a page needs React, it's easy to turn it back on. This website is brand new, but I do have plans for more interactive pages and for those I will opt back into React.
+
+## I like it
+
+So far I *really* like this approach to building websites. React and Next offer such an excellent development experience. My HTML is always properly formed. I get type checking with TypeScript. I can extract commonalities into components. I don't have to worry as much about pulling in large libraries (such as the syntax highlighting library), as only the resulting HTML is saved. I can also use Next plugins to accomplish common tasks such as image minification.
+
+Not to mention all of the standard "no JavaScript" bonuses apply too: better SEO, usually more performant, no need to worry about client side routing snafus, Hacker News doesn't yell at you, etc.
