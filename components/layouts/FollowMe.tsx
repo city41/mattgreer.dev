@@ -18,9 +18,7 @@ function FollowMe({ className }: FollowMeProps) {
 			)}
 		>
 			<h3 className="text-2xl font-bold">Thanks for stopping by</h3>
-			<p className="mb-4 text-base">
-				Here's how to get notified when I post new stuff
-			</p>
+			<p className="mb-4 text-base">To get notified when I post new stuff</p>
 			<div className="flex flex-col sm:flex-row justify-around items-center text-center">
 				<div className="flex flex-row items-center mb-4 sm:mb-0">
 					<FaTwitter className="text-6xl pr-4" />
