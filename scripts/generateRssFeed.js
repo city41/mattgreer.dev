@@ -38,7 +38,7 @@ const mostRecentArticleDate = require(path.join(
 )).date;
 
 const feed = new Feed({
-	title: "Matt Greer's blog",
+	title: 'Matt Greer',
 	description: 'Mostly web dev related articles',
 	id: 'https://mattgreer.dev',
 	link: 'https://mattgreer.dev',
