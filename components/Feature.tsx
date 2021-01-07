@@ -53,6 +53,7 @@ function Feature({
 						width={384}
 						height={384}
 						alt={imgAlt}
+						loading="lazy"
 					/>
 				</a>
 			</Link>
