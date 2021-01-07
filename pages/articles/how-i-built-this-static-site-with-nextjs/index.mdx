@@ -78,7 +78,7 @@ To do this, I write the needed JavaScript in a standalone file, and then bring i
 ```typescript tsx
 import React from 'react';
 
-type = {
+type BespokeJavaScriptProps = {
   prop1: string;
   prop2: boolean;
 };
@@ -112,7 +112,7 @@ This approach has several problems, some more thought is needed.
 
 * The JavaScript gets inlined into every page that needs it. Every page on this site has its own copy of the theme switcher code. Since it's very short, I don't mind *too much* in this case.
 
-* The bespoke code does not get minimized or polyfilled. If you look at the source for this page, you can see the theme switcher code exactly as I wrote it, whitespace and all.
+* The bespoke code does not get minimized or polyfilled. If you look at the source for this page, you can see the theme switcher code almost exactly as I wrote it, whitespace and all.
 
 * Also, Next does not understand this code. During development, it does not get updated with fast refresh, and I also need to account for dev mode in the code itself. This admittedly is a pretty annoying gotcha.
 
