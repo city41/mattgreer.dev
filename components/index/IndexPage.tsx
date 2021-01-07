@@ -2,7 +2,6 @@ import React from 'react';
 import clsx from 'clsx';
 import { FocalColorLink } from '../FocalColorLink';
 import { Head } from '../layouts/Head';
-import { Skills } from './Skills';
 import { Feature } from '../Feature';
 import { Footer } from '../Footer';
 import Link from 'next/link';
@@ -107,7 +106,6 @@ function IndexPage({ items }: IndexPageProps) {
 					</p>
 				</div>
 			</div>
-			<Skills className="mb-16 max-w-6xl mx-auto" />
 			<div className="h-48 w-full bg-focal-alt text-white grid place-items-center text-2xl sm:text-3xl">
 				Some things I have created{' '}
 			</div>
