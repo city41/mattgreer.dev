@@ -48,8 +48,8 @@ function Navigation({ className, current }: NavigationProps) {
 				<NavLink href="/about" isCurrent={current === '/about'}>
 					About
 				</NavLink>
-				<NavLink href="/MattGreer_resume.pdf" isCurrent={false}>
-					Resume
+				<NavLink href="/hire-me" isCurrent={current === '/hire-me'}>
+					Hire me
 				</NavLink>
 			</ul>
 		</nav>
