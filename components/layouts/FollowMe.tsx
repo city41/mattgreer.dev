@@ -27,9 +27,12 @@ function FollowMe({ className }: FollowMeProps) {
 			<div className="w-full sm:w-2/3 space-y-4">
 				<h3 className="text-3xl mb-4">About me</h3>
 				<p>
-					I am a freelance software engineer with a focus on web development. I
-					also enjoy game dev as a hobby. Previously I worked for Netflix and
-					Microsoft.
+					I am a{' '}
+					<FocalColorLink href="/hire-me">
+						freelance software engineer
+					</FocalColorLink>{' '}
+					with a focus on web development. I also enjoy game dev as a hobby.
+					Previously I worked for Netflix and Microsoft.
 				</p>
 
 				<div className="flex flex-row">

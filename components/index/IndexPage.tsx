@@ -95,10 +95,9 @@ function IndexPage({ items }: IndexPageProps) {
 						web technologies, but enjoy tackling all types of problems.
 					</p>
 					<p>
-						I am always looking for interesting projects. If you are in need of
-						some help, let's{' '}
-						<FocalColorLink href="mailto:matt.e.greer@gmail.com">
-							get in touch
+						I am always{' '}
+						<FocalColorLink href="/hire-me">
+							looking for interesting projects
 						</FocalColorLink>
 						.
 					</p>
