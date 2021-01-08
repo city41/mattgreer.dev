@@ -3,5 +3,5 @@
 }
 
 .HelpSection p {
-    @apply mt-8 bg-bg p-4
+    @apply mt-4 bg-bg p-4
 }

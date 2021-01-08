@@ -61,7 +61,7 @@ function HireMePage() {
 						</ul>
 						<p>
 							With my computer science background and experience across many
-							domains, I can create software that is reliable, performant, well
+							domains, I create software that is reliable, performant, well
 							documented, and easy to maintain.
 						</p>
 					</HelpSection>
