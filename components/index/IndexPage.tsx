@@ -109,7 +109,7 @@ function IndexPage({ items }: IndexPageProps) {
 			<div className="h-48 w-full bg-focal-alt text-white grid place-items-center text-2xl sm:text-3xl">
 				Some things I have created{' '}
 			</div>
-			<div className="flex flex-col space-y-48 max-w-6xl sm:mx-auto mt-16 sm:mt-32">
+			<div className="flex flex-col space-y-48 max-w-6xl sm:mx-auto mt-16 sm:mt-32 mb-16">
 				{items.map((item, index) => {
 					return <Feature key={item.slug} {...item} tags={[]} suppressDate />;
 				})}
