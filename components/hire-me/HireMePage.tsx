@@ -31,7 +31,7 @@ function HireMePage() {
 		>
 			<div className="mx-auto max-w-2xl">
 				<h2 className="mb-8 sm:ml-4 text-4xl">I can help with...</h2>
-				<div className="space-y-8">
+				<div className="space-y-12">
 					<HelpSection title="Consultation">
 						<ul>
 							<li>Application architecture, particularly on the frontend</li>
