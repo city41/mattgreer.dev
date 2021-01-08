@@ -2,7 +2,7 @@ import React from 'react';
 import { Root } from '../layouts/Root';
 import { HelpSection } from './HelpSection';
 
-import laptopSvg from '../articles/laptop.svg';
+import laptopSvg from '../projects/laptop.svg';
 import { FocalColorLink } from '../FocalColorLink';
 
 function HireMePage() {
