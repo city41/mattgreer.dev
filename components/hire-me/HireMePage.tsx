@@ -22,7 +22,7 @@ function HireMePage() {
 			currentNav="/hire-me"
 			img={laptopSvg}
 			imgAlt="Illustration of a laptop"
-			metaDescription=""
+			metaDescription="I'm an independent frontend engineer. Let's work together."
 			navigation
 			headerContent={headerContent}
 			headerContentUnderTitle
