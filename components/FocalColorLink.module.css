@@ -18,3 +18,27 @@
 	color: white;
 	--link-border-color: rgba(255, 255, 255, 0.5);
 }
+
+:global(.WarningBackground) .FocalColorLink {
+	color: var(--color-fg-warning);
+	--link-border-color: hsl(
+		var(--color-fg-warning-h),
+		var(--color-fg-warning-s),
+		calc(var(--color-fg-warning-l) * 3)
+	);
+	background-size: 100% 8px;
+}
+
+:global(.WarningBackground) .FocalColorLink:hover {
+	background-size: 100% 100%;
+}
+
+:global(.WisdomBackground) .FocalColorLink {
+	color: var(--color-fg-wisdom);
+	--link-border-color: hsl(93, 39%, 75%);
+	background-size: 100% 8px;
+}
+
+:global(.WisdomBackground) .FocalColorLink:hover {
+	background-size: 100% 100%;
+}

@@ -117,10 +117,14 @@ const MDXComponents = {
 	},
 	p: (props) => <TextBlock el="p" {...props} />,
 	pitfall: ({ children }) => (
-		<Callout className="text-red-900 bg-red-50">{children}</Callout>
+		<Callout className="WarningBackground text-fg-warning bg-bg-warning">
+			{children}
+		</Callout>
 	),
 	wisdom: ({ children }) => (
-		<Callout className="text-green-900 bg-green-50">{children}</Callout>
+		<Callout className="WisdomBackground text-fg-wisdom bg-bg-wisdom">
+			{children}
+		</Callout>
 	),
 	code: CodeBlock,
 	pre: ({ children }) => <>{children}</>,
