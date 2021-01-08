@@ -4,6 +4,7 @@ import { Feature } from '../Feature';
 import { Root } from '../layouts/Root';
 
 import laptopSvg from './laptop.svg';
+import laptopPng from './laptop.png';
 
 type ProjectsPageProps = {
 	tag?: string;
@@ -27,6 +28,7 @@ function ProjectsPage({ tag, allTags, items }: ProjectsPageProps) {
 			currentNav="/projects"
 			metaDescription="Things I have created, mostly webapps"
 			img={laptopSvg}
+			socialMediaImg={laptopPng}
 			imgAlt="Illustration of a laptop"
 			navigation
 			headerContent={headerContent}

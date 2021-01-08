@@ -3,6 +3,7 @@ import { Root } from '../layouts/Root';
 import { HelpSection } from './HelpSection';
 
 import laptopSvg from '../projects/laptop.svg';
+import laptopPng from '../projects/laptop.png';
 import { FocalColorLink } from '../FocalColorLink';
 
 function HireMePage() {
@@ -22,6 +23,7 @@ function HireMePage() {
 			currentNav="/hire-me"
 			img={laptopSvg}
 			imgAlt="Illustration of a laptop"
+			socialMediaImg={laptopPng}
 			metaDescription="I'm an independent frontend engineer. Let's work together."
 			navigation
 			headerContent={headerContent}

@@ -10,6 +10,7 @@ import charlieJpg from './charlie.jpg';
 import { FiSmile } from 'react-icons/fi';
 
 import michiganSvg from './michigan.svg';
+import michiganPng from './michigan.png';
 
 const { h2: H2, p: P, img: Img } = MDXComponents;
 
@@ -19,6 +20,7 @@ function AboutPage() {
 			title="About Me"
 			currentNav="/about"
 			img={michiganSvg}
+			socialMediaImg={michiganPng}
 			imgAlt="Illustration of the state of Michigan"
 			metaDescription="Some background about me and this website"
 			navigation
