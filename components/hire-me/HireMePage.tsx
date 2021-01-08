@@ -10,9 +10,9 @@ function HireMePage() {
 	const headerContent = (
 		<>
 			<p className="text-white sm:mx-auto sm:max-w-2xl">
-				I have worked as a full time employee for companies such as Netflix and
-				Microsoft. I am now independent, and interested in working with great
-				teams on interesting problems.
+				After 10 years of working at companies including Netflix and Microsoft,
+				I am now an independent engineer looking to help companies tackle
+				challenging problems.
 			</p>
 		</>
 	);
@@ -40,10 +40,10 @@ function HireMePage() {
 							<li>Improving legacy codebases</li>
 						</ul>
 						<p>
-							I focus on pragmatic solutions that are neither over nor under
-							engineered. I can help navigate frontend technology choices and
-							find solid solutions that avoid hype, but also take advantage of
-							recent innovations.
+							I focus on pragmatic solutions that are neither over&mdash;nor
+							under&mdash; engineered. I can help navigate frontend technology
+							choices and find solid solutions that avoid hype, but also
+							leverage recent innovations.
 						</p>
 					</HelpSection>
 					<HelpSection title="Software engineering">
@@ -59,6 +59,11 @@ function HireMePage() {
 							</li>
 							<li>Update older websites to modern CSS and HTML standards</li>
 						</ul>
+						<p>
+							With my computer science background and experience across many
+							domains, I can create software that is reliable, performant, well
+							documented, and easy to maintain.
+						</p>
 					</HelpSection>
 					<HelpSection title="Design">
 						<ul>
@@ -68,11 +73,10 @@ function HireMePage() {
 							<li>Style and component guides</li>
 						</ul>
 						<p>
-							I am not a designer, so I am not able to create designs from
-							scratch. But I have extensive experience working with designers,
-							mock ups and templates. I can implement clean and intuitive
-							interfaces ideal for applications such as internal tools or admin
-							panels.
+							I have extensive experience working with designers, mock ups and
+							templates. While I can't create a stunning design from scratch, I
+							can create clean and intuitive interfaces ideal for applications
+							such as internal tools or admin dashboards.
 						</p>
 					</HelpSection>
 				</div>
