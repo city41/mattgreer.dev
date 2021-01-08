@@ -55,9 +55,7 @@ function IndexPage({ items }: IndexPageProps) {
 						<IndexPageNavLink href="/projects">Projects</IndexPageNavLink>
 						<IndexPageNavLink href="/articles">Articles</IndexPageNavLink>
 						<IndexPageNavLink href="/about">About</IndexPageNavLink>
-						<IndexPageNavLink href="/MattGreer_resume.pdf">
-							Resume
-						</IndexPageNavLink>
+						<IndexPageNavLink href="/hire-me">Hire me</IndexPageNavLink>
 					</ul>
 				</nav>
 				<div

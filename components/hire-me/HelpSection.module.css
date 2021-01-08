@@ -1,0 +1,7 @@
+.HelpSection ul {
+    @apply ml-8 list-disc;
+}
+
+.HelpSection p {
+    @apply mt-8 bg-bg p-4
+}
