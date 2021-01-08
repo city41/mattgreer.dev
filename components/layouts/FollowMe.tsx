@@ -21,7 +21,7 @@ function FollowMe({ className }: FollowMeProps) {
 			<div
 				className={clsx(
 					indexPageStyles.portraitIllustration,
-					'w-full sm:w-1/3 h-48'
+					'w-full sm:w-1/3 h-48 sm:mr-4'
 				)}
 			/>
 			<div className="w-full sm:w-2/3 space-y-4">
