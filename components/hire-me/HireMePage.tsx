@@ -7,10 +7,13 @@ import { FocalColorLink } from '../FocalColorLink';
 
 function HireMePage() {
 	const headerContent = (
-		<p className="text-white sm:mx-auto sm:max-w-2xl">
-			I am an experienced senior engineer with a primary focus on web
-			development.
-		</p>
+		<>
+			<p className="text-white sm:mx-auto sm:max-w-2xl">
+				I have worked as a full time employee for companies such as Netflix and
+				Microsoft. I am now independent, and interested in working with great
+				teams on interesting problems.
+			</p>
+		</>
 	);
 
 	return (
@@ -25,11 +28,6 @@ function HireMePage() {
 			headerContentUnderTitle
 		>
 			<div className="mx-auto max-w-2xl">
-				<p className="my-8 sm:mx-4">
-					I have worked as a full time employee for companies such as Netflix
-					and Microsoft, and have gained a lot of pragmatic experience over my
-					career solving tough problems.
-				</p>
 				<h2 className="mb-8 sm:ml-4 text-4xl">I can help with...</h2>
 				<div className="space-y-8">
 					<HelpSection title="Consultation">
