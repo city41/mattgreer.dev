@@ -6,7 +6,7 @@
 	);
 	background-position: left bottom;
 	background-repeat: repeat-x;
-	background-size: 100% 6px;
+	background-size: 100% 5px;
 }
 
 .FocalColorLink:hover,
@@ -26,7 +26,6 @@
 		var(--color-fg-warning-s),
 		calc(var(--color-fg-warning-l) * 3)
 	);
-	background-size: 100% 8px;
 }
 
 :global(.WarningBackground) .FocalColorLink:hover {
@@ -36,7 +35,6 @@
 :global(.WisdomBackground) .FocalColorLink {
 	color: var(--color-fg-wisdom);
 	--link-border-color: hsl(93, 39%, 75%);
-	background-size: 100% 8px;
 }
 
 :global(.WisdomBackground) .FocalColorLink:hover {
