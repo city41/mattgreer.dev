@@ -40,10 +40,10 @@ function HireMePage() {
 							<li>Improving legacy codebases</li>
 						</ul>
 						<p>
-							I focus on pragmatic solutions that are neither over&mdash;nor
-							under&mdash; engineered. I can help navigate frontend technology
-							choices and find solid solutions that avoid hype, but also
-							leverage recent innovations.
+							I focus on pragmatic solutions that avoid over and under
+							engineering. I can help navigate frontend technology choices and
+							find solid solutions that avoid hype, but also leverage recent
+							innovations.
 						</p>
 					</HelpSection>
 					<HelpSection title="Software engineering">
