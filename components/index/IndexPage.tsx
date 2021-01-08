@@ -88,6 +88,7 @@ function IndexPage({ items }: IndexPageProps) {
 						styles.portraitIllustration,
 						'col-start-1 col-end-9 h-64 sm:h-auto sm:row-span-2 sm:row-start-1 sm:col-start-1 sm:col-end-5 self-stretch'
 					)}
+					style={{ minHeight: '24rem' }}
 				/>
 				<div className="col-start-1 col-end-9 sm:row-start-2 sm:col-start-5 sm:col-end-8 sm:text-2xl space-y-8 leading-6 sm:leading-9 sm:my-16">
 					<p>

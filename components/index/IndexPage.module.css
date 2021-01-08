@@ -1,57 +1,56 @@
 .mainBleed {
-    @apply h-screen bg-focal-alt;
-    --bleed-fg-color: hsl(45, 8%, 80%);
+	@apply h-screen bg-focal-alt;
+	--bleed-fg-color: hsl(45, 8%, 80%);
 
-    transition: transform 0.15s linear;
+	transition: transform 0.15s linear;
 }
 
 @media (max-width: 1023px) {
-    .mainBleed {
-        height: 50vh;
-    }
+	.mainBleed {
+		height: 50vh;
+	}
 }
 
-.moreArrow { --size: 6px;
-    --up-down-amount: 20px;
+.moreArrow {
+	--size: 6px;
+	--up-down-amount: 20px;
 
-    border-color: var(--bleed-fg-color);
+	border-color: var(--bleed-fg-color);
 
-    border-width: 0 var(--size) var(--size) 0;
-    padding: var(--size);
+	border-width: 0 var(--size) var(--size) 0;
+	padding: var(--size);
 
-    margin-bottom: calc(var(--size) * 3);
+	margin-bottom: calc(var(--size) * 3);
 
-    transform: rotate(45deg);
+	transform: rotate(45deg);
 }
 
 @media (min-width: 1024px) {
-    .title {
-        color: var(--bleed-fg-color);
-    }
+	.title {
+		color: var(--bleed-fg-color);
+	}
 }
 
 .portraitIllustration {
-    @apply bg-contain bg-center bg-no-repeat;
-
-    min-height: 24rem;
+	@apply bg-contain bg-center bg-no-repeat;
 }
 
 @media (prefers-color-scheme: light) {
-    .portraitIllustration {
-        background-image: url(/meIndex_light.svg);
-    }
+	.portraitIllustration {
+		background-image: url(/meIndex_light.svg);
+	}
 }
 
 @media (prefers-color-scheme: dark) {
-    .portraitIllustration {
-        background-image: url(/meIndex_dark.svg);
-    }
+	.portraitIllustration {
+		background-image: url(/meIndex_dark.svg);
+	}
 }
 
 :global(.forcedLight) .portraitIllustration {
-    background-image: url(/meIndex_light.svg);
+	background-image: url(/meIndex_light.svg);
 }
 
 :global(.forcedDark) .portraitIllustration {
-    background-image: url(/meIndex_dark.svg);
+	background-image: url(/meIndex_dark.svg);
 }
