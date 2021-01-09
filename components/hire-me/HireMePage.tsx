@@ -10,7 +10,7 @@ function HireMePage() {
 	const headerContent = (
 		<>
 			<p className="text-white sm:mx-auto sm:max-w-2xl">
-				After 10 years of working at companies including Netflix and Microsoft,
+				After 15 years of working at companies including Netflix and Microsoft,
 				I am now an independent engineer looking to help companies tackle
 				challenging problems.
 			</p>
