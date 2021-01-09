@@ -36,9 +36,10 @@ function FollowMe({ className }: FollowMeProps) {
 				</p>
 
 				<div className="flex flex-row">
-					<a href="https://twitter.com/mattegreer">
-						<FaTwitter className="text-6xl mr-4 cursor-pointer" />
-					</a>
+					<FaTwitter
+						className="text-6xl mr-4 cursor-pointer"
+						aria-label="Twitter logo"
+					/>
 					<p>
 						<FocalColorLink href="https://twitter.com/mattegreer">
 							Follow me on Twitter
