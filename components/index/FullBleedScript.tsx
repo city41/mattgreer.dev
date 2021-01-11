@@ -2,35 +2,17 @@ import React from 'react';
 
 type FullBleedScriptProps = {
 	rootId: string;
-	titleId: string;
 	nextInPageId: string;
 	floatingImgSrc: string;
 	reflectionImgSrc: string;
 };
 
-type Point = { x: number; y: number };
-type Bounds = { left: number; top: number; right: number; bottom: number };
-
-type Particle = {
-	x: number;
-	y: number;
-	color: string;
-	targetAlpha: number;
-	currentAlpha: number;
-};
-
 function animateFullBleed(args: FullBleedScriptProps) {
-	const {
-		rootId,
-		titleId,
-		nextInPageId,
-		floatingImgSrc,
-		reflectionImgSrc,
-	} = args;
+	const { rootId, nextInPageId, floatingImgSrc, reflectionImgSrc } = args;
 
 	const isSafari = !!(navigator.vendor?.indexOf('Apple') > -1);
 
-	function isInMobileMode(root: HTMLDivElement): boolean {
+	function isInMobileMode(): boolean {
 		return window.innerWidth < 800;
 	}
 
@@ -53,12 +35,14 @@ function animateFullBleed(args: FullBleedScriptProps) {
 		return;
 	}
 
-	if (isInMobileMode(fullBleedRoot)) {
+	if (isInMobileMode()) {
+		setTimeout(() => animateFullBleed(args), 2000);
 		return;
 	}
 
-	const title = fullBleedRoot.querySelector(`#${titleId}`) as HTMLDivElement;
 	const nextInPage = document.getElementById(nextInPageId);
+
+	let waitingOnScroll = false;
 
 	if (nextInPage) {
 		nextInPage.classList.remove('mt-24');
@@ -68,14 +52,13 @@ function animateFullBleed(args: FullBleedScriptProps) {
 		);
 
 		let scrollTop;
-		let ticking = false;
 
 		document.addEventListener(
 			'scroll',
 			() => {
 				scrollTop = document.scrollingElement.scrollTop;
 
-				if (!ticking) {
+				if (!waitingOnScroll) {
 					requestAnimationFrame(() => {
 						const margin = Math.min(
 							document.scrollingElement.scrollTop,
@@ -95,10 +78,10 @@ function animateFullBleed(args: FullBleedScriptProps) {
 							fullBleedRoot.appendChild(canvas);
 						}
 
-						ticking = false;
+						waitingOnScroll = false;
 					});
 
-					ticking = true;
+					waitingOnScroll = true;
 				}
 			},
 			{ passive: true }
@@ -123,31 +106,34 @@ function animateFullBleed(args: FullBleedScriptProps) {
 	seaGradient.addColorStop(0.25, '#118a8b');
 	seaGradient.addColorStop(1, '#063232');
 
-	const BAR_COUNT = 50;
+	const BAR_COUNT = 40;
 	let barWidth = Math.ceil(canvas.width / BAR_COUNT);
 	const yOverlap = 20;
 	const tickRate = 0.003;
-	const reflectionRate = 0.003;
 	let tick = 0;
 
-	window.addEventListener('resize', () => {
-		if (isInMobileMode(fullBleedRoot)) {
-			canvas.style.display = 'none';
-			fullBleedRoot.style.removeProperty('height');
-		} else {
-			fullBleedRoot.style.setProperty('height', `${window.innerHeight}px`);
-			canvas.width = window.innerWidth;
-			canvas.height = window.innerHeight;
-			barWidth = Math.ceil(canvas.width / BAR_COUNT);
+	window.addEventListener(
+		'resize',
+		() => {
+			if (isInMobileMode()) {
+				canvas.style.display = 'none';
+				fullBleedRoot.style.removeProperty('height');
+			} else {
+				fullBleedRoot.style.setProperty('height', `${window.innerHeight}px`);
+				canvas.width = window.innerWidth;
+				canvas.height = window.innerHeight;
+				barWidth = Math.ceil(canvas.width / BAR_COUNT);
 
-			canvas.style.display = 'block';
-		}
-	});
+				canvas.style.display = 'block';
+			}
+		},
+		{ passive: true }
+	);
 
 	// draw the polygons just slightly bigger so they overlap a bit.
 	// since all colors are opaque, this won't cause any ill effects, and helps
 	// ensure on all machines, there isn't a tiny/thin border between each bar
-	const fudge = 0.1;
+	const fudge = 1;
 
 	function drawPolygon(
 		x: number,
@@ -169,12 +155,12 @@ function animateFullBleed(args: FullBleedScriptProps) {
 
 	function getWaveHeight(seed: number): number {
 		const height =
-			(Math.sin((seed + tick) / (BAR_COUNT / 10)) * canvas.height) / 4;
+			(Math.sin((seed + tick) / (BAR_COUNT / 10)) * canvas.height) / 5;
 
 		return (height * Math.sin(heightTweak) * seed) / BAR_COUNT / 2; // * Math.cos((tick * seed) / BAR_COUNT); // / ((seed + 1) * 0.04);
 	}
 
-	const floaterIndex = Math.floor(BAR_COUNT * 0.75);
+	const floaterIndex = Math.floor(BAR_COUNT * 0.8);
 
 	const img = new Image();
 	img.src = floatingImgSrc;
@@ -202,7 +188,9 @@ function animateFullBleed(args: FullBleedScriptProps) {
 		context.translate(x, y);
 		context.rotate(angle);
 
-		for (let y = 8; y < reflectionImg.height; ++y) {
+		const sliceHeight = 2;
+
+		for (let y = 6; y < reflectionImg.height; y += sliceHeight) {
 			const rowXOffset = Math.sin(y / 4 + tick * 0.5) * 8;
 
 			context.drawImage(
@@ -210,11 +198,11 @@ function animateFullBleed(args: FullBleedScriptProps) {
 				0,
 				y,
 				reflectionImg.width,
-				1,
+				sliceHeight,
 				rowXOffset - 5,
-				23 + y,
-				reflectionImg.width * 0.8,
-				1
+				34 + y,
+				reflectionImg.width,
+				sliceHeight
 			);
 		}
 
@@ -226,25 +214,15 @@ function animateFullBleed(args: FullBleedScriptProps) {
 			img.height,
 			0,
 			0,
-			img.width * 0.8,
-			img.height * 0.8
+			img.width,
+			img.height
 		);
 		context.restore();
 	}
 
 	let last;
 
-	// run at 30fps instead of 60 to help reduce cpu load
-	let everyOther = false;
-
 	function mainDraw(timestamp: number) {
-		everyOther = !everyOther;
-
-		if (everyOther) {
-			requestAnimationFrame(mainDraw);
-			return;
-		}
-
 		if (last === undefined) {
 			last = timestamp;
 		}
@@ -252,14 +230,17 @@ function animateFullBleed(args: FullBleedScriptProps) {
 		const delta = timestamp - last;
 		last = timestamp;
 
-		if (isInMobileMode(fullBleedRoot)) {
+		tick += tickRate * delta;
+
+		if (waitingOnScroll || isInMobileMode()) {
 			setTimeout(() => {
+				// reset last so delta doesn't increase by 1 second, causing
+				// a huge jump in the animation
+				last = undefined;
 				requestAnimationFrame(mainDraw);
 			}, 1000);
 			return;
 		}
-
-		tick += tickRate * delta;
 
 		context.clearRect(0, 0, canvas.width, canvas.height);
 
