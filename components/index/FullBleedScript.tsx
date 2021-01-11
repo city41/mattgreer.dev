@@ -36,6 +36,7 @@ function animateFullBleed(args: FullBleedScriptProps) {
 	}
 
 	if (isInMobileMode()) {
+		setTimeout(() => animateFullBleed(args), 2000);
 		return;
 	}
 
@@ -111,24 +112,28 @@ function animateFullBleed(args: FullBleedScriptProps) {
 	const tickRate = 0.003;
 	let tick = 0;
 
-	window.addEventListener('resize', () => {
-		if (isInMobileMode()) {
-			canvas.style.display = 'none';
-			fullBleedRoot.style.removeProperty('height');
-		} else {
-			fullBleedRoot.style.setProperty('height', `${window.innerHeight}px`);
-			canvas.width = window.innerWidth;
-			canvas.height = window.innerHeight;
-			barWidth = Math.ceil(canvas.width / BAR_COUNT);
+	window.addEventListener(
+		'resize',
+		() => {
+			if (isInMobileMode()) {
+				canvas.style.display = 'none';
+				fullBleedRoot.style.removeProperty('height');
+			} else {
+				fullBleedRoot.style.setProperty('height', `${window.innerHeight}px`);
+				canvas.width = window.innerWidth;
+				canvas.height = window.innerHeight;
+				barWidth = Math.ceil(canvas.width / BAR_COUNT);
 
-			canvas.style.display = 'block';
-		}
-	});
+				canvas.style.display = 'block';
+			}
+		},
+		{ passive: true }
+	);
 
 	// draw the polygons just slightly bigger so they overlap a bit.
 	// since all colors are opaque, this won't cause any ill effects, and helps
 	// ensure on all machines, there isn't a tiny/thin border between each bar
-	const fudge = 0.1;
+	const fudge = 1;
 
 	function drawPolygon(
 		x: number,
@@ -183,7 +188,9 @@ function animateFullBleed(args: FullBleedScriptProps) {
 		context.translate(x, y);
 		context.rotate(angle);
 
-		for (let y = 8; y < reflectionImg.height; ++y) {
+		const sliceHeight = 2;
+
+		for (let y = 6; y < reflectionImg.height; y += sliceHeight) {
 			const rowXOffset = Math.sin(y / 4 + tick * 0.5) * 8;
 
 			context.drawImage(
@@ -191,11 +198,11 @@ function animateFullBleed(args: FullBleedScriptProps) {
 				0,
 				y,
 				reflectionImg.width,
-				1,
+				sliceHeight,
 				rowXOffset - 5,
-				23 + y,
-				reflectionImg.width * 0.8,
-				1
+				34 + y,
+				reflectionImg.width,
+				sliceHeight
 			);
 		}
 
@@ -207,8 +214,8 @@ function animateFullBleed(args: FullBleedScriptProps) {
 			img.height,
 			0,
 			0,
-			img.width * 0.8,
-			img.height * 0.8
+			img.width,
+			img.height
 		);
 		context.restore();
 	}
