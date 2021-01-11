@@ -37,7 +37,7 @@ function drawTitle(context, title) {
 	const lineHeight = fontSize * 1.2;
 	context.font = `${fontSize}px sans-serif`;
 
-	const maxWidth = 500;
+	const maxWidth = 460;
 	const lines = getLines(context, title, maxWidth);
 
 	const x = 50;
