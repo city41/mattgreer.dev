@@ -121,7 +121,6 @@ function IndexPage({ items }: IndexPageProps) {
 			<Footer className="mt-16" />
 			<FullBleedScript
 				rootId={FULL_BLEED_ROOT_ID}
-				titleId={FULL_BLEED_TITLE_ID}
 				nextInPageId={INTRO_ROOT_ID}
 				floatingImgSrc={otterPng}
 				reflectionImgSrc={reflectionPng}
