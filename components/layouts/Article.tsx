@@ -41,7 +41,6 @@ function Article({
 			img={img}
 			pixelateImage={pixelateImage}
 			socialMediaImg={socialMediaImg}
-			twitterSize="small"
 			imgAlt="Illustration representing the article"
 			navigation
 		>
