@@ -7,7 +7,6 @@ type HeadProps = {
 	title: string;
 	metaDescription: string;
 	metaImg?: string;
-	twitterSize?: 'small' | 'large';
 };
 
 function getPageTitle(incomingTitle: string): string {
@@ -32,24 +31,10 @@ function getAbsoluteUrl(url: string): string {
 	return `https://${domain}/${url}`;
 }
 
-const SUMMARY_IMAGE_VALUE = {
-	small: 'summary',
-	large: 'summary_large_image',
-};
-
-function Head({
-	title,
-	metaDescription,
-	metaImg,
-	twitterSize = 'small',
-}: HeadProps) {
+function Head({ title, metaDescription, metaImg }: HeadProps) {
 	const finalMetaImg = `${getAbsoluteUrl(
 		metaImg ?? fallbackImg
 	)}?t=${title.substring(0, 10)}`;
-
-	if (!metaImg) {
-		twitterSize = 'large';
-	}
 
 	return (
 		<NextHead>
@@ -63,7 +48,7 @@ function Head({
 			<meta name="twitter:creator" content="@mattegreer" key="twhandle" />
 			<meta name="twitter:site" content="@mattegreer" />
 			<meta name="twitter:title" content={title} />
-			<meta name="twitter:card" content={SUMMARY_IMAGE_VALUE[twitterSize]} />
+			<meta name="twitter:card" content="summary_large_image" />
 			<meta name="twitter:image" content={finalMetaImg} />
 
 			{/* open graph, Twitter also uses some of these */}
