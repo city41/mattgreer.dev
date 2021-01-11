@@ -223,15 +223,15 @@ function animateFullBleed(args: FullBleedScriptProps) {
 	let last;
 
 	// run at 30fps instead of 60 to help reduce cpu load
-	let everyOther = false;
+	// let everyOther = false;
 
 	function mainDraw(timestamp: number) {
-		everyOther = !everyOther;
-
-		if (everyOther) {
-			requestAnimationFrame(mainDraw);
-			return;
-		}
+		// everyOther = !everyOther;
+		//
+		// if (everyOther) {
+		// 	requestAnimationFrame(mainDraw);
+		// 	return;
+		// }
 
 		if (last === undefined) {
 			last = timestamp;
