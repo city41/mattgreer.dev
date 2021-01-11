@@ -1,26 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
-        <title>Matt Greer's blog</title>
+        <title>Matt Greer</title>
         <link>https://mattgreer.dev</link>
         <description>Mostly web dev related articles</description>
-        <lastBuildDate>Wed, 13 May 2020 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Mon, 11 Jan 2021 20:55:56 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
         <image>
-            <title>Matt Greer's blog</title>
+            <title>Matt Greer</title>
             <url>http://example.com/image.png</url>
             <link>https://mattgreer.dev</link>
         </image>
         <copyright>Copyright Matt Greer</copyright>
         <atom:link href="https://mattgreer.dev/feed.xml" rel="self" type="application/rss+xml"/>
         <item>
+            <title><![CDATA[How I built this static site with Next.JS]]></title>
+            <link>https://mattgreer.dev/articles/how-i-built-this-static-site-with-nextjs</link>
+            <guid>https://mattgreer.dev/articles/how-i-built-this-static-site-with-nextjs</guid>
+            <pubDate>Thu, 07 Jan 2021 00:00:00 GMT</pubDate>
+            <description><![CDATA[A quick look at how I made a site that has almost no JavaScript, using a JavaScript framework.]]></description>
+            <author>matt.e.greer@gmail.com (Matt Greer)</author>
+        </item>
+        <item>
             <title><![CDATA[Extracting Neo Geo Emulator Graphics Data to Create Animated gifs]]></title>
             <link>https://mattgreer.dev/articles/extracting-neo-geo-emulator-graphics-data-to-create-animated-gifs</link>
             <guid>https://mattgreer.dev/articles/extracting-neo-geo-emulator-graphics-data-to-create-animated-gifs</guid>
             <pubDate>Wed, 13 May 2020 00:00:00 GMT</pubDate>
-            <description><![CDATA[Web Assembly lets us bring native applications right into the browser. By porting a game emulator to Web Assembly, I was able to reach into its memory to animated build gifs.]]></description>
+            <description><![CDATA[Web Assembly lets us bring native applications right into the browser. By porting a game emulator to Web Assembly, I was able to reach into its memory to build animated gifs.]]></description>
             <author>matt.e.greer@gmail.com (Matt Greer)</author>
         </item>
         <item>

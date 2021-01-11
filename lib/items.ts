@@ -86,7 +86,7 @@ function getItems(root: 'articles' | 'projects'): FeatureItem[] {
 		} else {
 			// it is important svg come first, as if feature.svg exists, feature.png should too
 			const imgFile = determineImage(directoryPath, ['svg', 'png', 'jpg']);
-			const socialMediaFile = determineImage(directoryPath, ['png', 'jpg']);
+			const socialMediaFile = path.join(directoryPath, 'twitter.png');
 
 			return buildingItems.concat({
 				...meta,

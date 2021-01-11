@@ -7,7 +7,7 @@ export const config = {
     unstable_runtimeJS: false
 }
 
-export default ({ children }) => <Article {...meta} img={require('./feature.svg')} socialMediaImg={require('./feature.png')}
+export default ({ children }) => <Article {...meta} img={require('./feature.svg')} socialMediaImg={require('./twitter.png')}
     intro={<>In <FocalColorLink href="/articles/react-internals-part-one-basic-rendering">part one</FocalColorLink>, our small React clone, Feact, was implemented far enough to do basic rendering. But once the render happens, that was it. In this part, we'll add the ability to make changes to the app with subsequent renders. This part will begin to show how the virtual DOM diffing works.</>}
 >{children}</Article>
 
