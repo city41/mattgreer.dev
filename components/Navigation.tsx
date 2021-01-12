@@ -7,6 +7,7 @@ import otterSvg from './otter_head.svg';
 type NavigationProps = {
 	className?: string;
 	current?: string;
+	noLogo?: boolean;
 };
 
 function NavLink({ href, children, isCurrent }) {
@@ -21,8 +22,11 @@ function NavLink({ href, children, isCurrent }) {
 	);
 }
 
-function Navigation({ className, current }: NavigationProps) {
-	const logoStyle = { backgroundImage: `url(${otterSvg})` };
+function Navigation({ className, current, noLogo }: NavigationProps) {
+	const logoStyle = {
+		backgroundImage: `url(${otterSvg})`,
+		visibility: noLogo ? ('hidden' as const) : ('visible' as const),
+	};
 
 	return (
 		<nav
@@ -36,6 +40,7 @@ function Navigation({ className, current }: NavigationProps) {
 					className="cursor-pointer h-14 w-14 bg-contain bg-no-repeat bg-center -mb-8 relative z-10"
 					style={logoStyle}
 					aria-label="home page"
+					aria-hidden={noLogo}
 				/>
 			</Link>
 			<ul className="flex flex-row space-x-1 sm:space-x-4 sm:pr-2 text-xs items-stretch border-focal-alt-fade">

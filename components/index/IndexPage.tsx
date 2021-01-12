@@ -2,9 +2,9 @@ import React from 'react';
 import clsx from 'clsx';
 import { FocalColorLink } from '../FocalColorLink';
 import { Head } from '../layouts/Head';
+import { Navigation } from '../Navigation';
 import { Feature } from '../Feature';
 import { Footer } from '../Footer';
-import Link from 'next/link';
 
 import styles from './IndexPage.module.css';
 import { FullBleedScript } from './FullBleedScript';
@@ -16,23 +16,7 @@ type IndexPageProps = {
 	items: FeatureItem[];
 };
 
-/**
- * NOTE: this is meant to mimic the NavLink found in Root as far as spacing/size/etc
- */
-function IndexPageNavLink({ href, children }) {
-	return (
-		<li>
-			<Link href={href} passHref>
-				<a className="px-1 sm:px-2 py-2 grid place-items-center text-white hover:bg-focal-alt-fade">
-					{children}
-				</a>
-			</Link>
-		</li>
-	);
-}
-
 const FULL_BLEED_ROOT_ID = '__full_bleed_id__';
-const FULL_BLEED_TITLE_ID = '__full_bleed_title_id__';
 const INTRO_ROOT_ID = '__intro_root_id__';
 
 function IndexPage({ items }: IndexPageProps) {
@@ -46,20 +30,8 @@ function IndexPage({ items }: IndexPageProps) {
 					'relative flex flex-col items-center justify-between text-white bg-fixed overflow-x-hidden'
 				)}
 			>
-				<nav
-					className={clsx(
-						'flex flex-row px-2 items-stretch justify-between self-end z-10'
-					)}
-				>
-					<ul className="flex flex-row space-x-1 sm:space-x-4 text-xs items-stretch sm:border-transparent sm:border-b-2">
-						<IndexPageNavLink href="/projects">Projects</IndexPageNavLink>
-						<IndexPageNavLink href="/articles">Articles</IndexPageNavLink>
-						<IndexPageNavLink href="/about">About</IndexPageNavLink>
-						<IndexPageNavLink href="/hire-me">Hire me</IndexPageNavLink>
-					</ul>
-				</nav>
+				<Navigation className="self-stretch z-10" noLogo />
 				<div
-					id={FULL_BLEED_TITLE_ID}
 					className={clsx(
 						styles.title,
 						'flex-1 flex flex-col justify-center items-center z-10 lg:mt-48 text-white'
