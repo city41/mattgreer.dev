@@ -232,7 +232,7 @@ function animateFullBleed(args: FullBleedScriptProps) {
 
 		tick += tickRate * delta;
 
-		if ((waitingOnScroll && !isSafari) || isInMobileMode()) {
+		if (isInMobileMode()) {
 			setTimeout(() => {
 				// reset last so delta doesn't increase by 1 second, causing
 				// a huge jump in the animation
