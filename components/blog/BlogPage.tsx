@@ -41,9 +41,13 @@ function BlogPage({ tag, allTags, items }: BlogsPageProps) {
 			headerContent={headerContent}
 			headerContentUnderTitle
 		>
-			<div className="flex flex-col space-y-8 overflow-x-hidden max-w-2xl -mx-8 sm:mx-auto">
+			<div className="flex flex-col sm:space-y-8 overflow-x-hidden max-w-2xl -mx-12 sm:mx-auto">
 				{items.map((i) => (
-					<BlogFeature className="even:bg-bg-fade p-4" key={i.slug} {...i} />
+					<BlogFeature
+						className="even:bg-bg-fade p-8 sm:p-4"
+						key={i.slug}
+						{...i}
+					/>
 				))}
 			</div>
 		</Root>
