@@ -9,6 +9,116 @@
       "source": "/articles/a-game-made-with-reagent",
       "destination": "/blog/a-game-made-with-reagent",
       "permanent": true
+    },
+    {
+      "source": "/articles/dynamic-lighting-and-shadows/",
+      "destination": "/blog/dynamic-lighting-and-shadows/",
+      "permanent": true
+    },
+    {
+      "source": "/articles/dynamic-lighting-and-shadows",
+      "destination": "/blog/dynamic-lighting-and-shadows",
+      "permanent": true
+    },
+    {
+      "source": "/articles/electron-redux-and-persistence/",
+      "destination": "/blog/electron-redux-and-persistence/",
+      "permanent": true
+    },
+    {
+      "source": "/articles/electron-redux-and-persistence",
+      "destination": "/blog/electron-redux-and-persistence",
+      "permanent": true
+    },
+    {
+      "source": "/articles/embedding-svg-into-a-reagent-component/",
+      "destination": "/blog/embedding-svg-into-a-reagent-component/",
+      "permanent": true
+    },
+    {
+      "source": "/articles/embedding-svg-into-a-reagent-component",
+      "destination": "/blog/embedding-svg-into-a-reagent-component",
+      "permanent": true
+    },
+    {
+      "source": "/articles/extracting-neo-geo-emulator-graphics-data-to-create-animated-gifs/",
+      "destination": "/blog/extracting-neo-geo-emulator-graphics-data-to-create-animated-gifs/",
+      "permanent": true
+    },
+    {
+      "source": "/articles/extracting-neo-geo-emulator-graphics-data-to-create-animated-gifs",
+      "destination": "/blog/extracting-neo-geo-emulator-graphics-data-to-create-animated-gifs",
+      "permanent": true
+    },
+    {
+      "source": "/articles/how-i-built-this-static-site-with-nextjs/",
+      "destination": "/blog/how-i-built-this-static-site-with-nextjs/",
+      "permanent": true
+    },
+    {
+      "source": "/articles/how-i-built-this-static-site-with-nextjs",
+      "destination": "/blog/how-i-built-this-static-site-with-nextjs",
+      "permanent": true
+    },
+    {
+      "source": "/articles/impromptu-web-scraping/",
+      "destination": "/blog/impromptu-web-scraping/",
+      "permanent": true
+    },
+    {
+      "source": "/articles/impromptu-web-scraping",
+      "destination": "/blog/impromptu-web-scraping",
+      "permanent": true
+    },
+    {
+      "source": "/articles/mate-and-i3/",
+      "destination": "/blog/mate-and-i3/",
+      "permanent": true
+    },
+    {
+      "source": "/articles/mate-and-i3",
+      "destination": "/blog/mate-and-i3",
+      "permanent": true
+    },
+    {
+      "source": "/articles/pair-programming-is-not-a-panacea/",
+      "destination": "/blog/pair-programming-is-not-a-panacea/",
+      "permanent": true
+    },
+    {
+      "source": "/articles/pair-programming-is-not-a-panacea",
+      "destination": "/blog/pair-programming-is-not-a-panacea",
+      "permanent": true
+    },
+    {
+      "source": "/articles/reagent-rocks/",
+      "destination": "/blog/reagent-rocks/",
+      "permanent": true
+    },
+    {
+      "source": "/articles/reagent-rocks",
+      "destination": "/blog/reagent-rocks",
+      "permanent": true
+    },
+    {
+      "source": "/articles/squeezing-the-arduboy-for-every-byte/",
+      "destination": "/blog/squeezing-the-arduboy-for-every-byte/",
+      "permanent": true
+    },
+    {
+      "source": "/articles/squeezing-the-arduboy-for-every-byte",
+      "destination": "/blog/squeezing-the-arduboy-for-every-byte",
+      "permanent": true
+    },
+    {
+      "source": "/articles/waking-up-at-5am-to-code/",
+      "destination": "/blog/waking-up-at-5am-to-code/",
+      "permanent": true
+    },
+    {
+      "source": "/articles/waking-up-at-5am-to-code",
+      "destination": "/blog/waking-up-at-5am-to-code",
+      "permanent": true
     }
   ]
 }
