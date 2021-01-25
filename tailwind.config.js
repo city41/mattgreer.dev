@@ -34,6 +34,7 @@ module.exports = {
 	},
 	variants: {
 		extend: {
+			backgroundColor: ['even'],
 			margin: ['first'],
 		},
 	},

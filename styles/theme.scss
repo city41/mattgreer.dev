@@ -118,7 +118,7 @@
   --color-focal: hsl(var(--color-focal-h), var(--color-focal-s), var(--color-focal-l));
   --color-focal-deep: hsl(var(--color-focal-h), var(--color-focal-s), calc(var(--color-focal-l) + var(--darken) * 4));
 
-  --color-bg-fade: hsl(var(--color-bg-h), var(--color-bg-s), calc(var(--color-bg-l) + var(--darken)));
+  --color-bg-fade: hsl(var(--color-bg-h), var(--color-bg-s), calc(var(--color-bg-l) + var(--darken) / 2));
   --color-bg: hsl(var(--color-bg-h), var(--color-bg-s), var(--color-bg-l));
   --color-bg-deep: hsl(var(--color-bg-h), var(--color-bg-s), calc(var(--color-bg-l) + var(--lighten)));
 

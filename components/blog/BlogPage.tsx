@@ -1,6 +1,6 @@
 import React from 'react';
 import { TagFilter } from '../TagFilter';
-import { Feature } from '../Feature';
+import { BlogFeature } from './BlogFeature';
 import { Root } from '../layouts/Root';
 
 import laptopSvg from './laptop.svg';
@@ -41,9 +41,9 @@ function BlogPage({ tag, allTags, items }: BlogsPageProps) {
 			headerContent={headerContent}
 			headerContentUnderTitle
 		>
-			<div className="flex flex-col space-y-48 overflow-x-hidden max-w-6xl -mx-8 sm:mx-auto">
+			<div className="flex flex-col space-y-8 overflow-x-hidden max-w-2xl -mx-8 sm:mx-auto">
 				{items.map((i) => (
-					<Feature key={i.slug} {...i} />
+					<BlogFeature className="even:bg-bg-fade p-4" key={i.slug} {...i} />
 				))}
 			</div>
 		</Root>
