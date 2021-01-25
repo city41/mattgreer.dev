@@ -1,30 +1,29 @@
 import React from 'react';
 import { TagFilter } from '../TagFilter';
-import { Feature } from '../Feature';
+import { BlogFeature } from './BlogFeature';
 import { Root } from '../layouts/Root';
 
 import laptopSvg from './laptop.svg';
 import laptopPng from '../projects/laptop.png';
 import { FocalColorLink } from '../FocalColorLink';
 
-type ArticlesPageProps = {
+type BlogsPageProps = {
 	tag?: string;
 	allTags: string[];
 	items: FeatureItem[];
 };
 
-function ArticlesPage({ tag, allTags, items }: ArticlesPageProps) {
+function BlogPage({ tag, allTags, items }: BlogsPageProps) {
 	const headerContent = (
 		<>
 			<p className="text-white text-sm">
-				My in depth writing.{' '}
-				<FocalColorLink href="/blog">My blog</FocalColorLink> contains more
-				casual content.
+				Check out <FocalColorLink href="/articles">my articles</FocalColorLink>{' '}
+				for more in depth content.
 			</p>
 			<TagFilter
 				tags={allTags}
 				currentTag={tag}
-				classification="articles"
+				classification="blog"
 				count={items.length}
 			/>
 		</>
@@ -32,9 +31,9 @@ function ArticlesPage({ tag, allTags, items }: ArticlesPageProps) {
 
 	return (
 		<Root
-			title="Articles"
-			currentNav="/articles"
-			metaDescription="Technical articles I have written, mostly related to web tech"
+			title="Blog"
+			currentNav="/blog"
+			metaDescription="My blog, mostly focused on game and web dev"
 			img={laptopSvg}
 			socialMediaImg={laptopPng}
 			imgAlt="Illustration of a laptop"
@@ -42,13 +41,13 @@ function ArticlesPage({ tag, allTags, items }: ArticlesPageProps) {
 			headerContent={headerContent}
 			headerContentUnderTitle
 		>
-			<div className="flex flex-col space-y-48 overflow-x-hidden max-w-6xl -mx-8 sm:mx-auto">
+			<div className="flex flex-col space-y-8 overflow-x-hidden max-w-2xl -mx-8 sm:mx-auto">
 				{items.map((i) => (
-					<Feature key={i.slug} {...i} />
+					<BlogFeature className="even:bg-bg-fade p-4" key={i.slug} {...i} />
 				))}
 			</div>
 		</Root>
 	);
 }
 
-export { ArticlesPage };
+export { BlogPage };

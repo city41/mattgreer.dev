@@ -2,7 +2,7 @@
 	"title": "ClojureScript Internals: Vectors",
 	"date": "2015-01-26",
 	"type": "technical article",
-	"tags": ["ClojureScript", "In Depth"],
+	"tags": ["ClojureScript"],
 	"description": [
 		"A detailed dive into how vectors in ClojureScript work."
 	],

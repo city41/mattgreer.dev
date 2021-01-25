@@ -6,7 +6,7 @@ type TagProps = {
 	className?: string;
 	children: string;
 	component?: React.ElementType;
-	classification: 'projects' | 'articles';
+	classification: 'projects' | 'articles' | 'blog';
 };
 
 function getUrl(classification: TagProps['classification'], tag: string) {

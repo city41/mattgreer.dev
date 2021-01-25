@@ -2,7 +2,7 @@
 	"title": "React Internals Part Four: setState",
 	"date": "2017-07-17",
 	"type": "technical article",
-	"tags": ["React", "In Depth"],
+	"tags": ["React"],
 	"description": [
 		"Part four implements setState, an important function that drives much of what React does."
 	],

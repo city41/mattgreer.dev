@@ -87,7 +87,8 @@ function IndexPage({ items }: IndexPageProps) {
 				<div>
 					See more of my{' '}
 					<FocalColorLink href="/projects">projects</FocalColorLink> and{' '}
-					<FocalColorLink href="/articles">articles</FocalColorLink>
+					<FocalColorLink href="/articles">articles</FocalColorLink>, or browse
+					my <FocalColorLink href="/blog">blog</FocalColorLink>.
 				</div>
 			</div>
 			<Footer className="mt-16" />
