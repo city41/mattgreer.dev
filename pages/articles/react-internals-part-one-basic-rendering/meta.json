@@ -2,7 +2,7 @@
 	"title": "React Internals Part One: Basic Rendering",
 	"date": "2017-07-14",
 	"type": "technical article",
-	"tags": ["React", "In Depth"],
+	"tags": ["React"],
 	"description": [
 		"This article series creates a small clone of React to learn how it works. We kick things off with the most basic of rendering."
 	],

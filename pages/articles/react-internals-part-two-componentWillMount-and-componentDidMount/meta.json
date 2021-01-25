@@ -2,7 +2,7 @@
 	"title": "React Internals Part Two: component\u00ADWill\u00ADMount and component\u00ADDid\u00ADMount",
 	"date": "2017-07-15",
 	"type": "technical article",
-	"tags": ["React", "In Depth"],
+	"tags": ["React"],
 	"description": [
 		"Today we are looking at how lifecycle methods in React work."
 	],

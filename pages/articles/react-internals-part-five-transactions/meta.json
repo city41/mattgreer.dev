@@ -2,7 +2,7 @@
 	"title": "React Internals Part Five: Transactions",
 	"date": "2017-08-12",
 	"type": "technical article",
-	"tags": ["React", "In Depth"],
+	"tags": ["React"],
 	"description": [
 		"In this final installment, we take a quick look at transactions and how they help React do its job."
 	],
