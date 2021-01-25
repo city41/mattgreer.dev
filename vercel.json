@@ -1,8 +1,9 @@
 {
-  "rewrites": [
+  "redirects": [
     {
       "source": "/articles/a-game-made-with-reagent",
-      "destination": "/blog/a-game-made-with-reagent"
+      "destination": "/blog/a-game-made-with-reagent",
+      "permanent": true
     }
   ]
 }
