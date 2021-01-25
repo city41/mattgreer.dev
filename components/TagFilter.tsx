@@ -9,7 +9,7 @@ type TagFilterProps = {
 	className?: string;
 	tags: string[];
 	currentTag?: string | null;
-	classification: 'projects' | 'articles';
+	classification: 'projects' | 'articles' | 'blog';
 	count: number;
 };
 
@@ -30,6 +30,16 @@ function singular(s: string, count: number): string {
 	return s;
 }
 
+function getClassificationNoun(
+	classification: TagFilterProps['classification']
+): string {
+	if (classification === 'blog') {
+		return 'blog posts';
+	}
+
+	return classification;
+}
+
 function TagFilter({
 	className,
 	tags,
@@ -46,13 +56,13 @@ function TagFilter({
 						<span className="font-bold text-white italic">
 							{toWords(count)}
 						</span>{' '}
-						of my {classification}
+						of my {getClassificationNoun(classification)}
 					</p>
 				) : (
 					<p>
 						{toCapitalizedWord(count)}{' '}
 						<span className="font-bold text-white italic">{currentTag}</span>{' '}
-						{singular(classification, count)}
+						{singular(getClassificationNoun(classification), count)}
 					</p>
 				)}
 			</div>

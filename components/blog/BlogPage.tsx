@@ -7,24 +7,23 @@ import laptopSvg from './laptop.svg';
 import laptopPng from '../projects/laptop.png';
 import { FocalColorLink } from '../FocalColorLink';
 
-type ArticlesPageProps = {
+type BlogsPageProps = {
 	tag?: string;
 	allTags: string[];
 	items: FeatureItem[];
 };
 
-function ArticlesPage({ tag, allTags, items }: ArticlesPageProps) {
+function BlogPage({ tag, allTags, items }: BlogsPageProps) {
 	const headerContent = (
 		<>
 			<p className="text-white text-sm">
-				My in depth writing.{' '}
-				<FocalColorLink href="/blog">My blog</FocalColorLink> contains more
-				casual content.
+				Check out <FocalColorLink href="/articles">my articles</FocalColorLink>{' '}
+				for more in depth content.
 			</p>
 			<TagFilter
 				tags={allTags}
 				currentTag={tag}
-				classification="articles"
+				classification="blog"
 				count={items.length}
 			/>
 		</>
@@ -32,9 +31,9 @@ function ArticlesPage({ tag, allTags, items }: ArticlesPageProps) {
 
 	return (
 		<Root
-			title="Articles"
-			currentNav="/articles"
-			metaDescription="Technical articles I have written, mostly related to web tech"
+			title="Blog"
+			currentNav="/blog"
+			metaDescription="My blog, mostly focused on game and web dev"
 			img={laptopSvg}
 			socialMediaImg={laptopPng}
 			imgAlt="Illustration of a laptop"
@@ -51,4 +50,4 @@ function ArticlesPage({ tag, allTags, items }: ArticlesPageProps) {
 	);
 }
 
-export { ArticlesPage };
+export { BlogPage };

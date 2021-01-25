@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import getConfig from 'next/config';
 
-function getTags(root: 'articles' | 'projects'): string[] {
+function getTags(root: 'articles' | 'projects' | 'blog'): string[] {
 	const pagesPath = path.resolve(
 		getConfig().serverRuntimeConfig.PROJECT_ROOT,
 		'pages',
@@ -42,4 +42,8 @@ export function getAllProjectTags(): string[] {
 
 export function getAllArticleTags(): string[] {
 	return getTags('articles');
+}
+
+export function getAllBlogTags(): string[] {
+	return getTags('blog');
 }

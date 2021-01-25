@@ -57,7 +57,7 @@ function getMetaDescription(meta: MetaAndDescriptionData): string {
 	}
 }
 
-function getItems(root: 'articles' | 'projects'): FeatureItem[] {
+function getItems(root: 'articles' | 'projects' | 'blog'): FeatureItem[] {
 	const pagesPath = path.resolve(
 		getConfig().serverRuntimeConfig.PROJECT_ROOT,
 		'pages',
@@ -121,6 +121,23 @@ export function getAllArticleItems(
 	}
 }
 
+export function getAllBlogItems(
+	options: GetAllArticleItemsOptions = {}
+): FeatureItem[] {
+	const items = getItems('blog').map((i) => {
+		return {
+			...i,
+			url: buildUrl('blog', i.slug),
+		};
+	});
+
+	if (options.sortByDateDescending) {
+		return sortItemsByDateDescending(items);
+	} else {
+		return items;
+	}
+}
+
 export function getAllProjectItems(): FeatureItem[] {
 	const projects = getItems('projects');
 
@@ -130,5 +147,7 @@ export function getAllProjectItems(): FeatureItem[] {
 }
 
 export function getAllItems(): FeatureItem[] {
-	return getAllArticleItems().concat(getAllProjectItems());
+	return getAllArticleItems()
+		.concat(getAllProjectItems())
+		.concat(getAllBlogItems());
 }

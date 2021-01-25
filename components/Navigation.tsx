@@ -50,6 +50,9 @@ function Navigation({ className, current, noLogo }: NavigationProps) {
 				<NavLink href="/articles" isCurrent={current === '/articles'}>
 					Articles
 				</NavLink>
+				<NavLink href="/blog" isCurrent={current === '/blog'}>
+					Blog
+				</NavLink>
 				<NavLink href="/about" isCurrent={current === '/about'}>
 					About
 				</NavLink>
