@@ -1,13 +1,16 @@
 import { Article } from '../../../components/layouts/Article';
 import meta from './meta.json';
+import { DemoForm } from '../../../components/blog/posts/using-google-drive-for-form-submissions/DemoForm';
 
 
 export default ({ children }) => <Article {...meta} img={require('./feature.svg')} socialMediaImg={require('./twitter.png')}
-intro="Sometimes I build fully static websites but still want to collect some data from visitors. I don't want to bother with a server or 3rd part form submission services, so sometimes I use Google Drive."
+intro="Sometimes I build fully static websites but still want to collect some data from visitors. I don't want to bother with a server or 3rd party form services, so Google Drive can work in a pinch."
 >{children}</Article>
 
-## The basic idea
-At 5am I jump out of bed and code for two hours, then get ready for work. I do this every day, including weekends. I maintain an online Kanban board which I groom/prep in the evenings while watching TV, to ensure I am ready to be productive the next morning.
+## A Quick Demo
+
+<DemoForm />
+
 
 ## Enjoying the work is key
 It's 5am *and* I will be also putting in a full day's work afterwards. Not being stressed out or frustrated during this time is essential. I ensure this by working on truly personal projects that interest me and I have complete control over. I'm only two weeks in but so far no signs of getting worn out, in fact quite the opposite. It's been pretty invigorating.
