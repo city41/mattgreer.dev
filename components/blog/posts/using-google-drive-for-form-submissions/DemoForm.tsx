@@ -5,7 +5,9 @@ const POST_URL =
 const entryName = 'entry.249370976';
 
 function DemoForm() {
-	const [formData, setFormData] = useState({});
+	const [formData, setFormData] = useState({
+		[entryName]: 'Atom',
+	});
 	const [hasSubmitted, setHasSubmitted] = useState(false);
 
 	async function handleSubmit(e: React.FormEvent) {
@@ -43,7 +45,6 @@ function DemoForm() {
 					}}
 					value={formData[entryName]}
 				>
-					<option>-</option>
 					<option value="Atom">Atom</option>
 					<option value="Emacs">Emacs</option>
 					<option value="Sublime">Sublime</option>
@@ -51,7 +52,7 @@ function DemoForm() {
 					<option value="vim">vim</option>
 					<option value="VSCode">VSCode</option>
 				</select>
-				<input type="submit" value="submit" disabled={!formData[entryName]} />
+				<input type="submit" value="submit" />
 			</form>
 		);
 	}
