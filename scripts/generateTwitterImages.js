@@ -64,7 +64,9 @@ function generateTwitterImage(articleDir) {
 	featureImage.src = featureImagePath;
 
 	if (featureImage.width !== featureImage.height) {
-		throw new Error(`${articleDir} feature image is not square`);
+		throw new Error(
+			`${articleDir} feature image, ${featureImageFile}, is not square, (${featureImage.width}x${featureImage.height})`
+		);
 	}
 
 	const canvas = createCanvas(WIDTH, HEIGHT);
