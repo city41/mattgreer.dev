@@ -1,0 +1,10 @@
+{
+	"title": "Using Google Drive for form submissions",
+	"date": "2021-01-26",
+	"type": "technical article",
+	"tags": ["Frontend"],
+	"description": [
+		"Need to collect form data? Don't want to stand up a server? You can use Google Drive."
+	],
+	"imgAlt": "The Google Drive logo"
+}

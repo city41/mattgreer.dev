@@ -6,6 +6,7 @@ const WIDTH = 1000;
 const HEIGHT = 500;
 
 const ARTICLE_ROOT = join(__dirname, '../pages/articles');
+const BLOG_ROOT = join(__dirname, '../pages/blog');
 const FEATURE_IMAGES = ['feature.svg', 'feature.png', 'feature.jpg'];
 
 const TEMPLATE_IMAGE_PATH = join(__dirname, 'twitterTemplate.svg');
@@ -63,7 +64,9 @@ function generateTwitterImage(articleDir) {
 	featureImage.src = featureImagePath;
 
 	if (featureImage.width !== featureImage.height) {
-		throw new Error(`${articleDir} feature image is not square`);
+		throw new Error(
+			`${articleDir} feature image, ${featureImageFile}, is not square, (${featureImage.width}x${featureImage.height})`
+		);
 	}
 
 	const canvas = createCanvas(WIDTH, HEIGHT);
@@ -100,14 +103,19 @@ function generateTwitterImage(articleDir) {
 	writeFileSync(join(articleDir, 'twitter.png'), buffer);
 }
 
-function main() {
-	const articleDirs = readdirSync(ARTICLE_ROOT).filter((articleDir) => {
-		return existsSync(join(ARTICLE_ROOT, articleDir, 'meta.json'));
+function generateForDirectory(directory) {
+	const articleDirs = readdirSync(directory).filter((articleDir) => {
+		return existsSync(join(directory, articleDir, 'meta.json'));
 	});
 
 	articleDirs.forEach((articleDir) =>
-		generateTwitterImage(join(ARTICLE_ROOT, articleDir))
+		generateTwitterImage(join(directory, articleDir))
 	);
+}
+
+function main() {
+	generateForDirectory(ARTICLE_ROOT);
+	generateForDirectory(BLOG_ROOT);
 }
 
 main();
