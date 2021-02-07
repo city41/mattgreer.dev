@@ -71,7 +71,7 @@ function Feature({
 				<div className="my-2 py-1 text-gray-500 text-xs mb-8 xtext-center sm:text-left">
 					{(date && !suppressDate && (
 						<time dateTime={date}>{dateToHumanString(date)}</time>
-					)) || <span>type</span>}
+					)) || <span>{type}</span>}
 				</div>
 				<div className="space-y-4">
 					{description.map((para, i) => (
