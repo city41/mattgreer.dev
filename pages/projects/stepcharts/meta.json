@@ -2,7 +2,7 @@
 	"draft": false,
 	"title": "Stepcharts",
 	"type": "website",
-	"tags": ["React"],
+	"tags": ["React", "TypeScript", "Retro Gaming"],
 	"description": [
 		"A website for players of the game Dance Dance Revolution"
 	],
