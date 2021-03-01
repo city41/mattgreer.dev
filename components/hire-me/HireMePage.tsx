@@ -38,12 +38,15 @@ function HireMePage() {
 							<li>Build pipelines</li>
 							<li>Developer productivity</li>
 							<li>Improving legacy codebases</li>
+							<li>Taking better advantage of web browser capabilities</li>
+							<li>Adopting TypeScript</li>
 						</ul>
 						<p>
 							I focus on pragmatic solutions that avoid over and under
 							engineering. I can help navigate frontend technology choices and
 							find solid solutions that avoid hype, but also leverage recent
-							innovations.
+							innovations from both the web development community and new
+							features in web browsers.
 						</p>
 					</HelpSection>
 					<HelpSection title="Software engineering">
@@ -57,7 +60,10 @@ function HireMePage() {
 								Increase application reliability through test coverage and
 								analytics
 							</li>
-							<li>Update older websites to modern CSS and HTML standards</li>
+							<li>
+								Update older websites to modern CSS, HTML and JavaScript
+								standards
+							</li>
 						</ul>
 						<p>
 							With my computer science background and experience across many
@@ -68,7 +74,7 @@ function HireMePage() {
 					<HelpSection title="Design">
 						<ul>
 							<li>Implement design mock ups</li>
-							<li>Adapt website templates to meet your needs</li>
+							<li>Adapt off-the-shelf website templates to meet your needs</li>
 							<li>Create clean and intuitive interfaces</li>
 							<li>Style and component guides</li>
 						</ul>
