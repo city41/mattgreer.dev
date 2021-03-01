@@ -8,6 +8,8 @@ import { Footer } from '../Footer';
 
 import styles from './IndexPage.module.css';
 
+import otterSvg from './otter.svg';
+
 type IndexPageProps = {
 	items: FeatureItem[];
 };
@@ -53,13 +55,20 @@ function IndexPage({ items }: IndexPageProps) {
 					return <Feature key={item.slug} {...item} tags={[]} suppressDate />;
 				})}
 			</div>
-			<div className="h-32 w-full px-4 text-fg grid place-items-center sm:text-2xl">
+			<div className="h-32 w-full px-4 text-fg flex flex-col items-center justify-center sm:text-2xl">
 				<div>
 					See more of my{' '}
 					<FocalColorLink href="/projects">projects</FocalColorLink> and{' '}
 					<FocalColorLink href="/articles">articles</FocalColorLink>, or browse
 					my <FocalColorLink href="/blog">blog</FocalColorLink>.
 				</div>
+				<img
+					className="block w-24 mt-16"
+					src={otterSvg}
+					alt="a cartoon otter"
+					width={96}
+					height={37}
+				/>
 			</div>
 			<Footer className="mt-16" />
 		</>
