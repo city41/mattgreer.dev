@@ -1,5 +1,6 @@
 import React from 'react';
 import { Root } from '../layouts/Root';
+import { FiSmile } from 'react-icons/fi';
 import { MDXComponents } from '../layouts/MDXComponents';
 import { FocalColorLink } from '../FocalColorLink';
 import { ResumeLink } from '../ResumeLink';
@@ -7,7 +8,7 @@ import { ResumeLink } from '../ResumeLink';
 import baguettesJpg from './baguettes.jpg';
 import frannyJpg from './franny.jpg';
 import charlieJpg from './charlie.jpg';
-import { FiSmile } from 'react-icons/fi';
+import ddrJpg from './ddr.jpg';
 
 import michiganSvg from './michigan.svg';
 import michiganPng from './michigan.png';
@@ -63,7 +64,6 @@ function AboutPage() {
 						height={600}
 					/>
 				</P>
-
 				<P>
 					I'm a big softy when it comes to animals. Here is our blind dog
 					Franny,
@@ -77,6 +77,19 @@ function AboutPage() {
 						width={800}
 						height={600}
 					/>
+				</P>
+				<P>
+					I also really enjoy the game Dance Dance Revolution. I've recently
+					acquired an amazing home setup which is just about on par with what
+					you'd find in an arcade.
+					<Img src={ddrJpg} alt="My DDR setup" width={800} height={600} />
+				</P>
+				<P>
+					I enjoy the game so much I created{' '}
+					<FocalColorLink href="https://ddr.stepcharts.com">
+						Stepcharts.com
+					</FocalColorLink>{' '}
+					to help people find new interesting songs they didn't know about.
 				</P>
 
 				<H2>This Website</H2>
