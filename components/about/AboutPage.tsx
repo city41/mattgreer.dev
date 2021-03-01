@@ -82,9 +82,11 @@ function AboutPage() {
 					/>
 				</P>
 				<P>
-					I also really enjoy the game Dance Dance Revolution. I've recently
-					acquired an amazing home setup which is just about on par with what
-					you'd find in an arcade.
+					I also really enjoy the game Dance Dance Revolution. This is a video
+					game where you physically "dance" on a platform in time with the
+					game's prompts. It's a great workout! I've recently acquired an
+					amazing home setup which is just about on par with what you'd find in
+					an arcade.
 					<Img src={ddrJpg} alt="My DDR setup" width={800} height={600} />
 				</P>
 				<P>
@@ -92,7 +94,7 @@ function AboutPage() {
 					<FocalColorLink href="https://ddr.stepcharts.com" external>
 						Stepcharts.com
 					</FocalColorLink>{' '}
-					to help people find new interesting songs they didn't know about.
+					to help people find interesting songs they didn't know about.
 				</P>
 
 				<H2>This Website</H2>
