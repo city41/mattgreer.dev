@@ -2,6 +2,8 @@ import React from 'react';
 import clsx from 'clsx';
 import Link from 'next/link';
 
+import styles from './Navigation.module.css';
+
 import otterSvg from './otter_head.svg';
 
 type NavigationProps = {
@@ -31,6 +33,7 @@ function Navigation({ className, current, noLogo }: NavigationProps) {
 	return (
 		<nav
 			className={clsx(
+				styles.root,
 				className,
 				'flex flex-row pr-2 sm:pr-4 sm:-mr-4 items-stretch justify-between bg-focal-alt text-white'
 			)}
