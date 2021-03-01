@@ -1,34 +1,10 @@
-.mainBleed {
-	@apply h-screen bg-focal-alt;
-	--bleed-fg-color: hsl(45, 8%, 80%);
-
-	transition: transform 0.15s linear;
+.navigation {
+	@apply bg-bg text-fg;
 }
 
-@media (max-width: 1023px) {
-	.mainBleed {
-		height: 50vh;
-	}
-}
-
-.moreArrow {
-	--size: 6px;
-	--up-down-amount: 20px;
-
-	border-color: var(--bleed-fg-color);
-
-	border-width: 0 var(--size) var(--size) 0;
-	padding: var(--size);
-
-	margin-bottom: calc(var(--size) * 3);
-
-	transform: rotate(45deg);
-}
-
-@media (min-width: 1024px) {
-	.title {
-		color: var(--bleed-fg-color);
-	}
+.navigation a:hover {
+	background-color: var(--link-border-color);
+	@apply text-focal;
 }
 
 .portraitIllustration {

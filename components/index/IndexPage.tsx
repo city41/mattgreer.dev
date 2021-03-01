@@ -7,48 +7,17 @@ import { Feature } from '../Feature';
 import { Footer } from '../Footer';
 
 import styles from './IndexPage.module.css';
-import { FullBleedScript } from './FullBleedScript';
-
-import otterPng from './otter.png';
-import reflectionPng from './reflection.png';
 
 type IndexPageProps = {
 	items: FeatureItem[];
 };
 
-const FULL_BLEED_ROOT_ID = '__full_bleed_id__';
-const INTRO_ROOT_ID = '__intro_root_id__';
-
 function IndexPage({ items }: IndexPageProps) {
 	return (
 		<>
 			<Head title="Matt Greer" metaDescription="My portfolio and blog" />
+			<Navigation className={styles.navigation} noLogo />
 			<div
-				id={FULL_BLEED_ROOT_ID}
-				className={clsx(
-					styles.mainBleed,
-					'relative flex flex-col items-center justify-between text-white bg-fixed overflow-x-hidden'
-				)}
-			>
-				<Navigation className="self-stretch z-10" noLogo />
-				<div
-					className={clsx(
-						styles.title,
-						'flex-1 flex flex-col justify-center items-center z-10 lg:mt-48 text-white'
-					)}
-				>
-					<h1 className="text-5xl md:text-7xl font-bold">Matt Greer</h1>
-				</div>
-				<div
-					className={clsx(
-						styles.moreArrow,
-						'justify-self-end z-10 hidden md:inline-block'
-					)}
-					aria-label="scroll down to see more"
-				/>
-			</div>
-			<div
-				id={INTRO_ROOT_ID}
 				className={clsx(
 					'grid grid-cols-8 gap-8 auto-rows-min max-w-6xl mx-auto px-8 sm:px-0 mt-24 mb-8 sm:mb-24'
 				)}
@@ -62,9 +31,10 @@ function IndexPage({ items }: IndexPageProps) {
 				/>
 				<div className="col-start-1 col-end-9 sm:row-start-2 sm:col-start-5 sm:col-end-8 sm:text-2xl space-y-8 leading-6 sm:leading-9 sm:my-16">
 					<p>
-						<span className="text-4xl font-bold">Hi!</span> I'm Matt, a
-						freelance software engineer based in Michigan. I tend to focus on
-						web technologies, but enjoy tackling all types of problems.
+						<span className="text-4xl font-bold">Hi!</span> I'm Matt Greer, a
+						freelance web engineer based in Michigan. I have deep and extensive
+						experience building websites of all kinds, on both the frontend and
+						backend.
 					</p>
 					<p>
 						I am always{' '}
@@ -75,15 +45,15 @@ function IndexPage({ items }: IndexPageProps) {
 					</p>
 				</div>
 			</div>
-			<div className="h-48 w-full bg-focal-alt text-white grid place-items-center text-2xl sm:text-3xl">
+			<div className="my-24 sm:mt-0 w-full sm:w-1/2 mx-auto py-4 px-2 bg-bg text-focal grid place-items-center text-2xl sm:text-3xl border-t-2 border-b-2 sm:border-2 border-focal">
 				A few things I have created{' '}
 			</div>
-			<div className="flex flex-col space-y-48 max-w-6xl sm:mx-auto mt-16 sm:mt-32 mb-16">
+			<div className="flex flex-col space-y-48 max-w-6xl sm:mx-auto mt-16 sm:mt-32 sm:mb-16">
 				{items.map((item, index) => {
 					return <Feature key={item.slug} {...item} tags={[]} suppressDate />;
 				})}
 			</div>
-			<div className="h-32 w-full text-fg grid place-items-center sm:text-2xl">
+			<div className="h-32 w-full px-4 text-fg grid place-items-center sm:text-2xl">
 				<div>
 					See more of my{' '}
 					<FocalColorLink href="/projects">projects</FocalColorLink> and{' '}
@@ -92,12 +62,6 @@ function IndexPage({ items }: IndexPageProps) {
 				</div>
 			</div>
 			<Footer className="mt-16" />
-			<FullBleedScript
-				rootId={FULL_BLEED_ROOT_ID}
-				nextInPageId={INTRO_ROOT_ID}
-				floatingImgSrc={otterPng}
-				reflectionImgSrc={reflectionPng}
-			/>
 		</>
 	);
 }
