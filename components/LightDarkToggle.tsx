@@ -96,14 +96,20 @@ if (typeof window !== 'undefined') {
 					id="lightLabel"
 					className="hidden p-2 flex flex-row items-center text-fg"
 				>
-					<FiMoon className="text-2xl mr-2" aria-label="dark mode" />
+					<FiMoon
+						className="text-2xl mr-2 hidden sm:block"
+						aria-label="dark mode"
+					/>
 					switch to dark theme
 				</div>
 				<div
 					id="darkLabel"
 					className="hidden p-2 flex flex-row items-center text-fg"
 				>
-					<FiSun className="text-2xl mr-2" aria-label="light mode" />
+					<FiSun
+						className="text-2xl mr-2 hidden sm:block"
+						aria-label="light mode"
+					/>
 					switch to light theme
 				</div>
 			</button>
