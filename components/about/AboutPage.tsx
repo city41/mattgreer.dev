@@ -41,6 +41,9 @@ function AboutPage() {
 					is my <ResumeLink />
 					). I am now an independent developer, and am interested in working
 					with dynamic teams to help build out cutting edge web experiences.
+					Check out my{' '}
+					<FocalColorLink href="/hire-me">hire me page</FocalColorLink> to learn
+					more.
 				</P>
 				<H2>My Interests</H2>
 				<P>
@@ -86,7 +89,7 @@ function AboutPage() {
 				</P>
 				<P>
 					I enjoy the game so much I created{' '}
-					<FocalColorLink href="https://ddr.stepcharts.com">
+					<FocalColorLink href="https://ddr.stepcharts.com" external>
 						Stepcharts.com
 					</FocalColorLink>{' '}
 					to help people find new interesting songs they didn't know about.
