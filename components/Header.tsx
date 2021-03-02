@@ -1,6 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import styles from './Header.module.css';
 import pixelatedStyles from './pixelated.module.css';
 
 type HeaderProps = {
@@ -27,7 +28,7 @@ function Header({
 	const imgStyle = { backgroundImage: `url(${img})`, minHeight: '16rem' };
 
 	return (
-		<header className="FocalAltBackground bg-focal-alt w-full py-12">
+		<header className={clsx(styles.root, "FocalAltBackground bg-focal-alt w-full py-12")}>
 			<img
 				className={clsx(
 					'sm:hidden h-auto bg-contain bg-center bg-no-repeat w-screen h-64 mb-16',
