@@ -47,7 +47,7 @@ function IndexPage({ items }: IndexPageProps) {
 					</p>
 				</div>
 			</div>
-			<div className="my-24 sm:mt-0 w-full sm:w-1/2 mx-auto py-4 px-2 bg-bg text-focal grid place-items-center text-2xl sm:text-3xl border-t-2 border-b-2 sm:border-2 border-focal">
+			<div className="my-24 sm:mt-0 w-full sm:w-1/2 mx-auto py-4 px-2 bg-bg text-focal grid place-items-center text-2xl sm:text-3xl border-t-2 border-b-2 sm:border-t-0 border-focal">
 				A few things I have created{' '}
 			</div>
 			<div className="flex flex-col space-y-48 max-w-6xl sm:mx-auto mt-16 sm:mt-32 sm:mb-16">
