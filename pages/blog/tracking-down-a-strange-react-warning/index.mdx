@@ -9,15 +9,15 @@ intro='React kept warning me about an invalid value for prop "inherit". Where th
 
 Recently I started up a new React project. The dev console kept showing these two warnings
 
-<div class="bg-red-50 text-red-900 p-4 -mx-4">
+<pitfall>
 Warning: Invalid value for prop <b>`inherit`</b> on &lt;input&gt; tag. Either remove it from the element, or pass a string or number value to keep it in the DOM. For details, see https://reactjs.org/link/attribute-behavior
-</div>
+</pitfall>
 
 and
 
-<div class="bg-red-50 text-red-900 p-4 -mx-4">
+<pitfall>
 Warning: Prop `className` did not match. Server: "border border-black bg-green-50 opacity-25" Client: "border border-black bg-green-50 opacity-25 <b>inherit</b>"
-</div>
+</pitfall>
 
 where is this "inherit" coming from? Google turned up absolutely nothing. I soon learned why.
 
