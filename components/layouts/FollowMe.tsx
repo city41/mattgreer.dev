@@ -15,7 +15,7 @@ function FollowMe({ className }: FollowMeProps) {
 		<div
 			className={clsx(
 				className,
-				'FocalAltBackground flex flex-col sm:flex-row sm:items-start bg-focal-alt px-4 py-6 sm:py-4 text-white'
+				'FocalAltBackground flex flex-col sm:flex-row sm:items-start bg-focal-alt -mx-8 sm:mx-0 px-8 sm:px-4 py-6 sm:py-4 text-white'
 			)}
 		>
 			<div

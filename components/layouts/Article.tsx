@@ -47,7 +47,7 @@ function Article({
 			<MDXProvider components={MDXComponents}>
 				<div className="mx-auto max-w-2xl sm:mt-32">
 					{children}
-					<FollowMe className="my-16" />
+					<FollowMe className="mt-16 -mb-16 sm:my-16" />
 				</div>
 			</MDXProvider>
 		</Root>

@@ -28,15 +28,12 @@ function Header({
 	const imgStyle = { backgroundImage: `url(${img})`, minHeight: '16rem' };
 
 	return (
-		<header className={clsx(styles.root, "FocalAltBackground bg-focal-alt w-full py-12")}>
-			<img
-				className={clsx(
-					'sm:hidden h-auto bg-contain bg-center bg-no-repeat w-screen h-64 mb-16',
-					{ [pixelatedStyles.pixelated]: pixelateImage }
-				)}
-				src={img}
-				alt={imgAlt}
-			/>
+		<header
+			className={clsx(
+				styles.root,
+				'FocalAltBackground bg-focal-alt w-full py-12'
+			)}
+		>
 			<div
 				className={clsx(
 					className,
