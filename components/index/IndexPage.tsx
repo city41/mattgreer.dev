@@ -50,20 +50,20 @@ function IndexPage({ items }: IndexPageProps) {
 			<div className="my-24 sm:mt-0 w-full sm:w-1/2 mx-auto py-4 px-2 bg-bg text-focal grid place-items-center text-2xl sm:text-3xl border-t-2 border-b-2 sm:border-t-0 border-focal">
 				A few things I have created{' '}
 			</div>
-			<div className="flex flex-col space-y-48 max-w-6xl sm:mx-auto mt-16 sm:mt-32 sm:mb-16">
+			<div className="flex flex-col space-y-32 sm:space-y-48 max-w-6xl sm:mx-auto mt-16 sm:mt-32 sm:mb-16">
 				{items.map((item, index) => {
 					return <Feature key={item.slug} {...item} tags={[]} suppressDate />;
 				})}
 			</div>
-			<div className="h-32 w-full px-4 text-fg flex flex-col items-center justify-center sm:text-2xl">
-				<div>
+			<div className="h-52 w-full sm:px-4 text-fg flex flex-col items-center justify-center text-xl sm:text-2xl  mt-2 text-center sm:text-left">
+				<div className="p-6 pt-12 border-t-2 xsm:border-0 border-focal">
 					See more of my{' '}
 					<FocalColorLink href="/projects">projects</FocalColorLink> and{' '}
 					<FocalColorLink href="/articles">articles</FocalColorLink>, or browse
 					my <FocalColorLink href="/blog">blog</FocalColorLink>.
 				</div>
 				<img
-					className="block w-24 mt-16"
+					className="block w-24 mt-8"
 					src={otterSvg}
 					alt="a cartoon otter"
 					width={96}
