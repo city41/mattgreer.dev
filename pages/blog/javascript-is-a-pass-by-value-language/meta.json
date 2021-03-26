@@ -1,0 +1,10 @@
+{
+	"title": "JavaScript is a pass by value language",
+	"date": "2015-03-03",
+	"type": "technical article",
+	"tags": ["JavaScript"],
+	"description": [
+		"JavaScript always passes parameters by value. This post explores what that means."
+	],
+	"imgAlt": "JavaScript logo"
+}

@@ -8,6 +8,7 @@ import theme from 'prism-react-renderer/themes/vsDark';
 // @ts-ignore
 (typeof global !== 'undefined' ? global : window).Prism = Prism;
 require('prismjs/components/prism-clojure');
+require('prismjs/components/prism-csharp');
 
 type CodeBlockProps = {
 	className?: string;
