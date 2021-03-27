@@ -35,8 +35,8 @@ function IndexPage({ items }: IndexPageProps) {
 					<p>
 						<span className="text-4xl font-bold">Hi!</span> I'm Matt Greer, a
 						freelance web engineer based in Michigan. I have deep and extensive
-						experience building websites of all kinds, on both the frontend and
-						backend.
+						experience building websites of all kinds, on both the front end and
+						back end.
 					</p>
 					<p>
 						I am always{' '}
