@@ -192,7 +192,7 @@ uniform float uTexStep;
 void main(void) {
   float alpha = 0.0;
 
-  if(isInShadow(uXYAngle, uZAngle, uHeightMap, uMaxShadowSteps,
+  if(isInShadow(uXYAngle, uZAngle, uHeightMap,
      vTextureCoord, uTexStep)) {
 
     alpha = 0.5;
