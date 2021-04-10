@@ -146,7 +146,7 @@ Uint8* get_current_pal_addr() {
 Then I told Emscripten to [export these functions during the build](https://github.com/city41/nggm/blob/master/scripts/build-gngeo.sh#L12), which made them available for example at `window.Module._get_tile_ram_addr()` in the browser. When these functions are called from JavaScript, they return an integer which is an index into the large `Uint8Array` that Emscripten creates to be Gngeo's memory heap.
 
 <wisdom>
-This approach really biases towards JavaScript. I could have done more work inside of Gngeo itself such as adding a `get_background_frame()` function that does most of the needed work and had JS just be responsible for the UI. There's many pros and cons to both approaches. I ultimately decided to do most of the work in JavaScript as I felt it was more flexible. I could swap Gngeo out for a different emulator if I wanted to, for example.
+This approach really biases towards JavaScript. I could have done more work inside of Gngeo itself such as adding a get_background_frame() function that does most of the needed work and had JS just be responsible for the UI. There's many pros and cons to both approaches. I ultimately decided to do most of the work in JavaScript as I felt it was more flexible. I could swap Gngeo out for a different emulator if I wanted to, for example.
 </wisdom>
 
 ### Dumping the sprites
