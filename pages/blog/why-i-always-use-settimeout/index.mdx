@@ -1,0 +1,60 @@
+import { Article } from '../../../components/layouts/Article';
+import meta from './meta.json';
+
+export const config = {
+    unstable_runtimeJS: false
+}
+
+export default ({ children }) => <Article {...meta} img={require('./feature.svg')} socialMediaImg={require('./twitter.png')}
+                                          intro="When doing something repeatedly in JavaScript, I always use setTimout and never setInterval, here is why"
+>{children}</Article>
+
+It's pretty common to need to do something repeatedly on an interval when building something with JavaScript. Conveniently the platform offers `setInterval` for just such a thing
+
+```javascript
+let intervalId;
+
+function pollSomething() {
+    fetch('/something').then(result => {
+        if (isAGoodResult(result)) {
+            clearInterval(intervalId);
+            doSomethingWithTheResult(result);
+        }
+    });
+}
+
+intervalId = setInterval(pollSomething, 2000);
+```
+
+but I prefer to use `setTimeout`
+
+
+```javascript
+let timeoutId;
+
+function triggerPoll() {
+    timeoutId = setTimeout(pollSomething, 2000);
+}
+
+function pollSomething() {
+    fetch('/something').then(result => {
+        if (isAGoodResult(result)) {
+            doSomethingWithTheResult(result);
+        } else {
+            triggerPoll();
+        }
+    });
+}
+
+triggerPoll();
+```
+
+ Why bother writing a blog post about this? Don't they both accomplish the same thing and isn't my version more code and a little harder to read?
+
+## Pessimism can be good
+
+The key difference between the two is the `setTimeout` version is pessimistic. You need to continually pump the interval yourself, and you only pump it if you know you're in a good spot to kick off another iteration.
+
+The `setInteval` version assumes nothing will go wrong. What if `isAGoodResult` throws an exception or otherwise fails in some unexpected way? The interval would just keep trodding along. Sometimes it's possible to get an app so messed up it has numerous zombie intervals running despite all hell having broken loose.
+
+The `setTimeout` version will stop as soon as something unexpected happens. If `isAGoodResult` blows up, `triggerPoll` doesn't get called again. We end up in a bad state, but a more dormant one.

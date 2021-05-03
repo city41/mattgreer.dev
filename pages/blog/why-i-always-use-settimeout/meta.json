@@ -1,0 +1,11 @@
+{
+	"title": "Why I always use setTimeout, and never setInterval",
+	"date": "2021-05-03",
+	"type": "technical article",
+	"tags": ["JavaScript"],
+	"description": [
+		"For the heck of it, I made a simple breakout game with Reagent"
+	],
+	"description": ["When doing something repeatedly in JavaScript, I always use setTimout and never setInterval, here is why"],
+	"imgAlt": "JavaScript logo"
+}
