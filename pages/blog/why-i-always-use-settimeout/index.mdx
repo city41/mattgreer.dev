@@ -15,12 +15,11 @@ It's pretty common to need to do something repeatedly on an interval when buildi
 let intervalId;
 
 function pollSomething() {
-    fetch('/something').then(result => {
-        if (isAGoodResult(result)) {
-            clearInterval(intervalId);
-            doSomethingWithTheResult(result);
-        }
-    });
+    const result = poll('something');
+    if (isAGoodResult(result)) {
+        clearInterval(intervalId);
+        doSomethingWithTheResult(result);
+    }
 }
 
 intervalId = setInterval(pollSomething, 2000);
@@ -37,13 +36,12 @@ function triggerPoll() {
 }
 
 function pollSomething() {
-    fetch('/something').then(result => {
-        if (isAGoodResult(result)) {
-            doSomethingWithTheResult(result);
-        } else {
-            triggerPoll();
-        }
-    });
+    const result = poll('something');
+    if (isAGoodResult(result)) {
+        doSomethingWithTheResult(result);
+    } else {
+        triggerPoll();
+    }
 }
 
 triggerPoll();
