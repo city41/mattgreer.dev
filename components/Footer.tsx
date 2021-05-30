@@ -59,13 +59,6 @@ function Footer({ className }: FooterProps) {
 				</li>
 				<li>
 					<IconLink
-						Icon={FaTwitter}
-						href="https://twitter.com/mattegreer"
-						label="my Twitter profile"
-					/>
-				</li>
-				<li>
-					<IconLink
 						Icon={FaLinkedin}
 						href="https://www.linkedin.com/in/matt-greer-133405ab/"
 						label="my LinkedIn profile"
