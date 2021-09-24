@@ -1,0 +1,175 @@
+import { Article } from '../../../components/layouts/Article';
+import meta from './meta.json';
+
+export const config = {
+	unstable_runtimeJS: false,
+};
+
+export default ({ children }) => (
+	<Article
+		{...meta}
+		img={require('./feature.png')}
+		socialMediaImg={require('./twitter.png')}
+		intro={meta.description[0]}
+	>
+		{children}
+	</Article>
+);
+
+<pitfall>
+	<div>
+		<b>Spoiler alert!</b>
+	</div>
+	This article shows the entire Super Metroid map, including all secret areas.
+</pitfall>
+
+Super Metroid is an adventure game where you are tasked with exploring a giant, interconnected world. The game helps you out by mapping your progress automatically as you explore.
+
+<figure>
+	<img
+		src={require('./autoMappingScreenshot.png')}
+		alt="Map view in the game showing the auto-mapping"
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>
+		The map on the pause screen showing where you have been (pink) and where you
+		have not (blue)
+	</figcaption>
+</figure>
+
+The areas you have visited are stored in the game's save file. This section of the save is about 1kb in size, and each invidivual bit tracks one cell of the map. If Samus has visited 10 screens in the game, 10 bits will get flipped to 1.
+
+I am [building a Super Metroid website](https://github.com/city41/zebesguide) where you load your save file, and it will show you where you have been, and offer hints for things you have missed. So, I needed to know which part of the map each of these bits corresponds to.
+
+## The BizHawk emulator
+
+[BizHawk](http://tasvideos.org/BizHawk.html) is an emulator that is targeted at creating tool-assisted speedruns, commonly called a "TAS". A TAS is a script that enters in game inputs as if a human was playing the game, with the goal of beating the game as fast as possible. Since each input is precisely crafted, a TAS can often do amazing things.
+
+<figure>
+	<iframe
+		src="https://www.youtube.com/embed/0AfYheKfJ9I?start=34"
+		frameBorder="0"
+		allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+		allowFullScreen
+		style={{ margin: 'auto' }}
+	></iframe>
+	<figcaption>
+		A TAS beating a Mario level incredibly quickly and accurately
+	</figcaption>
+</figure>
+
+BizHawk has a Lua scripting engine embedded in it to aid in TAS creation. By writing a Lua script, you can control every aspect of the emulator. I used this scripting capability to brute force dump the entire map of the game.
+
+## Dumping the map, bit by bit ...
+
+I wrote a [Lua script](https://github.com/city41/zebesguide/blob/main/automation/lua/mapLocationsDump.lua) that sets a single map bit to 1, starts the game, presses the start button until the map is displayed, takes a screenshot, then moves onto the next bit.
+
+Here is one of the screenshots
+
+<figure>
+	<img
+		src={require('./singleBitDumpExample.png')}
+		alt="A single bit of the map exposed"
+		style={{ imageRendering: 'pixelated', margin: '40px auto' }}
+	/>
+	<figcaption>
+		A single cell of the map discovered with the dump script
+	</figcaption>
+</figure>
+
+The pink area is the bit of the map that was discovered, and the white box is Samus's current location, which will be one of the 20 save rooms in the game. BizHawk allows me to alter the emulator's memory, so I use this to set up the save file exactly how I need it. Since I know Samus's location, I can then figure out the global location of that cell of the map.
+
+To do this, I wrote [another script](https://github.com/city41/zebesguide/blob/main/automation/parseScreenshots.ts) which analyzes the screenshot and figures out the pink square's location relative to the white square. This second script dumps all the positive hits it gets into a JavaScript array, for example here is [Wrecked Ship](https://github.com/city41/zebesguide/blob/main/src/lib/parser/cells/wreckedShip0.ts). This data is then used by the website.
+
+### The save rooms and the in-game map
+
+Super Metroid's world is divided into different areas, such as Crateria (where you first start the game) or Tourian (where you find the final boss). When you look at the in-game map, it will only show you parts of the map that are in the area you are currently in. So in other words, if you are currently in Crateria, then the in-game map won't show you Tourian or any other regions of the world.
+
+There are 20 save rooms in the game, and it's simple to place Samus at one room by altering the save file. So when I do a dump run, I can only get the bits that correspond to whatever region I have placed Samus in.
+
+### This takes a while
+
+There are 1,284 bytes in the map section of the save file, meaning there are 10,272 bits that could each mean one cell of the map. Each run of the Lua script takes about 11 seconds on my laptop. So a single dump takes about 31 hours to complete.
+
+<wisdom>
+	<div>
+		<b>A tale of two cores</b>
+	</div>
+	BizHawk lets you choose which SNES emulator core to use. If I use Snes9x, the emulator
+	runs extremely fast. I could probably capture each screenshot in less than a second.
+	But the Snes9x core doesn't give you access to the save file memory, making it
+	a dead end. The bsnes core does give you that access, but it is unfortunately much
+	slower. Ah well, not a huge deal.
+</wisdom>
+
+But, this really isn't as bad as it sounds. I let the dump do its thing while I work on other parts of the website in parallel. I also don't need to do a dump from all 20 save rooms, I can strategically pick rooms based on how much of the map they can reveal. Also, once I know a bit, I can skip examining that bit in future runs. And finally, I can run three dumps at once, since my laptop has four cores. Thankfully I have another computer as well so the laptop just sits in the corner chugging along.
+
+<figure>
+	<iframe
+		src="https://www.youtube.com/embed/fxcIttFVzMg"
+		frameBorder="0"
+		allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+		allowFullScreen
+		style={{ margin: 'auto' }}
+	></iframe>
+	<figcaption>
+		The dumps in progress. If you watch, you'll see most are unsuccessful (no
+		pink square), but there are a few successes in the middle window.
+	</figcaption>
+</figure>
+
+## The results
+
+<pitfall>
+	<div>
+		<b>Spoiler alert!</b>
+	</div>
+	Spoiler warning again, the entire map is just below
+</pitfall>
+
+After a few days of dumping, I have determined this much of the map
+
+<figure>
+	<img
+		src={require('./mapResults.png')}
+		alt="Map showing what I have uncovered and what I haven't"
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>
+		Determined areas are bright, and yet to be discovered are faded back. If you
+		look closely, there are a few black spots that are not correct. I need to
+		look into those.
+	</figcaption>
+</figure>
+
+The bright areas are the parts I have successfully mapped. The faded back areas are the parts of the map that still need to be determined.
+
+### Limitations
+
+This approach takes "snapshots" of the map from save rooms. There are parts of the map that have no save rooms nearby, most notable the right side of Crateria.
+
+<figure>
+	<img
+		src={require('./rightSideOfCrateria.png')}
+		alt="Crateria map"
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>
+		An 'S' is a save room, and the ship is also a save room. There are no save
+		rooms that allow me to capture the large right area of Crateria.
+	</figcaption>
+</figure>
+
+I think the way to address this is to start the emulator, and manually walk Samus over to the correct spot. Once she is situated ideally, grab a save state of the emulator. Then my script can restore the save state before each dump. This will instantly place Samus at the correct spot for each dump, saving a lot of time and hassle.
+
+## Other nerdy game stuff
+
+Thanks for reading. If you found this interesting, here are some other articles I wrote that you might like
+
+- [Extracting Neo Geo emulator graphics data to create animated gifs](https://mattgreer.dev/blog/extracting-neo-geo-emulator-graphics-data-to-create-animated-gifs/)
+- [The Sega Saturn and transparency](https://mattgreer.dev/articles/sega-saturn-and-transparency/)
+- [Squeezing the Arduboy for every byte](https://mattgreer.dev/blog/squeezing-the-arduboy-for-every-byte/)
+
+## And a quick Thanks
+
+I couldn't have done any of this without the work jdratlif had done to reverse engineer the Super Metroid save file. His [smse tool](https://github.com/jdratlif/smse) and [SRAM document](https://github.com/jdratlif/smse/blob/master/docs/sram-doc.txt) were crucial in pulling this off.
