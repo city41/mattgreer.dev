@@ -51,7 +51,7 @@ const feed = new Feed({
 	id: 'https://mattgreer.dev',
 	link: 'https://mattgreer.dev',
 	language: 'en',
-	image: 'http://example.com/image.png',
+	image: 'https://mattgreer.dev/android-chrome-512x512.png',
 	favicon: 'https://mattgreer.dev/favicon.ico',
 	copyright: 'Copyright Matt Greer',
 	feedLinks: {
