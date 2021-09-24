@@ -4,7 +4,7 @@
         <title>Matt Greer</title>
         <link>https://mattgreer.dev</link>
         <description>Mostly web dev related articles</description>
-        <lastBuildDate>Mon, 11 Jan 2021 20:55:56 GMT</lastBuildDate>
+        <lastBuildDate>Fri, 24 Sep 2021 19:51:49 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
@@ -16,33 +16,65 @@
         <copyright>Copyright Matt Greer</copyright>
         <atom:link href="https://mattgreer.dev/feed.xml" rel="self" type="application/rss+xml"/>
         <item>
+            <title><![CDATA[Discerning the Super Metroid Map with BizHawk and Lua]]></title>
+            <link>https://mattgreer.dev/blog/discerning-the-super-metroid-map-with-bizhawk-and-lua</link>
+            <guid>https://mattgreer.dev/blog/discerning-the-super-metroid-map-with-bizhawk-and-lua</guid>
+            <pubDate>Fri, 24 Sep 2021 00:00:00 GMT</pubDate>
+            <description><![CDATA[How I reverse engineered the Super Metroid map with brute force.]]></description>
+            <author>matt.e.greer@gmail.com (Matt Greer)</author>
+        </item>
+        <item>
+            <title><![CDATA[Why I always use setTimeout, and never setInterval]]></title>
+            <link>https://mattgreer.dev/blog/why-i-always-use-settimeout</link>
+            <guid>https://mattgreer.dev/blog/why-i-always-use-settimeout</guid>
+            <pubDate>Mon, 03 May 2021 00:00:00 GMT</pubDate>
+            <description><![CDATA[When doing something repeatedly in JavaScript, I always use setTimout and never setInterval, here is why]]></description>
+            <author>matt.e.greer@gmail.com (Matt Greer)</author>
+        </item>
+        <item>
+            <title><![CDATA[Tracking down a strange React warning]]></title>
+            <link>https://mattgreer.dev/blog/tracking-down-a-strange-react-warning</link>
+            <guid>https://mattgreer.dev/blog/tracking-down-a-strange-react-warning</guid>
+            <pubDate>Wed, 10 Mar 2021 00:00:00 GMT</pubDate>
+            <description><![CDATA[Why is React giving me this strange warning? Ohhhhh...]]></description>
+            <author>matt.e.greer@gmail.com (Matt Greer)</author>
+        </item>
+        <item>
+            <title><![CDATA[Using Google Drive for form submissions]]></title>
+            <link>https://mattgreer.dev/blog/using-google-drive-for-form-submissions</link>
+            <guid>https://mattgreer.dev/blog/using-google-drive-for-form-submissions</guid>
+            <pubDate>Tue, 26 Jan 2021 00:00:00 GMT</pubDate>
+            <description><![CDATA[Need to collect form data? Don't want to stand up a server? You can use Google Drive.]]></description>
+            <author>matt.e.greer@gmail.com (Matt Greer)</author>
+        </item>
+        <item>
             <title><![CDATA[How I built this static site with Next.JS]]></title>
-            <link>https://mattgreer.dev/articles/how-i-built-this-static-site-with-nextjs</link>
-            <guid>https://mattgreer.dev/articles/how-i-built-this-static-site-with-nextjs</guid>
+            <link>https://mattgreer.dev/blog/how-i-built-this-static-site-with-nextjs</link>
+            <guid>https://mattgreer.dev/blog/how-i-built-this-static-site-with-nextjs</guid>
             <pubDate>Thu, 07 Jan 2021 00:00:00 GMT</pubDate>
             <description><![CDATA[A quick look at how I made a site that has almost no JavaScript, using a JavaScript framework.]]></description>
             <author>matt.e.greer@gmail.com (Matt Greer)</author>
         </item>
         <item>
             <title><![CDATA[Extracting Neo Geo Emulator Graphics Data to Create Animated gifs]]></title>
-            <link>https://mattgreer.dev/articles/extracting-neo-geo-emulator-graphics-data-to-create-animated-gifs</link>
-            <guid>https://mattgreer.dev/articles/extracting-neo-geo-emulator-graphics-data-to-create-animated-gifs</guid>
+            <link>https://mattgreer.dev/blog/extracting-neo-geo-emulator-graphics-data-to-create-animated-gifs</link>
+            <guid>https://mattgreer.dev/blog/extracting-neo-geo-emulator-graphics-data-to-create-animated-gifs</guid>
             <pubDate>Wed, 13 May 2020 00:00:00 GMT</pubDate>
             <description><![CDATA[Web Assembly lets us bring native applications right into the browser. By porting a game emulator to Web Assembly, I was able to reach into its memory to build animated gifs.]]></description>
             <author>matt.e.greer@gmail.com (Matt Greer)</author>
         </item>
         <item>
             <title><![CDATA[Squeezing the Arduboy For Every Byte]]></title>
-            <link>https://mattgreer.dev/articles/squeezing-the-arduboy-for-every-byte</link>
-            <guid>https://mattgreer.dev/articles/squeezing-the-arduboy-for-every-byte</guid>
+            <link>https://mattgreer.dev/blog/squeezing-the-arduboy-for-every-byte</link>
+            <guid>https://mattgreer.dev/blog/squeezing-the-arduboy-for-every-byte</guid>
             <pubDate>Mon, 10 Sep 2018 00:00:00 GMT</pubDate>
             <description><![CDATA[The Arduboy is an Arduino based game console with very limited storage space. This article shows some techniques I used to use the space efficiently.]]></description>
             <author>matt.e.greer@gmail.com (Matt Greer)</author>
         </item>
         <item>
             <title><![CDATA[MATE and i3]]></title>
-            <link>https://mattgreer.dev/articles/mate-and-i3</link>
-            <guid>https://mattgreer.dev/articles/mate-and-i3</guid>
+            <link>https://mattgreer.dev/blog/mate-and-i3</link>
+            <guid>https://mattgreer.dev/blog/mate-and-i3</guid>
             <pubDate>Thu, 30 Nov 2017 00:00:00 GMT</pubDate>
             <description><![CDATA[How to use i3 with MATE to get an excellent tiling desktop experience in Linux.]]></description>
             <author>matt.e.greer@gmail.com (Matt Greer)</author>
@@ -89,8 +121,8 @@
         </item>
         <item>
             <title><![CDATA[Electron, Redux and Persistence]]></title>
-            <link>https://mattgreer.dev/articles/electron-redux-and-persistence</link>
-            <guid>https://mattgreer.dev/articles/electron-redux-and-persistence</guid>
+            <link>https://mattgreer.dev/blog/electron-redux-and-persistence</link>
+            <guid>https://mattgreer.dev/blog/electron-redux-and-persistence</guid>
             <pubDate>Sun, 31 Jan 2016 00:00:00 GMT</pubDate>
             <description><![CDATA[A strategy for persisting state in a Redux based Electron app.]]></description>
             <author>matt.e.greer@gmail.com (Matt Greer)</author>
@@ -105,24 +137,32 @@
         </item>
         <item>
             <title><![CDATA[Impromptu Web Scraping]]></title>
-            <link>https://mattgreer.dev/articles/impromptu-web-scraping</link>
-            <guid>https://mattgreer.dev/articles/impromptu-web-scraping</guid>
+            <link>https://mattgreer.dev/blog/impromptu-web-scraping</link>
+            <guid>https://mattgreer.dev/blog/impromptu-web-scraping</guid>
             <pubDate>Sat, 04 Jul 2015 00:00:00 GMT</pubDate>
             <description><![CDATA[The browser's dev console can be a nice tool to extract data from a webpage.]]></description>
             <author>matt.e.greer@gmail.com (Matt Greer)</author>
         </item>
         <item>
+            <title><![CDATA[JavaScript is a pass by value language]]></title>
+            <link>https://mattgreer.dev/blog/javascript-is-a-pass-by-value-language</link>
+            <guid>https://mattgreer.dev/blog/javascript-is-a-pass-by-value-language</guid>
+            <pubDate>Tue, 03 Mar 2015 00:00:00 GMT</pubDate>
+            <description><![CDATA[JavaScript always passes parameters by value. This post explores what that means.]]></description>
+            <author>matt.e.greer@gmail.com (Matt Greer)</author>
+        </item>
+        <item>
             <title><![CDATA[Embedding SVG Into a Reagent Component]]></title>
-            <link>https://mattgreer.dev/articles/embedding-svg-into-a-reagent-component</link>
-            <guid>https://mattgreer.dev/articles/embedding-svg-into-a-reagent-component</guid>
+            <link>https://mattgreer.dev/blog/embedding-svg-into-a-reagent-component</link>
+            <guid>https://mattgreer.dev/blog/embedding-svg-into-a-reagent-component</guid>
             <pubDate>Mon, 09 Feb 2015 00:00:00 GMT</pubDate>
             <description><![CDATA[Using Clojure macros to embed an SVG into a Reagent component.]]></description>
             <author>matt.e.greer@gmail.com (Matt Greer)</author>
         </item>
         <item>
             <title><![CDATA[A Game Made With Reagent]]></title>
-            <link>https://mattgreer.dev/articles/a-game-made-with-reagent</link>
-            <guid>https://mattgreer.dev/articles/a-game-made-with-reagent</guid>
+            <link>https://mattgreer.dev/blog/a-game-made-with-reagent</link>
+            <guid>https://mattgreer.dev/blog/a-game-made-with-reagent</guid>
             <pubDate>Tue, 03 Feb 2015 00:00:00 GMT</pubDate>
             <description><![CDATA[For the heck of it, I made a simple breakout game with Reagent]]></description>
             <author>matt.e.greer@gmail.com (Matt Greer)</author>
@@ -137,16 +177,16 @@
         </item>
         <item>
             <title><![CDATA[Reagent Rocks!]]></title>
-            <link>https://mattgreer.dev/articles/reagent-rocks</link>
-            <guid>https://mattgreer.dev/articles/reagent-rocks</guid>
+            <link>https://mattgreer.dev/blog/reagent-rocks</link>
+            <guid>https://mattgreer.dev/blog/reagent-rocks</guid>
             <pubDate>Sat, 24 Jan 2015 00:00:00 GMT</pubDate>
             <description><![CDATA[Reagent is a ClojureScript interface to React, and it is incredible.]]></description>
             <author>matt.e.greer@gmail.com (Matt Greer)</author>
         </item>
         <item>
             <title><![CDATA[Pair Programming Is Not a Panacea]]></title>
-            <link>https://mattgreer.dev/articles/pair-programming-is-not-a-panacea</link>
-            <guid>https://mattgreer.dev/articles/pair-programming-is-not-a-panacea</guid>
+            <link>https://mattgreer.dev/blog/pair-programming-is-not-a-panacea</link>
+            <guid>https://mattgreer.dev/blog/pair-programming-is-not-a-panacea</guid>
             <pubDate>Wed, 27 Aug 2014 00:00:00 GMT</pubDate>
             <description><![CDATA[Pair programming can be great, but it can also be terrible. This article explores when to pair, when not to, and why some of us don't like it.]]></description>
             <author>matt.e.greer@gmail.com (Matt Greer)</author>
@@ -161,16 +201,16 @@
         </item>
         <item>
             <title><![CDATA[Dynamic Lighting and Shadows In My 2D Game]]></title>
-            <link>https://mattgreer.dev/articles/dynamic-lighting-and-shadows</link>
-            <guid>https://mattgreer.dev/articles/dynamic-lighting-and-shadows</guid>
+            <link>https://mattgreer.dev/blog/dynamic-lighting-and-shadows</link>
+            <guid>https://mattgreer.dev/blog/dynamic-lighting-and-shadows</guid>
             <pubDate>Wed, 17 Oct 2012 00:00:00 GMT</pubDate>
             <description><![CDATA[How I used shaders in WebGL to accomplish lighting and shadows in a 2D game.]]></description>
             <author>matt.e.greer@gmail.com (Matt Greer)</author>
         </item>
         <item>
             <title><![CDATA[Waking Up At 5am To Code]]></title>
-            <link>https://mattgreer.dev/articles/waking-up-at-5am-to-code</link>
-            <guid>https://mattgreer.dev/articles/waking-up-at-5am-to-code</guid>
+            <link>https://mattgreer.dev/blog/waking-up-at-5am-to-code</link>
+            <guid>https://mattgreer.dev/blog/waking-up-at-5am-to-code</guid>
             <pubDate>Mon, 23 Jan 2012 00:00:00 GMT</pubDate>
             <description><![CDATA[For a while I woke up early to work on projects before going to work. Here's a quick summary of how it went.]]></description>
             <author>matt.e.greer@gmail.com (Matt Greer)</author>

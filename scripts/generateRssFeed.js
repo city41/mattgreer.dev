@@ -9,21 +9,35 @@ const AUTHOR = {
 };
 
 const ARTICLE_DIR = path.join(__dirname, '../pages/articles');
+const BLOG_DIR = path.join(__dirname, '../pages/blog');
 
-const articleDirs = fs.readdirSync(ARTICLE_DIR).filter((dir) => {
-	const isArticleDirectory = fs
-		.statSync(path.join(ARTICLE_DIR, dir))
-		.isDirectory();
-	return (
-		isArticleDirectory &&
-		fs.existsSync(path.join(ARTICLE_DIR, dir, 'meta.json')) &&
-		!require(path.join(ARTICLE_DIR, dir, 'meta.json')).draft
-	);
-});
+function getDirs(root) {
+	return fs
+		.readdirSync(root)
+		.filter((dir) => {
+			const isArticleDirectory = fs
+				.statSync(path.join(root, dir))
+				.isDirectory();
+			return (
+				isArticleDirectory &&
+				fs.existsSync(path.join(root, dir, 'meta.json')) &&
+				!require(path.join(root, dir, 'meta.json')).draft
+			);
+		})
+		.map((dir) => {
+			return {
+				root,
+				dir,
+			};
+		});
+}
 
-const sortedArticleDirs = articleDirs.sort((a, b) => {
-	const aMeta = require(path.join(ARTICLE_DIR, a, 'meta.json'));
-	const bMeta = require(path.join(ARTICLE_DIR, b, 'meta.json'));
+const articleDirs = getDirs(ARTICLE_DIR);
+const blogDirs = getDirs(BLOG_DIR);
+
+const sortedArticleDirs = articleDirs.concat(blogDirs).sort((a, b) => {
+	const aMeta = require(path.join(a.root, a.dir, 'meta.json'));
+	const bMeta = require(path.join(b.root, b.dir, 'meta.json'));
 
 	const aDate = new Date(aMeta.date);
 	const bDate = new Date(bMeta.date);
@@ -46,9 +60,10 @@ const feed = new Feed({
 	author: AUTHOR,
 });
 
-sortedArticleDirs.forEach((articleDir) => {
-	const meta = require(path.join(ARTICLE_DIR, articleDir, 'meta.json'));
-	const url = `https://mattgreer.dev/articles/${articleDir}`;
+sortedArticleDirs.forEach((a) => {
+	const meta = require(path.join(a.root, a.dir, 'meta.json'));
+	const root = a.root === ARTICLE_DIR ? 'articles' : 'blog';
+	const url = `https://mattgreer.dev/${root}/${a.dir}`;
 
 	feed.addItem({
 		title: meta.title,
