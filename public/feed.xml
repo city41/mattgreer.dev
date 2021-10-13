@@ -4,13 +4,13 @@
         <title>Matt Greer</title>
         <link>https://mattgreer.dev</link>
         <description>Mostly web dev related articles</description>
-        <lastBuildDate>Fri, 24 Sep 2021 19:51:49 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 13 Oct 2021 01:13:54 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
         <image>
             <title>Matt Greer</title>
-            <url>http://example.com/image.png</url>
+            <url>https://mattgreer.dev/android-chrome-512x512.png</url>
             <link>https://mattgreer.dev</link>
         </image>
         <copyright>Copyright Matt Greer</copyright>
