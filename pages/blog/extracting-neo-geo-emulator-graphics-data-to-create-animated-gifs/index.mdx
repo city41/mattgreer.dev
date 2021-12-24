@@ -2,37 +2,52 @@ import { Article } from '../../../components/layouts/Article';
 import meta from './meta.json';
 
 export const config = {
-    unstable_runtimeJS: false
-}
+	unstable_runtimeJS: false,
+};
 
-export default ({ children }) => <Article {...meta} img={require('./feature.svg')} socialMediaImg={require('./twitter.png')}
-                                          intro="I recently built a tool that creates animated gifs for Neo Geo video games by extracting the data out of a running emulator. It turned out to be a pretty interesting project, so I thought I'd blog about it.">
-    {children}
-</Article>
+export default ({ children }) => (
+	<Article
+		{...meta}
+		img={require('./feature.svg')}
+		socialMediaImg={require('./twitter.png')}
+		intro="I recently built a tool that creates animated gifs for Neo Geo video games by extracting the data out of a running emulator. It turned out to be a pretty interesting project, so I thought I'd blog about it."
+	>
+		{children}
+	</Article>
+);
 
 ## Some Background
 
-A while back I made [this website](https://www.fgbg.art) which is a collection of backgrounds from old 2D fighting games. After gathering every gif I could find scouring the internet, I looked into creating new ones. I didn't relish the idea of taking a million screenshots and piecing together gifs manually, so I looked into other solutions. Not really finding much, I decided to build something.  
+A while back I made [this website](https://www.fgbg.art) which is a collection of backgrounds from old 2D fighting games. After gathering every gif I could find scouring the internet, I looked into creating new ones. I didn't relish the idea of taking a million screenshots and piecing together gifs manually, so I looked into other solutions. Not really finding much, I decided to build something.
 
 <figure>
-    <img src={require('./xkcdAutomation.png')} alt="xkcd automation comic" />
-    <figcaption>from <a href="https://xkcd.com/1319/" rel="noreferrer noopener">XKCD</a></figcaption>
+	<img src={require('./xkcdAutomation.png')} alt="xkcd automation comic" />
+	<figcaption>
+		from{' '}
+		<a href="https://xkcd.com/1319/" rel="noreferrer noopener">
+			XKCD
+		</a>
+	</figcaption>
 </figure>
 
-
-
-The tool I built uses a running Neo Geo emulator to extract the graphic data and enables the user to drag and drop graphics from the game to create a gif in just a few clicks. 
+The tool I built uses a running Neo Geo emulator to extract the graphic data and enables the user to drag and drop graphics from the game to create a gif in just a few clicks.
 
 <figure>
-    <img src={require('./nggmScreenshot.png')} alt="screenshot of the tool I made" />
-    <figcaption>what the tool looks like (so far...)</figcaption>
+	<img
+		src={require('./nggmScreenshot.png')}
+		alt="screenshot of the tool I made"
+	/>
+	<figcaption>what the tool looks like (so far...)</figcaption>
 </figure>
 
 You can play with it [here](https://city41.github.io/nggm), or check out a [video demo below](#building-up-an-entire-background). To truly use it you need a Neo Geo BIOS and a game ROM, but there is a demo mode that lets you try it out without any files. Either choose Samurai Shodown or Street Slam to go into demo mode.
 
 <figure>
-<img src={require('./demoModeButtons.png')} alt="demo mode buttons in the tool" />
-<figcaption>Choose one of these to go into demo mode</figcaption>
+	<img
+		src={require('./demoModeButtons.png')}
+		alt="demo mode buttons in the tool"
+	/>
+	<figcaption>Choose one of these to go into demo mode</figcaption>
 </figure>
 
 So how does this thing create animated gifs? First we need to do a quick crash course on how graphics work on the Neo Geo.
@@ -44,7 +59,12 @@ Dedicated video game hardware from around the 90s is really fascinating to me. I
 It's this commonality amongst Neo Geo games that enabled me to create a single tool that works with the entire library.
 
 <pitfall>
-    It's true the hardware dictates the game's make up quite a bit, but developers still had a lot of leeway in how they coded their game. This tool needs to address a lot of little differences between games to truly work on the entire library. See the <a href="#next-steps-for-the-tool">next steps for the tool</a> section below for more info on that.
+	It's true the hardware dictates the game's make up quite a bit, but developers
+	still had a lot of leeway in how they coded their game. This tool needs to
+	address a lot of little differences between games to truly work on the entire
+	library. See the{' '}
+	<a href="#next-steps-for-the-tool">next steps for the tool</a> section below
+	for more info on that.
 </pitfall>
 
 ### Tile graphics stored in C ROMs
@@ -52,37 +72,60 @@ It's this commonality amongst Neo Geo games that enabled me to create a single t
 Neo Geo games are made up of many types of ROM chips. The C ROM chips store the game's graphic tiles. For example here is the title screen of Real Bout Fatal Fury (a personal favorite).
 
 <figure>
-    <img src={require('./rbffTitleScreen.png')} alt="Real Bout Fatal Fury's title screen" pixelated />
-    <figcaption>Real Bout's title screen</figcaption>
+	<img
+		src={require('./rbffTitleScreen.png')}
+		alt="Real Bout Fatal Fury's title screen"
+		pixelated
+	/>
+	<figcaption>Real Bout's title screen</figcaption>
 </figure>
 
 And here are some tiles that make up this screen as shown in a [tile viewer I created](https://city41.github.io/neospriteviewer). You can make out pieces of the screen in the various tiles if you look closely.
 
 <figure>
-    <img src={require('./rbffTilesInViewer.png')} alt="Real Bout Fatal Fury tiles loaded into the tile viewer" />
-    <figcaption>My sprite tile viewer tool with Real Bout's tiles loaded</figcaption>
+	<img
+		src={require('./rbffTilesInViewer.png')}
+		alt="Real Bout Fatal Fury tiles loaded into the tile viewer"
+	/>
+	<figcaption>
+		My sprite tile viewer tool with Real Bout's tiles loaded
+	</figcaption>
 </figure>
 
-All scenes in Neo Geo games are built by piecing these tiles together. Each tile is 16x16 pixels in size, and each tile can have up to 16 unique colors. They are stored one after another inside the C ROMs, in a rather convoluted manner. Decoding the data and turning it into a usable format is a bit of work.
+All scenes in Neo Geo games are built by piecing these tiles together. Each tile is 16x16 pixels in size, and each tile can have up to 15 unique colors plus a transparent color. They are stored one after another inside the C ROMs, in a rather convoluted manner. Decoding the data and turning it into a usable format is a bit of work.
 
 <wisdom>
-The Neo Geo also has a second type of tile that is 8x8 in size. They also play a role in the graphics, but I won't go into them in this post, as they are never used to create game backgrounds.
+	The Neo Geo also has a second type of tile that is 8x8 in size. They also play
+	a role in the graphics, but I won't go into them in this post, as they are
+	never used to create game backgrounds.
 </wisdom>
 
 ### Color palettes
 
-Why are the tiles in the viewer a strange blue/tan color? Because tiles are stored without any specific color information. Since each tile can have up to 16 colors, each pixel in the tile is just a number from 0 to 15. A palette of sixteen colors is established while the game is playing. With both the tile and palette combined, a tangible graphic can be shown on the screen. The high contrast blue/tan palette was chosen for the viewer as most tiles tend to show up well with it.
+Why are the tiles in the viewer a strange blue/tan color? Because tiles are stored without any specific color information. Since each tile can have up to 15 colors, each pixel in the tile is just a number from 0 to 15 (0 is always transparent). A palette of fifteen colors is established while the game is playing. With both the tile and palette combined, a tangible graphic can be shown on the screen. The high contrast blue/tan palette was chosen for the viewer as most tiles tend to show up well with it.
 
 <figure>
-    <img src={require('./tileCloseup.png')} alt="Real Bout Fatal Fury tiles up close in the tile viewer" pixelated />
-    <figcaption>Up close on one tile, showing the numeric values of the color indices</figcaption>
+	<img
+		src={require('./tileCloseup.png')}
+		alt="Real Bout Fatal Fury tiles up close in the tile viewer"
+		pixelated
+	/>
+	<figcaption>
+		Up close on one tile, showing the numeric values of the color indices
+	</figcaption>
 </figure>
 
-Storing the tile data separate from the palettes lets the developer get more use out of the tiles. The most common example is when both players of a fighting game choose the same character. Simply assigning each player their own palettes enables them to look distinct while still using the same tiles. 
+Storing the tile data separate from the palettes lets the developer get more use out of the tiles. The most common example is when both players of a fighting game choose the same character. Simply assigning each player their own palettes enables them to look distinct while still using the same tiles.
 
 <figure>
-    <img src={require('./rbffSameCharacters.png')} alt="Playing Real Bout Fatal Fury with both players using the same character" pixelated />
-    <figcaption>Same character tiles using different palettes. Let's go Bob!</figcaption>
+	<img
+		src={require('./rbffSameCharacters.png')}
+		alt="Playing Real Bout Fatal Fury with both players using the same character"
+		pixelated
+	/>
+	<figcaption>
+		Same character tiles using different palettes. Let's go Bob!
+	</figcaption>
 </figure>
 
 This is just a simple example, Developers got really clever and pulled off all kinds of neat tricks with palettes.
@@ -104,15 +147,29 @@ If you want the nitty gritty details, the [Neo Geo dev wiki's page on sprites](h
 You may have noticed the cheesy infinite looping animations in many old games, such as the people in this background.
 
 <figure>
-    <img src={require('./rbff_eastSidePark.gif')} alt="Background from Real Bout Fatal Fury for the Neo Geo" pixelated />
-    <figcaption>Endlessly looping animations, a common tactic for some "flavor"</figcaption>
+	<img
+		src={require('./rbff_eastSidePark.gif')}
+		alt="Background from Real Bout Fatal Fury for the Neo Geo"
+		pixelated
+	/>
+	<figcaption>
+		Endlessly looping animations, a common tactic for some "flavor"
+	</figcaption>
 </figure>
 
 For the Neo Geo, these animations are created by setting a flag on the sprite in video RAM. When this flag is set, the Neo Geo will loop through a set of tiles based on a counter it runs, and so the developer can setup simple looping animations by turning this on and defining the tiles such that they form a cohesive animation.
 
 <figure>
-    <img src={require('./Autoanim.gif')} alt="illustration showing auto animations" />
-    <figcaption>Taken from the <a href="https://wiki.neogeodev.org/index.php?title=Auto_animation">Neo Geo Dev wiki</a></figcaption>
+	<img
+		src={require('./Autoanim.gif')}
+		alt="illustration showing auto animations"
+	/>
+	<figcaption>
+		Taken from the{' '}
+		<a href="https://wiki.neogeodev.org/index.php?title=Auto_animation">
+			Neo Geo Dev wiki
+		</a>
+	</figcaption>
 </figure>
 
 ## Capturing all of this into an animated gif
@@ -127,7 +184,7 @@ The [Gngeo emulator](https://github.com/linuxlinks/gngeo) ticks all the boxes he
 
 ### Setting up the memory hooks
 
-Emscripten also makes it easy to bridge from WASM to JavaScript. I wrote some C functions in my fork of Gngeo that exposed the memory addresses I needed. 
+Emscripten also makes it easy to bridge from WASM to JavaScript. I wrote some C functions in my fork of Gngeo that exposed the memory addresses I needed.
 
 ```c
 Uint8* get_tile_ram_addr() {
@@ -146,31 +203,46 @@ Uint8* get_current_pal_addr() {
 Then I told Emscripten to [export these functions during the build](https://github.com/city41/nggm/blob/master/scripts/build-gngeo.sh#L12), which made them available for example at `window.Module._get_tile_ram_addr()` in the browser. When these functions are called from JavaScript, they return an integer which is an index into the large `Uint8Array` that Emscripten creates to be Gngeo's memory heap.
 
 <wisdom>
-This approach really biases towards JavaScript. I could have done more work inside of Gngeo itself such as adding a get_background_frame() function that does most of the needed work and had JS just be responsible for the UI. There's many pros and cons to both approaches. I ultimately decided to do most of the work in JavaScript as I felt it was more flexible. I could swap Gngeo out for a different emulator if I wanted to, for example.
+	This approach really biases towards JavaScript. I could have done more work
+	inside of Gngeo itself such as adding a get_background_frame() function that
+	does most of the needed work and had JS just be responsible for the UI.
+	There's many pros and cons to both approaches. I ultimately decided to do most
+	of the work in JavaScript as I felt it was more flexible. I could swap Gngeo
+	out for a different emulator if I wanted to, for example.
 </wisdom>
 
 ### Dumping the sprites
 
- These functions let me poke around in the Neo Geo's memory from JavaScript. Since memory is constantly changing, it only makes sense to reach in when the emulator is paused. Once the background I am interested in gets loaded in the game, I then pause the emulator, and the tool will dump all the current sprites down into a tray at the bottom.
+These functions let me poke around in the Neo Geo's memory from JavaScript. Since memory is constantly changing, it only makes sense to reach in when the emulator is paused. Once the background I am interested in gets loaded in the game, I then pause the emulator, and the tool will dump all the current sprites down into a tray at the bottom.
 
 <figure>
-    <img src={require('./tray.png')} alt="the sprite tray in the tool" />
-    <figcaption>The sprite tray in the tool</figcaption>
+	<img src={require('./tray.png')} alt="the sprite tray in the tool" />
+	<figcaption>The sprite tray in the tool</figcaption>
 </figure>
 
 From here I can drag the sprites I am interested in up into the canvas area. This isn't as tedious as it sounds, because I have a lot of metadata available to help me. I know which tiles have been "stickied" together and can group them into a single entity. I also know the relative x/y coordinates of all sprites to each other, so when you drag the second sprite group into the canvas, they automatically position themselves relative to the previous sprites that have already been positioned.
 
 ### Building up an entire background
 
-To get an entire background you typically have to do it in steps. You manuever the characters to the far left and pause the game, and grab all the current sprites to capture the left side of the arena. Then move to the far right and repeat to grab the right side of the arena. 
+To get an entire background you typically have to do it in steps. You manuever the characters to the far left and pause the game, and grab all the current sprites to capture the left side of the arena. Then move to the far right and repeat to grab the right side of the arena.
 
 It's rarely that simple, as there are quirks and gotchas that come up across various games. I added a few other functions to the tool that lets me address common issues found in many games.
 
 Here is a video of me building a background from start to finish.
 
 <figure>
-    <iframe src="https://www.youtube.com/embed/ZB8vdhk8mlM" frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen style={{margin: 'auto'}}></iframe>
-    <figcaption>Music credit: Road to Tutu by Martijn de Boer (NiGiD) (c) copyright 2020 Licensed under a Creative Commons Attribution Noncommercial  (3.0) license. http://dig.ccmixter.org/files/NiGiD/61093 Ft: Javolenus</figcaption>
+	<iframe
+		src="https://www.youtube.com/embed/ZB8vdhk8mlM"
+		frameBorder="0"
+		allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+		allowFullScreen
+		style={{ margin: 'auto' }}
+	></iframe>
+	<figcaption>
+		Music credit: Road to Tutu by Martijn de Boer (NiGiD) (c) copyright 2020
+		Licensed under a Creative Commons Attribution Noncommercial (3.0) license.
+		http://dig.ccmixter.org/files/NiGiD/61093 Ft: Javolenus
+	</figcaption>
 </figure>
 
 ### Converting to a gif
@@ -190,5 +262,3 @@ Also there's just lots of tiny little quirks and differences across the games. S
 This tool is a fun side project for me, so not sure when I'll finally finish it.
 
 The source code for NGGM is [here](https://github.com/city41/nggm).
-
-
