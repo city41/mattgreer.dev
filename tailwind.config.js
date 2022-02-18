@@ -22,8 +22,6 @@ module.exports = {
 				'fg-warning': 'var(--color-fg-warning)',
 				'bg-wisdom': 'var(--color-bg-wisdom)',
 				'fg-wisdom': 'var(--color-fg-wisdom)',
-				// white: 'var(--color-white-agnostic)',
-				// black: 'var(--color-black-agnostic)',
 			},
 		},
 	},

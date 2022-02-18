@@ -28,6 +28,8 @@ function Navigation({ className, current, noLogo }: NavigationProps) {
 	const logoStyle = {
 		backgroundImage: `url(${otterSvg})`,
 		visibility: noLogo ? ('hidden' as const) : ('visible' as const),
+		width: 32,
+		height: 32,
 	};
 
 	return (
@@ -35,18 +37,10 @@ function Navigation({ className, current, noLogo }: NavigationProps) {
 			className={clsx(
 				styles.root,
 				className,
-				'flex flex-row pr-2 sm:pr-4 sm:-mr-4 items-stretch justify-between bg-bg-fade text-fg'
+				'relative w-full flex flex-row items-center justify-center sm:justify-end bg-bg-fade text-fg'
 			)}
 		>
-			<Link href="/" passHref>
-				<a
-					className="cursor-pointer h-14 w-14 bg-contain bg-no-repeat bg-center -mb-8 relative z-10"
-					style={logoStyle}
-					aria-label="home page"
-					aria-hidden={noLogo}
-				/>
-			</Link>
-			<ul className="flex flex-row space-x-1 sm:space-x-4 sm:pr-2 text-xs items-stretch border-focal-fade">
+			<ul className="flex flex-row space-x-1 sm:space-x-4 text-xs">
 				<NavLink href="/projects" isCurrent={current === '/projects'}>
 					Projects
 				</NavLink>
@@ -60,6 +54,14 @@ function Navigation({ className, current, noLogo }: NavigationProps) {
 					About
 				</NavLink>
 			</ul>
+			<Link href="/" passHref>
+				<a
+					className="cursor-pointer block bg-cover absolute sm:static right-0 top-0 sm:ml-4"
+					style={logoStyle}
+					aria-label="home page"
+					aria-hidden={noLogo}
+				/>
+			</Link>
 		</nav>
 	);
 }
