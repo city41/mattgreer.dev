@@ -8,8 +8,8 @@ const AUTHOR = {
 	link: 'https://mattgreer.dev',
 };
 
-const ARTICLE_DIR = path.join(__dirname, '../pages/articles');
-const BLOG_DIR = path.join(__dirname, '../pages/blog');
+const ARTICLE_DIR = path.join(__dirname, '../src/pages/articles');
+const BLOG_DIR = path.join(__dirname, '../src/pages/blog');
 
 function getDirs(root) {
 	return fs

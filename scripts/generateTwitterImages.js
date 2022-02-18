@@ -5,8 +5,8 @@ const { createCanvas, Image: CanvasImage } = require('canvas');
 const WIDTH = 1000;
 const HEIGHT = 500;
 
-const ARTICLE_ROOT = join(__dirname, '../pages/articles');
-const BLOG_ROOT = join(__dirname, '../pages/blog');
+const ARTICLE_ROOT = join(__dirname, '../src/pages/articles');
+const BLOG_ROOT = join(__dirname, '../src/pages/blog');
 const FEATURE_IMAGES = ['feature.svg', 'feature.png', 'feature.jpg'];
 
 const TEMPLATE_IMAGE_PATH = join(__dirname, 'twitterTemplate.svg');
