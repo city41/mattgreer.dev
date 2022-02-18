@@ -40,7 +40,7 @@ function Article({
 		>
 			<p className="text-fg sm:mx-auto sm:max-w-2xl bg-bg-fade p-4">{intro}</p>
 			<MDXProvider components={MDXComponents}>
-				<div className="mx-auto max-w-2xl sm:mt-16">{children}</div>
+				<div className="mx-auto max-w-2xl mt-6 sm:mt-16">{children}</div>
 			</MDXProvider>
 		</Root>
 	);
