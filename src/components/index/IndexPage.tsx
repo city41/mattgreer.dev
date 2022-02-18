@@ -34,16 +34,13 @@ function IndexPage({ items }: IndexPageProps) {
 				<div className="col-start-1 col-end-9 sm:row-start-2 sm:col-start-5 sm:col-end-8 sm:text-2xl space-y-8 leading-6 sm:leading-9 sm:my-16">
 					<p>
 						<span className="text-4xl font-bold">Hi!</span> I'm Matt Greer, a
-						freelance web engineer based in Michigan. I have deep and extensive
-						experience building websites of all kinds, on both the front end and
-						back end.
+						freelance web engineer based in Michigan.
 					</p>
 					<p>
-						I am always{' '}
-						<FocalColorLink href="/hire-me">
-							looking for interesting projects
-						</FocalColorLink>
-						.
+						I have deep and extensive experience building applications of all
+						kinds. Professionally I have primarily focused on web development,
+						but I have worked in many areas of software and technology over the
+						years.
 					</p>
 				</div>
 			</div>
