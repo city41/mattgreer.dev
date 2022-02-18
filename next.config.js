@@ -1,3 +1,4 @@
+const path = require('path');
 const withPlugins = require('next-compose-plugins');
 
 const withMDX = require('@next/mdx')({
@@ -20,7 +21,7 @@ module.exports = withPlugins(
 		pageExtensions: ['tsx', 'mdx'],
 		trailingSlash: true,
 		serverRuntimeConfig: {
-			PROJECT_ROOT: __dirname,
+			PROJECT_ROOT: path.join(__dirname, 'src'),
 			ROOT_DOMAIN: 'mattgreer.dev',
 		},
 	}
