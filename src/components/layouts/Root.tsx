@@ -7,7 +7,8 @@ import { Footer } from '../Footer';
 type RootProps = {
 	navigation?: boolean;
 	currentNav?: string;
-	title: string;
+	title?: string;
+	headTitle?: string;
 	metaForTitle?: string;
 	metaDescription: string;
 	img: string;
@@ -23,6 +24,7 @@ function Root({
 	navigation,
 	currentNav,
 	title,
+	headTitle,
 	metaForTitle,
 	metaDescription,
 	socialMediaImg,
@@ -36,7 +38,7 @@ function Root({
 	return (
 		<>
 			<Head
-				title={title}
+				title={headTitle ?? title ?? ''}
 				metaDescription={metaDescription}
 				metaImg={socialMediaImg ?? img}
 			/>
@@ -53,7 +55,7 @@ function Root({
 			</Header>
 			<main
 				role="main"
-				className="mt-12 sm:mt-32 px-8 sm:px-0 sm:max-w-6xl sm:mx-auto"
+				className="mt-12 sm:mt-24 px-8 sm:px-0 sm:max-w-6xl sm:mx-auto"
 			>
 				{children}
 			</main>

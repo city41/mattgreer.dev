@@ -7,16 +7,6 @@ import laptopPng from '../projects/laptop.png';
 import { FocalColorLink } from '../FocalColorLink';
 
 function HireMePage() {
-	const headerContent = (
-		<>
-			<p className="text-white sm:mx-auto sm:max-w-2xl">
-				After 15 years of working at companies including Netflix and Microsoft,
-				I am now an independent engineer looking to help companies tackle
-				challenging problems.
-			</p>
-		</>
-	);
-
 	return (
 		<Root
 			title="Let's work together"
@@ -26,11 +16,15 @@ function HireMePage() {
 			socialMediaImg={laptopPng}
 			metaDescription="I'm an independent frontend engineer. Let's work together."
 			navigation
-			headerContent={headerContent}
 			headerContentUnderTitle
 		>
 			<div className="mx-auto max-w-2xl">
-				<h2 className="mb-8 sm:ml-4 text-4xl">I can help with...</h2>
+				<p className="text-white sm:mx-auto sm:max-w-2xl">
+					After 15 years of working at companies including Netflix and
+					Microsoft, I am now an independent engineer looking to help companies
+					tackle challenging problems.
+				</p>
+				<h2 className="my-8 sm:ml-4 text-4xl">I can help with...</h2>
 				<div className="space-y-12">
 					<HelpSection title="Consultation">
 						<ul>

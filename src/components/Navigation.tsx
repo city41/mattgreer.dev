@@ -16,7 +16,7 @@ function NavLink({ href, children, isCurrent }) {
 	return (
 		<li>
 			<Link href={href} passHref>
-				<a className="px-1 sm:px-2 py-2 h-full grid place-items-center hover:bg-focal-alt-fade">
+				<a className="px-1 sm:px-2 py-2 h-full grid place-items-center hover:bg-focal-fade hover:text-white">
 					{children}
 				</a>
 			</Link>
@@ -35,7 +35,7 @@ function Navigation({ className, current, noLogo }: NavigationProps) {
 			className={clsx(
 				styles.root,
 				className,
-				'flex flex-row pr-2 sm:pr-4 sm:-mr-4 items-stretch justify-between bg-focal-alt text-white'
+				'flex flex-row pr-2 sm:pr-4 sm:-mr-4 items-stretch justify-between bg-bg-fade text-fg'
 			)}
 		>
 			<Link href="/" passHref>
@@ -46,7 +46,7 @@ function Navigation({ className, current, noLogo }: NavigationProps) {
 					aria-hidden={noLogo}
 				/>
 			</Link>
-			<ul className="flex flex-row space-x-1 sm:space-x-4 sm:pr-2 text-xs items-stretch border-focal-alt-fade">
+			<ul className="flex flex-row space-x-1 sm:space-x-4 sm:pr-2 text-xs items-stretch border-focal-fade">
 				<NavLink href="/projects" isCurrent={current === '/projects'}>
 					Projects
 				</NavLink>
@@ -58,9 +58,6 @@ function Navigation({ className, current, noLogo }: NavigationProps) {
 				</NavLink>
 				<NavLink href="/about" isCurrent={current === '/about'}>
 					About
-				</NavLink>
-				<NavLink href="/hire-me" isCurrent={current === '/hire-me'}>
-					Hire me
 				</NavLink>
 			</ul>
 		</nav>

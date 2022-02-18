@@ -3,8 +3,6 @@ import clsx from 'clsx';
 import { Tag } from './Tag';
 import { toWords } from 'number-to-words';
 
-import styles from './TagFilter.module.css';
-
 type TagFilterProps = {
 	className?: string;
 	tags: string[];
@@ -48,12 +46,12 @@ function TagFilter({
 	count,
 }: TagFilterProps) {
 	return (
-		<div className={clsx(className)}>
-			<div className="text-2xl space-y-8 max-w-xl mt-4 text-white">
+		<div className={clsx(className, 'flex flex-col gap-y-6')}>
+			<div className="text-2xl max-w-full sm:max-w-xl mt-4">
 				{!currentTag ? (
 					<p>
 						All{' '}
-						<span className="font-bold text-white italic">
+						<span className="font-bold xtext-white italic">
 							{toWords(count)}
 						</span>{' '}
 						of my {getClassificationNoun(classification)}
@@ -66,26 +64,24 @@ function TagFilter({
 					</p>
 				)}
 			</div>
-			<p className="mt-16 sm:mt-12 mb-2 text-white text-sm">or filter by </p>
-			<div className="flex flex-row flex-wrap">
-				{['All']
-					.concat(tags)
-					.sort()
-					.map((t: string) => {
-						if (t === currentTag || (t === 'All' && !currentTag)) {
-							return null;
-						}
+			<div>
+				<p className="text-fg text-sm mb-1">or filter by </p>
+				<div className="grid grid-flow-row gap-x-1.5 gap-y-1.5 grid-cols-[max-content_max-content_max-content] sm:grid-cols-[max-content_max-content_max-content_max-content]">
+					{['All']
+						.concat(tags)
+						.sort()
+						.map((t: string) => {
+							if (t === currentTag || (t === 'All' && !currentTag)) {
+								return null;
+							}
 
-						return (
-							<Tag
-								key={t}
-								classification={classification}
-								className="mb-2 mr-2"
-							>
-								{t}
-							</Tag>
-						);
-					})}
+							return (
+								<Tag key={t} classification={classification}>
+									{t}
+								</Tag>
+							);
+						})}
+				</div>
 			</div>
 		</div>
 	);

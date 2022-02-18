@@ -31,19 +31,15 @@ function AboutPage() {
 					My name is Matt Greer and I am based in the Ann Arbor, Michigan area.
 				</P>
 				<P>
-					I have been a professional software engineer since about the year
-					2000, but have been programming since I was a small child. My career
-					has spanned many industries and technologies, but lately I've been
-					focused on web tech such as React, Web Assembly and Svelte.
+					I have been a professional software engineer since 2004, but started
+					programming as a small child. My career has spanned many industries
+					and technologies, but lately I've focused on web tech such as React,
+					Web Assembly and Svelte.
 				</P>
 				<P>
 					I have worked for Netflix and Microsoft, amongst other companies (here
 					is my <ResumeLink />
-					). I am now an independent developer, and am interested in working
-					with dynamic teams to help build out cutting edge web experiences.
-					Check out my{' '}
-					<FocalColorLink href="/hire-me">hire me page</FocalColorLink> to learn
-					more.
+					).
 				</P>
 				<H2>My Interests</H2>
 				<P>

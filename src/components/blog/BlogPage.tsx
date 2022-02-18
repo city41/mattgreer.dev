@@ -3,35 +3,28 @@ import { TagFilter } from '../TagFilter';
 import { BlogFeature } from './BlogFeature';
 import { Root } from '../layouts/Root';
 
-import laptopSvg from './laptop.svg';
-import laptopPng from '../projects/laptop.png';
-import { FocalColorLink } from '../FocalColorLink';
+import laptopSvg from '../articles/laptop.svg';
+import laptopPng from '../articles/laptop.png';
 
-type BlogsPageProps = {
+type BlogPageProps = {
 	tag?: string;
 	allTags: string[];
 	items: FeatureItem[];
 };
 
-function BlogPage({ tag, allTags, items }: BlogsPageProps) {
+function BlogPage({ tag, allTags, items }: BlogPageProps) {
 	const headerContent = (
-		<>
-			<p className="text-white text-sm">
-				Check out <FocalColorLink href="/articles">my articles</FocalColorLink>{' '}
-				for more in depth content.
-			</p>
-			<TagFilter
-				tags={allTags}
-				currentTag={tag}
-				classification="blog"
-				count={items.length}
-			/>
-		</>
+		<TagFilter
+			tags={allTags}
+			currentTag={tag}
+			classification="blog"
+			count={items.length}
+		/>
 	);
 
 	return (
 		<Root
-			title="Blog"
+			headTitle="Blog"
 			currentNav="/blog"
 			metaDescription="My blog, mostly focused on game and web dev"
 			img={laptopSvg}

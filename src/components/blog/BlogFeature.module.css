@@ -1,14 +1,13 @@
 .tag {
-    @apply bg-transparent text-fg-fade hover:text-focal-alt hover:bg-transparent p-0 text-xs font-normal;
+	@apply bg-transparent text-fg-fade hover:text-focal hover:bg-transparent p-0 text-xs font-normal;
 }
 
 .tag::after {
-    content: ', ';
-    @apply pr-1;
+	content: ', ';
+	@apply pr-1;
 }
 
 li:last-child .tag::after {
-    content: '';
-    @apply p-0;
+	content: '';
+	@apply p-0;
 }
-

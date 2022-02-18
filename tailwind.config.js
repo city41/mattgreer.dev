@@ -1,5 +1,5 @@
 module.exports = {
-	purge: ['./components/**/*.{js,ts,jsx,tsx}', './pages/**/*.{js,ts,jsx,tsx}'],
+	content: ['./src/**/*.{ts,tsx}'],
 	theme: {
 		extend: {
 			colors: {
@@ -7,11 +7,6 @@ module.exports = {
 					fade: 'var(--color-focal-fade)',
 					DEFAULT: 'var(--color-focal)',
 					deep: 'var(--color-focal-deep)',
-				},
-				'focal-alt': {
-					fade: 'var(--color-focal-alt-fade)',
-					DEFAULT: 'var(--color-focal-alt)',
-					deep: 'var(--color-focal-alt-deep)',
 				},
 				bg: {
 					fade: 'var(--color-bg-fade)',

@@ -16,11 +16,11 @@ type ArticlesPageProps = {
 function ArticlesPage({ tag, allTags, items }: ArticlesPageProps) {
 	const headerContent = (
 		<>
-			<p className="text-white text-sm">
+			{/* <p className="text-white text-sm">
 				My in depth writing.{' '}
 				<FocalColorLink href="/blog">My blog</FocalColorLink> contains more
 				casual content.
-			</p>
+			</p> */}
 			<TagFilter
 				tags={allTags}
 				currentTag={tag}
@@ -32,7 +32,7 @@ function ArticlesPage({ tag, allTags, items }: ArticlesPageProps) {
 
 	return (
 		<Root
-			title="Articles"
+			headTitle="Articles"
 			currentNav="/articles"
 			metaDescription="Technical articles I have written, mostly related to web tech"
 			img={laptopSvg}
