@@ -10,7 +10,6 @@ function HireMePage() {
 	return (
 		<Root
 			title="Let's work together"
-			currentNav="/hire-me"
 			img={laptopSvg}
 			imgAlt="Illustration of a laptop"
 			socialMediaImg={laptopPng}

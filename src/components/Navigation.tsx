@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import clsx from 'clsx';
 import Link from 'next/link';
 
@@ -8,11 +8,9 @@ import otterSvg from './otter_head.svg';
 
 type NavigationProps = {
 	className?: string;
-	current?: string;
-	noLogo?: boolean;
 };
 
-function NavLink({ href, children, isCurrent }) {
+function NavLink({ href, children }: { href: string; children: ReactNode }) {
 	return (
 		<li>
 			<Link href={href} passHref>
@@ -24,10 +22,9 @@ function NavLink({ href, children, isCurrent }) {
 	);
 }
 
-function Navigation({ className, current, noLogo }: NavigationProps) {
+function Navigation({ className }: NavigationProps) {
 	const logoStyle = {
 		backgroundImage: `url(${otterSvg})`,
-		visibility: noLogo ? ('hidden' as const) : ('visible' as const),
 		width: 32,
 		height: 32,
 	};
@@ -41,25 +38,16 @@ function Navigation({ className, current, noLogo }: NavigationProps) {
 			)}
 		>
 			<ul className="flex flex-row space-x-1 sm:space-x-4 text-xs">
-				<NavLink href="/projects" isCurrent={current === '/projects'}>
-					Projects
-				</NavLink>
-				<NavLink href="/articles" isCurrent={current === '/articles'}>
-					Articles
-				</NavLink>
-				<NavLink href="/blog" isCurrent={current === '/blog'}>
-					Blog
-				</NavLink>
-				<NavLink href="/about" isCurrent={current === '/about'}>
-					About
-				</NavLink>
+				<NavLink href="/projects">Projects</NavLink>
+				<NavLink href="/articles">Articles</NavLink>
+				<NavLink href="/blog">Blog</NavLink>
+				<NavLink href="/about">About</NavLink>
 			</ul>
 			<Link href="/" passHref>
 				<a
 					className="cursor-pointer block bg-cover absolute sm:static right-0 top-0 sm:ml-4"
 					style={logoStyle}
 					aria-label="home page"
-					aria-hidden={noLogo}
 				/>
 			</Link>
 		</nav>

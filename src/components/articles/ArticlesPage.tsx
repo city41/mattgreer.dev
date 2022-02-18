@@ -33,7 +33,6 @@ function ArticlesPage({ tag, allTags, items }: ArticlesPageProps) {
 	return (
 		<Root
 			headTitle="Articles"
-			currentNav="/articles"
 			metaDescription="Technical articles I have written, mostly related to web tech"
 			img={laptopSvg}
 			socialMediaImg={laptopPng}

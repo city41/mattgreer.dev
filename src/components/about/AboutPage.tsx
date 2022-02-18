@@ -19,7 +19,6 @@ function AboutPage() {
 	return (
 		<Root
 			title="About Me"
-			currentNav="/about"
 			img={michiganSvg}
 			socialMediaImg={michiganPng}
 			imgAlt="Illustration of the state of Michigan"

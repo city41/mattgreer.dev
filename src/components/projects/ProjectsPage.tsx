@@ -25,7 +25,6 @@ function ProjectsPage({ tag, allTags, items }: ProjectsPageProps) {
 	return (
 		<Root
 			headTitle="Projects"
-			currentNav="/projects"
 			metaDescription="Things I have created, mostly webapps"
 			img={laptopSvg}
 			socialMediaImg={laptopPng}

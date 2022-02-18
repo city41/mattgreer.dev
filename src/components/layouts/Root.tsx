@@ -6,7 +6,6 @@ import { Footer } from '../Footer';
 
 type RootProps = {
 	navigation?: boolean;
-	currentNav?: string;
 	title?: string;
 	headTitle?: string;
 	metaForTitle?: string;
@@ -22,7 +21,6 @@ type RootProps = {
 
 function Root({
 	navigation,
-	currentNav,
 	title,
 	headTitle,
 	metaForTitle,
@@ -42,7 +40,7 @@ function Root({
 				metaDescription={metaDescription}
 				metaImg={socialMediaImg ?? img}
 			/>
-			{navigation && <Navigation current={currentNav} />}
+			{navigation && <Navigation />}
 			<Header
 				title={title}
 				metaForTitle={metaForTitle}

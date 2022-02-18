@@ -18,7 +18,7 @@ function IndexPage({ items }: IndexPageProps) {
 	return (
 		<>
 			<Head title="Matt Greer" metaDescription="My portfolio and blog" />
-			<Navigation className={styles.navigation} noLogo />
+			<Navigation className={styles.navigation} />
 			<div
 				className={clsx(
 					'grid grid-cols-8 gap-8 auto-rows-min max-w-6xl mx-auto px-8 sm:px-0 mt-24 mb-8 sm:mb-24'
