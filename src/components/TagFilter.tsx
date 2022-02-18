@@ -59,7 +59,7 @@ function TagFilter({
 				) : (
 					<p>
 						{toCapitalizedWord(count)}{' '}
-						<span className="font-bold text-white italic">{currentTag}</span>{' '}
+						<span className="font-bold text-fg italic">{currentTag}</span>{' '}
 						{singular(getClassificationNoun(classification), count)}
 					</p>
 				)}

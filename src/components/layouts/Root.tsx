@@ -34,7 +34,7 @@ function Root({
 	children,
 }: RootProps) {
 	return (
-		<>
+		<div className="flex flex-col min-h-screen">
 			<Head
 				title={headTitle ?? title ?? ''}
 				metaDescription={metaDescription}
@@ -53,12 +53,12 @@ function Root({
 			</Header>
 			<main
 				role="main"
-				className="mt-12 sm:mt-24 px-8 sm:px-0 sm:max-w-6xl sm:mx-auto"
+				className="mt-12 sm:mt-24 px-8 sm:px-0 sm:max-w-6xl sm:mx-auto flex-auto"
 			>
 				{children}
 			</main>
 			<Footer className="mt-16 sm:mt-24" />
-		</>
+		</div>
 	);
 }
 
