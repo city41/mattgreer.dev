@@ -52,12 +52,12 @@ function Header({
 					role="img"
 					aria-label={imgAlt}
 				/>
-				<div className="col-start-1 col-end-9 sm:row-start-1 sm:col-start-4 sm:col-end-9">
+				<div className="max-w-fit sm:max-w-64">
 					{metaForTitle && (
 						<div className="text-xs text-fg mb-2">{metaForTitle}</div>
 					)}
 					{title && (
-						<h1 className="text-4xl mt-4 sm:mt-0 sm:text-6xl font-black text-fg">
+						<h1 className="text-3xl mt-4 sm:mt-0 sm:text-5xl font-black text-fg max-w-full sm:max-w-xl">
 							{title}
 						</h1>
 					)}

@@ -39,7 +39,7 @@ function TextBlock({
 
 function Callout({ className, children }) {
 	return (
-		<TextBlock el="div" className={clsx(className, 'p-4 -mx-4 my-12')}>
+		<TextBlock el="div" className={clsx(className, 'p-4 my-12')}>
 			{children}
 		</TextBlock>
 	);

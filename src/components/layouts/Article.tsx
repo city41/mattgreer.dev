@@ -27,24 +27,20 @@ function Article({
 	socialMediaImg,
 	children,
 }: ArticleProps) {
-	const headerContent = (
-		<p className="text-white sm:mx-auto sm:max-w-2xl">{intro}</p>
-	);
-
 	return (
 		<Root
 			title={title}
 			metaForTitle={dateToHumanString(date)}
 			metaDescription={metaDescription || description}
-			headerContent={headerContent}
 			img={img}
 			pixelateImage={pixelateImage}
 			socialMediaImg={socialMediaImg}
 			imgAlt="Illustration representing the article"
 			navigation
 		>
+			<p className="text-fg sm:mx-auto sm:max-w-2xl bg-bg-fade p-4">{intro}</p>
 			<MDXProvider components={MDXComponents}>
-				<div className="mx-auto max-w-2xl sm:mt-32">{children}</div>
+				<div className="mx-auto max-w-2xl sm:mt-16">{children}</div>
 			</MDXProvider>
 		</Root>
 	);
