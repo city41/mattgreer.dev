@@ -31,7 +31,7 @@ function BlogFeature({
 						{dateToHumanString(date)}
 					</time>
 					<ul className="flex flex-row flex-wrap">
-						{tags.map((t) => (
+						{tags.sort().map((t) => (
 							<li key={t}>
 								<Tag className={clsx(styles.tag)} classification="blog">
 									{t}

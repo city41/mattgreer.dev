@@ -81,7 +81,7 @@ function Feature({
 					))}
 				</div>
 				<ul className="flex flex-row flex-wrap -mx-2 mt-8">
-					{tags.map((t) => (
+					{tags.sort().map((t) => (
 						<li key={t}>
 							<Tag className="m-1" classification={classification}>
 								{t}
