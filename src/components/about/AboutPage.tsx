@@ -26,9 +26,7 @@ function AboutPage() {
 			navigation
 		>
 			<div className="mx-auto max-w-2xl">
-				<P>
-					My name is Matt Greer and I am based in the Ann Arbor, Michigan area.
-				</P>
+				<P>My name is Matt Greer and I am based in Michigan</P>
 				<P>
 					I have been a professional software engineer since 2004, but started
 					programming as a small child. My career has spanned many industries
