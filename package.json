@@ -4,7 +4,7 @@
 	"scripts": {
 		"develop": "next --hostname 0.0.0.0",
 		"local-build": "node scripts/generateRssFeed.js && node scripts/generateTwitterImages.js",
-		"build": "sh scripts/miniimgs.sh && next build",
+		"build": "sh scripts/minimgs.sh && next build",
 		"start": "next start",
 		"export-static": "yarn build && next export",
 		"type-check": "tsc --noemit"
