@@ -12,7 +12,7 @@
     "@mdx-js/loader": "^1.6.21",
     "@mdx-js/react": "^1.6.21",
     "@next/mdx": "^10.0.3",
-    "canvas": "^2.6.1",
+    "canvas": "^2.11.2",
     "clsx": "^1.1.1",
     "feed": "^4.2.1",
     "imagemin-mozjpeg": "^9.0.0",
