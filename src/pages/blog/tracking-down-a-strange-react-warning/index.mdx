@@ -2,21 +2,31 @@ import { Article } from '../../../components/layouts/Article';
 import meta from './meta.json';
 import { DemoForm } from '../../../components/blog/posts/using-google-drive-for-form-submissions/DemoForm';
 
-
-export default ({ children }) => <Article {...meta} img={require('./feature.svg')} socialMediaImg={require('./twitter.png')}
-intro='React kept warning me about an invalid value for prop "inherit". Where the heck did this come from?'
->{children}</Article>
+export default ({ children }) => (
+	<Article
+		{...meta}
+		img={require('./feature.svg').default.src}
+		socialMediaImg={require('./twitter.png').default.src}
+		intro='React kept warning me about an invalid value for prop "inherit". Where the heck did this come from?'
+	>
+		{children}
+	</Article>
+);
 
 Recently I started up a new React project. The dev console kept showing these two warnings
 
 <pitfall>
-Warning: Invalid value for prop <b>`inherit`</b> on &lt;input&gt; tag. Either remove it from the element, or pass a string or number value to keep it in the DOM. For details, see https://reactjs.org/link/attribute-behavior
+	Warning: Invalid value for prop <b>`inherit`</b> on &lt;input&gt; tag. Either
+	remove it from the element, or pass a string or number value to keep it in the
+	DOM. For details, see https://reactjs.org/link/attribute-behavior
 </pitfall>
 
 and
 
 <pitfall>
-Warning: Prop `className` did not match. Server: "border border-black bg-green-50 opacity-25" Client: "border border-black bg-green-50 opacity-25 <b>inherit</b>"
+	Warning: Prop `className` did not match. Server: "border border-black
+	bg-green-50 opacity-25" Client: "border border-black bg-green-50 opacity-25{' '}
+	<b>inherit</b>"
 </pitfall>
 
 where is this "inherit" coming from? Google turned up absolutely nothing. I soon learned why.
@@ -25,11 +35,17 @@ where is this "inherit" coming from? Google turned up absolutely nothing. I soon
 
 I went down to `node_modules/react-dom/cjs/react-dom.development.js` and added a `debugger` statement just above this warning, and refreshed the page. I saw this
 
-<img src={require('./breakOnDebugger.png')} alt="The debugger stopped right before React warns of the unexpected prop" />
+<img
+	src={require('./breakOnDebugger.png').default.src}
+	alt="The debugger stopped right before React warns of the unexpected prop"
+/>
 
 but looking at the `props` object, I don't see `inherit`. Wait a minute ...
 
-<img src={require('./inheritOnPrototype.png')} alt="The inherit property on the object prototype" />
+<img
+	src={require('./inheritOnPrototype.png').default.src}
+	alt="The inherit property on the object prototype"
+/>
 
 there it is. Ok, so how did an `inherit` function get onto the Object prototype?
 
@@ -38,10 +54,10 @@ there it is. Ok, so how did an `inherit` function get onto the Object prototype?
 This project I'm working on is using some "old" JavaScript, a library that was written about ten years ago. I dug into it and sure enough I found this
 
 ```javascript
-Object.prototype.inherit = function() {
-  for (var v in this) {
-    this[v] = this[v];
-  }
+Object.prototype.inherit = function () {
+	for (var v in this) {
+		this[v] = this[v];
+	}
 };
 ```
 
@@ -52,13 +68,13 @@ This library calls this method in order to pull properties off of the prototype 
 To make the warning go away, I changed the above to this
 
 ```javascript
-Object.defineProperty(Object.prototype, "inherit", {
-  value: function() {
-    for (var v in this) {
-      this[v] = this[v];
-    }
-  },
-  enumerable: false,
+Object.defineProperty(Object.prototype, 'inherit', {
+	value: function () {
+		for (var v in this) {
+			this[v] = this[v];
+		}
+	},
+	enumerable: false,
 });
 ```
 
@@ -67,8 +83,3 @@ This lets the library keep using the function, and adding `enumerable: false` me
 Of course a better fix is to leave built-in prototypes alone. Ahhh the good ol' days of wild west JavaScript. But for now, this works. I have a feeling I will be taking this library and updating it to current JS at some point, and I'll get rid of this function when I do that.
 
 So there ya go, prototype pollution can rear its head in strange ways :)
-
-
-
-
-
