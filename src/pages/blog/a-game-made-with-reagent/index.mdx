@@ -2,16 +2,26 @@ import { Article } from '../../../components/layouts/Article';
 import meta from './meta.json';
 
 export const config = {
-    unstable_runtimeJS: false
-}
+	unstable_runtimeJS: false,
+};
 
-export default ({ children }) => <Article {...meta} img={require('./feature.svg')} socialMediaImg={require('./twitter.png')}
-                                          intro="For the heck of it, I built Breakout using ClojureScript and Reagent. I was pretty pleased with the results."
->{children}</Article>
+export default ({ children }) => (
+	<Article
+		{...meta}
+		img={require('./feature.svg').default.src}
+		socialMediaImg={require('./twitter.png').default.src}
+		intro="For the heck of it, I built Breakout using ClojureScript and Reagent. I was pretty pleased with the results."
+	>
+		{children}
+	</Article>
+);
 
 I based it off of the [Breakouts project](http://jsbreakouts.mattgreer.dev) that I started a while back.
 
-<img src={require('./reagent-breakout.png')} alt="screenshot of breakout" />
+<img
+	src={require('./reagent-breakout.png').default.src}
+	alt="screenshot of breakout"
+/>
 
 You can play it [here](http://city41.github.io/reagent-breakout), and the repo is [here](https://github.com/city41/reagent-breakout).
 
@@ -97,7 +107,7 @@ Whenever switching phases, this watch handler kicks in and asks the new phase to
 
 ## Performance
 
-Granted this is a very simple game, but my computer has no problem running it at 60fps. And despite creating a *ton* of objects, the memory never gets out of control nor do I see any garbage collection hiccups. It seems like modern JavaScript engines can handle ClojureScript's immutable approach pretty well.
+Granted this is a very simple game, but my computer has no problem running it at 60fps. And despite creating a _ton_ of objects, the memory never gets out of control nor do I see any garbage collection hiccups. It seems like modern JavaScript engines can handle ClojureScript's immutable approach pretty well.
 
 ## Figwheel
 

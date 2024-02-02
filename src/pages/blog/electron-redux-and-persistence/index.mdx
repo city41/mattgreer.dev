@@ -2,13 +2,19 @@ import { Article } from '../../../components/layouts/Article';
 import meta from './meta.json';
 
 export const config = {
-    unstable_runtimeJS: false
-}
+	unstable_runtimeJS: false,
+};
 
-export default ({ children }) => <Article {...meta} img={require('./feature.svg')} socialMediaImg={require('./twitter.png')}
-                                                    intro="Redux is a nice pattern for React apps. But when I wanted to persist my redux state across sessions for an Electron app, I hit some hurdles.">
-    {children}
-</Article>
+export default ({ children }) => (
+	<Article
+		{...meta}
+		img={require('./feature.svg').default.src}
+		socialMediaImg={require('./twitter.png').default.src}
+		intro="Redux is a nice pattern for React apps. But when I wanted to persist my redux state across sessions for an Electron app, I hit some hurdles."
+	>
+		{children}
+	</Article>
+);
 
 For work I created a small Electron based app using React and Redux. I dig Electron, it's a great platform for rapidly building something; internal tools are perfect candidates.
 
@@ -19,29 +25,29 @@ If an error occurs, I want to inform the user. So my app has a `receiveError` re
 ```javascript
 // the action
 function receiveError(error) {
-  return {
-    type: RECEIVE_ERROR,
-    error
-  };
+	return {
+		type: RECEIVE_ERROR,
+		error,
+	};
 }
 
 // and over in the reducer
 const initialState = {
-  hasError: false
+	hasError: false,
 };
 
 function error(state = initialState, action) {
-  switch (action.type) {
-    case RECEIVE_ERROR:
-      return {
-        ...state,
-        hasError: true,
-        message: action.error.message || action.error,
-        stack: action.error.stack
-      };
-    default:
-      return state;
-  }
+	switch (action.type) {
+		case RECEIVE_ERROR:
+			return {
+				...state,
+				hasError: true,
+				message: action.error.message || action.error,
+				stack: action.error.stack,
+			};
+		default:
+			return state;
+	}
 }
 ```
 
@@ -53,8 +59,8 @@ I want the app to be as the user left it the next time they launch it. This is e
 
 ```javascript
 remote.getCurrentWindow().on('close', () => {
-  const state = store.getState();
-  localStorage.myAppState = JSON.stringify(state);
+	const state = store.getState();
+	localStorage.myAppState = JSON.stringify(state);
 });
 ```
 
@@ -62,9 +68,9 @@ and here comes the problem, I want state like errors stored in app state for goo
 
 Roughly speaking there are three types of state
 
-* **true app state**: data and the real state of the app. Stored in redux's app state permanently.
-* **local component state**: think "is this details panel open or closed?", little details about a component can be stored in that component's own state, completely separate from redux.
-* **transient app state:** like the error above. Not true, permanent app state, but also not something components should be storing. Kind of a *no man's land* in redux.
+- **true app state**: data and the real state of the app. Stored in redux's app state permanently.
+- **local component state**: think "is this details panel open or closed?", little details about a component can be stored in that component's own state, completely separate from redux.
+- **transient app state:** like the error above. Not true, permanent app state, but also not something components should be storing. Kind of a _no man's land_ in redux.
 
 ## Cleaning app state before persisting
 
@@ -73,25 +79,25 @@ My initial stab at this was to just take the entire app state via `store.getStat
 A better approach is to have a `PERSISTING` action. Send this action through all of your reducers, and let them decide what should stay and what should go
 
 ```javascript
-  const initialState = {
-    hasError: false
-  };
+const initialState = {
+	hasError: false,
+};
 
-  function error(state = initialState, action) {
-    switch (action.type) {
-      case RECEIVE_ERROR:
-        return {
-          ...state,
-          hasError: true,
-          message: action.error.message || action.error,
-          stack: action.error.stack
-        };
-      case PERSISTING:
-        return {...initialState};
-      default:
-        return state;
-    }
-  }
+function error(state = initialState, action) {
+	switch (action.type) {
+		case RECEIVE_ERROR:
+			return {
+				...state,
+				hasError: true,
+				message: action.error.message || action.error,
+				stack: action.error.stack,
+			};
+		case PERSISTING:
+			return { ...initialState };
+		default:
+			return state;
+	}
+}
 ```
 
 I like this little pattern. Who better to decide how to clean the state than the reducer? For most reducers you just reset back to the beginning using `initialState`, and so there's confidence that the state going into localStorage is well-formed.
@@ -100,15 +106,16 @@ And with that, my persistence code is now
 
 ```javascript
 export function save(state) {
-  const stateForPersistence = rootReducer(state, { type: PERSISTING });
+	const stateForPersistence = rootReducer(state, { type: PERSISTING });
 
-  const serialized = JSON.stringify(stateForPersistence);
-  localStorage[localStorageKey] = serialized;
+	const serialized = JSON.stringify(stateForPersistence);
+	localStorage[localStorageKey] = serialized;
 }
 
 export function restore() {
-  return localStorage[localStorageKey] &&
-  JSON.parse(localStorage[localStorageKey]);
+	return (
+		localStorage[localStorageKey] && JSON.parse(localStorage[localStorageKey])
+	);
 }
 ```
 

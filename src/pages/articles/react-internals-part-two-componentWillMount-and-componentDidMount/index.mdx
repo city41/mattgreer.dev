@@ -1,31 +1,50 @@
 import { Article } from '../../../components/layouts/Article';
 import meta from './meta.json';
-import { Fiddle } from "../../../components/Fiddle";
-import {FocalColorLink} from "../../../components/FocalColorLink";
+import { Fiddle } from '../../../components/Fiddle';
+import { FocalColorLink } from '../../../components/FocalColorLink';
 
 export const config = {
-    unstable_runtimeJS: false
-}
+	unstable_runtimeJS: false,
+};
 
-export default ({ children }) => <Article {...meta} img={require('./feature.svg')} socialMediaImg={require('./twitter.png')}
-intro={<>In <FocalColorLink href="/articles/react-internals-part-one-basic-rendering">part one</FocalColorLink> we established basic rendering in Feact. That touched upon the most important lifecycle method, <code>render</code>, and now we are going to add in <code>componentWillMount</code> and <code>componentDidMount</code> support to Feact.</>}
->{children}</Article>
-
+export default ({ children }) => (
+	<Article
+		{...meta}
+		img={require('./feature.svg').default.src}
+		socialMediaImg={require('./twitter.png').default.src}
+		intro={
+			<>
+				In{' '}
+				<FocalColorLink href="/articles/react-internals-part-one-basic-rendering">
+					part one
+				</FocalColorLink>{' '}
+				we established basic rendering in Feact. That touched upon the most
+				important lifecycle method, <code>render</code>, and now we are going to
+				add in <code>componentWillMount</code> and{' '}
+				<code>componentDidMount</code> support to Feact.
+			</>
+		}
+	>
+		{children}
+	</Article>
+);
 
 ## The series
 
-* [part one: basic rendering](/articles/react-internals-part-one-basic-rendering)
-* **part two: componentWillMount and componentDidMount** <- you are here
-* [part three: basic updating](/articles/react-internals-part-three-basic-updating)
-* [part four: setState](/articles/react-internals-part-four-setState)
-* [part five: transactions](/articles/react-internals-part-five-transactions)
+- [part one: basic rendering](/articles/react-internals-part-one-basic-rendering)
+- **part two: componentWillMount and componentDidMount** <- you are here
+- [part three: basic updating](/articles/react-internals-part-three-basic-updating)
+- [part four: setState](/articles/react-internals-part-four-setState)
+- [part five: transactions](/articles/react-internals-part-five-transactions)
 
 ## disclaimer
 
 <pitfall>
-This series is based on React 15.3, in particular using ReactDOM and the stack reconciler. React 16 and beyond have changed a lot. I still think this series has some value, as it does give you a general sense of how diffing works. But just keep in mind the implementation details are now quite out of date.
+	This series is based on React 15.3, in particular using ReactDOM and the stack
+	reconciler. React 16 and beyond have changed a lot. I still think this series
+	has some value, as it does give you a general sense of how diffing works. But
+	just keep in mind the implementation details are now quite out of date.
 </pitfall>
-
 
 ## First, fix createClass
 
@@ -73,24 +92,23 @@ Here's `mountComponent` as it stood in part one
 
 ```javascript
 class FeactCompositeComponentWrapper {
-    constructor(element) {
-        this._currentElement = element;
-    }
+	constructor(element) {
+		this._currentElement = element;
+	}
 
-    mountComponent(container) {
-        const Component = this._currentElement.type;
-        const componentInstance =
-            new Component(this._currentElement.props);
+	mountComponent(container) {
+		const Component = this._currentElement.type;
+		const componentInstance = new Component(this._currentElement.props);
 
-        let element = componentInstance.render();
+		let element = componentInstance.render();
 
-        while (typeof element.type === 'function') {
-            element = (new element.type(element.props)).render();
-        }
+		while (typeof element.type === 'function') {
+			element = new element.type(element.props).render();
+		}
 
-        const domComponentInstance = new FeactDOMComponent(element);
-        return domComponentInstance.mountComponent(container);
-    }
+		const domComponentInstance = new FeactDOMComponent(element);
+		return domComponentInstance.mountComponent(container);
+	}
 }
 ```
 
@@ -140,7 +158,9 @@ function instantiateFeactComponent(element) {
 This is a fair amount of new code, but the basic idea is to move mounting out into another layer. That's the job of `FeactReconciler`, which will also gain more jobs as we move forward. Over in React, there is `ReactReconciler` which is serving the same role.
 
 <wisdom>
-Remember the tight coupling that was called out in part one? It's gone now, FeactCompositeComponentWrapper is usable in more places now, which is a good thing.
+	Remember the tight coupling that was called out in part one? It's gone now,
+	FeactCompositeComponentWrapper is usable in more places now, which is a good
+	thing.
 </wisdom>
 
 ## Tweaking Feact.render()
@@ -203,4 +223,3 @@ That wraps up part two. Here is a fiddle encompassing all we've done
 <Fiddle>city41/L5u2z592/3/</Fiddle>
 
 In [part three](/articles/react-internals-part-three-basic-updating), we'll add support for updates.
-

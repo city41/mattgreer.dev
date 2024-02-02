@@ -2,14 +2,25 @@ import { Article } from '../../../components/layouts/Article';
 import meta from './meta.json';
 
 export const config = {
-    unstable_runtimeJS: false
-}
+	unstable_runtimeJS: false,
+};
 
-export default ({ children }) => <Article {...meta} img={require('./feature.svg')} socialMediaImg={require('./twitter.png')}
-    intro={<>A common misconception about JavaScript is that it supports both <em>pass by value</em> and <em>pass by reference</em> when calling functions. In actuality, JavaScript always passes by value.
-    </>}
->{children}</Article>
-
+export default ({ children }) => (
+	<Article
+		{...meta}
+		img={require('./feature.svg').default.src}
+		socialMediaImg={require('./twitter.png').default.src}
+		intro={
+			<>
+				A common misconception about JavaScript is that it supports both{' '}
+				<em>pass by value</em> and <em>pass by reference</em> when calling
+				functions. In actuality, JavaScript always passes by value.
+			</>
+		}
+	>
+		{children}
+	</Article>
+);
 
 ## Pass by wha?
 
@@ -19,7 +30,7 @@ Let's look at this example
 
 ```javascript
 function clamp(value, valueMax, valueMin) {
-  return Math.min(valueMax, Math.max(value, valueMin));
+	return Math.min(valueMax, Math.max(value, valueMin));
 }
 
 clamp(200, 1, 50);
@@ -61,11 +72,11 @@ So what does this mean with objects and function calls?
 
 ```javascript
 function mutateObject(obj) {
-  obj.foo = "changed!";
+	obj.foo = 'changed!';
 }
 
 var myObj = {
-  foo: "original value"
+	foo: 'original value',
 };
 
 mutateObject(myObj);
