@@ -54,7 +54,7 @@ function AboutPage() {
 					down the rabbit hole you can go on flour, hydration, fermentation and
 					more. And eating delicious bread regularly is okay by me.
 					<Img
-						src={baguettesJpg}
+						src={baguettesJpg.src}
 						alt="a baguette I made"
 						width={800}
 						height={600}
@@ -63,12 +63,17 @@ function AboutPage() {
 				<P>
 					I'm a big softy when it comes to animals. Here is our blind dog
 					Franny,
-					<Img src={frannyJpg} alt="Franny, my dog" width={800} height={600} />
+					<Img
+						src={frannyJpg.src}
+						alt="Franny, my dog"
+						width={800}
+						height={600}
+					/>
 				</P>
 				<P>
 					and our cat Charlie.
 					<Img
-						src={charlieJpg}
+						src={charlieJpg.src}
 						alt="Charlie, my cat"
 						width={800}
 						height={600}
@@ -80,7 +85,7 @@ function AboutPage() {
 					game's prompts. It's a great workout! I've recently acquired an
 					amazing home setup which is just about on par with what you'd find in
 					an arcade.
-					<Img src={ddrJpg} alt="My DDR setup" width={800} height={600} />
+					<Img src={ddrJpg.src} alt="My DDR setup" width={800} height={600} />
 				</P>
 				<P>
 					I enjoy the game so much I created{' '}
