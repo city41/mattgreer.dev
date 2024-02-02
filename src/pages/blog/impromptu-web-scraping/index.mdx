@@ -2,13 +2,19 @@ import { Article } from '../../../components/layouts/Article';
 import meta from './meta.json';
 
 export const config = {
-    unstable_runtimeJS: false
-}
+	unstable_runtimeJS: false,
+};
 
-export default ({ children }) => <Article {...meta} img={require('./feature.svg')} socialMediaImg={require('./twitter.png')}
-                                          intro="The JavaScript console and the DOM API can be your friend when you need to grab some data from a website.">
-{children}</Article>
-
+export default ({ children }) => (
+	<Article
+		{...meta}
+		img={require('./feature.svg').default.src}
+		socialMediaImg={require('./twitter.png').default.src}
+		intro="The JavaScript console and the DOM API can be your friend when you need to grab some data from a website."
+	>
+		{children}
+	</Article>
+);
 
 I am working on a little toy project involving Lego (you can try it [here](https://city41.github.io/pxtobrx/)). I needed to gather all colors available for bricks into a JavaScript object, something like this:
 
@@ -28,12 +34,12 @@ var brickColors = {
 
 The colors are freely available on the web, such as [here on Brickipedia](http://lego.wikia.com/wiki/Color_Palette), but there are a lot of them and it's pretty darn tedious to copy and paste each color's properties over into my editor.
 
-<img src={require('./colorTable.png')} alt="color table" />
+<img src={require('./colorTable.png').default.src} alt="color table" />
 
 I'll have JavaScript do the work for me, pop open the console and begin with ...
 
 ```javascript
-document.querySelectorAll('tr')
+document.querySelectorAll('tr');
 ```
 
 is a good start. It grabs all the table rows on the page.
@@ -41,43 +47,44 @@ is a good start. It grabs all the table rows on the page.
 From there, I turn the result into an array since querySelectorAll returns a `StaticNodeList`, and then filter it down to rows that have four cells, as it turns out the two tables with only three cells per row I don't care about
 
 ```javascript
-Array.from(document.querySelectorAll('tr'))
-  .filter(function(tr) { return tr.children.length === 4; })
+Array.from(document.querySelectorAll('tr')).filter(function (tr) {
+	return tr.children.length === 4;
+});
 ```
 
 Actually I don't care about the header rows either, so filter them out too
 
 ```javascript
 Array.from(document.querySelectorAll('tr'))
-  // use nodeName to only grab <td>s, ignoring the <th>s
-  .filter(function(tr) {
-    return tr.children.length === 4 &&
-           tr.children[0].nodeName === "TD";
-  })
+	// use nodeName to only grab <td>s, ignoring the <th>s
+	.filter(function (tr) {
+		return tr.children.length === 4 && tr.children[0].nodeName === 'TD';
+	});
 ```
 
 <pitfall>
-I got really lucky here, on some webpages narrowing down your query to just the relevant data can be tricky. You'll usually need a much more clever query for querySelectorAll
+	I got really lucky here, on some webpages narrowing down your query to just
+	the relevant data can be tricky. You'll usually need a much more clever query
+	for querySelectorAll
 </pitfall>
 
 from here, each `<td>` child inside of the `<tr>` contains a piece of data I want. So I can `reduce` the whole shebang into an object
 
 ```javascript
 Array.from(document.querySelectorAll('tr'))
-  .filter(function(tr) {
-    return tr.children.length === 4 &&
-           tr.children[0].nodeName === "TD";
-  })
-  .reduce(function(accum, tr) {
-    // fallback to the official name if the color lacks a common name
-    accum[tr.children[2].innerText || tr.children[1].innerText] = {
-      id: Number(tr.children[0].innerText),
-      officialName: tr.children[1].innerText,
-      color: tr.children[3].style.backgroundColor
-    };
-    return accum
-  }, {});
-  ```
+	.filter(function (tr) {
+		return tr.children.length === 4 && tr.children[0].nodeName === 'TD';
+	})
+	.reduce(function (accum, tr) {
+		// fallback to the official name if the color lacks a common name
+		accum[tr.children[2].innerText || tr.children[1].innerText] = {
+			id: Number(tr.children[0].innerText),
+			officialName: tr.children[1].innerText,
+			color: tr.children[3].style.backgroundColor,
+		};
+		return accum;
+	}, {});
+```
 
 That gets me the data I want, but I can't quite paste it into my editor yet. `JSON.stringify` will help through
 
@@ -112,5 +119,9 @@ Blue":{"id":135,"officialName":"Sand Blue","color":"rgb(94, 116, 140)"}
 Then just copy and paste the entire result of the stringify into my code, have my editor format it, and that's it. Much easier than tediously copying each color over, and a little fun too.
 
 <wisdom>
-You can also have stringify format the result for you by making use of the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#space_argument">space argument</a>. JSON.stringify(colors, null, 2) will format the resulting string nicely.
+	You can also have stringify format the result for you by making use of the{' '}
+	<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#space_argument">
+		space argument
+	</a>
+	. JSON.stringify(colors, null, 2) will format the resulting string nicely.
 </wisdom>

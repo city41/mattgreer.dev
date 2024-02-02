@@ -13,7 +13,7 @@ type NavigationProps = {
 function NavLink({ href, children }: { href: string; children: ReactNode }) {
 	return (
 		<li>
-			<Link href={href} passHref>
+			<Link href={href} passHref legacyBehavior>
 				<a className="px-1 sm:px-2 py-2 h-full grid place-items-center hover:bg-focal-fade hover:text-white">
 					{children}
 				</a>
@@ -43,7 +43,7 @@ function Navigation({ className }: NavigationProps) {
 				<NavLink href="/blog">Blog</NavLink>
 				<NavLink href="/about">About</NavLink>
 			</ul>
-			<Link href="/" passHref>
+			<Link href="/" passHref legacyBehavior>
 				<a
 					className="cursor-pointer block bg-cover absolute sm:static right-0 top-0 sm:ml-4"
 					style={logoStyle}

@@ -18,7 +18,7 @@ function Section({ className, title, entries }: SectionProps) {
 		<section className={clsx(className, 'flex flex-col space-y-4')}>
 			<h1 className="text-3xl text-center">{title}</h1>
 			{entries.map((entry) => (
-				<Link key={entry.url} href={entry.url} passHref>
+				<Link key={entry.url} href={entry.url} passHref legacyBehavior>
 					<a>
 						<div className="bg-red-50 h-64 cursor-pointer">
 							<h2>{entry.title}</h2>

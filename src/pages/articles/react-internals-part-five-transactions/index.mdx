@@ -1,27 +1,37 @@
 import { Article } from '../../../components/layouts/Article';
 import meta from './meta.json';
-import { Fiddle } from "../../../components/Fiddle";
+import { Fiddle } from '../../../components/Fiddle';
 
 export const config = {
-    unstable_runtimeJS: false
-}
+	unstable_runtimeJS: false,
+};
 
-export default ({ children }) => <Article {...meta} img={require('./feature.svg')} socialMediaImg={require('./twitter.png')}
-                                                    intro="In this part, we'll talk about React's transactions."
->{children}</Article>
+export default ({ children }) => (
+	<Article
+		{...meta}
+		img={require('./feature.svg').default.src}
+		socialMediaImg={require('./twitter.png').default.src}
+		intro="In this part, we'll talk about React's transactions."
+	>
+		{children}
+	</Article>
+);
 
 ## The series
 
-* [part one: basic rendering](/articles/react-internals-part-one-basic-rendering)
-* [part two: componentWillMount and componentDidMount](/articles/react-internals-part-two-componentWillMount-and-componentDidMount/)
-* [part three: basic updating](/articles/react-internals-part-three-basic-updating)
-* [part four: setState](/articles/react-internals-part-four-setState)
-* **part five: transactions** <- you are here
+- [part one: basic rendering](/articles/react-internals-part-one-basic-rendering)
+- [part two: componentWillMount and componentDidMount](/articles/react-internals-part-two-componentWillMount-and-componentDidMount/)
+- [part three: basic updating](/articles/react-internals-part-three-basic-updating)
+- [part four: setState](/articles/react-internals-part-four-setState)
+- **part five: transactions** <- you are here
 
 ## disclaimer
 
 <pitfall>
-This series is based on React 15.3, in particular using ReactDOM and the stack reconciler. React 16 and beyond have changed a lot. I still think this series has some value, as it does give you a general sense of how diffing works. But just keep in mind the implementation details are now quite out of date.
+	This series is based on React 15.3, in particular using ReactDOM and the stack
+	reconciler. React 16 and beyond have changed a lot. I still think this series
+	has some value, as it does give you a general sense of how diffing works. But
+	just keep in mind the implementation details are now quite out of date.
 </pitfall>
 
 ## transactions everywhere
@@ -36,23 +46,26 @@ The good news is transactions are simple. They are just a pattern the React team
 
 Whenever React decides it needs to do something, that "something" usually needs to do a little bit of prep work before, do its main logic, then some clean up work afterwards. This diagram showing how transactions work is found in the React source code as ASCII art, I recreated it to make it easier to read
 
-<img src={require('./transactionsDiagram.svg')} alt="transactions diagram" />
+<img
+	src={require('./transactionsDiagram.svg').default.src}
+	alt="transactions diagram"
+/>
 
 If Feact was to add transactions, its (very) simple take would be something like this:
 
 ```javascript
 class Transaction {
-    constructor(wrapper) {
-        this._wrapper = wrapper;
-    }
+	constructor(wrapper) {
+		this._wrapper = wrapper;
+	}
 
-    perform(method) {
-        const wrapperValue = this._wrapper.initialize();
+	perform(method) {
+		const wrapperValue = this._wrapper.initialize();
 
-        method();
+		method();
 
-        this._wrapper.close(wrapperValue);
-    }
+		this._wrapper.close(wrapperValue);
+	}
 }
 ```
 
@@ -64,43 +77,36 @@ For example, consider this dumb little React app, it swaps a button and a text i
 
 ```javascript
 const MyComp = React.createClass({
-    getInitialState() {
-        return {
-            textFirst: true
-        };
-    },
+	getInitialState() {
+		return {
+			textFirst: true,
+		};
+	},
 
-    componentDidMount() {
-        setInterval(() => {
-            this.setState({
-                textFirst: !this.state.textFirst
-            });
-        }, 5000);
-    },
+	componentDidMount() {
+		setInterval(() => {
+			this.setState({
+				textFirst: !this.state.textFirst,
+			});
+		}, 5000);
+	},
 
-    render() {
-        let children;
+	render() {
+		let children;
 
-        if (this.state.textFirst) {
-            children = [
-                <input key="text" type="text" />,
-                <button key="button" />
-            ];
-        } else {
-            children = [
-                <button key="button" />,
-                <input key="text" type="text" />
-            ];
-        }
+		if (this.state.textFirst) {
+			children = [<input key="text" type="text" />, <button key="button" />];
+		} else {
+			children = [<button key="button" />, <input key="text" type="text" />];
+		}
 
-        return (
-            <div>{children}</div>
-        );
-    }
+		return <div>{children}</div>;
+	},
 });
 
 ReactDOM.render(<MyComp />, document.body);
 ```
+
 The trouble with this app is the input element. Whenever you move an input element in the DOM (for example, `parentElement.insertBefore(myInputElement, someOtherChild)`), the browser clears out its selection. So if the user has highlighted some text in the input, then something about how your app renders causes React to move the input in the DOM, that selection gets cleared, frustrating your user. To solve this problem, React component updates are done in a transaction. During the initialize phase of the transaction, React grabs the current selection state of the browser and stores it. Then in the close phase, it takes that previous value and makes sure it gets restored. The transactions that happen during a React render handle many other things such as maintaining the window's scroll position, and a lot of other necessary book keeping. Another benefit of the transaction pattern is it becomes easy to store the state of the browser, do a whole bunch of work, then restore the state at the very end, rather than having to continually worry about accidentally scrolling the window or clearing an input selection.
 
 ### Feact transactions
@@ -121,9 +127,9 @@ const SELECTION_RESTORATION = {
         };
     },
 
-    close(priorSelectionInformation) { 
-        const focusedElem = priorSelectionInformation.focusedElem; 
-        focusedElem.selectionStart = 
+    close(priorSelectionInformation) {
+        const focusedElem = priorSelectionInformation.focusedElem;
+        focusedElem.selectionStart =
             priorSelectionInformation.selection.start;
 
         focusedElem.selectionEnd =
@@ -145,7 +151,10 @@ FeactReconciler = {
 ```
 
 <pitfall>
-As always with Feact, trying to keep the code as straightforward as possible. This silly little transaction doesn't even check if the element is capable of having a selection, amongst many other problems. I don't recommend using Feact in production.
+	As always with Feact, trying to keep the code as straightforward as possible.
+	This silly little transaction doesn't even check if the element is capable of
+	having a selection, amongst many other problems. I don't recommend using Feact
+	in production.
 </pitfall>
 
 Over in React, transactions are more complicated. For starters, they allow more than one wrapper. They also deal with exceptions being thrown, and ensure transactions don't call back into themselves.
@@ -155,4 +164,3 @@ Over in React, transactions are more complicated. For starters, they allow more 
 And with that, this series has covered the basics of how React works. Whenever you're debugging your React applications, that large chunk of the call stack that is inside React should feel a little less alien now. That's a primary reason I decided to write this series out.
 
 If you spotted any errors or have any feedback, feel free to <a href="mailto:matt.e.greer@gmail.com">email me</a>.
-

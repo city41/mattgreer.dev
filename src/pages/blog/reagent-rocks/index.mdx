@@ -1,19 +1,39 @@
 import { Article } from '../../../components/layouts/Article';
 import meta from './meta.json';
-import { FocalColorLink } from "../../../components/FocalColorLink";
+import { FocalColorLink } from '../../../components/FocalColorLink';
 
 export const config = {
-    unstable_runtimeJS: false
-}
+	unstable_runtimeJS: false,
+};
 
-export default ({ children }) => <Article {...meta} img={require('./feature.svg')} socialMediaImg={require('./twitter.png')}
-    intro={<>Lately all of my front end work has been in <FocalColorLink href="https://holmsand.github.io/reagent" external>Reagent</FocalColorLink>, a <FocalColorLink href="https://github.com/clojure/clojurescript" external>ClojureScript</FocalColorLink> interface to React. I'm really enjoying working with Reagent, here's why</>}
->{children}</Article>
+export default ({ children }) => (
+	<Article
+		{...meta}
+		img={require('./feature.svg').default.src}
+		socialMediaImg={require('./twitter.png').default.src}
+		intro={
+			<>
+				Lately all of my front end work has been in{' '}
+				<FocalColorLink href="https://holmsand.github.io/reagent" external>
+					Reagent
+				</FocalColorLink>
+				, a <FocalColorLink
+					href="https://github.com/clojure/clojurescript"
+					external
+				>
+					ClojureScript
+				</FocalColorLink> interface to React. I'm really enjoying working with Reagent,
+				here's why
+			</>
+		}
+	>
+		{children}
+	</Article>
+);
 
 ## ClojureScript Crash Course
 
-If you're at all familiar with Clojure, go ahead and <a href="#on-to-reagent">skip to the next section</a>. This is a *very* quick introduction to the language, it will help make the Reagent bits coming later more clear.
-
+If you're at all familiar with Clojure, go ahead and <a href="#on-to-reagent">skip to the next section</a>. This is a _very_ quick introduction to the language, it will help make the Reagent bits coming later more clear.
 
 ### Functions
 
@@ -27,15 +47,15 @@ Functions are created with `defn`:
 is about equivalent to:
 
 ```javascript
-var add = function(a, b) {
-  return a + b;
+var add = function (a, b) {
+	return a + b;
 };
 ```
 
 ClojureScript functions always return the last expression that was evaluated.
 
-
 ### Maps
+
 Maps are similar to JavaScript objects, they are collections of key/value pairs:
 
 ```clojure
@@ -43,6 +63,7 @@ Maps are similar to JavaScript objects, they are collections of key/value pairs:
 ```
 
 is about equivalent to:
+
 ```javascript
 {
   name: "Calvin",
@@ -71,7 +92,13 @@ Vectors are similar to JavaScript arrays:
 ```
 
 <pitfall>
-    This crash course glossed over many many things. Clojure fans are clenching their teeth right about now. If you want more information, I recommend starting with David Nolen's <a href="https://github.com/swannodette/lt-cljs-tutorial">ClojureScript tutorial</a>.
+	This crash course glossed over many many things. Clojure fans are clenching
+	their teeth right about now. If you want more information, I recommend
+	starting with David Nolen's{' '}
+	<a href="https://github.com/swannodette/lt-cljs-tutorial">
+		ClojureScript tutorial
+	</a>
+	.
 </pitfall>
 
 ## On to Reagent
@@ -89,12 +116,14 @@ By itself it doesn't do much, but we can render it to the page like so
 (reagent/render hello (.getElementById js/document "my-container"))
 ```
 
-Take another look at the `hello` component. It's simply a function that returns a vector containing a keyword and a string. Nothing more than bread and butter Clojure. If you're familiar with React, you might be wondering where `createClass`, `componentDidMount`, `render` and all of that other hoopla went. *There's no boilerplate at all!*
+Take another look at the `hello` component. It's simply a function that returns a vector containing a keyword and a string. Nothing more than bread and butter Clojure. If you're familiar with React, you might be wondering where `createClass`, `componentDidMount`, `render` and all of that other hoopla went. _There's no boilerplate at all!_
 
 <wisdom>
-React fans might be crying fowl about now. The above would be React.createElement('div', null, 'hello world') in React. Also pretty simple. But in Reagent, there is no distinction between elements and components, they're all just vanilla ClojureScript functions.
+	React fans might be crying fowl about now. The above would be
+	React.createElement('div', null, 'hello world') in React. Also pretty simple.
+	But in Reagent, there is no distinction between elements and components,
+	they're all just vanilla ClojureScript functions.
 </wisdom>
-
 
 Of course you'll be doing more than rendering "hello world" into your webpages, and Reagent doesn't manage to keep this abstraction up indefinitely. But it does a great job overall. If you need to, dropping down to the "metal" of React is possible, as is integrating Reagent with native React components. Reagent covers all the bases.
 
@@ -164,9 +193,7 @@ You can update the atom with `reset!` or `swap!`:
 (.log js/console @my-atom)
 ```
 
-<pitfall>
-And again, this is super glossed over
-</pitfall>
+<pitfall>And again, this is super glossed over</pitfall>
 
 ## Atoms and Reagent
 
@@ -188,7 +215,7 @@ Not surprisingly, atoms are how Reagent deals with state too. Let's create a com
 
 Here the header div gets a map, allowing us to add a click handler. Every time the header gets clicked, the atom alternates between `true` and `false` (that's what `swap!` and `not` are up to, `not` flips booleans). Whether the body is present depends on the state of the `expanded` atom.
 
-Except this isn't *entirely* true. In order to pull off the above, we need to swap out the native atom with an atom that Reagent provides:
+Except this isn't _entirely_ true. In order to pull off the above, we need to swap out the native atom with an atom that Reagent provides:
 
 ```clojure
 ;; use a Reagent atom instead
@@ -241,4 +268,4 @@ And I tend to decouple my prop-like data ratoms from my components. I instead ma
 
 Again, Reagent simplifies things and lets you construct your components in whatever way works best for you. The hard distinction between props and state is completely gone, instead just use ratoms however you prefer.
 
-That about wraps it up for now. If you're on the fence about ClojureScript,  I'm hoping I piqued your interest a little bit.
+That about wraps it up for now. If you're on the fence about ClojureScript, I'm hoping I piqued your interest a little bit.

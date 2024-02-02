@@ -2,10 +2,16 @@ import { Article } from '../../../components/layouts/Article';
 import meta from './meta.json';
 import { DemoForm } from '../../../components/blog/posts/using-google-drive-for-form-submissions/DemoForm';
 
-
-export default ({ children }) => <Article {...meta} img={require('./feature.svg')} socialMediaImg={require('./twitter.png')}
-intro="Sometimes I build fully static websites but still want to collect some data from visitors. I don't want to bother with a server or 3rd party form services, so Google Drive can work in a pinch."
->{children}</Article>
+export default ({ children }) => (
+	<Article
+		{...meta}
+		img={require('./feature.svg').default.src}
+		socialMediaImg={require('./twitter.png').default.src}
+		intro="Sometimes I build fully static websites but still want to collect some data from visitors. I don't want to bother with a server or 3rd party form services, so Google Drive can work in a pinch."
+	>
+		{children}
+	</Article>
+);
 
 ## A Quick Demo
 
@@ -13,20 +19,26 @@ intro="Sometimes I build fully static websites but still want to collect some da
 
 You can see [the results here](https://docs.google.com/spreadsheets/d/1oiqF1FUyBZmF5woz5quGMteEUYwYgLEYRqlpxj5dVWQ/edit?usp=sharing)
 
-
 ## Step 1: create a Google form
+
 Create a form in Google Drive like always. It's best to avoid multi-choice questions, because when you send the data, it will just be a string anyway. In your actual form on your website, you can create a dropdown like I did above.
 
 <figure>
-<img src={require('./formEditor.png')} alt="Google Drive Form Editor" />
-    <figcaption>Google's form editor</figcaption>
+	<img
+		src={require('./formEditor.png').default.src}
+		alt="Google Drive Form Editor"
+	/>
+	<figcaption>Google's form editor</figcaption>
 </figure>
 
 ## Step 2: figure out the names of each value
 
-Each entry you add to the form has a name, it will be something like `entry.123456789`. The easiest way to get these names is to preview your form (click the <img style={{display:'inline', margin: 0}} src={require('./previewIcon.png')} alt="preview icon" /> at the top of the page), fill it out, and submit it. Look in the network tab for the request that got sent to Google and there you will find the names you need
+Each entry you add to the form has a name, it will be something like `entry.123456789`. The easiest way to get these names is to preview your form (click the <img style={{display:'inline', margin: 0}} src={require('./previewIcon.png').default.src} alt="preview icon" /> at the top of the page), fill it out, and submit it. Look in the network tab for the request that got sent to Google and there you will find the names you need
 
-<img src={require('./formDataInNetworkTab.png')} alt="The submitted form data as shown in the network tab" />
+<img
+	src={require('./formDataInNetworkTab.png').default.src}
+	alt="The submitted form data as shown in the network tab"
+/>
 
 Don't worry about `fvv`, `draftResponse`, `pageHistory`, or `fbzx`. The only names you need are the ones in the form `entry.*`.
 
@@ -137,14 +149,19 @@ export { DemoForm };
 ```
 
 <pitfall>
-    Google only accepts urlencoded form data, you can't send JSON. Alternatively you can send the values as query params on the URL, ie <pre>.../formResponse?entry.111=foo&entry.222=bar</pre>
+	Google only accepts urlencoded form data, you can't send JSON. Alternatively
+	you can send the values as query params on the URL, ie{' '}
+	<pre>.../formResponse?entry.111=foo&entry.222=bar</pre>
 </pitfall>
 
 The above is set up so the form can be submitted whether the visitor has JavaScript enabled or not: the data is sent via `fetch()`, otherwise when JS is disabled it falls back to the standard form operations, due to the `<form>` having `action` and `method` set.
 
 If a user does not have JavaScript enabled, once they submit the form, they will end up at Google's response page and no longer on your website
 
-<img src={require('./responsePage.png')} alt="Google Form response page" />
+<img
+	src={require('./responsePage.png').default.src}
+	alt="Google Form response page"
+/>
 
 Depending on your site's audience none of this may matter. But if you don't want them to ever see this screen, a quick fix is to hide the form from JS disablers with `<noscript>`.
 

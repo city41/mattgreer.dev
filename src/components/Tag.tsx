@@ -26,7 +26,7 @@ function Tag({
 	const Component = component;
 
 	return (
-		<Link href={getUrl(classification, children)} passHref>
+		<Link href={getUrl(classification, children)} passHref legacyBehavior>
 			<a>
 				<Component
 					className={clsx(

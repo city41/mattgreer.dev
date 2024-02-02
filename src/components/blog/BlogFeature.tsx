@@ -40,7 +40,7 @@ function BlogFeature({
 						))}
 					</ul>
 				</div>
-				<Link href={`/blog/${slug}`} passHref>
+				<Link href={`/blog/${slug}`} passHref legacyBehavior>
 					<a>
 						<h2 className="text-2xl sm:text-3xl font-bold mb-4 hover:text-focal">
 							{title}

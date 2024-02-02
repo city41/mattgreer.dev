@@ -25,7 +25,7 @@ function IconLink({
 	label: string;
 }) {
 	return (
-		<Link href={href} passHref>
+		<Link href={href} passHref legacyBehavior>
 			<a
 				rel="noopener"
 				className="inline-block p-2 rounded-sm hover:bg-bg"

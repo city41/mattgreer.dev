@@ -5,16 +5,16 @@ const withMDX = require('@next/mdx')({
 	extension: /.mdx$/,
 });
 
-const withOptimizedImages = require('next-optimized-images');
+// const withOptimizedImages = require('next-optimized-images');
 
 module.exports = withPlugins(
 	[
-		[
-			withOptimizedImages,
-			{
-				inlineImageLimit: -1,
-			},
-		],
+		// [
+		// 	withOptimizedImages,
+		// 	{
+		// 		inlineImageLimit: -1,
+		// 	},
+		// ],
 		[withMDX],
 	],
 	{

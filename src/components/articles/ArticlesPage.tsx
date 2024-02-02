@@ -34,8 +34,8 @@ function ArticlesPage({ tag, allTags, items }: ArticlesPageProps) {
 		<Root
 			headTitle="Articles"
 			metaDescription="Technical articles I have written, mostly related to web tech"
-			img={laptopSvg}
-			socialMediaImg={laptopPng}
+			img={laptopSvg.src}
+			socialMediaImg={laptopPng.src}
 			imgAlt="Illustration of a laptop"
 			navigation
 			headerContent={headerContent}

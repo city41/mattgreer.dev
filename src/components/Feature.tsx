@@ -28,7 +28,7 @@ function Feature({
 	url,
 	tags,
 }: FeatureProps) {
-	const img = require(`../pages/${classification}/${slug}/${imgFile}`);
+	const img = require(`../pages/${classification}/${slug}/${imgFile}`).default;
 
 	const external = url.startsWith('http');
 	const linkProps = external ? { rel: 'noopener', target: '_blank' } : {};
@@ -40,7 +40,7 @@ function Feature({
 				'flex flex-row flex-wrap mx-4 sm:mx-16 md:mx-0 justify-center'
 			)}
 		>
-			<Link href={url} passHref>
+			<Link href={url} passHref legacyBehavior>
 				<a
 					className="block w-screen sm:w-96 sm:h-96 sm:mr-8 -mx-4 sm:ml-0 cursor-pointer"
 					{...linkProps}
@@ -49,7 +49,7 @@ function Feature({
 						className={clsx('block w-full h-full', {
 							[pixelatedStyles.pixelated]: pixelateImage,
 						})}
-						src={img}
+						src={img.src}
 						width={384}
 						height={384}
 						alt={imgAlt}
@@ -58,7 +58,7 @@ function Feature({
 				</a>
 			</Link>
 			<div className="w-full sm:w-1/2 sm:pl-8">
-				<Link href={url} passHref>
+				<Link href={url} passHref legacyBehavior>
 					<a {...linkProps}>
 						<h2 className="text-4xl sm:text-5xl font-bold mt-8 sm:mt-0 xtext-center sm:text-left hover:text-focal">
 							{title}

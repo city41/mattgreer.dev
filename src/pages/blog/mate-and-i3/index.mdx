@@ -2,12 +2,19 @@ import { Article } from '../../../components/layouts/Article';
 import meta from './meta.json';
 
 export const config = {
-    unstable_runtimeJS: false
-}
+	unstable_runtimeJS: false,
+};
 
-export default ({ children }) => <Article {...meta} img={require('./feature.svg')} socialMediaImg={require('./twitter.png')}
- intro="I'm a huge fan of the i3 window manager, but I find pairing it up with the MATE Desktop Environment is the best of all worlds."
->{children}</Article>
+export default ({ children }) => (
+	<Article
+		{...meta}
+		img={require('./feature.svg').default.src}
+		socialMediaImg={require('./twitter.png').default.src}
+		intro="I'm a huge fan of the i3 window manager, but I find pairing it up with the MATE Desktop Environment is the best of all worlds."
+	>
+		{children}
+	</Article>
+);
 
 ## i3
 
@@ -27,17 +34,22 @@ First install i3 and MATE in whichever way makes sense for your distro. I'm lazy
 
 You will need to use the dconf-editor. You may need to install it as seems most distros don't provide it by default. Once you've got it open, head to `org > mate > desktop > session > required-components`. Change **windowmanager** from `marco` to `i3`.
 
-
 <figure>
-    <img src={require('./dconf-i3.png')} alt="setting i3 in dconf-editor" />
-    <figcaption>setting i3 in dconf-editor</figcaption>
+	<img
+		src={require('./dconf-i3.png').default.src}
+		alt="setting i3 in dconf-editor"
+	/>
+	<figcaption>setting i3 in dconf-editor</figcaption>
 </figure>
 
 Then head up one level to `org > mate > desktop > session` and in **required-component-list**, delete `filemanager`. This is needed otherwise MATE will open a background window for your desktop that will cover everything.
 
 <figure>
-    <img src={require('./dconf-delete-filemanager.png')} alt="deleting filemanager from dconf-editor" />
-    <figcaption>deleting filemanager</figcaption>
+	<img
+		src={require('./dconf-delete-filemanager.png').default.src}
+		alt="deleting filemanager from dconf-editor"
+	/>
+	<figcaption>deleting filemanager</figcaption>
 </figure>
 
 Now log out and back in, and you should find yourself in MATE, but with i3 running too. I delete the taskbar panel at the bottom.
@@ -50,13 +62,12 @@ I prefer to just use the top MATE panel for stuff like the time, wifi, etc. So I
 
 By deleting the i3bar I lost i3's workspace switcher. That sucks, and I hate having an entire bar just for a little workspace switcher in the corner. So I wrote a MATE panel applet that brings an i3 style workspace switcher up into my MATE panel.
 
-
 <figure>
-    <img src={require('./mate-i3-applet.png')} alt="screenshot of the mate i3 applet" />
-    <figcaption>The applet showing the desktops in the upper left</figcaption>
+	<img
+		src={require('./mate-i3-applet.png').default.src}
+		alt="screenshot of the mate i3 applet"
+	/>
+	<figcaption>The applet showing the desktops in the upper left</figcaption>
 </figure>
 
 The panel applet is the cherry on top, giving me a truly perfect MATE/i3 integration. If interested in the applet just head to its [github page](https://github.com/city41/mate-i3-applet), the README has all the details.
-
-
-

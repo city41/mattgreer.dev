@@ -4,8 +4,7 @@
 	"type": "technical article",
 	"tags": ["JavaScript"],
 	"description": [
-		"For the heck of it, I made a simple breakout game with Reagent"
+		"When doing something repeatedly in JavaScript, I always use setTimout and never setInterval, here is why"
 	],
-	"description": ["When doing something repeatedly in JavaScript, I always use setTimout and never setInterval, here is why"],
 	"imgAlt": "JavaScript logo"
 }

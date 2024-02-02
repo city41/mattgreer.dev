@@ -1,27 +1,43 @@
 import { Article } from '../../../components/layouts/Article';
 import meta from './meta.json';
-import { Fiddle } from "../../../components/Fiddle";
+import { Fiddle } from '../../../components/Fiddle';
 
 export const config = {
-    unstable_runtimeJS: false
-}
+	unstable_runtimeJS: false,
+};
 
-export default ({ children }) => <Article {...meta} img={require('./feature.svg')} socialMediaImg={require('./twitter.png')}
-    intro={<>In part four of this series we finally add <code>setState</code> to our little React clone. <code>setState</code> is a beast, so grab your favorite beverage and get comfortable!</>}
->{children}</Article>
+export default ({ children }) => (
+	<Article
+		{...meta}
+		img={require('./feature.svg').default.src}
+		socialMediaImg={require('./twitter.png').default.src}
+		intro={
+			<>
+				In part four of this series we finally add <code>setState</code> to our
+				little React clone. <code>setState</code> is a beast, so grab your
+				favorite beverage and get comfortable!
+			</>
+		}
+	>
+		{children}
+	</Article>
+);
 
 ## The series
 
-* [part one: basic rendering](/articles/react-internals-part-one-basic-rendering)
-* [part two: componentWillMount and componentDidMount](/articles/react-internals-part-two-componentWillMount-and-componentDidMount/)
-* [part three: basic updating](/articles/react-internals-part-three-basic-updating)
-* **part four: setState** <- you are here
-* [part five: transactions](/articles/react-internals-part-five-transactions)
+- [part one: basic rendering](/articles/react-internals-part-one-basic-rendering)
+- [part two: componentWillMount and componentDidMount](/articles/react-internals-part-two-componentWillMount-and-componentDidMount/)
+- [part three: basic updating](/articles/react-internals-part-three-basic-updating)
+- **part four: setState** <- you are here
+- [part five: transactions](/articles/react-internals-part-five-transactions)
 
 ## disclaimer
 
 <pitfall>
-This series is based on React 15.3, in particular using ReactDOM and the stack reconciler. React 16 and beyond have changed a lot. I still think this series has some value, as it does give you a general sense of how diffing works. But just keep in mind the implementation details are now quite out of date.
+	This series is based on React 15.3, in particular using ReactDOM and the stack
+	reconciler. React 16 and beyond have changed a lot. I still think this series
+	has some value, as it does give you a general sense of how diffing works. But
+	just keep in mind the implementation details are now quite out of date.
 </pitfall>
 
 ## Adding state to Feact
@@ -34,78 +50,73 @@ When mounting a fresh component, we need to set up its initial state, that's whe
 
 ```javascript
 const Feact = {
-    createClass(spec) {
-        function Constructor(props) {
-            this.props = props;
+	createClass(spec) {
+		function Constructor(props) {
+			this.props = props;
 
-            // new lines added for state
-            const initialState = this.getInitialState ?
-                this.getInitialState() :
-                null;
-            this.state = initialState;
-        }
+			// new lines added for state
+			const initialState = this.getInitialState ? this.getInitialState() : null;
+			this.state = initialState;
+		}
 
-        Constructor.prototype =
-            Object.assign(Constructor.prototype, spec);
+		Constructor.prototype = Object.assign(Constructor.prototype, spec);
 
-        return Constructor;
-    }
-}
+		return Constructor;
+	},
+};
 ```
 
 Just like props, we set the state on the instance.
 
 <pitfall>
-Notice if the component does not have getInitialState defined, the initial state will be null?
-React won't default initial state to an empty object, so if you want to use state, chances are you
-need to implement this method and return an object, otherwise your first render will blow up if it
-tries to do this.state.foo
+	Notice if the component does not have getInitialState defined, the initial
+	state will be null? React won't default initial state to an empty object, so
+	if you want to use state, chances are you need to implement this method and
+	return an object, otherwise your first render will blow up if it tries to do
+	this.state.foo
 </pitfall>
 
 Now with `getInitialState` defined, Feact components can start using `this.state` whenever they'd like.
 
 ## Adding a simple setState()
 
-Whenever a component wants to update, it needs to tell Feact "hey, I'd like to render again!", and `this.setState()` is the primary way to accomplish that. `setState` updates `this.state`, and triggers a render, which will send the component through the lifecycle methods `shouldComponentUpdate` -> `componentWillUpdate` -> `render` -> `componentDidUpdate` (which Feact doesn't have, but of course React does). 
+Whenever a component wants to update, it needs to tell Feact "hey, I'd like to render again!", and `this.setState()` is the primary way to accomplish that. `setState` updates `this.state`, and triggers a render, which will send the component through the lifecycle methods `shouldComponentUpdate` -> `componentWillUpdate` -> `render` -> `componentDidUpdate` (which Feact doesn't have, but of course React does).
 
 ### Defining setState on the component
 
 Again we need to tweak `Feact.createClass` to get setState in place. To do this, we'll give all classes created this way a prototype, and this prototype will have `setState` defined
 
 ```javascript
-function FeactComponent() {
-}
+function FeactComponent() {}
 
-FeactComponent.prototype.setState = function() {
-    // to be implemented later
+FeactComponent.prototype.setState = function () {
+	// to be implemented later
 };
 
 function mixSpecIntoComponent(Constructor, spec) {
-    const proto = Constructor.prototype;
+	const proto = Constructor.prototype;
 
-    for (const key in spec) {
-        proto[key] = spec[key];
-    }
+	for (const key in spec) {
+		proto[key] = spec[key];
+	}
 }
 
 const Feact = {
-    createClass(spec) {
-        function Constructor(props) {
-            this.props = props;
+	createClass(spec) {
+		function Constructor(props) {
+			this.props = props;
 
-            // new lines added for state
-            const initialState = this.getInitialState ?
-                this.getInitialState() :
-                null;
-            this.state = initialState;
-        }
+			// new lines added for state
+			const initialState = this.getInitialState ? this.getInitialState() : null;
+			this.state = initialState;
+		}
 
-        Constructor.prototype = new FeactComponent();
+		Constructor.prototype = new FeactComponent();
 
-        mixSpecIntoComponent(Constructor, spec);
-        return Constructor;
-    }
-}
+		mixSpecIntoComponent(Constructor, spec);
+		return Constructor;
+	},
+};
 ```
 
 Prototypical inheritance in action. `mixSpecIntoComponent` in React is more complicated (and robust), dealing with things like mixins and making sure users don't accidentally clobber a React method.
@@ -117,29 +128,28 @@ Back in [part three](/articles/react-internals-part-three-basic-updating) we upd
 In React, there is the notion of "public instances" and "internal instances". Public instances are the objects that get created from the classes defined with `createClass`, and internal instances are the objects that React internally creates. In this scenario the internal instance is the `FeactCompositeComponentWrapper` that the framework created. The internal instance knows about the public instance, since it wraps it. But the relationship doesn't go in the opposite direction, yet now it needs to. Here `setState` is the public instance attempting to communicate with the internal instance, so with that in mind, let's take a stab at implementing `setState`
 
 ```javascript
-function FeactComponent() {
-}
+function FeactComponent() {}
 
-FeactComponent.prototype.setState = function(partialState) {
-    const internalInstance = getMyInternalInstancePlease(this);
+FeactComponent.prototype.setState = function (partialState) {
+	const internalInstance = getMyInternalInstancePlease(this);
 
-    internalInstance._pendingPartialState = partialState;
+	internalInstance._pendingPartialState = partialState;
 
-    FeactReconciler.performUpdateIfNecessary(internalInstance);
-}
+	FeactReconciler.performUpdateIfNecessary(internalInstance);
+};
 ```
 
 React solves the "get my internal instance" problem with an instance map, which really just stores the internal instance on the public instance
 
 ```javascript
 const FeactInstanceMap = {
-    set(key, value) {
-        key.__feactInternalInstance = value;
-    },
+	set(key, value) {
+		key.__feactInternalInstance = value;
+	},
 
-    get(key) {
-        return key.__feactInternalInstance;
-    }
+	get(key) {
+		return key.__feactInternalInstance;
+	},
 };
 ```
 
@@ -202,13 +212,16 @@ class FeactCompositeComponentWrapper {
 That isn't the entirety of `updateComponent`, (check the fiddle at the end of the article for all the code), just enough to show that calling `setState()` does not cause `componentWillReceiveProps` to get called before the render happens. Which does make sense, `setState` has no means of influencing props, just state.
 
 <wisdom>
-If you want a heads up on every render, whether caused by prop changes or state changes, then implement componentWillUpdate in your component. We won't add it to Feact since this blog series is already too long, but it's called right before a render, no matter what caused the render. The only exception is the first render, where you can hook into componentWillMount instead.
+	If you want a heads up on every render, whether caused by prop changes or
+	state changes, then implement componentWillUpdate in your component. We won't
+	add it to Feact since this blog series is already too long, but it's called
+	right before a render, no matter what caused the render. The only exception is
+	the first render, where you can hook into componentWillMount instead.
 </wisdom>
-
 
 ### Updating with the new state
 
-If you trace through the code we've written so far, you'll see we're now hanging out in `updateComponent`, *and* the internal instance has the pending partial state waiting to be used at `internalInstance._pendingPartialState`. Now all we need to do is have the component render again -- this time with state --, then from there actually getting the update all the way into the DOM is the same procedure as done back in part three
+If you trace through the code we've written so far, you'll see we're now hanging out in `updateComponent`, _and_ the internal instance has the pending partial state waiting to be used at `internalInstance._pendingPartialState`. Now all we need to do is have the component render again -- this time with state --, then from there actually getting the update all the way into the DOM is the same procedure as done back in part three
 
 ```javascript
 class FeactCompositeComponentWrapper {
@@ -322,14 +335,14 @@ class FeactCompositeComponentWrapper {
         if (!this._pendingPartialState) {
             return inst.state;
         }
-        
+
         let nextState = inst.state;
-        
+
         for (let i = 0; i < this._pendingPartialState.length; ++i) {
             nextState =
                 Object.assign(nextState, this._pendingPartialState[i]);
         }
-        
+
         this._pendingPartialState = null;
         return nextState;
     }
@@ -339,7 +352,9 @@ class FeactCompositeComponentWrapper {
 ### batching step two, batching up the state changes into one render
 
 <pitfall>
-The batching mechanism we're about to add to Feact is very simple and not at all what React does. The point is to just show the general idea of how batching works (and later, show why it can make setState tricky).
+	The batching mechanism we're about to add to Feact is very simple and not at
+	all what React does. The point is to just show the general idea of how
+	batching works (and later, show why it can make setState tricky).
 </pitfall>
 
 For Feact, we will batch updates while rendering, otherwise, we won't batch them. So during `updateComponent`, we just set a flag that tells the world we are rendering, then unset it at the end. If `setState` sees we are rendering, it will set the pending state, but not cause a new render, as it knows the current render that is going on will pick up this state change

@@ -8,8 +8,8 @@ export const config = {
 export default ({ children }) => (
 	<Article
 		{...meta}
-		img={require('./feature.png')}
-		socialMediaImg={require('./twitter.png')}
+		img={require('./feature.png').default.src}
+		socialMediaImg={require('./twitter.png').default.src}
 		intro={meta.description[0]}
 	>
 		{children}
@@ -27,7 +27,7 @@ Super Metroid is an adventure game where you are tasked with exploring a giant, 
 
 <figure>
 	<img
-		src={require('./autoMappingScreenshot.png')}
+		src={require('./autoMappingScreenshot.png').default.src}
 		alt="Map view in the game showing the auto-mapping"
 		style={{ imageRendering: 'pixelated' }}
 	/>
@@ -68,7 +68,7 @@ Here is one of the screenshots
 
 <figure>
 	<img
-		src={require('./singleBitDumpExample.png')}
+		src={require('./singleBitDumpExample.png').default.src}
 		alt="A single bit of the map exposed"
 		style={{ imageRendering: 'pixelated', margin: '40px auto' }}
 	/>
@@ -131,7 +131,7 @@ After a few days of dumping, I have determined this much of the map
 
 <figure>
 	<img
-		src={require('./mapResults.png')}
+		src={require('./mapResults.png').default.src}
 		alt="Map showing what I have uncovered and what I haven't"
 		style={{ imageRendering: 'pixelated' }}
 	/>
@@ -150,7 +150,7 @@ I figured I'd show where I'm at after doing one more dump run (31 hours in total
 
 <figure>
 	<img
-		src={require('./mapDumpUpdate.png')}
+		src={require('./mapDumpUpdate.png').default.src}
 		alt="Map of my results after a second run of dumping"
 		style={{ imageRendering: 'pixelated' }}
 	/>
@@ -164,7 +164,7 @@ This approach takes "snapshots" of the map from save rooms. There are parts of t
 
 <figure>
 	<img
-		src={require('./rightSideOfCrateria.png')}
+		src={require('./rightSideOfCrateria.png').default.src}
 		alt="Crateria map"
 		style={{ imageRendering: 'pixelated' }}
 	/>

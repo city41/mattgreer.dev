@@ -1,28 +1,49 @@
 import { Article } from '../../../components/layouts/Article';
 import meta from './meta.json';
-import { Fiddle } from "../../../components/Fiddle";
-import {FocalColorLink} from "../../../components/FocalColorLink";
+import { Fiddle } from '../../../components/Fiddle';
+import { FocalColorLink } from '../../../components/FocalColorLink';
 
 export const config = {
-    unstable_runtimeJS: false
-}
+	unstable_runtimeJS: false,
+};
 
-export default ({ children }) => <Article {...meta} img={require('./feature.svg')} socialMediaImg={require('./twitter.png')}
-    intro={<>In <FocalColorLink href="/articles/react-internals-part-one-basic-rendering">part one</FocalColorLink>, our small React clone, Feact, was implemented far enough to do basic rendering. But once the render happens, that was it. In this part, we'll add the ability to make changes to the app with subsequent renders. This part will begin to show how the virtual DOM diffing works.</>}
->{children}</Article>
+export default ({ children }) => (
+	<Article
+		{...meta}
+		img={require('./feature.svg').default.src}
+		socialMediaImg={require('./twitter.png').default.src}
+		intro={
+			<>
+				In{' '}
+				<FocalColorLink href="/articles/react-internals-part-one-basic-rendering">
+					part one
+				</FocalColorLink>
+				, our small React clone, Feact, was implemented far enough to do basic rendering.
+				But once the render happens, that was it. In this part, we'll add the ability
+				to make changes to the app with subsequent renders. This part will begin
+				to show how the virtual DOM diffing works.
+			</>
+		}
+	>
+		{children}
+	</Article>
+);
 
 ## The series
 
-* [part one: basic rendering](/articles/react-internals-part-one-basic-rendering)
-* [part two: componentWillMount and componentDidMount](/articles/react-internals-part-two-componentWillMount-and-componentDidMount)
-* **part three: basic updating** <- you are here
-* [part four: setState](/articles/react-internals-part-four-setState)
-* [part five: transactions](/articles/react-internals-part-five-transactions)
+- [part one: basic rendering](/articles/react-internals-part-one-basic-rendering)
+- [part two: componentWillMount and componentDidMount](/articles/react-internals-part-two-componentWillMount-and-componentDidMount)
+- **part three: basic updating** <- you are here
+- [part four: setState](/articles/react-internals-part-four-setState)
+- [part five: transactions](/articles/react-internals-part-five-transactions)
 
 ## disclaimer
 
 <pitfall>
-This series is based on React 15.3, in particular using ReactDOM and the stack reconciler. React 16 and beyond have changed a lot. I still think this series has some value, as it does give you a general sense of how diffing works. But just keep in mind the implementation details are now quite out of date.
+	This series is based on React 15.3, in particular using ReactDOM and the stack
+	reconciler. React 16 and beyond have changed a lot. I still think this series
+	has some value, as it does give you a general sense of how diffing works. But
+	just keep in mind the implementation details are now quite out of date.
 </pitfall>
 
 ## Simple updating
@@ -32,8 +53,8 @@ Calling `setState()` in a component is the primary way people cause their React 
 ```javascript
 React.render(<h1>hello</h1>, root);
 
-setTimeout(function() {
-    React.render(<h1>hello again</h1>, root);
+setTimeout(function () {
+	React.render(<h1>hello again</h1>, root);
 }, 2000);
 ```
 
@@ -94,25 +115,18 @@ For each render, We need to store the components we created, so we can refer to 
 
 ```javascript
 function renderNewRootComponent(element, container) {
-	const wrapperElement =
-		Feact.createElement(TopLevelWrapper, element);
+	const wrapperElement = Feact.createElement(TopLevelWrapper, element);
 
-	const componentInstance =
-		new FeactCompositeComponentWrapper(wrapperElement);
+	const componentInstance = new FeactCompositeComponentWrapper(wrapperElement);
 
-
-	const markUp = FeactReconciler.mountComponent(
-		componentInstance,
-		container
-	);
+	const markUp = FeactReconciler.mountComponent(componentInstance, container);
 
 	// new line here, store the component instance on the container
-    // we want its _renderedComponent because componentInstance is just
-    // the TopLevelWrapper, which we don't need for updates
-    container.__feactComponentInstance =
-        componentInstance._renderedComponent;
+	// we want its _renderedComponent because componentInstance is just
+	// the TopLevelWrapper, which we don't need for updates
+	container.__feactComponentInstance = componentInstance._renderedComponent;
 
-    return markUp;
+	return markUp;
 }
 ```
 
@@ -120,7 +134,7 @@ Well, that was easy. Similarly, retrieving the stashed component is easy too:
 
 ```javascript
 function getTopLevelComponentInContainer(container) {
-    return container.__feactComponentInstance;
+	return container.__feactComponentInstance;
 }
 ```
 
@@ -129,16 +143,10 @@ function getTopLevelComponentInContainer(container) {
 This is the simple example we are working through
 
 ```javascript
-Feact.render(
-    Feact.createElement('h1', null, 'hello'),
-    root
-);
+Feact.render(Feact.createElement('h1', null, 'hello'), root);
 
-setTimeout(function() {
-    Feact.render(
-        Feact.createElement('h1', null, 'hello again'),
-        root
-    );
+setTimeout(function () {
+	Feact.render(Feact.createElement('h1', null, 'hello again'), root);
 }, 2000);
 ```
 
@@ -157,7 +165,7 @@ Since Feact determined this is an update, we ended up in `updateRootComponent`, 
 
 ```javascript
 function updateRootComponent(prevComponent, nextElement) {
-    prevComponent.receiveComponent(nextElement)
+	prevComponent.receiveComponent(nextElement);
 }
 ```
 
@@ -214,7 +222,7 @@ class FeactDOMComponent {
         const node = this._hostNode;
 
         const firstChild = node.firstChild;
-  
+
         if (firstChild && firstChild === node.lastChild
                 && firstChild.nodeType === 3) {
             firstChild.nodeValue = text;
@@ -226,7 +234,7 @@ class FeactDOMComponent {
 };
 ```
 
-`Feact`'s version of `_updateDOMChildren` is hopelessly stupid, but this is all we need for our learning purposes. 
+`Feact`'s version of `_updateDOMChildren` is hopelessly stupid, but this is all we need for our learning purposes.
 
 ## Updating composite components
 
@@ -234,15 +242,15 @@ The work we did above was fine and all, but we can only update `FeactDOMComponen
 
 ```javascript
 Feact.render(
-    Feact.createElement(MyCoolComponent, { myProp: 'hello' }),
-    document.getElementById('root')
+	Feact.createElement(MyCoolComponent, { myProp: 'hello' }),
+	document.getElementById('root')
 );
 
-setTimeout(function() {
-    Feact.render(
-        Feact.createElement(MyCoolComponent, { myProp: 'hello again' }),
-        document.getElementById('root')
-    );
+setTimeout(function () {
+	Feact.render(
+		Feact.createElement(MyCoolComponent, { myProp: 'hello again' }),
+		document.getElementById('root')
+	);
 }, 2000);
 ```
 
@@ -260,7 +268,7 @@ class FeactCompositeComponentWrapper {
 
 	updateComponent(prevElement, nextElement) {
 		const nextProps = nextElement.props;
-		
+
 		this._performComponentUpdate(nextElement, nextProps);
 	}
 
@@ -336,7 +344,7 @@ class FeactCompositeComponentWrapper {
         if (inst.shouldComponentUpdate) {
             shouldUpdate = inst.shouldComponentUpdate(nextProps);
         }
-               
+
         if (shouldUpdate) {
             this._performComponentUpdate(nextElement, nextProps);
         } else {
@@ -356,32 +364,26 @@ There's a big problem with Feact's updating that we won't be addressing. It's ma
 In other words, Feact can handle this just fine
 
 ```javascript
-Feact.render(
-    Feact.createElement(MyCoolComponent, { myProp: 'hi' }),
-    root
-);
+Feact.render(Feact.createElement(MyCoolComponent, { myProp: 'hi' }), root);
 
 // some time passes
 
 Feact.render(
-    Feact.createElement(MyCoolComponent, { myProp: 'hi again' }),
-    root
+	Feact.createElement(MyCoolComponent, { myProp: 'hi again' }),
+	root
 );
 ```
 
 but it can't handle this
 
 ```javascript
-Feact.render(
-    Feact.createElement(MyCoolComponent, { myProp: 'hi' }),
-    root
-);
+Feact.render(Feact.createElement(MyCoolComponent, { myProp: 'hi' }), root);
 
 // some time passes
 
 Feact.render(
-    Feact.createElement(SomeOtherComponent, { someOtherProp: 'hmmm' }),
-    root
+	Feact.createElement(SomeOtherComponent, { someOtherProp: 'hmmm' }),
+	root
 );
 ```
 
@@ -389,8 +391,8 @@ In this case, the update swapped in a completely different component class. Feac
 
 In order to do this, Feact would need:
 
-* some ability to unmount a component
-* notice the type change and head over to `FeactReconciler.mountComponent` instead of `FeactComponent.receiveComponent`
+- some ability to unmount a component
+- notice the type change and head over to `FeactReconciler.mountComponent` instead of `FeactComponent.receiveComponent`
 
 ## Did you spot the virtual DOM?
 
@@ -405,4 +407,3 @@ To wrap things up, here is a fiddle encompassing all that we've done so far
 <Fiddle>city41/s5d9prf6/2/</Fiddle>
 
 On to [part four](/articles/react-internals-part-four-setState)!
-

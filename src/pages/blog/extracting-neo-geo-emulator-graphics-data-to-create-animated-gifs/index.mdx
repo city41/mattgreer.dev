@@ -8,8 +8,8 @@ export const config = {
 export default ({ children }) => (
 	<Article
 		{...meta}
-		img={require('./feature.svg')}
-		socialMediaImg={require('./twitter.png')}
+		img={require('./feature.svg').default.src}
+		socialMediaImg={require('./twitter.png').default.src}
 		intro="I recently built a tool that creates animated gifs for Neo Geo video games by extracting the data out of a running emulator. It turned out to be a pretty interesting project, so I thought I'd blog about it."
 	>
 		{children}
@@ -21,7 +21,10 @@ export default ({ children }) => (
 A while back I made [this website](https://www.fgbg.art) which is a collection of backgrounds from old 2D fighting games. After gathering every gif I could find scouring the internet, I looked into creating new ones. I didn't relish the idea of taking a million screenshots and piecing together gifs manually, so I looked into other solutions. Not really finding much, I decided to build something.
 
 <figure>
-	<img src={require('./xkcdAutomation.png')} alt="xkcd automation comic" />
+	<img
+		src={require('./xkcdAutomation.png').default.src}
+		alt="xkcd automation comic"
+	/>
 	<figcaption>
 		from{' '}
 		<a href="https://xkcd.com/1319/" rel="noreferrer noopener">
@@ -34,7 +37,7 @@ The tool I built uses a running Neo Geo emulator to extract the graphic data and
 
 <figure>
 	<img
-		src={require('./nggmScreenshot.png')}
+		src={require('./nggmScreenshot.png').default.src}
 		alt="screenshot of the tool I made"
 	/>
 	<figcaption>what the tool looks like (so far...)</figcaption>
@@ -44,7 +47,7 @@ You can play with it [here](https://city41.github.io/nggm), or check out a [vide
 
 <figure>
 	<img
-		src={require('./demoModeButtons.png')}
+		src={require('./demoModeButtons.png').default.src}
 		alt="demo mode buttons in the tool"
 	/>
 	<figcaption>Choose one of these to go into demo mode</figcaption>
@@ -73,7 +76,7 @@ Neo Geo games are made up of many types of ROM chips. The C ROM chips store the 
 
 <figure>
 	<img
-		src={require('./rbffTitleScreen.png')}
+		src={require('./rbffTitleScreen.png').default.src}
 		alt="Real Bout Fatal Fury's title screen"
 		pixelated
 	/>
@@ -84,7 +87,7 @@ And here are some tiles that make up this screen as shown in a [tile viewer I cr
 
 <figure>
 	<img
-		src={require('./rbffTilesInViewer.png')}
+		src={require('./rbffTilesInViewer.png').default.src}
 		alt="Real Bout Fatal Fury tiles loaded into the tile viewer"
 	/>
 	<figcaption>
@@ -106,7 +109,7 @@ Why are the tiles in the viewer a strange blue/tan color? Because tiles are stor
 
 <figure>
 	<img
-		src={require('./tileCloseup.png')}
+		src={require('./tileCloseup.png').default.src}
 		alt="Real Bout Fatal Fury tiles up close in the tile viewer"
 		pixelated
 	/>
@@ -119,7 +122,7 @@ Storing the tile data separate from the palettes lets the developer get more use
 
 <figure>
 	<img
-		src={require('./rbffSameCharacters.png')}
+		src={require('./rbffSameCharacters.png').default.src}
 		alt="Playing Real Bout Fatal Fury with both players using the same character"
 		pixelated
 	/>
@@ -216,7 +219,10 @@ Then I told Emscripten to [export these functions during the build](https://gith
 These functions let me poke around in the Neo Geo's memory from JavaScript. Since memory is constantly changing, it only makes sense to reach in when the emulator is paused. Once the background I am interested in gets loaded in the game, I then pause the emulator, and the tool will dump all the current sprites down into a tray at the bottom.
 
 <figure>
-	<img src={require('./tray.png')} alt="the sprite tray in the tool" />
+	<img
+		src={require('./tray.png').default.src}
+		alt="the sprite tray in the tool"
+	/>
 	<figcaption>The sprite tray in the tool</figcaption>
 </figure>
 

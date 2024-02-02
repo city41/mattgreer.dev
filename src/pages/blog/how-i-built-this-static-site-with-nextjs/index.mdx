@@ -2,27 +2,44 @@ import { Article } from '../../../components/layouts/Article';
 import meta from './meta.json';
 
 export const config = {
-    unstable_runtimeJS: false
-}
+	unstable_runtimeJS: false,
+};
 
-export default ({ children }) => <Article {...meta} img={require('./feature.svg')} socialMediaImg={require('./twitter.png')}
-                                          intro="If you poke around this site's source, you will only find HTML and CSS. But I built it with Next.JS, a React framework. Seems odd? Here's how (and why).">
-    {children}</Article>
+export default ({ children }) => (
+	<Article
+		{...meta}
+		img={require('./feature.svg').default.src}
+		socialMediaImg={require('./twitter.png').default.src}
+		intro="If you poke around this site's source, you will only find HTML and CSS. But I built it with Next.JS, a React framework. Seems odd? Here's how (and why)."
+	>
+		{children}
+	</Article>
+);
 
 ## Some quick terminology
 
 Some common HTML rendering terms
 
-* **Client Side Rendering:** <span class="text-fg-fade">(CSR)</span> This is the default way React renders all HTML, inside the user's browser.
-* **Server Side Rendering:** <span class="text-fg-fade">(SSR)</span> With SSR a server is used to build the page when a user requests it. The page gets rendered on the server, but deciding what to render can happen on the fly.
-* **Static Site Generation:** <span class="text-fg-fade">(SSG)</span> SSG has the pages render their HTML at build time. They then get served up to users as plain old HTML files.
+- **Client Side Rendering:** <span class="text-fg-fade">(CSR)</span> This is the default way React renders all HTML, inside the user's browser.
+- **Server Side Rendering:** <span class="text-fg-fade">(SSR)</span> With SSR a server is used to build the page when a user requests it. The page gets rendered on the server, but deciding what to render can happen on the fly.
+- **Static Site Generation:** <span class="text-fg-fade">(SSG)</span> SSG has the pages render their HTML at build time. They then get served up to users as plain old HTML files.
 
 ## A standard Next.JS site
 
 If you take a look at this site's [codebase](https://github.com/city41/mattgreer.dev), you'll find a very typical Next.JS site. In order to keep the site static, I ensure every page is capable of using SSG, which mostly boils down to never using [`getServerSideProps`](https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering). Its presence tells Next a page should use SSR.
 
 <wisdom>
-    If you want to know more, Next has good documentation. Their <a href="https://nextjs.org/learn/basics/create-nextjs-app">Create a Next.JS App tutorial</a> will get you familiar with Next itself, then from there you can learn about how to do <a href="https://nextjs.org/docs/basic-features/pages#static-generation-recommended">SSG here</a> and <a href="https://nextjs.org/docs/basic-features/data-fetching">SSR here</a>.
+	If you want to know more, Next has good documentation. Their{' '}
+	<a href="https://nextjs.org/learn/basics/create-nextjs-app">
+		Create a Next.JS App tutorial
+	</a>{' '}
+	will get you familiar with Next itself, then from there you can learn about
+	how to do{' '}
+	<a href="https://nextjs.org/docs/basic-features/pages#static-generation-recommended">
+		SSG here
+	</a>{' '}
+	and{' '}
+	<a href="https://nextjs.org/docs/basic-features/data-fetching">SSR here</a>.
 </wisdom>
 
 ## next export
@@ -41,21 +58,26 @@ Hydration is wasteful and not needed if the page is truly static. You can tell N
 
 ```typescript
 export const config = {
-    unstable_runtimeJS: false
+	unstable_runtimeJS: false,
 };
 ```
 
 [Here is an example](https://github.com/city41/mattgreer.dev/blob/main/pages/about.tsx#L4).
 
 <pitfall>
-    This is prefixed with unstable because this config setting <a href="https://github.com/vercel/next.js/pull/11949">was recently introduced</a>. It is experimental at this point and likely to change, I would not recommend it for anything mission critical.
+	This is prefixed with unstable because this config setting{' '}
+	<a href="https://github.com/vercel/next.js/pull/11949">
+		was recently introduced
+	</a>
+	. It is experimental at this point and likely to change, I would not recommend
+	it for anything mission critical.
 </pitfall>
 
 With this config in place, the page will only have HTML, CSS and any bespoke JavaScript you add yourself (more on this below).
 
 ## Using Next's Link component
 
-Normally, Next's `<Link>` is how you link between pages in your app. Using it for a fully static site is questionable though, as it ends up doing nothing at all. If you do use it, keep in mind you *must* set the `passHref` prop
+Normally, Next's `<Link>` is how you link between pages in your app. Using it for a fully static site is questionable though, as it ends up doing nothing at all. If you do use it, keep in mind you _must_ set the `passHref` prop
 
 ```typescript tsx
 <Link href="http://zombo.com" passHref>
@@ -71,9 +93,7 @@ With React removed, I need to add JS myself for any interactivity I want. At the
 
 To do this, I write the needed JavaScript in a standalone file, and then bring it into the page with `dangerouslySetInnerHTML`.
 
-<wisdom>
-    It's not very dangerous as it is being done at build time.
-</wisdom>
+<wisdom>It's not very dangerous as it is being done at build time.</wisdom>
 
 ```typescript tsx
 import React from 'react';
@@ -104,17 +124,15 @@ export { BespokeJavaScript };
 
 Then somewhere else, I just add it to the page as a standard React component, ie `<BespokeJavaScript/>`
 
-
-
 ### Downsides and Gotchas
 
 This approach has several problems, some more thought is needed.
 
-* The JavaScript gets inlined into every page that needs it. Every page on this site has its own copy of the theme switcher code. Since it's very short, I don't mind *too much* in this case.
+- The JavaScript gets inlined into every page that needs it. Every page on this site has its own copy of the theme switcher code. Since it's very short, I don't mind _too much_ in this case.
 
-* The bespoke code does not get minimized or polyfilled. If you look at the source for this page, you can see the theme switcher code almost exactly as I wrote it, whitespace and all.
+- The bespoke code does not get minimized or polyfilled. If you look at the source for this page, you can see the theme switcher code almost exactly as I wrote it, whitespace and all.
 
-* Also, Next does not understand this code. During development, it does not get updated with fast refresh, and I also need to account for dev mode in the code itself. This admittedly is a pretty annoying gotcha.
+- Also, Next does not understand this code. During development, it does not get updated with fast refresh, and I also need to account for dev mode in the code itself. This admittedly is a pretty annoying gotcha.
 
 I might plug away at this more and see if I can make improvements. But since my bespoke JS is so minimal, I'm not too bothered (yet...). I am also going to wait to see how [server side components](https://reactjs.org/blog/2020/12/21/data-fetching-with-react-server-components.html) play out, as they may impact my approach.
 
@@ -124,6 +142,6 @@ I might plug away at this more and see if I can make improvements. But since my 
 
 ## I like it
 
-So far I *really* like this approach to building websites. React and Next offer such an excellent development experience. My HTML is always properly formed. I get type checking with TypeScript. I can extract commonalities into components. I don't have to worry as much about pulling in large libraries (such as the syntax highlighting library), as only the resulting HTML is saved. I can also use Next plugins to accomplish common tasks such as image minification.
+So far I _really_ like this approach to building websites. React and Next offer such an excellent development experience. My HTML is always properly formed. I get type checking with TypeScript. I can extract commonalities into components. I don't have to worry as much about pulling in large libraries (such as the syntax highlighting library), as only the resulting HTML is saved. I can also use Next plugins to accomplish common tasks such as image minification.
 
 Not to mention all of the standard "no JavaScript" bonuses apply too: better SEO, usually more performant, no need to worry about client side routing snafus, Hacker News doesn't yell at you, etc.

@@ -2,13 +2,19 @@ import { Article } from '../../../components/layouts/Article';
 import meta from './meta.json';
 
 export const config = {
-    unstable_runtimeJS: false
-}
+	unstable_runtimeJS: false,
+};
 
-export default ({ children }) => <Article {...meta} img={require('./feature.svg')} socialMediaImg={require('./twitter.png')}
-                                                    intro="SVG is still a pretty strange beast in browsers. I'm intrigued by it, but still haven't found a truly killer way to bend it to my will. I've used D3 and other libraries in the past and enjoyed them, but I feel like SVG's potential still has yet to be really unlocked. Can Clojure macros and Reagent be helpful with SVG?">
-    {children}
-</Article>
+export default ({ children }) => (
+	<Article
+		{...meta}
+		img={require('./feature.svg').default.src}
+		socialMediaImg={require('./twitter.png').default.src}
+		intro="SVG is still a pretty strange beast in browsers. I'm intrigued by it, but still haven't found a truly killer way to bend it to my will. I've used D3 and other libraries in the past and enjoyed them, but I feel like SVG's potential still has yet to be really unlocked. Can Clojure macros and Reagent be helpful with SVG?"
+	>
+		{children}
+	</Article>
+);
 
 ## React and Reagent's SVG support
 
