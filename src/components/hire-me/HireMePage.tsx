@@ -12,7 +12,7 @@ function HireMePage() {
 			title="Let's work together"
 			img={laptopSvg}
 			imgAlt="Illustration of a laptop"
-			socialMediaImg={laptopPng}
+			socialMediaImg={laptopPng.src}
 			metaDescription="I'm an independent frontend engineer. Let's work together."
 			navigation
 			headerContentUnderTitle

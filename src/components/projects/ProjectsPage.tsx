@@ -27,7 +27,7 @@ function ProjectsPage({ tag, allTags, items }: ProjectsPageProps) {
 			headTitle="Projects"
 			metaDescription="Things I have created, mostly webapps"
 			img={laptopSvg}
-			socialMediaImg={laptopPng}
+			socialMediaImg={laptopPng.src}
 			imgAlt="Illustration of a laptop"
 			navigation
 			headerContent={headerContent}

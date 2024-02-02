@@ -26,7 +26,7 @@ function FocalColorLink({
 	const targetProps = target ? { target } : {};
 
 	return (
-		<Link href={href} passHref>
+		<Link href={href} passHref legacyBehavior>
 			<a
 				className={clsx(className, styles.FocalColorLink, 'text-focal')}
 				title={title}

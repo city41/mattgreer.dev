@@ -20,7 +20,7 @@ function AboutPage() {
 		<Root
 			title="About Me"
 			img={michiganSvg}
-			socialMediaImg={michiganPng}
+			socialMediaImg={michiganPng.src}
 			imgAlt="Illustration of the state of Michigan"
 			metaDescription="Some background about me and this website"
 			navigation

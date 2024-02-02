@@ -1,6 +1,5 @@
 import React from 'react';
 import clsx from 'clsx';
-import { FocalColorLink } from '../FocalColorLink';
 import { Head } from '../layouts/Head';
 import { Navigation } from '../Navigation';
 import { Feature } from '../Feature';

@@ -27,7 +27,7 @@ function BlogPage({ tag, allTags, items }: BlogPageProps) {
 			headTitle="Blog"
 			metaDescription="My blog, mostly focused on game and web dev"
 			img={laptopSvg}
-			socialMediaImg={laptopPng}
+			socialMediaImg={laptopPng.src}
 			imgAlt="Illustration of a laptop"
 			navigation
 			headerContent={headerContent}

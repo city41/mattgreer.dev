@@ -9,7 +9,7 @@ type FiddleProps = {
 
 function Fiddle({ className, children }: FiddleProps) {
 	return (
-		<Link href={`https://jsfiddle.net/${children}`} passHref>
+		<Link href={`https://jsfiddle.net/${children}`} passHref legacyBehavior>
 			<a
 				className="inline-flex flex-row items-center bg-focal text-white px-4 py-2 my-2"
 				rel="noopener"
