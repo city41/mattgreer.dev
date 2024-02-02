@@ -54,7 +54,7 @@ function IndexPage({ items }: IndexPageProps) {
 			<div className="hidden sm:block sm:ml-16 -mb-4">
 				<img
 					className="w-16 sm:w-24"
-					src={otterSvg}
+					src={otterSvg.src}
 					alt="a cartoon otter"
 					width={96}
 					height={37}

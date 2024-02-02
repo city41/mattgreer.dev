@@ -10,7 +10,7 @@ function HireMePage() {
 	return (
 		<Root
 			title="Let's work together"
-			img={laptopSvg}
+			img={laptopSvg.src}
 			imgAlt="Illustration of a laptop"
 			socialMediaImg={laptopPng.src}
 			metaDescription="I'm an independent frontend engineer. Let's work together."

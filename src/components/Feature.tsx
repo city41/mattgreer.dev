@@ -28,7 +28,7 @@ function Feature({
 	url,
 	tags,
 }: FeatureProps) {
-	const img = require(`../pages/${classification}/${slug}/${imgFile}`);
+	const img = require(`../pages/${classification}/${slug}/${imgFile}`).default;
 
 	const external = url.startsWith('http');
 	const linkProps = external ? { rel: 'noopener', target: '_blank' } : {};
@@ -49,7 +49,7 @@ function Feature({
 						className={clsx('block w-full h-full', {
 							[pixelatedStyles.pixelated]: pixelateImage,
 						})}
-						src={img}
+						src={img.src}
 						width={384}
 						height={384}
 						alt={imgAlt}

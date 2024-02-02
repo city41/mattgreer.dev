@@ -26,7 +26,7 @@ function BlogPage({ tag, allTags, items }: BlogPageProps) {
 		<Root
 			headTitle="Blog"
 			metaDescription="My blog, mostly focused on game and web dev"
-			img={laptopSvg}
+			img={laptopSvg.src}
 			socialMediaImg={laptopPng.src}
 			imgAlt="Illustration of a laptop"
 			navigation
