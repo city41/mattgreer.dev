@@ -341,7 +341,7 @@ end
 mem_handler = mem:install_write_tap(address, address + 1, "writes", on_memory_write)
 ```
 
-Now running Puzzle Bobble with this script, the shooter is locked at 10 degrees and won't budge. The write tap is intercepting the memory write and forcing the write to have a different value. So despite the game's efforts, the shooter angle will always be 10 when this script is active. So without a doubt, `108212` is where the shooter angle is stored.
+Now running Puzzle Bobble with this script, the shooter is locked at 10 degrees and won't budge. The write tap is intercepting the memory write and forcing the write to have a different value. So despite the game's efforts, the shooter angle will always be 10 when this script is active. So without a doubt, `108262` is where the shooter angle is stored.
 
 Again a simple example, but I have written complex Lua scripts that have really helped me figure out something about the game, reproduce a bug, or just explore the game. Early on in my exploration I noticed the game uses about 100 bytes or so, and a lot of those bytes I had no idea what they did. So I wrote a script that would one at a time, prevent writes to each byte. Then when I ran the game, sometimes it was obvious what the byte was for. I also wrote scripts to help confirm my ROM hack is working as I expected.
 
@@ -359,7 +359,7 @@ I have started a repo collecting Neo Geo Lua scripts [here](https://github.com/c
 
 ## Conclusion
 
-With the debugger and Lua in hand, I am shocked how easy it is to figure a Neo Geo game out. There aren't many Neo geo ROM hacks, so hopefully these tools will mean more in the future. Thanks to the MAME team for such useful tools.
+With the debugger and Lua in hand, I am shocked how easy it is to figure a Neo Geo game out. There aren't many Neo Geo ROM hacks, so hopefully these tools will mean more in the future. Thanks to the MAME team for such useful tools.
 
 ## Cheat Sheet
 
