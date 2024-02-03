@@ -4,7 +4,7 @@
         <title>Matt Greer</title>
         <link>https://mattgreer.dev</link>
         <description>Mostly web dev related articles</description>
-        <lastBuildDate>Fri, 03 Nov 2023 14:38:29 GMT</lastBuildDate>
+        <lastBuildDate>Fri, 02 Feb 2024 16:16:14 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
@@ -15,6 +15,14 @@
         </image>
         <copyright>Copyright Matt Greer</copyright>
         <atom:link href="https://mattgreer.dev/feed.xml" rel="self" type="application/rss+xml"/>
+        <item>
+            <title><![CDATA[MAME Debugging Tips]]></title>
+            <link>https://mattgreer.dev/blog/mame-debugging-tips</link>
+            <guid>https://mattgreer.dev/blog/mame-debugging-tips</guid>
+            <pubDate>Fri, 02 Feb 2024 00:00:00 GMT</pubDate>
+            <description><![CDATA[Here are some tips to use the MAME debugger more effectively]]></description>
+            <author>matt.e.greer@gmail.com (Matt Greer)</author>
+        </item>
         <item>
             <title><![CDATA[Discerning the Super Metroid Map with BizHawk and Lua]]></title>
             <link>https://mattgreer.dev/blog/discerning-the-super-metroid-map-with-bizhawk-and-lua</link>

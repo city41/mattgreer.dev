@@ -1,0 +1,10 @@
+{
+	"title": "MAME Debugging",
+	"date": "2024-02-02",
+	"type": "technical article",
+	"tags": ["Debugging", "Reverse engineering", "Retro gaming"],
+	"description": [
+		"Here are some tips and a small guide on how to use MAME for debugging more effectively"
+	],
+	"imgAlt": "M from the MAME logo"
+}
