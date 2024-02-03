@@ -27,7 +27,7 @@ I've been working on a ROM hack for the Neo Geo game Puzzle Bobble (video on it 
 Games usually run at 60 frames per second and do a _massive_ amount of stuff very rapidly.
 At first they're pretty much a complete brickwall; so much is going on, so many things
 are changing, and either waaaaaay too fast if you let the game run on its own, or
-waaaaaaay to slowly if you step through it line by line. Trying to learn anything
+waaaaaaay too slowly if you step through it line by line. Trying to learn anything
 at all about them is _very_ hard. This is where MAME comes in. The debugger and its
 Lua scripting offer tactics you can use to spot patterns, find interesting and relevant
 changes, and test theories. Frankly before tools like this existed I have no idea
@@ -111,7 +111,7 @@ For example here I am looking at memory around `108212` while Puzzle Bobble's ma
 
 ## The Cheat debugger
 
-The cheat debugger is very useful, and often your first stop to understand something about a game. It was made to allow the creation of cheats like "infinite lives" or "invicibility", and cheats are almost always just manipulating the game's running memory to pull off the effect.
+The cheat debugger is very useful, and often your first stop to understand something about a game. It was made to allow the creation of cheats like "infinite lives" or "invincibility", and cheats are almost always just manipulating the game's running memory to pull off the effect.
 
 My ROM hack changes the controls from using the joystick to using a rotary dial. So to get started, I wanted to know where the game stores the shooter's angle.
 
@@ -164,7 +164,7 @@ Address=108263 Start=00 Current=0E
 Address=10826D Start=00 Current=07
 ```
 
-`Start` is what the value at that address was when you first started the cheat system, way back with `cheatinit ub`. When I look through the changes, one in particular seems supsicious, `108263` because
+`Start` is what the value at that address was when you first started the cheat system, way back with `cheatinit ub`. When I look through the changes, one in particular seems suspicious, `108263` because
 
 - It has a small value, which I would expect as the angle of the shooter is small
 - It only increased each time, and only by a little bit, which matches with how I pressed right on the joystick
@@ -180,7 +180,7 @@ All breakthroughs I have made in understanding the game first started with the c
 
 Watchpoints let you break into the debugger whenever memory is written to or read from. By itself this is rarely useful, because games interact with RAM _very_ quickly.
 
-A simple watchpoint would be `wpset 108262,1,w`. This will break into the debugger whenever Puzzle Bobble updates the shooter's angle.
+A simple watchpoint would be `wpset 108262,1,w`. This will break into the debugger whenever Puzzle Bobble updates the shooter's angle. This is a great next step, because I want to start zeroing on the part of the code that is making shooter angle changes.
 
 Watchpoints are more powerful and interesting when you add in conditions and actions. For example, `wpset 108262,1,w,b@10fd96 != 0` This says "break into the debugger whenever 108262 is written to, and the byte at 10fd96 is not zero". `10fd96` on the Neo Geo is `BIOS_P1CURRENT`, a byte storing the current state of the joystick. If it's not zero, that means some kind of input has been received. Now when you run the game, it will only break back into the debugger when you first press right on the joystick.
 
@@ -230,7 +230,7 @@ vblank ack
 
 This is very useful information! "vblank ack" is just telling me a frame just started, so I know the next lines that follow are happening sequentially. Without the "vblank ack", the other 5 lines would just be repeated over and over and I wouldn't really be able to tell which happened first within a frame.
 
-This tells me that `2E9BA` is updating `108212` (this value is how far the shooter should move based on input. So if the player pressed right, this will be `1` to indicate the shooter should move one degree to the right). And then the other locations are reading in that value and doing things accordingly (like moving the shooter, changing animations, etc).
+This tells me that `2E9BA` is updating `108212` (this value is how far the shooter should move based on input. So if the player pressed right, this will be `1` to indicate the shooter should move one degree to the right). And then the other locations are reading in that value and doing things accordingly (like actually moving the shooter, changing animations, etc).
 
 My ROM hack is about changing the input from using a joystick to a rotary dial. So I knew once `2E9BA` sets the shooter delta, I could safely inject my own code that would re-set the shooter delta based on what the rotary dial is doing, as long as I injected it before `2F5C4` and the rest read the value. I successfuly did that, and now my ROM hack allows the shooter to change using rotary controls, and the game really has no idea, everything else "just works" because this output told me no one else anywhere is changing this value. Having your hack "play along" with the rest of the game as much as possible is good, as you will get less bugs that way.
 
@@ -269,9 +269,9 @@ Whenever the game hits `2f602`, print out the current value of `108212` to the s
 02F60C: bgt $2f63e
 ```
 
-Here I am currently paused at `2F60C`, but what is going on? Where am I? The history helps. We can follow it back and find that at `2EA4A` it did `bsr $2f602`. `bsr` is "branch to subroutine", and one way a subroutine can get called. And if you look in the history the PC went from `2EA4A` to `2F602`, showing the jump into the subroutine. This is very useful because it is showing where a subroutine starts. Usually subroutines do one thing, or if they do more than one thing, they are usually related to each other (usually...) So finding the start of a subroutine and just focusing on that one routine and figuring out what it does is a big step foward in understanding the game.
+Here I am currently paused at `2F60C`, but what is going on? Where am I? The history helps. We can follow it back and find that at `2EA4A` it did `bsr $2f602`. `bsr` is "branch to subroutine", and one way a subroutine can get called. And if you look in the history the PC went from `2EA4A` to `2F602`, showing the jump into the subroutine. This is very useful because it is showing where a subroutine starts. Usually subroutines do one thing, or if they do more than one thing, they are usually related to each other (usually...) So finding the start of a subroutine and just focusing on that one routine and figuring out what it does is a big step foward in understanding the game. One subroutine at a time...
 
-Now that I know the subroutine starts at `2f602`, I can set a breakpoint there, and then step through the entire routine and begin to pick apart what it is doing. Or I can do `dasm subroutine.txt,2f602,<length>` and save the subroutine into a file, then pick apart what it is doing offline. [Here](https://github.com/city41/rotary-bobble/blob/main/decompiles/setAngle.asm) is my picking apart of the subroutine at `2f602`. Spoiler alert, it's job is to take the delta value stored at `108212`, usually -1, 0, or 1, and add that to the shooter angle (ie, go from say 24 to 25, `shooterAngle = shooterAngle + delta`) to cause the shooter to move in response to input.
+Now that I know the subroutine starts at `2f602`, I can set a breakpoint there, and then step through the entire routine and begin to pick apart what it is doing. Or I can do `dasm subroutine.txt,2f602,<length>` and save the subroutine into a file, then pick apart what it is doing offline. [Here](https://github.com/city41/rotary-bobble/blob/main/decompiles/setAngle.asm) is my picking apart of the subroutine at `2f602`. Spoiler alert, its job is to take the delta value stored at `108212`, usually -1, 0, or 1, and add that to the shooter angle (ie, go from say 24 to 25, `shooterAngle = shooterAngle + delta`) to cause the shooter to move in response to input.
 
 ### Other stuff
 
