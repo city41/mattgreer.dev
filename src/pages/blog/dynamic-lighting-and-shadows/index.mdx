@@ -36,14 +36,14 @@ export default ({ children }) => (
 
 ## Part one: dynamic lighting
 
-I was inspired by [this post](http://www.reddit.com/r/gamedev/comments/115f3y/how_to_dynamic_lighting_on_sprites/) on Reddit, where aionskull used normal maps in Unity to dynamically light up his sprites. gpillow also posted in the comments how he had done [something similar](https://love2d.org/forums/viewtopic.php?f=5&t=11076) in Love2D. <a href={require('./pixel_shading.gif')}>Here's a large gif illustrating gpillow's results</a>. I'd just include the gif here, but it's 8 megs. Thanks to jusksmit for making the gif.
+I was inspired by [this post](http://www.reddit.com/r/gamedev/comments/115f3y/how_to_dynamic_lighting_on_sprites/) on Reddit, where aionskull used normal maps in Unity to dynamically light up his sprites. gpillow also posted in the comments how he had done [something similar](https://love2d.org/forums/viewtopic.php?f=5&t=11076) in Love2D. <a href={require('./pixel_shading.gif').default.src}>Here's a large gif illustrating gpillow's results</a>. I'd just include the gif here, but it's 8 megs. Thanks to jusksmit for making the gif.
 
 So, what is dynamic lighting? It's a 3D graphics technique where a light source lights up objects in the scene. It's dynamic as the lighting effects update in real time as the light source moves around. This is pretty standard stuff in the 3D world and easy to translate into a 2D environment, assuming you can take advantage of shaders.
 
 The key is the angle the light hits a surface indicates how much the surface lights up.
 
 <img
-	src={require('./lighting.gif')}
+	src={require('./lighting.gif').default.src}
 	alt="lighting diagram showing how the angle of a light source influences how brightly something lights up"
 />
 
@@ -118,11 +118,17 @@ The other key piece of info the shader receives is the _height map_ for the worl
 
 So starting at the current pixel and using `xyAngle`, we move over just a bit towards the sun in the x/y direction. Using the height map, we figure out how tall the pixel is at this location. If the pixel here is the same height or lower, then we keep moving towards the sun until we find a pixel that is taller than the current pixel.
 
-<img src={require('./xyAngle.gif')} alt="how xy angle is interpreted" />
+<img
+	src={require('./xyAngle.gif').default.src}
+	alt="how xy angle is interpreted"
+/>
 
 Once we find a pixel that has some height to it, we need to see if it's tall enough to block the sun. Using `zAngle`, we determine how tall this pixel needs to be to block the sun:
 
-<img src={require('./zAngle.gif')} alt="how z angle is interpreted" />
+<img
+	src={require('./zAngle.gif').default.src}
+	alt="how z angle is interpreted"
+/>
 
 If it is tall enough, we are done, this pixel is in the shade. Otherwise we keep going. Eventually we give up and declare the pixel to be in the sun (currently I have that hard coded to 100 steps, which so far is working well)
 
