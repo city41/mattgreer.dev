@@ -298,7 +298,7 @@ Lua scripts can also be used to create [plugins](https://docs.mamedev.org/plugin
 
 Here is a very simple Lua script for Puzzle Bobble that will cause the shooter to move 4 times faster than normal
 
-```Lua
+```lua
 cpu = manager.machine.devices[":maincpu"]
 mem = cpu.spaces["program"]
 
@@ -324,7 +324,7 @@ Now when pressing left or right, the shooter moves at 4 times its normal speed. 
 
 I use Lua scripts to help test theories I have devised. For example, once I figured out the shooter angle is at memory address `108262`, I made this tiny script to help confirm that
 
-```Lua
+```lua
 cpu = manager.machine.devices[":maincpu"]
 mem = cpu.spaces["program"]
 
