@@ -1,0 +1,10 @@
+{
+	"title": "Neo Geo ROM Hacking Guide Part 2: Changing Graphics",
+	"date": "2024-02-10",
+	"type": "technical article",
+	"tags": ["Rom hacking", "Reverse engineering", "Retro gaming"],
+	"description": [
+		"Let's see how we can alter a game's graphics in part 2 of my Neo Geo ROM hacking guide."
+	],
+	"imgAlt": "The Neo Geo logo"
+}

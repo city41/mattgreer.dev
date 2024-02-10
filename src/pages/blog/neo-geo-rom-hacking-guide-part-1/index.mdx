@@ -1,0 +1,107 @@
+import { Article } from '../../../components/layouts/Article';
+import meta from './meta.json';
+
+export const config = {
+	unstable_runtimeJS: false,
+};
+
+export default ({ children }) => (
+	<Article
+		{...meta}
+		img={require('./feature.svg').default.src}
+		socialMediaImg={require('./twitter.png').default.src}
+		intro="Let's get started learning how to make Neo Geo ROM hacks."
+	>
+		{children}
+	</Article>
+);
+
+My [ROM hack for Puzzle Bobble](https://github.com/city41/rotary-bobble) is now complete. I am still working on the hardware aspect of it (it needs a custom controller), and I need to clean it up and make it easy for others to use it. But the code itself is completely done. I figured while it's still fresh in my mind, I'd make a guide on how to hack Neo Geo ROMs. Something that isn't done very much. Maybe this little guide will help change that.
+
+A ROM hack is about taking an existing game and changing how it behaves. You almost never have the source code or really any helpful information about the game. So it's a challenging thing to do involving lots of reverse engineering and assembly. But it's fun and satisfying when you make break throughs. For example my Puzzle Bobble ROM hack adds rotary controls to the game, allowing you to play it with a dial instead of a joystick (here is a [quick video](https://www.youtube.com/watch?v=buq1Kh65goU) on it).
+
+Today I'll go over general things you should be familiar with and tools you should learn before really getting into making a Neo Geo hack.
+
+## MAME's debugging tools
+
+MAME's debugger and its Lua scripting are absolute game changers. Once you get a feel for these, you can really see what a game is up to. It's like having a super power. I have written a separate [post](/blog/mame-debugging) on these tools. The more comfortable you are with these two, the easier it will be to create a hack.
+
+## Hexadecimal
+
+Hexadecimal (hex) is a different way to represent numbers. Instead of base 10 like we are all used to, hex is base 16. If you've never used hex before, it's best to get familiar with it before starting out. For example, all numbers in MAME's debugger are in hex. At first it's super foreign and frustrating, but hex makes more sense for computers. Eventually you might even come to prefer numbers be in hex. [Here](https://www.techtarget.com/whatis/definition/hexadecimal) is a guide on hex.
+
+## 68k Assembly
+
+The Neo Geo's main CPU is the Motorola 68000. You're going to be reading a lot of 68k assembly. Assembly is a slightly more human readable version of the CPU's machine code. Which is welcomed, because machine code is just numbers. For sure, `move.w -(a6),$c2edd3f7` is pretty cryptic, but it's way better than `33e6 c2ed d3f7`. When looking at a game in MAME's debugger, it will show a disassembly of the machine code into assembly. Thank you MAME, having disassembly of the entire game handy like this is very useful!
+
+<figure>
+	<img
+		src={require('../mame-debugging/dasmWindow.png').default.src}
+		alt="MAME's disassembly window"
+	/>
+	<figcaption>MAME's disassembly window</figcaption>
+</figure>
+
+If you're new to programming, assembly is a very difficult place to start. It's not impossible though if you are determined. There are tutorials like [Markey Jester's](https://mrjester.hapisan.com/04_MC68/) that can help a lot. If you are experienced with coding, you might just find Googling opcodes you're not familiar with is enough. That's what I did. It was slow going at first, but after a while you learn the most common ones and then it's pretty smooth.
+
+### Hand assembled games
+
+I suspect most (if not all) commercial Neo Geo games were hand assembled. That means the developer wrote the game in assembly, instead of a higher level language like C. Puzzle Bobble was almost certainly made this way, as the assembly is simpler and more straightfoward than what a compiler will generally produce. This is great, it makes following along much easier.
+
+## Get to know the Neo Geo
+
+Understanding how the Neo Geo works is key to successfully ROM hacking. In some ways it's a nice a system to hack on, because the BIOS and hardware design provide a bit of structure that all games follow. That structure can be a jumping off point into understanding what a game is doing.
+
+For example, there is `BIOS_USER_MODE`, a byte in memory that indicates what phase the game is currently running: initialization (value 0), demo (aka attract mode) and the title screen (value 1), and finally, the main game mode (value 2). I wanted my hack to write a version string for a couple of seconds when the game boots up. I found a good place to inject this by watching the game change `BIOS_USER_MODE` to 1. That told me the demo/title phase was just starting, and I was then able to find a good place to hook my string in.
+
+<figure>
+	<img
+		src={require('./versionString.png').default.src}
+		alt="My ROM hack showing its version at game start"
+	/>
+	<figcaption>My ROM hack showing its version at game start</figcaption>
+</figure>
+
+So how do you start to learn the Neo's internals? Well, unfortunately this is tougher than on most systems as documentation is sparser. Here are some things to try
+
+### ngdevkit
+
+Damien Ciabrini's [ngdevkit](https://github.com/dciabrin/ngdevkit) allows you to write Neo Geo programs in C. Getting it installed, then compiling and running each of the [examples](https://github.com/dciabrin/ngdevkit-examples) is a good place to start, especially if you are comfortable with C.
+
+I am writing a [book](https://neogeobook.mattgreer.dev/book) on Neo Geo development using ngdevkit. It is far from done, so it's not a great resource (yet) for actually making a Neo Geo game. But it's better than nothing. The first eight chapters are fleshed out enough to be useful I think.
+
+### Learn 68000 Assembly video series by ChibiAkumas
+
+ChibiAkumas has a [video series](https://www.youtube.com/playlist?list=PLp_QNRIYljFogkZFsa4TuvLW6ih1BbWG5) on Neo Geo development using assembly. I've not watched the whole thing, but the parts I have seen were good.
+
+### My YouTube videos
+
+My own [Neo Geo YouTube videos](https://www.youtube.com/watch?v=WTe4LaENZgE&list=PLHpd9DwlchgPu2K79NnMZThUABkm1zSpy) are another thing to try. My videos don't go into code at all, they are high level and really more for entertainment. But they do cover Neo Geo concepts and are a decent place to get some basics in. My videos are pretty uhhhh rough :) I'm not the best YouTube creator, but they get the job done.
+
+### Neo Geo Development Wiki
+
+The [wiki](https://wiki.neogeodev.org/index.php?title=Main_Page) is the bible of Neo Geo development. It has a plethora of information; just about everything is there. But there is a huge catch. It's really a reference, not much of a guide. If you don't know what to look for, the wiki is rarely helpful. Its information is terse and mechanical. But once you get some Neo geo chops in, the wiki becomes indispensable.
+
+Remember up above I mentioned `BIOS_USER_MODE`? [Here](https://wiki.neogeodev.org/index.php?title=BIOS_RAM_locations) is the page on it in the wiki. Yeah this page just has a quick sentence on each BIOS value. Not very useful if you're new. But when I made my hack, I refered to this page all the time.
+
+### Neo Geo MAME Lua Scripts
+
+[This repo](https://github.com/city41/ngDebugScripts) houses some Lua scripts I have written for the Neo Geo. Its README explains how to use them. Just playing with them, and trying tweaks on them is a good way to start learning how the Neo Geo works. Getting a feel for altering games as they run via these Lua scripts is very useful. I made [a bunch of them](https://github.com/city41/rotary-bobble/tree/main/src/lua) throughout making my ROM hack.
+
+<figure>
+	<img
+		src={require('./spriteLengthAndFixLayer_running.png').default.src}
+		alt="the spriteLengthAndFixLayer Lua script running on Baseball Stars 2"
+	/>
+	<figcaption>
+		the spriteLengthAndFixLayer Lua script running on Baseball Stars 2
+	</figcaption>
+</figure>
+
+### And finally, the rest of this guide
+
+In the upcoming parts of this guide, I'll walk through how to do specific things like change a game's graphics and change its logic.
+
+## Conclusion
+
+Well this part was short and simple. Onto [part 2](/blog/neo-geo-rom-hacking-guide-part-2), where we dive into how to change a game's graphics.

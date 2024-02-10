@@ -4,7 +4,7 @@
         <title>Matt Greer</title>
         <link>https://mattgreer.dev</link>
         <description>Mostly web dev related articles</description>
-        <lastBuildDate>Fri, 02 Feb 2024 16:16:14 GMT</lastBuildDate>
+        <lastBuildDate>Sat, 10 Feb 2024 16:01:25 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
@@ -16,11 +16,27 @@
         <copyright>Copyright Matt Greer</copyright>
         <atom:link href="https://mattgreer.dev/feed.xml" rel="self" type="application/rss+xml"/>
         <item>
-            <title><![CDATA[MAME Debugging Tips]]></title>
-            <link>https://mattgreer.dev/blog/mame-debugging-tips</link>
-            <guid>https://mattgreer.dev/blog/mame-debugging-tips</guid>
+            <title><![CDATA[Neo Geo ROM Hacking Guide Part 1: Intro and Background]]></title>
+            <link>https://mattgreer.dev/blog/neo-geo-rom-hacking-guide-part-1</link>
+            <guid>https://mattgreer.dev/blog/neo-geo-rom-hacking-guide-part-1</guid>
+            <pubDate>Sat, 10 Feb 2024 00:00:00 GMT</pubDate>
+            <description><![CDATA[Let's get started learning how to make Neo geo ROM hacks.]]></description>
+            <author>matt.e.greer@gmail.com (Matt Greer)</author>
+        </item>
+        <item>
+            <title><![CDATA[Neo Geo ROM Hacking Guide Part 2: Changing Graphics]]></title>
+            <link>https://mattgreer.dev/blog/neo-geo-rom-hacking-guide-part-2</link>
+            <guid>https://mattgreer.dev/blog/neo-geo-rom-hacking-guide-part-2</guid>
+            <pubDate>Sat, 10 Feb 2024 00:00:00 GMT</pubDate>
+            <description><![CDATA[Let's see how we can alter a game's graphics in part 2 of my Neo Geo ROM hacking guide.]]></description>
+            <author>matt.e.greer@gmail.com (Matt Greer)</author>
+        </item>
+        <item>
+            <title><![CDATA[MAME Debugging]]></title>
+            <link>https://mattgreer.dev/blog/mame-debugging</link>
+            <guid>https://mattgreer.dev/blog/mame-debugging</guid>
             <pubDate>Fri, 02 Feb 2024 00:00:00 GMT</pubDate>
-            <description><![CDATA[Here are some tips to use the MAME debugger more effectively]]></description>
+            <description><![CDATA[Here are some tips and a small guide on how to use MAME for debugging more effectively]]></description>
             <author>matt.e.greer@gmail.com (Matt Greer)</author>
         </item>
         <item>
