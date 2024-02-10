@@ -378,7 +378,7 @@ First take the words of the palette in memory and just save them, by themselves,
 
 All I did was strip out the extra stuff and just leave the word data in the file.
 
-Then do `yarn ts-node src/tools/txtPalToPngPal.ts palette.txt`, then result will be `palette.txt.png`, which looks like this (blown up)
+Then do `yarn ts-node src/tools/txtPalToPngPal.ts palette.txt`, the result will be `palette.txt.png`, which looks like this (blown up)
 
 <figure>
 	<img
@@ -388,7 +388,7 @@ Then do `yarn ts-node src/tools/txtPalToPngPal.ts palette.txt`, then result will
 	<figcaption>The dino palette</figcaption>
 </figure>
 
-The first color in the palette is black, but it's really transparent (the first color in all Neo Geo palettes is always transparent). Due to limitations in a tool we are about to use, we need to change that first color to pure magenta.
+The first color in the palette is black, but it's really transparent (the first color in all Neo Geo palettes is always transparent). Due to limitations in a tool we are about to use (my graphics tool, [sromcrom](https://github.com/city41/sromcrom), this tool is used internally by scripts in the ROM hack repo), we need to change that first color to pure magenta.
 
 <figure>
 	<img
@@ -502,7 +502,7 @@ Now with the graphic tiles in place, we can now patch the tilemaps in PROM to us
 }
 ```
 
-The first patch operation is saying "replace the data found at E2D0 with this new data". The `patchAsm` section is Motorola 68k assembly. `dc.w` is the instruction to tell the assembler to just write out some data. If you remember back when we found the tilemaps, they were located at E2D0 and E2F8. In both cases we are only replacing two tiles, the speech bubble. So we just need to swap out the first two tiles of each map.
+The first patch operation is saying "replace the data found at E2D0 with this new data". The `patchAsm` section is Motorola 68k assembly. `dc.w` is the instruction to tell the assembler to just write out some data (words in this case, hence the `.w` suffix). If you remember back when we found the tilemaps, they were located at E2D0 and E2F8. In both cases we are only replacing two tiles, the speech bubble. So we just need to swap out the first two tiles of each map.
 
 Now let's run the patch and create our hacked game
 
@@ -571,13 +571,13 @@ wrote patched rom to /home/matt/mame/roms/pbobblen.zip
 
 ### But wait...
 
-Can't we just have the hack replace the real "PUSH 2P" speech bubble graphics with the "ROM HAK" graphics? Yes we totally could. We could have had `patchRom` stick one tile at a time into the correct location in the CROM to replace the real graphics with our own. If we did that, the PROM patches would not be necessary. In this guide I did it with the PROM patches as in most real ROM hacks just replacing existing tiles won't always be feasible. Knowing about tilemaps and how to change them is useful info in general, so that's why we did it that way.
+Can't we just have the hack replace the real "PUSH 2P" speech bubble graphics with the "ROM HAK" graphics in the CROMs? Yes we totally could. We could have had `patchRom` stick one tile at a time into the correct location in the CROM to replace the real graphics with our own. If we did that, the PROM patches would not be necessary. In this guide I did it with the PROM patches as in most real ROM hacks just replacing existing tiles won't always be feasible. Knowing about tilemaps and how to change them is useful info in general, so that's why we did it that way.
 
 ## Conclusion
 
 And that's it! From here it's pretty easy to change most graphics in Neo Geo games. Different games will all do their graphics a bit differently. So part of getting good at this is getting good at MAME's debugging tools to figure out what the patch needs to be.
 
-All Neo Geo games use CROMs and they are always used in the same way. So that part of this hack will apply to any Neo Geo game. But the way games define tilemaps in the PROM will vary from game to game. You might even find a game that doesn't use tilemaps at all but has some other way of loading up the graphic tiles. That is why getting good at figuring out how a game works using MAME's debugger and Lua script is key.
+All Neo Geo games use CROMs and they are always used in the same way. So that part of this hack will apply to any Neo Geo game. But the way games define tilemaps in the PROM will vary from game to game. You might even find a game that doesn't use tilemaps at all but has some other way of loading up the graphic tiles. That is why getting good at figuring out how a game works using MAME's debugger and Lua scripting is key.
 
 ### These tools are super raw
 
