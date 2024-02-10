@@ -168,13 +168,6 @@ palettes
 --------------------
 ```
 
-<wisdom>
-	Why does it say the sprite is at (256,696)? That can't be right, that would be
-	off the screen! Strangely, a Neo Geo's sprite coordinate is defined as
-	"496-Y". So when it says 696, the Neo Geo will actually put the sprite at
-	y=200 on the screen. Yeah, I have no idea why.
-</wisdom>
-
 On the frame I paused, sprite 213 was not in use, so it's 0 tiles tall and empty. But sprite 355 has the goods. This tells us the dino's graphics are made out of tiles in the CROMs at index `8b99` and `8b91`. We can see that in the [tile viewer](https://neospriteviewer.mattgreer.dev/)
 
 <figure>
