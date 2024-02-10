@@ -24,7 +24,7 @@ function NavLink({ href, children }: { href: string; children: ReactNode }) {
 
 function Navigation({ className }: NavigationProps) {
 	const logoStyle = {
-		backgroundImage: `url(${otterSvg})`,
+		backgroundImage: `url(${otterSvg.src})`,
 		width: 32,
 		height: 32,
 	};
