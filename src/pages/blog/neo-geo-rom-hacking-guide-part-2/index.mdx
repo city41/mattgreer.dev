@@ -573,6 +573,8 @@ wrote patched rom to /home/matt/mame/roms/pbobblen.zip
 
 Can't we just have the hack replace the real "PUSH 2P" speech bubble graphics with the "ROM HAK" graphics in the CROMs? Yes we totally could. We could have had `patchRom` stick one tile at a time into the correct location in the CROM to replace the real graphics with our own. If we did that, the PROM patches would not be necessary. In this guide I did it with the PROM patches as in most real ROM hacks just replacing existing tiles won't always be feasible. Knowing about tilemaps and how to change them is useful info in general, so that's why we did it that way.
 
+Also searching for the tilemaps got us started on using the MAME debugger and Lua scripting. In part 4 we will be doing "real" prom hacks, so all of this was a good warm up for that.
+
 ## Conclusion
 
 And that's it! From here it's pretty easy to change most graphics in Neo Geo games. Different games will all do their graphics a bit differently. So part of getting good at this is getting good at MAME's debugging tools to figure out what the patch needs to be.
