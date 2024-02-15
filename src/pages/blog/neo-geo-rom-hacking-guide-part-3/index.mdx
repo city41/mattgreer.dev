@@ -107,7 +107,7 @@ But notice the address, `C16CAC`. If we take a peak at the [68k memory map](http
 The debugger is now stopped at `101C`, which is inside the game ROM. Watchpoints always break one line after the memory operation has happened, so one line after the read of `BIOS_P1CURRENT`. If we look one line up, we see
 
 ```
-001016 move.b $10fd96.l, d0
+001016 move.b $10fd96.l, D0
 ```
 
 Yup, for sure the game is reading `BIOS_P1CURRENT` and saving it into the D0 register. If you look over in the register pane, D0 should be `00000308`. Wait, `308`? `move.b` will only move a byte of data into a register at its lowest byte. Whatever was already in the register above that byte is left alone. So in D0, the `000003` part is data that was put there before, we can just ignore it. `08` is the byte that came from `BIOS_P1CURRENT`, if we write that out in binary we get `00001000`, and if we look above at the input to bits diagram, yup, that's direction right on the joystick.
@@ -186,7 +186,7 @@ if (D0 & 0x8) {
 	// neither left nor right are pressed, so do nothing
 }
 
-// leave our faked input in d0, so the game will use it
+// leave our faked input in D0, so the game will use it
 ```
 
 Subroutines in Puzzle Bobble follow a simple, unwritten rule. Whenever the game jumps to one, that subroutine is free to use the data registers in anyway it pleases. The address registers are more complex, they are used as a way to pass "parameters" to the subroutine. For example set an address in A4, jump to a subroutine, and that routine will read from and write to A4 to accomplish what it needs. This is how Puzzle Bobble reuses routines for both players. They will set one memory address for player one, and a different address for player two.
