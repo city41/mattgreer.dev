@@ -1,0 +1,10 @@
+{
+	"title": "Neo Geo ROM Hacking Guide Part 3: Changing Logic",
+	"date": "2024-02-15",
+	"type": "technical article",
+	"tags": ["Rom hacking", "Reverse engineering", "Retro gaming"],
+	"description": [
+		"Let's see how we can alter a game's logic in part 3 of my Neo Geo ROM hacking guide."
+	],
+	"imgAlt": "The Neo Geo logo"
+}

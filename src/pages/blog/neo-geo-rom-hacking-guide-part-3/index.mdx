@@ -1,0 +1,338 @@
+import { Article } from '../../../components/layouts/Article';
+import meta from './meta.json';
+
+export const config = {
+	unstable_runtimeJS: false,
+};
+
+export default ({ children }) => (
+	<Article
+		{...meta}
+		img={require('./feature.svg').default.src}
+		socialMediaImg={require('./twitter.png').default.src}
+		intro="Let's see how we can alter a game's logic in part 3 of my Neo Geo ROM hacking guide."
+	>
+		{children}
+	</Article>
+);
+
+Now with [part 1](/blog/neo-geo-rom-hacking-guide-part-1) and [part 2](/blog/neo-geo-rom-hacking-guide-part-2) done, let's do what hacks are really about, changing how a game plays.
+
+<pitfall>
+	The tools and commands in this guide may not work in a traditional Windows
+	environment. I don't use Windows unfortunately. Nowadays there are things like
+	WSL2 and the like that may help. If you want to help make this guide more
+	Windows friendly, let's talk about it on{' '}
+	<a href="https://github.com/city41/blog/discussions">GitHub</a>
+</pitfall>
+
+For this part, we will be changing the controls of the game Puzzle Bobble. Pressing right on the joystick will make the shooter go left, and vice versa. For sure, a really dumb hack. But it's a very simple one, so it's ideal for a guide like this.
+
+## Prereq: part 2
+
+This part of the guide builds on what we did in [part 2](/blog/neo-geo-rom-hacking-guide-part-2). I highly recommend reading and working through that part first, otherwise this part probably won't make much sense.
+
+## Prereq: companion repo
+
+Just like in part two, this part has a [companion repo on GitHub](https://github.com/city41/pb-backwards-controls-hack). Clone it locally and set it up just like the companion repo was from part 2.
+
+## Figuring out where the game reads input
+
+We want to flip the inputs (ie, joystick commands), so the first step is figure out where the game reads those inputs. A game on the Neo Geo can get inputs in two ways (for player one, player two works the same just using different addresses)
+
+- Read `REG_P1CNT` at `$300000`: This byte will have its bits set based on what the joystick is doing. This comes directly from the joystick and is kinda "raw". A lot of games don't use this.
+- Read `BIOS_P1CURRENT` at `$10FD96`: This is similar to `REG_P1CNT`, but only populated if the game called the [`SYSTEM_IO`](https://wiki.neogeodev.org/index.php?title=SYSTEM_IO) routine. That is a function call to the BIOS. It will read the input off of `REG_P1CNT`, and set up these bytes accordingly. It has some niceties, for example the routine will set the bits in `BIOS_P1CHANGE` (at `$10FD97`) for any input that have just been pushed this frame. Most games get their input this way.
+
+`REG_P1CNT` is documented [here](https://wiki.neogeodev.org/index.php?title=Memory_mapped_registers#REG_P1CNT) in the wiki, and the BIOS input bytes are [here](https://wiki.neogeodev.org/index.php?title=BIOS_RAM_locations#Joypad_Related).
+
+In both cases, the byte sets the same bits for the inputs
+
+```
+| 7 | 6 | 5 | 4 | 3     | 2    | 1    | 0  |
+|---|---|---|---|-------|------|------|----|
+| D | C | B | A | Right | Left | Down | Up |
+```
+
+However they use opposite values to indicate what is pressed. `REG_P1CNT` sets `1` to indicate an input is not active, and `0` if it is. This is the opposite of what most people would expect, but it matches how the hardware works. `SYSTEM_IO` will flip the values when setting its `BIOS_P1*` bytes, so `1` means an input is pressed.
+
+So if the player is pressing left on the joystick and button A, `BIOS_P1CURRENT` will be `00010100` and `REG_P1CNT` will be `11101011`
+
+## Spying on Puzzle Bobble's input reads
+
+Does Puzzle Bobble use `REG_P1CNT` or `BIOS_P1CURRENT`? Only one way to find out, let's set a watchpoint on `BIOS_P1CURRENT` and see if the game reads it
+
+<pitfall>
+	Some games might still use the BIOS bytes, but only read BIOS_P1CHANGE for
+	example. So if a game doesn't read BIOS_P1CURRENT, you may need to probe some
+	more to be sure
+</pitfall>
+
+Launch MAME with the debugger (`mame ... -debug`) and play the game until you're in single player gameplay. Then press F11 to pause the game via the debugger (make sure the debugger window has focus). Then in the debugger's command line, set a watchpoint,
+
+```
+wpset 10FD96,1,r,wpdata != 0
+```
+
+<wisdom>
+	If you're not familiar with watchpoints, check out my post on{' '}
+	<a href="/blog/mame-debugging">MAME debugging</a>.
+</wisdom>
+
+This says, "break into the debugger when the game reads `10FD96` (which is `BIOS_P1CURRENT`) and the byte found there is not zero". We want the "not zero" part because we only want to break when there is some input happening, as that is more interesting to trace through usually.
+
+Now start the game up again (type `go` or press F5), and then press right. The game should break again because of our watchpoint, and you should see something like this
+
+<figure>
+	<img
+		src={require('./watchpointHitBiosP1Current.png').default.src}
+		alt="The game paused in the debugger due to reading BIOS_P1CURRENT"
+	/>
+	<figcaption>
+		The game paused in the debugger due to reading BIOS_P1CURRENT
+	</figcaption>
+</figure>
+
+But notice the address, `C16CAC`. If we take a peak at the [68k memory map](https://wiki.neogeodev.org/index.php?title=68k_memory_map), we see from `C00000` to `CFFFFF` is the system ROM (aka BIOS). So this is the BIOS working with `BIOS_P1CURRENT`, which we're not too interested in. Hit F5 to continue and it will immediately break again
+
+<figure>
+	<img
+		src={require('./watchpointHitBiosP1Current2.png').default.src}
+		alt="The game paused in the debugger a second time due to reading BIOS_P1CURRENT"
+	/>
+	<figcaption>
+		The game paused in the debugger a second time due to reading BIOS_P1CURRENT
+	</figcaption>
+</figure>
+
+The debugger is now stopped at `101C`, which is inside the game ROM. Watchpoints always break one line after the memory operation has happened, so one line after the read of `BIOS_P1CURRENT`. If we look one line up, we see
+
+```
+001016 move.b $10fd96.l, d0
+```
+
+Yup, for sure the game is reading `BIOS_P1CURRENT` and saving it into the D0 register. If you look over in the register pane, D0 should be `00000308`. Wait, `308`? `move.b` will only move a byte of data into a register at its lowest byte. Whatever was already in the register above that byte is left alone. So in D0, the `000003` part is data that was put there before, we can just ignore it. `08` is the byte that came from `BIOS_P1CURRENT`, if we write that out in binary we get `00001000`, and if we look above at the input to bits diagram, yup, that's direction right on the joystick.
+
+Ok cool, the game is reading the input, moving it into a register, then what? Take a look down at the next few lines of code
+
+```
+001016: 1039 0010 FD96 move.b  $10fd96.l, D0
+00101C: 4600           not.b   D0
+00101E: 1B40 A25C      move.b  D0, (-$5da4,A5)
+001022: 4600           not.b   D0
+001024: C400           and.b   D0, D2
+001026: 1B42 A264      move.b  D2, (-$5d9c,A5)
+00102A: 142D A25D      move.b  (-$5da3,A5), D2
+00102E: 1B42 A261      move.b  D2, (-$5d9f,A5)
+001032: 1039 0010 FD9C move.b  $10fd9c.l, D0
+```
+
+So it `not`s the input on the next line (that flips all the bits), then writes it off into memory somewhere (`move.b D0, (-$5da4,a5)`), `not`s it again, flipping all the bytes back, `and`s it with whatever is in D2, saves that value off somewhere, moves a couple more bytes around, then reads `$10fd9c` into D0.
+
+Turns out `$10fd9c` is `BIOS_P2CURRENT`. So it's probably safe to assume it's done with player one's input as it has moved onto player 2 (even though player 2 isn't currently playing. This routine is the main gameplay input routine for all game types).
+
+So it's doing a few things to the input it read from `BIOS_P1CURRENT`, but eh, we don't really care. Let the game do what it does. Based on reading this code, we can probably safely assume if we can just stick a byte into D0 that represents the input, but with left and right flipped, the game probably won't know and we will successfully flip the input.
+
+How can we know that for sure? Well, we can't, at least not without a lot more investigating. But let's just try it and see what happens.
+
+## Injecting fake input
+
+So at line `1016` it reads the input, then immediately does stuff with it, and then moves onto player two's input. Reading the input took six bytes, you can tell because the disassembly shows the bytes
+
+```
+001016: 1039 0010 FD96 move.b  $10fd96.l, D0
+```
+
+`1039 0010 FD96` are the six bytes that equate to `move.b ...`
+
+So if we want to inject some of our own code, six bytes is not a lot of room. What to do?
+
+Thankfully the `jsr` opcode (jump to subroutine) is also six bytes. This causes the game to jump somewhere else, run the code that is there, then when it encounters `rts` (return from subroutine), it will go back to where it was. So we can replace the `move.b` with a `jsr`, put our code into the new subroutine, and we then have plenty of room to do whatever we want.
+
+<wisdom>
+	<p>
+		What if we had only ohhh 4 bytes of room? If we swapped in a jsr, it would
+		take up those 4 bytes plus 2 bytes of the next opcode, corrupting it. What
+		you can do is inside of the new subroutine you're about to write, first have
+		it recreate whatever got corrupted. This will still leave some corrupted
+		bytes behind, but they can be "erased" with nop, which is an opcode that
+		does nothing. In general if you don't have much room, you can pretty much
+		always force a jsr and just fix up the mess after the fact.
+	</p>
+	<p>
+		The opposite can also be fixed. For example if we had 8 bytes of room, we
+		could place our jsr into it, and then use a nop to "soak" up the left over 2
+		bytes.
+	</p>
+</wisdom>
+
+### Writing our subroutine
+
+What should our subroutine do? If right is pressed, we need to make the game think left is, and vice versa. It will essentially be this, but in assembly
+
+```javascript
+D0 = read(BIOS_P1CURRENT);
+
+if (D0 & 0x8) {
+	// right is pressed, clear out the right input bit
+	D0 = D0 & 0xf7;
+	// ensure the left input bit is set
+	D0 = D0 | 0x4;
+} else if (D0 & 0x4) {
+	// left is pressed, clear out the left input bit
+	D0 = D0 & 0xfb;
+	// ensure the right input bit is set
+	D0 = D0 | 0x8;
+} else {
+	// neither left nor right are pressed, so do nothing
+}
+
+// leave our faked input in d0, so the game will use it
+```
+
+Subroutines in Puzzle Bobble follow a simple, unwritten rule. Whenever the game jumps to one, that subroutine is free to use the data registers in anyway it pleases. The address registers are more complex, they are used as a way to pass "parameters" to the subroutine. For example set an address in A4, jump to a subroutine, and that routine will read from and write to A4 to accomplish what it needs. This is how Puzzle Bobble reuses routines for both players. They will set one memory address for player one, and a different address for player two.
+
+Where did this rule come from? Probably the developers who wrote the game just agreed to it. Assembly is kind of a wild west, you can do whatever you want. As long as all the parts of the game agree and work together, it will all work out in the end. Other games might push parameters onto the stack instead of using the address registers, for example.
+
+The reason I'm explaining this is because we are about to force the game to jump to a new subroutine it didn't know about. So the game isn't prepared for its data registers to be clobbered. So our subroutine needs to follow a different rule, leave (most) everything as you found it. For us, we need to set the input into D0, and it's best to leave all other data registers alone, as we don't know what the game needs them for.
+
+If your subroutine needs to use more data registers, there are two general approaches you can take:
+
+- Save off the data register values out in memory with `move` or `movem` (move multiple). Then before calling `rts`, restore the registers by reading the values back into them from memory. When doing this, it's important to pick a spot in memory the game isn't using, as clobbering the game's memory values is just as bad as clobbering its data registers.
+- Investigate the game more and see which of the data registers it's really using. If it's only using D0 and D1, then D2 through D7 are fair game, for example. You typically only need to look for usage up to an `rts`, as once the game returns from its own subroutines, the data registers are effectively "reset" due to the "unwritten rule" the game developers used.
+
+#### Our subroutine, in assembly
+
+With all of that out of the way, let's write the new subroutine
+
+```
+move.b $10fd96, D0     ; load BIOS_P1CURRENT into D0
+move.b #0, D6          ; initialize our fake input with zero
+
+;;;;
+;;;; check for right input, if so, switch it over to be on left
+;;;;
+btst #3, D6            ; first, is right even pressed?
+beq checkLeft          ; if not, let's go check left
+move.b #4, D6          ; put a left input into D6
+bra reformInput        ; skip the left check
+
+;;;;
+;;;; check for left input, if so, switch it over to be on right
+;;;;
+checkLeft:
+btst #2, D6            ; first, is left even pressed?
+beq reformInput        ; no, then nothing to flip
+move.b #8, D6          ; put a right input into D6
+
+;;;;
+;;;; reform the input
+;;;;
+reformInput:
+andi.b #$fb, D0        ; clear out the real left input
+andi.b #$f7, D0        ; clear out the real right input
+or.b D6, D0            ; combine our fake left/right with
+                       ; the rest of the real input
+					   ; leaving it in D0 where the game
+					   ; expects to find it
+
+rts
+```
+
+If you're not too familiar with assembly this probably looks pretty crazy. It's pretty much doing the same thing as the non-assembly code snippet above. `btst` is "bit test", and we are using it to see what inputs are pressed. We setup our fake input into the D6 register. Then in the `reformInput` section, we erase any real left or right input there may be with `andi`, and then `or`ing D0 and D6 together arrives at our final faked input.
+
+We just leave the fake input in D0 and exit, as that is where the game expects to find it.
+
+We also used D6, and didn't save or restore it. If the game was using D6 for something, we just caused a bug or likely a crash. I have investigated what the game is doing at this point and it's not using D6, so we are OK to use it like this.
+
+## Patching the game
+
+Now with our subroutine ready to go, let's inject it into the game and give it a whirl.
+
+First, we create a JSON patch file that `src/patchRom` can read.
+
+<wisdom>
+	If you have no idea what I just said, check out{' '}
+	<a href="/blog/neo-geo-rom-hacking-guide-part-2">part 2</a> for all the
+	details.
+</wisdom>
+
+```json
+[
+	{
+		"patchDescription": "Flips left and right on the joystick for player one"
+	},
+	{
+		"type": "prom",
+		"description": "Flip the inputs",
+		"address": "1016",
+		"subroutine": true,
+		"patchAsm": [
+			"move.b $10fd96, D0 ; load BIOS_P1CURRENT into D0",
+			"move.b #0, D6 ; initialize our fake input with zero",
+
+			";;;; check for right input, if so, switch it over to be on left",
+			"btst #3, D6 ; first, is right even pressed?",
+			"beq checkLeft ; if not, let's go check left",
+			"move.b #4, D6 ; put a left input into D6",
+			"bra reformInput ; skip the left check",
+
+			"checkLeft:",
+			"btst #2, D6 ; first, is left even pressed?",
+			"beq reformInput ; no, then nothing to flip",
+			"move.b #8, D6 ; put a right input into D6",
+
+			"reformInput:",
+			";;;; reform the input",
+			"andi.b #$fb, D0 ; clear out the real left input",
+			"andi.b #$f7, D0 ; clear out the real right input",
+			"or.b D6, D0 ; place our flipped input onto the input",
+
+			"rts"
+		]
+	}
+]
+```
+
+Oh ouch, putting all that assembly into a string array is painful. Sadly that's what patchRom can work with (so far). Like I said in part 2, these tools are raw.
+
+By specifying `"subroutine": true`, patchRom will find some room at the end of the P ROM, stick our new code there, and then insert a `jsr` at `1016` for us.
+
+If you run `yarn ts-node src/patchRom/main.ts src/patches/flipControls.json` from the ROM hack repo, you'll get the patch applied to your copy of Puzzle Bobble.
+
+### Verifying the patch
+
+Fire up MAME with the debugger again. Then hit Ctrl-D to open the disassembly window. Enter `7FFAE` as the address, and you should see something like this
+
+<figure>
+	<img
+		src={require('./dasmWithOurNewRoutine.png').default.src}
+		alt="The disassembly showing our newly inserted subroutine"
+	/>
+	<figcaption>The disassembly showing our newly inserted subroutine</figcaption>
+</figure>
+
+Our new routine starts at `7FFFCE`, before that notice the ROM is just a bunch of `FF` bytes? That is because Puzzle Bobble is not using the entire P ROM space. `FF` is a common filler byte in Neo Geo Roms. The P ROM ends at `7FFFF`, and you can see that as `80000` on is zeroes.
+
+patchRom took our routine, assembled it into bytes, figured out how many bytes it ended up being, and then stuck our routine at the very back of the P ROM. Since our routine is 32 bytes (in hex, 50 in decimal), its location ended up being `7FFCE`, ie `$80000 - $32`
+
+Now if we navigate to about `1010`, we can see the jsr that was added at `1016`
+
+<figure>
+	<img
+		src={require('./theNewJsr.png').default.src}
+		alt="The newly added jsr at 1016"
+	/>
+	<figcaption>The newly added jsr at 1016</figcaption>
+</figure>
+
+and it's jumping to `7FFCE`, which is where our new subroutine starts.
+
+## Conclusion
+
+And with that the controls are now flipped. A very simple &mdash; and dumb &mdash; hack, but it shows how to make logic changes pretty nicely.
+
+My [rotary-bobble](https://github.com/city41/rotary-bobble/blob/main/src/patches/rotary-bobble.json) hack is following the same principles outlined in this guide, it's just a bigger hack.
+
+### Distribution
+
+As I mentioned in part 2, I know of no good way to distribute a Neo Geo ROM hack due to Neo games being a zip bundle of many ROM files. I'm still exploring this, and have some ideas. Hopefully I'll be able to share a simple solution.
