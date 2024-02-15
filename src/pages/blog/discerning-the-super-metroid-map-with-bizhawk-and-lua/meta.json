@@ -2,7 +2,7 @@
 	"title": "Discerning the Super Metroid Map with BizHawk and Lua",
 	"date": "2021-09-24",
 	"type": "technical article",
-	"tags": ["Lua", "Retro Gaming", "JavaScript"],
+	"tags": ["Lua", "Retro gaming", "JavaScript"],
 	"description": [
 		"How I reverse engineered the Super Metroid map with brute force."
 	],

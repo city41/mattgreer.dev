@@ -2,7 +2,7 @@
 	"draft": false,
 	"title": "Particle Systems",
 	"type": "article",
-	"tags": ["Game Dev", "Graphics", "JavaScript"],
+	"tags": ["Game dev", "Graphics", "JavaScript"],
 	"description": [
 		"An article I wrote for buildnewgames.com",
 		"It walks through how particle systems work, complete with interactive demos."
@@ -10,5 +10,5 @@
 	"metaDescription": "An article on how particle systems work.",
 	"url": "http://buildnewgames.com/particle-systems/",
 	"imgAlt": "A diagram showing how a particle moves in a particle system",
-  "projectPagePriority": 1
+	"projectPagePriority": 1
 }

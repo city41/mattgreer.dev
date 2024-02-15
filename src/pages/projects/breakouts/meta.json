@@ -2,7 +2,7 @@
 	"draft": false,
 	"title": "Breakouts",
 	"type": "website",
-	"tags": ["Game Dev", "JavaScript"],
+	"tags": ["Game dev", "JavaScript"],
 	"description": [
 		"A community created collection of the game breakout, implemented in many JavaScript game engines.",
 		"Inspired by TodoMVC, it provides a good way to find an engine that resonates with you."
@@ -10,5 +10,5 @@
 	"metaDescription": "A community created collection of the game breakout, implemented in many JavaScript game engines.",
 	"url": "https://jsbreakouts.mattgreer.dev",
 	"imgAlt": "Breakouts logo",
-  "projectPagePriority": 1
+	"projectPagePriority": 1
 }

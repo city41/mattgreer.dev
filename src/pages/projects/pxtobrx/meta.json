@@ -2,11 +2,11 @@
 	"draft": false,
 	"title": "pxtobrx",
 	"type": "website",
-	"tags": ["React", "JavaScript", "Retro Gaming"],
+	"tags": ["React", "JavaScript", "Retro gaming"],
 	"description": [
 		"A tool for creating LEGO mosaics from video game screenshots."
 	],
 	"url": "https://city41.github.io/pxtobrx",
 	"imgAlt": "LEGO mosaic of Samus from Metroid",
-  "projectPagePriority": 1
+	"projectPagePriority": 1
 }

@@ -2,7 +2,7 @@
 	"title": "The Sega Saturn and Transparency",
 	"date": "2016-01-23",
 	"type": "interactive article",
-	"tags": ["Retro Gaming"],
+	"tags": ["Retro gaming"],
 	"description": [
 		"The Saturn's complex hardware architecture meant implementing semi-transparent entities in a game was challenging.",
 		"This interactive article explains the conundrum, and shows why game developers often settled for inferior alternatives."

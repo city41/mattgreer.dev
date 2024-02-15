@@ -2,7 +2,7 @@
 	"title": "Extracting Neo Geo Emulator Graphics Data to Create Animated gifs",
 	"date": "2020-05-13",
 	"type": "technical article",
-	"tags": ["JavaScript", "Web Assembly", "Retro Gaming"],
+	"tags": ["JavaScript", "Web assembly", "Retro gaming"],
 	"description": [
 		"Web Assembly lets us bring native applications right into the browser.",
 		"By porting a game emulator to Web Assembly, I was able to reach into its memory to build animated gifs."

@@ -2,7 +2,7 @@
 	"title": "Dynamic Lighting and Shadows In My 2D Game",
 	"date": "2012-10-17",
 	"type": "technical article",
-	"tags": ["Game Dev", "WebGL"],
+	"tags": ["Game dev", "WebGL"],
 	"description": [
 		"How I used shaders in WebGL to accomplish lighting and shadows in a 2D game."
 	],

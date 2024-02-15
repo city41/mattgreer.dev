@@ -2,13 +2,20 @@
 	"draft": false,
 	"title": "Jump.Club",
 	"type": "website",
-	"tags": ["React", "TypeScript", "NodeJS", "Godot", "Web Assembly", "Game Dev"],
+	"tags": [
+		"React",
+		"TypeScript",
+		"NodeJS",
+		"Godot",
+		"Web assembly",
+		"Game dev"
+	],
 	"description": [
 		"A web based game creator inspired by Nintendo's Mario Maker."
 	],
 	"url": "https://jump.club",
 	"featureIndex": 9999,
 	"imgAlt": "Screenshot of my game maker, Jump.Club",
-  "projectPagePriority": 0,
+	"projectPagePriority": 0,
 	"draft": true
 }

@@ -2,12 +2,10 @@
 	"draft": false,
 	"title": "Super Mario World Rocks",
 	"type": "website",
-	"tags": ["React", "ClojureScript", "Retro Gaming"],
-	"description": [
-		"A detailed look at one of Nintendo's best video games."
-	],
+	"tags": ["React", "ClojureScript", "Retro gaming"],
+	"description": ["A detailed look at one of Nintendo's best video games."],
 	"url": "https://supermarioworld.mattgreer.dev",
 	"imgAlt": "Screenshot of the overworld map in Super Mario World",
 	"pixelateImage": true,
-  "projectPagePriority": 2
+	"projectPagePriority": 2
 }
