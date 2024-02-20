@@ -1,0 +1,13 @@
+{
+	"draft": false,
+	"title": "Rotary Bobble",
+	"type": "rom hack",
+	"tags": ["Assembly", "TypeScript", "Retro gaming", "Rom hacking"],
+	"description": [
+		"A classic arcade puzzle game, changed to use a rotary controller instead of a joystick."
+	],
+	"url": "https://rotary-bobble.mattgreer.dev",
+	"imgAlt": "Rotary Bobble logo",
+	"pixelateImage": true,
+	"projectPagePriority": 0
+}
