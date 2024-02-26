@@ -18,10 +18,11 @@ function NowPage() {
 		>
 			<div className="mx-auto max-w-2xl">
 				<P>last updated Feb 26, 2024</P>
-				<H2>I am currently entrenched in the Neo Geo game console</H2>
+				<H2>I'm currently entrenched in the Neo Geo game console</H2>
 				<p className="text-sm my-8">
-					A game console from the 90s that has a lot of nostalgia for me, but
-					it's also just really interesting
+					Hi, I'm Matt Greer and I am currently working with a game console from
+					the 90s that has a lot of nostalgia for me, but it's also just really
+					interesting
 				</p>
 				<ul className="list-disc flex-col space-y-8">
 					<li>
