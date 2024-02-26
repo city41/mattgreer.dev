@@ -6,6 +6,7 @@ import fallbackImg from './meIndex_openGraph.png';
 type HeadProps = {
 	title: string;
 	metaDescription: string;
+	metaRevised?: string;
 	metaImg?: string;
 };
 
@@ -31,10 +32,14 @@ function getAbsoluteUrl(url: string): string {
 	return `https://${domain}/${url}`;
 }
 
-function Head({ title, metaDescription, metaImg }: HeadProps) {
+function Head({ title, metaDescription, metaRevised, metaImg }: HeadProps) {
 	const finalMetaImg = `${getAbsoluteUrl(
 		metaImg ?? fallbackImg.src
 	)}?t=${title.substring(0, 10)}`;
+
+	const metaRevisedTag = metaRevised ? (
+		<meta name="revised" content={metaRevised} />
+	) : null;
 
 	return (
 		<NextHead>
@@ -43,6 +48,7 @@ function Head({ title, metaDescription, metaImg }: HeadProps) {
 			<meta charSet="utf-8" />
 			<meta name="viewport" content="width=device-width, initial-scale=1" />
 			<meta name="description" content={metaDescription} />
+			{metaRevisedTag}
 
 			{/* Twitter */}
 			<meta name="twitter:creator" content="mattgreer.dev" />

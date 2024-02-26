@@ -14,6 +14,7 @@ function NowPage() {
 			img={neogeoSvg.src}
 			imgAlt="The Neo Geo logo"
 			metaDescription="What I am currently up to"
+			metaRevised="Feb 26, 2024"
 			navigation
 		>
 			<div className="mx-auto max-w-2xl">

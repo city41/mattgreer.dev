@@ -9,6 +9,7 @@ type RootProps = {
 	title?: string;
 	headTitle?: string;
 	metaForTitle?: string;
+	metaRevised?: string;
 	metaDescription: string;
 	img: string;
 	pixelateImage?: boolean;
@@ -24,6 +25,7 @@ function Root({
 	title,
 	headTitle,
 	metaForTitle,
+	metaRevised,
 	metaDescription,
 	socialMediaImg,
 	img,
@@ -38,6 +40,7 @@ function Root({
 			<Head
 				title={headTitle ?? title ?? ''}
 				metaDescription={metaDescription}
+				metaRevised={metaRevised}
 				metaImg={socialMediaImg ?? img}
 			/>
 			{navigation && <Navigation />}
