@@ -38,7 +38,7 @@ function Head({ title, metaDescription, metaRevised, metaImg }: HeadProps) {
 	)}?t=${title.substring(0, 10)}`;
 
 	const metaRevisedTag = metaRevised ? (
-		<meta name="revised" content={metaRevised} />
+		<meta name="revised" content={new Date(metaRevised).toString()} />
 	) : null;
 
 	return (
