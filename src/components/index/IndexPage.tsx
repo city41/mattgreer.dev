@@ -1,9 +1,9 @@
 import React from 'react';
 import clsx from 'clsx';
 import { Head } from '../layouts/Head';
-import { Navigation } from '../Navigation';
+import { Navigation } from '../layouts/Navigation';
 import { Feature } from '../Feature';
-import { Footer } from '../Footer';
+import { Footer } from '../layouts/Footer';
 
 import styles from './IndexPage.module.css';
 

@@ -3,13 +3,13 @@ import clsx from 'clsx';
 import Link from 'next/link';
 import {
 	FaEnvelope,
-	FaGithub,
 	FaLinkedin,
+	FaGithub,
 	FaStackOverflow,
-	FaTwitter,
 	FaRss,
 } from 'react-icons/fa';
 import { LightDarkToggle } from './LightDarkToggle';
+import { BlueSkyLogo } from './BlueSkyLogo';
 
 type FooterProps = {
 	className?: string;
@@ -59,13 +59,6 @@ function Footer({ className }: FooterProps) {
 				</li>
 				<li>
 					<IconLink
-						Icon={FaLinkedin}
-						href="https://www.linkedin.com/in/matt-greer-133405ab/"
-						label="my LinkedIn profile"
-					/>
-				</li>
-				<li>
-					<IconLink
 						Icon={FaGithub}
 						href="https://github.com/city41"
 						label="my GitHub profile"
@@ -76,6 +69,20 @@ function Footer({ className }: FooterProps) {
 						Icon={FaStackOverflow}
 						href="https://stackoverflow.com/users/194940/matt-greer"
 						label="my StackOverflow profile"
+					/>
+				</li>
+				<li>
+					<IconLink
+						Icon={FaLinkedin}
+						href="https://www.linkedin.com/in/matt-greer-133405ab/"
+						label="my LinkedIn profile"
+					/>
+				</li>
+				<li>
+					<IconLink
+						Icon={BlueSkyLogo}
+						href="https://bsky.app/profile/mattgreer.dev"
+						label="my BlueSky profile"
 					/>
 				</li>
 			</ul>

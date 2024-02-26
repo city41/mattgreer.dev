@@ -2,7 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 
 import styles from './Header.module.css';
-import pixelatedStyles from './pixelated.module.css';
+import pixelatedStyles from '../pixelated.module.css';
 
 type HeaderProps = {
 	className?: string;

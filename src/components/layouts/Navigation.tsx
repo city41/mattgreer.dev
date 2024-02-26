@@ -42,6 +42,7 @@ function Navigation({ className }: NavigationProps) {
 				<NavLink href="/articles">Articles</NavLink>
 				<NavLink href="/blog">Blog</NavLink>
 				<NavLink href="/about">About</NavLink>
+				<NavLink href="/now">Now</NavLink>
 			</ul>
 			<Link href="/" passHref legacyBehavior>
 				<a
