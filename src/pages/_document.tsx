@@ -1,5 +1,4 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document';
-import { Analytics } from '@vercel/analytics/react';
 
 class MyDocument extends Document {
 	static async getInitialProps(ctx) {
@@ -37,11 +36,11 @@ class MyDocument extends Document {
 					<link rel="shortcut icon" href="/favicon.ico?v=2020" />
 					<meta name="msapplication-TileColor" content="#da532c" />
 					<meta name="theme-color" content="#ffffff" />
+					<script src="/_vercel/insights/script.js" defer />
 				</Head>
 				<body>
 					<Main />
 					<NextScript />
-					<Analytics />
 				</body>
 			</Html>
 		);
