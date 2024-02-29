@@ -1,0 +1,13 @@
+{
+	"draft": false,
+	"title": "Zebes Guide",
+	"type": "website",
+	"tags": ["React", "TypeScript", "Retro gaming", "Reverse engineering"],
+	"description": [
+		"Load a save file from Super Metroid, and the site will show you what you've accomplished, and offer hints on where to go next."
+	],
+	"url": "https://www.zebesguide.com",
+	"imgAlt": "Samus's helmet",
+	"pixelateImage": false,
+	"projectPagePriority": 0
+}
