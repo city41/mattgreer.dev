@@ -159,7 +159,7 @@ mame -autoboot_script fastShooter.lua pbobblen
 	<figcaption>Puzzle Bobble</figcaption>
 </figure>
 
-This script is spying on the memory location the game uses to store how much the game's shooter has rotated in the current frame. The tap receives the value the game is writing. We can cause the game to write a different value by returning new one, so `return data * 4` just causes the shooter to move 4 times farther than it normally would, resulting in a stupidly fast shooter.
+This script is spying on the memory location the game uses to store how much the game's shooter has rotated in the current frame. The tap receives the value the game is writing. We can cause the game to write a different value by returning a new one, so `return data * 4` just causes the shooter to move 4 times farther than it normally would, resulting in a stupidly fast shooter.
 
 ## Communicating with MAME via write taps
 
@@ -203,7 +203,7 @@ void ngprintf(const char* format, ...) {
 
 It takes in a format string and arguments, such as `ngprintf("player x: %d", playerX)`, forms the output string using functions from the C standard library, and then writes the result to `NG_CONSOLE_BUFFER`. That's just an address in main RAM that I defined just above. My game is just literally writing a string into memory, and that's it.
 
-The `NG_CONSOLE_SIG` is a byte in memory that is used to signal a new string is ready for Lua to pick up.
+`NG_CONSOLE_SIG` is a byte in memory that is used to signal a new string is ready for Lua to pick up.
 
 Then my Lua script knows to spy on the signal address and act accordingly
 
@@ -247,7 +247,7 @@ I have added many more write taps and now Lua can show me all kinds of things.
 	<figcaption>Several things in my game being visualized by Lua</figcaption>
 </figure>
 
-Here the orange dots show the player's past locations. This has been helpful in getting the controls to feel just right. The lower right shows the game's true current frame rate. This is different from the framerate that MAME reports. If it ever dips from 60 to say 30, I know I have a performance problem. The blue, green, red and purple boxes show the bounding boxes of entities on the screen such as the terrain and the flag. This has been helpful in tracking down collision detection issues.
+Here the orange dots show the player's past locations. This has been helpful in getting the controls to feel just right. The lower right shows the game's true current frame rate. This is different from the frame rate that MAME reports. If it ever dips from 60 to say 30, I know I have a performance problem. The blue, green, red and purple boxes show the bounding boxes of entities on the screen such as the terrain and the flag. This has been helpful in tracking down collision detection issues.
 
 ### Visualizing performance
 
@@ -264,14 +264,14 @@ Here is a visualization of function timings every frame. The green area is my ga
 <figure>
 	<img
 		src={require('./thirtyfps.png').default.src}
-		alt="The game running at 30fps due to performance issues"
+		alt="The game running at 30 fps due to performance issues"
 	/>
-	<figcaption>The game running at 30fps due to performance issues</figcaption>
+	<figcaption>The game running at 30 fps due to performance issues</figcaption>
 </figure>
 
-Here we can see the performance meter doubling in size. This is because there is so much terrain on the screen, the game needs to do terrain collision detection for so long it takes longer than one frame. The game is forced to wait until the next frame (to avoid graphical glitches, something this blog post is glossing over...), and thus the game has dropped to 30 frames per second. Dropping to 30fps is really bad, and something I want to always avoid. This perf visualization helps a lot!
+Here we can see the performance meter doubling in size. This is because there is so much terrain on the screen, the game needs to do terrain collision detection for so long it takes longer than one frame. The game is forced to wait until the next frame (to avoid graphical glitches, something this blog post is glossing over...), and thus the game has dropped to 30 frames per second. Dropping to 30 fps is really bad, and something I want to always avoid. This perf visualization helps a lot!
 
-Also this screenshot shows which sprites in video ram are currently in use (the bottom gray area with many lines), as I forgot to toggle that overlay off before taking the screenshot :)
+Also this screenshot shows which sprites in video RAM are currently in use (the bottom gray area with many lines), as I forgot to toggle that overlay off before taking the screenshot :)
 
 ## Conclusion
 
