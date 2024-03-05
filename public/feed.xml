@@ -4,7 +4,7 @@
         <title>Matt Greer</title>
         <link>https://mattgreer.dev</link>
         <description>Mostly web dev related articles</description>
-        <lastBuildDate>Tue, 20 Feb 2024 17:58:37 GMT</lastBuildDate>
+        <lastBuildDate>Tue, 05 Mar 2024 15:01:02 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
@@ -15,6 +15,14 @@
         </image>
         <copyright>Copyright Matt Greer</copyright>
         <atom:link href="https://mattgreer.dev/feed.xml" rel="self" type="application/rss+xml"/>
+        <item>
+            <title><![CDATA[MAME Lua for Retro Dev]]></title>
+            <link>https://mattgreer.dev/blog/mame-lua-for-retro-dev</link>
+            <guid>https://mattgreer.dev/blog/mame-lua-for-retro-dev</guid>
+            <pubDate>Tue, 05 Mar 2024 00:00:00 GMT</pubDate>
+            <description><![CDATA[How I used MAME's Lua to greatly improve my retro development experience]]></description>
+            <author>matt.e.greer@gmail.com (Matt Greer)</author>
+        </item>
         <item>
             <title><![CDATA[Neo Geo ROM Hacking Guide Part 3: Changing Logic]]></title>
             <link>https://mattgreer.dev/blog/neo-geo-rom-hacking-guide-part-3</link>

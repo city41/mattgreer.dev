@@ -1,0 +1,10 @@
+{
+	"title": "MAME Lua for Better Retro Dev",
+	"date": "2024-03-05",
+	"type": "technical article",
+	"tags": ["Debugging", "Game development", "Tooling", "Retro gaming"],
+	"description": [
+		"How I used MAME's Lua integration to greatly improve my retro development experience"
+	],
+	"imgAlt": "M from the MAME logo"
+}

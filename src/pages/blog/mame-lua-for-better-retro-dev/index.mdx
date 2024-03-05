@@ -1,0 +1,278 @@
+import { Article } from '../../../components/layouts/Article';
+import meta from './meta.json';
+
+export const config = {
+	unstable_runtimeJS: false,
+};
+
+export default ({ children }) => (
+	<Article
+		{...meta}
+		img={require('./feature.svg').default.src}
+		socialMediaImg={require('./twitter.png').default.src}
+		intro="How I used MAME's Lua integration to greatly improve my retro development experience"
+	>
+		{children}
+	</Article>
+);
+
+I'm currently working on a game for the Neo Geo, a game console from the 90s. The Neo Geo runs at 12mhz, has about 64kb of RAM, and no debugger or really any modern developer conveniences. Fortunately I can write my game in C instead of assembly thanks to the excellent [ngdevkit](https://github.com/dciabrin/ngdevkit), so at least there's that.
+
+When something goes wrong, it's _incredibly_ difficult to figure out why. Often the game just crashes causing the system to reset, or the game just does something bizarre. There is virtually _no feedback_ at all. If I am are very lucky, I might get an error screen
+
+<figure>
+	<img
+		src={require('./unibiosException.png').default.src}
+		alt="The UniBios's exception handler kicking in"
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>The UniBios's exception handler kicking in</figcaption>
+</figure>
+
+This is possible thanks to the [UniBios](https://unibios.free.fr/). An aftermarket BIOS developed by Razoola that adds some debugging capabilities.
+
+This ancient, nearly 40 year old, console is just a black box. When my game had a bug in it, sometimes it would take me days to figure out why. Not to mention things like performance profiling are just not possible. Thankfully, MAME's Lua integration can fill a lot of gaps here.
+
+## Primitive Logging
+
+Even just logging something is a challenge. When I first started on the game, I built a console that writes to the Neo Geo's screen.
+
+<figure>
+	<img
+		src={require('./ngprintf.png').default.src}
+		alt="A primitive console that prints to the Neo Geo's screen"
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>
+		A primitive console that prints to the Neo Geo's screen
+	</figcaption>
+</figure>
+
+<pitfall>
+	<b>Hey!</b> All screenshots of my game in this post are using placeholder
+	graphics. Some taken from Mario games. I've not done any work on the graphics
+	yet. Are you a pixel artist who wants to make a Mario style platformer for the
+	Neo Geo? <a href="mailto:matt.e.greer@gmail.com">let's talk!</a>
+</pitfall>
+
+It could also write a small snippet to an (x,y) location on screen, creating simple "overlays"
+
+<figure>
+	<img
+		src={require('./ngprintfxy.png').default.src}
+		alt='Printing an "overlay" onto the screen'
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>Printing an "overlay" onto the screen</figcaption>
+</figure>
+
+For the longest time, this was all I had. Neo Geo games run at 60 frames per second, and the screen resolution is only 320x224. If I wanted to log out something every frame, the screen would get filled with output instantly. It was better than nothing, but it was far from enough.
+
+## Primitive Assertions
+
+I next added a primitive version of `assert()`. It used a combination of the existing console system along with C's `__FILE__` and `__FUNCTION__` macros. Whenever an assertion failed, it would print an error message onto the screen which contained the file, line number and function name. Then it would put the game in an infinite loop, which effectively halts the game.
+
+<figure>
+	<img
+		src={require('./ngassert.png').default.src}
+		alt="A failed assertion"
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>A failed assertion</figcaption>
+</figure>
+
+This was a huge boon! I put assertions all over the place, mostly to validate parameters to functions
+
+```c
+void vram_spritesTruncate(u16 startingSpriteIndex, u16 count) {
+    ngassert(
+		startingSpriteIndex > 0,
+		"spriteIndex out of range: %d", startingSpriteIndex
+	);
+    ngassert(
+		startingSpriteIndex + count <= 380,
+		"spriteIndex out of range: %d",
+        startingSpriteIndex + count
+	);
+    *REG_VRAMADDR = ADDR_SCB3 + startingSpriteIndex;
+	...
+}
+```
+
+By being proactive with `assert()` the number of bugs I created went down a lot. And a surprising failed assertion often let me root cause a bug much quicker. I was impressed by how much this helped me.
+
+But development was still slow and tedious. I had cracked open the black box, but just a very tiny bit.
+
+## MAME's Lua scripting
+
+It's now possible to control MAME with [Lua scripts](https://docs.mamedev.org/luascript/index.html). This is a fairly recent addition and MAME devs have told me it's still a bit experimental and subject to change going forward. For example I wrote a script that visualizes all the sprites the Neo geo is currently using
+
+<figure>
+	<img
+		src={require('./kof94sprites.png').default.src}
+		alt="Showing a game's sprites with a Lua script"
+	/>
+	<figcaption>Showing a game's sprites with a Lua script</figcaption>
+</figure>
+
+I have started collecting these scripts [into this GitHub repo](https://github.com/city41/ngDebugScripts).
+
+### Spying on memory reads and writes
+
+One feature of MAME's Lua integration is write and read taps. For example, here is a very simple write tap that causes Puzzle Bobble's shooter to move at 4 times its normal speed
+
+```lua
+cpu = manager.machine.devices[":maincpu"]
+mem = cpu.spaces["program"]
+
+-- this address is the "shooter delta", whatever gets
+-- set here will get added to the shooter's current angle
+address = 0x108212
+
+function on_memory_write(offset, data)
+	-- by multiplying the value,
+	--- the end result is the shooter travels
+	-- much faster
+	return data * 4
+end
+
+mem_handler = mem:install_write_tap(
+	address,
+	address + 1,
+	"writes",
+	on_memory_write
+)
+```
+
+You can save this script to a file then launch MAME with it
+
+```bash
+mame -autoboot_script fastShooter.lua pbobblen
+```
+
+<figure>
+	<img
+		src={require('./pbobblen.png').default.src}
+		alt="Puzzle Bobble"
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>Puzzle Bobble</figcaption>
+</figure>
+
+This script is spying on the memory location the game uses to store how much the game's shooter has rotated in the current frame. The tap receives the value the game is writing. We can cause the game to write a different value by returning new one, so `return data * 4` just causes the shooter to move 4 times farther than it normally would, resulting in a stupidly fast shooter.
+
+## Communicating with MAME via write taps
+
+I use write taps in my game to send data over to MAME. For example, I replaced the onscreen console with one that writes to my PC's terminal.
+
+In my game's code, I have defined some memory addresses
+
+```c
+#ifdef NGLUADEBUG
+
+#define NG_BASE ((char*)0x10d000)
+
+// logging related
+#define NG_LINE_LENGTH 80
+
+#define NG_CONSOLE_BUFFER (NG_BASE)
+#define NG_CONSOLE_SIG ((NG_CONSOLE_BUFFER) + NG_LINE_LENGTH + 2)
+
+#endif
+```
+
+`0x10d000` is a location in the Neo Geo's main RAM that my game is not using.
+
+Then my `ngprintf` function looks like this
+
+```c
+void ngprintf(const char* format, ...) {
+    va_list formatArgs;
+    va_start(formatArgs, format);
+    vsnprintf(
+		NG_CONSOLE_BUFFER,
+		NG_LINE_LENGTH,
+		format,
+		formatArgs
+	);
+    va_end(formatArgs);
+
+    *NG_CONSOLE_SIG = 1;
+}
+```
+
+It takes in a format string and arguments, such as `ngprintf("player x: %d", playerX)`, forms the output string using functions from the C standard library, and then writes the result to `NG_CONSOLE_BUFFER`. That's just an address in main RAM that I defined just above. My game is just literally writing a string into memory, and that's it.
+
+The `NG_CONSOLE_SIG` is a byte in memory that is used to signal a new string is ready for Lua to pick up.
+
+Then my Lua script knows to spy on the signal address and act accordingly
+
+```lua
+function ng_to_stdout()
+	local str = mem:read_range(
+		NG_CONSOLE_BUFFER,
+		NG_CONSOLE_BUFFER + NG_LINE_LENGTH,
+		8
+	)
+	print(str)
+end
+
+ngstdout_handler = mem:install_write_tap(
+	NG_CONSOLE_SIG,
+	NG_CONSOLE_SIG + 1,
+	"ngstdout",
+	ng_to_stdout
+)
+```
+
+Lua will grab the string out of the Neo Geo's memory, and `print()` it to my PC's terminal. Now I have proper logging from a 30 year old console!
+
+<figure>
+	<img
+		src={require('./modernConsole.png').default.src}
+		alt="Logging to my PC instead of the Neo Geo"
+	/>
+	<figcaption>Logging to my PC instead of the Neo Geo</figcaption>
+</figure>
+
+### Visualize all the stuff!
+
+I have added many more write taps and now Lua can show me all kinds of things.
+
+<figure>
+	<img
+		src={require('./visualize.png').default.src}
+		alt="Several things in my game being visualized by Lua"
+	/>
+	<figcaption>Several things in my game being visualized by Lua</figcaption>
+</figure>
+
+Here the orange dots show the player's past locations. This has been helpful in getting the controls to feel just right. The lower right shows the game's true current frame rate. This is different from the framerate that MAME reports. If it ever dips from 60 to say 30, I know I have a performance problem. The blue, green, red and purple boxes show the bounding boxes of entities on the screen such as the terrain and the flag. This has been helpful in tracking down collision detection issues.
+
+### Visualizing performance
+
+<figure>
+	<img
+		src={require('./perf.png').default.src}
+		alt="Performance visualization"
+	/>
+	<figcaption>Performance visualization</figcaption>
+</figure>
+
+Here is a visualization of function timings every frame. The green area is my game waiting for the next frame to start. The black is my game dealing with the player itself, such as responding to inputs from the joystick and moving the player accordingly. The grey area is the player's collision detection routines running against the terrain. In this screenshot, as more terrain came onto the screen (the floating orange boxes), the game needed to spend more time doing collision detection, as seen by the grey area ramping up.
+
+<figure>
+	<img
+		src={require('./thirtyfps.png').default.src}
+		alt="The game running at 30fps due to performance issues"
+	/>
+	<figcaption>The game running at 30fps due to performance issues</figcaption>
+</figure>
+
+Here we can see the performance meter doubling in size. This is because there is so much terrain on the screen, the game needs to do terrain collision detection for so long it takes longer than one frame. The game is forced to wait until the next frame (to avoid graphical glitches, something this blog post is glossing over...), and thus the game has dropped to 30 frames per second. Dropping to 30fps is really bad, and something I want to always avoid. This perf visualization helps a lot!
+
+Also this screenshot shows which sprites in video ram are currently in use (the bottom gray area with many lines), as I forgot to toggle that overlay off before taking the screenshot :)
+
+## Conclusion
+
+My Lua scripts do a lot more, but you get the idea. This has been an absolute game changer! I am so grateful for this MAME feature. It's really allowing me to see exactly what the Neo Geo is up to, and enabling me to juuuust squeeze out a pretty modern and elaborate platformer game engine on ancient hardware.

@@ -1,5 +1,0 @@
-projects page: need to sort projects better somehow
-
-dates are formatted as en-us. probably due to rendering with node versus the browser
-
-FocalColorLinks in headers against red bg look bad. Reagent Rocks is one example
