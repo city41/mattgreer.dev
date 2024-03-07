@@ -118,6 +118,13 @@ But, this really isn't as bad as it sounds. I let the dump do its thing while I 
 	</figcaption>
 </figure>
 
+<wisdom>
+	<b>March 2024 update:</b> Three years later, I improved the dumping so that
+	each screenshot takes about 2 seconds. An entire dump then takes about 6
+	hours. Even better, I have been able to focus the dumps as I learned more
+	about the map.
+</wisdom>
+
 ## The results
 
 <pitfall>
@@ -179,6 +186,16 @@ This approach takes "snapshots" of the map from save rooms. There are parts of t
 </figure>
 
 I think the way to address this is to start the emulator, and manually walk Samus over to the correct spot. Once she is situated ideally, grab a save state of the emulator. Then my script can restore the save state before each dump. This will instantly place Samus at the correct spot for each dump, saving a lot of time and hassle.
+
+<wisdom>
+	<b>March 2024 update:</b> I ended up using BizHawk movies instead of save
+	states. A BizHawk movie is a recording of controller inputs. I was able to
+	capture a movie that starts the game, presses start to enter the map, then
+	presses the directional pad to move the map where it needed to be depending on
+	which part of the map I was after. My BizHawk script would start this movie,
+	then quickly alter the save file before the movie picked a save, and then take
+	a screenshot once the movie was done. This worked very well.
+</wisdom>
 
 ## Other nerdy game stuff
 
