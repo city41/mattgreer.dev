@@ -287,6 +287,10 @@ On the left is the trace for when you choose the normal colors, and the right is
 
 For those curious [here is this section of the diff](/fullDiff.png) showing all the pieces at once.
 
+## Setting alternate colors in my hack
+
+And with that I was finally able to figure out how the game got the alternate colors to work. Since King of Fighters '94 doesn't allow custom teams, the original game would set alternate colors for an entire team. But with my custom team hack, I need to set alternate colors per character instead of per team. Thanks to these traces, I was able to figure out exactly how to do that.
+
 ## Conclusion
 
 These trace diffs almost feel like a super power. Having differences jump out in blue, being able to watch register values and easily track their changes, and look to the address registers to see where in memory the game is pushing and pulling data, has made figuring out what the game is doing immensly easier. I now think I might actually finish this hack :)
