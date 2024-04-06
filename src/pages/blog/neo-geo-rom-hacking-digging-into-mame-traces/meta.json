@@ -1,0 +1,10 @@
+{
+	"title": "Neo Geo ROM Hacking: Digging Into MAME Traces",
+	"date": "2024-04-05",
+	"type": "technical article",
+	"tags": ["Rom hacking", "Reverse engineering", "Retro gaming"],
+	"description": [
+		"How I used MAME's tracing to figure out a how a Neo Geo game works"
+	],
+	"imgAlt": "The Neo Geo logo"
+}

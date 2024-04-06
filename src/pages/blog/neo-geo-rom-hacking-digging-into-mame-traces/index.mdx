@@ -1,0 +1,298 @@
+import { Article } from '../../../components/layouts/Article';
+import meta from './meta.json';
+
+export const config = {
+	unstable_runtimeJS: false,
+};
+
+export default ({ children }) => (
+	<Article
+		{...meta}
+		img={require('./feature.svg').default.src}
+		socialMediaImg={require('./twitter.png').default.src}
+		intro="How I used MAME's tracing to figure out a how a Neo Geo game works"
+	>
+		{children}
+	</Article>
+);
+
+I have been working on a second Neo Geo ROM hack, this time I'm [adding team edit functionality to King of Fighters '94](https://neorh.mattgreer.dev/). This is a much more complex and harder hack than [my previous one](https://rotary-bobble.mattgreer.dev/). I really had no idea how hard this would be when I started, and many weeks later I'm still chipping away at it. Today I came up with an approach using MAME's tracing feature that finally let me figure out a part of the game that has been thwarting me for days. So I thought I'd write about it.
+
+## A little background on the hack
+
+King of Fighters is a fighting game series, and its main gimmick has teams of three fighting each other instead of the traditional 1 on 1 fair. King of Fighters '94 was the first entry in the series, and it stands out compared to the rest of the King of Fighter games in that it doesn't let you create a custom team. Instead it offers 8 already established teams to choose from.
+
+<figure>
+	<img
+		src={require('./kof94TeamSelect.png').default.src}
+		alt="King of Fighters '94's team select screen"
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>King of Fighters '94's team select screen</figcaption>
+</figure>
+
+Its sequel, King of Fighters '95, allowed creating custom teams, and that feature has been in the series since.
+
+<figure>
+	<img
+		src={require('./kof95CharSelect.png').default.src}
+		alt="King of Fighters '95's team select screen"
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>King of Fighters '95's team select screen</figcaption>
+</figure>
+
+My hack is adding in a team edit feature to '94.
+
+<figure>
+	<img
+		src={require('./kof94HackCharSelect.png').default.src}
+		alt="King of Fighters '94's team select screen from my hack"
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>
+		King of Fighters '94's team select screen from my hack
+	</figcaption>
+</figure>
+
+And in a fighting game, whenever both players choose the same character, they have different colors to tell them apart. If a player wants, they can choose the alternate color by choosing their character with the D button instead of the normally used A button.
+
+<figure>
+	<img
+		src={require('./athenaVsAthena.png').default.src}
+		alt="Athena in red versus Athena in blue"
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>Athena in red versus Athena in blue</figcaption>
+</figure>
+
+## About those alternate colors
+
+My hack needs to maintain the "pressing a different button chooses the alternate colors" functionality. You'd think those alternate colors would be pretty simple, right? Something like
+
+```c
+if (buttonPressed() == D_BUTTON) {
+	player1.useAlternateColors = true;
+}
+```
+
+if this game was written in a C-ish language. Turns out the code for this is basically that simple (and we'll get to that down below). But this game was written in assembly. And even if it wasn't, all I have access to is the disassembled machine code. Assembly is extremely low level and can be quite tedious. As an example, one game frame takes about 16 milliseconds. And over the course of that frame, the game will execute about 10,000 instructions. 10,000 lines of stuff like this...
+
+```asm
+0374FA: 246C 00B6      movea.l ($b6,A4), A2
+0374FE: 7002           moveq   #$2, D0
+037500: 4A2C 0130      tst.b   ($130,A4)
+037504: 6A0C           bpl     $37512
+037506: 7000           moveq   #$0, D0
+037508: 4A2A 0130      tst.b   ($130,A2)
+03750C: 6B0C           bmi     $3751a
+03750E: 5240           addq.w  #1, D0
+037510: 6008           bra     $3751a
+037512: 4A2A 0130      tst.b   ($130,A2)
+037516: 6B02           bmi     $3751a
+037518: 5240           addq.w  #1, D0
+```
+
+I have spent _days_ trying to figure out how the alternate colors are set!
+
+## Exhausting the usual tricks
+
+MAME has a great debugger and there are a few tactics with it that can be used to figure things out. I have written [another post](/blog/mame-debugging) that goes over some of this. A common tactic is memory diffing. In this case I'd first run a game where I chose the normal colors, and dump the memory to a file. Then do it again with the alternate colors, and compare the memory for differences.
+
+Doing this I found a suspicious byte. And sure enough when I set it, I got the alternate colors!
+
+<figure>
+	<img
+		src={require('./altColorsInOrderSelect.png').default.src}
+		alt="Terry sporting his purple vest instead of red thanks to setting that byte"
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>
+		Terry sporting his purple vest instead of red thanks to setting that byte
+	</figcaption>
+</figure>
+
+But then once the fight started, he was back in his regular colors. So close, and yet so so far...
+
+<figure>
+	<img
+		src={require('./butRegColorsInFight.png').default.src}
+		alt="Terry back to his red duds during the fight"
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>Terry back to his red duds during the fight</figcaption>
+</figure>
+
+I tried all the tricks in the book. Set a watchpoint on it and try and figure out what caused the game to set that byte. Nope, couldn't figure it out.
+
+<wisdom>
+	My <a href="/blog/mame-debugging/">MAME debugging</a> post goes over
+	watchpoints
+</wisdom>
+
+OK, to get alternate colors you press D when picking your character. So I'll try breaking into the debugger once D is pressed and follow where it goes... nope, couldn't figure it out. Maybe spy on video RAM and once the game sets the palette needed for the alternate colors, break into the debugger and see why it chose that palette? ... nope.
+
+I just could not figure it out. I was getting fearful my only hope was to bite the bullet and painstakingly comb through reems of assembly and very slowly figure out how the game works. It turned out that is exactly what I did, but I figured out a better way to do it...
+
+## MAME traces to the rescue
+
+Tracing is where MAME will log out everything the CPU does to a file. So for example you can turn on tracing, perform an action (such as choosing the alternate colors), turn tracing off, then examine the resulting trace file. Often you will create two traces and compare them. For example one trace where I pick the regular colors, and the other the alternate colors. Technically, the answer is in the traces, it's just a matter of finding it. But just tracing for a couple of seconds can result in a trace file that is _millions_ of lines long! And traces in general have a lot of challenges.
+
+For traces we want...
+
+- Traces to be as short as possible.
+- When creating two traces to compare, the differences in the traces are related to what you're comparing as much as possible. In other words, minimize the noise.
+- The CPU register values for every opcode that is executed
+- A clean and intuitive way to compare traces, make differences as obvious and easy to reason about as possible
+
+by doing a few simple things, I was able to get all of this in my traces.
+
+### Making traces as short and precise as possible
+
+I did this by creating a Lua script that would press buttons and progress the game automatically.
+
+```lua
+REG_P1CNT = 0x300000
+A_BUTTON = 0xef00
+
+function on_reg_p1cnt_read(offset, data, mask)
+	if frame > 450
+		and press_a_to_choose_team_play_frame == nil then
+		press_a_to_choose_team_play_frame = frame
+		print("pressing a to choose team play")
+		return A_BUTTON
+	end
+
+	if frame == press_a_to_choose_team_play_frame then
+		print("continuing to press a to choose team play")
+		return A_BUTTON
+	end
+	...
+end
+
+mem:install_read_tap(
+	REG_P1CNT,
+	REG_P1CNT + 1,
+	"REG_P1CNT",
+	on_reg_p1cnt_read
+)
+```
+
+Here I'm tapping into `REG_P1CNT`, which is what the game reads to determine what buttons are pressed. This allows me to press the buttons programatically. By pressing the buttons on precise frames, I'm able to get the game where it needs to be automatically. What's really great about this is by pressing the buttons on the same frame every time, the randomization within the game will always be the same. This is especially helpful when comparing two traces.
+
+The MAME Lua interface includes access to the debugger, so I am able to turn tracing on and off from within the script and do so at very precise moments.
+
+```lua
+function on_frame()
+	if frame == press_to_choose_italy_frame + 2 then
+		-- start tracing
+		manager.machine.debugger:command("trace luatrace.txt")
+	end
+
+	if frame == press_to_choose_italy_frame + 5 then
+		-- stop tracing exactly 3 frames later
+		manager.machine.debugger:command("trace off")
+	end
+	...
+end
+```
+
+### Adding register data to the traces
+
+By default traces only show the opcodes, and not the value of the registers. So for example, the line `move.b D0, D1` just tells us a byte moved from one register to another, but not what the value of that byte was.
+
+This is easy to add to traces by adding `tracelog` to the `trace` command. So instead of this
+
+```lua
+manager.machine.debugger:command("trace luatrace.txt")
+```
+
+I did this
+
+```lua
+manager.machine.debugger:command(
+	'trace luatrace.txt,,,{ tracelog "D0=%x D1=%x D2=%x D3=%x D4=%x D5=%x D6=%x D7=%x A0=%x A1=%x A2=%x A3=%x A4=%x A5=%x A6=%x PC=%x -- ",d0,d1,d2,d3,d4,d6,d6,d7,a0,a1,a2,a3,a4,a5,a6,pc }'
+)
+```
+
+This crazy long line is just telling MAME to add the register values to every line throughout the trace. This makes a trace look like this
+
+```asm
+...
+
+D0=0 D1=DCA4 D2=0 D3=FFFF D4=8403600 D5=842184D8 D6=842184D8 D7=FFFF A0=108932 A1=108300 A2=F6CC4 A3=108FAA A4=30F12BA A5=108000 A6=108E3C PC=32EBA -- 032EBA: cmpi.b  #$1, $10fdaf.l
+
+D0=0 D1=DCA4 D2=0 D3=FFFF D4=8403600 D5=842184D8 D6=842184D8 D7=FFFF A0=108932 A1=108300 A2=F6CC4 A3=108FAA A4=30F12BA A5=108000 A6=108E3C PC=32EC2 -- 032EC2: beq     $32f16
+
+...
+```
+
+That looks like a load of gibberish here in the blog, but on my wide monitor the long lines are easy to ingest.
+
+## Loading the traces into a diffing tool
+
+I then took my two very precise and data rich traces and loaded them into a diff tool. And eureka!
+
+<figure>
+	<img
+		src={require('./diffTraces1.png').default.src}
+		alt="The first major difference between the traces"
+	/>
+	<figcaption>The first major difference between the traces</figcaption>
+</figure>
+
+Thankfully I have a very wide monitor. That screenshot is completely unreadable, [here you can look more closely](/diffTraces1.png) if you're curious.
+
+Seeing the diffs highlighted in blue, and details within the lines highlighted in a deeper blue was a total game changer. In this particular diff I was able to easily figure out the game was reading the button presses and setting up different values based on whether the A button or D button was pressed. Since the traces include the address register values, I'm able to see exactly where in memory the game is sticking things.
+
+<figure>
+	<img
+		src={require('./diffTraces2.png').default.src}
+		alt="Diff showing where the game was loading different things depending on which button was pressed"
+	/>
+	<figcaption>
+		Diff showing where the game was loading different things depending on which
+		button was pressed
+	</figcaption>
+</figure>
+
+Again the screenshot isn't readable, [it's here](/diffTraces2.png) if you're curious.
+
+Here the game is copying data from the ROM into RAM. Where in the ROM it copies from is highlighted in deep blue, because the source differs depending on which colors the player chose.
+
+<figure>
+	<img
+		src={require('./diffSourceAddress.png').default.src}
+		alt="Diff showing where the game was loading different things depending on which button was pressed"
+	/>
+	<figcaption>
+		Diff showing where the game was loading different things depending on which
+		button was pressed
+	</figcaption>
+</figure>
+
+`move.l (A3)+, (A2)+` is a very typical way to move data from one place to another in 68k assembly.
+
+And looking just a little bit up from there, the difference in the source addresses in A3 originated from a difference in the D1 register's value.
+
+<figure>
+	<img
+		src={require('./d1Diffs.png').default.src}
+		alt="Differences in the D1 register across the two traces"
+	/>
+	<figcaption>Differences in the D1 register across the two traces</figcaption>
+</figure>
+
+On the left is the trace for when you choose the normal colors, and the right is the alternate colors. Very early in the trace the game looked to see whether the A or D button was pressed, and wrote a 0 or 1 into memory accordingly. Then here, it pulls that value out of memory into D1, and uses it to calculate an address in the ROM. The different addresses cause the game to load different color palettes.
+
+For those curious [here is this section of the diff](/fullDiff.png) showing all the pieces at once.
+
+## Conclusion
+
+These trace diffs almost feel like a super power. Having differences jump out in blue, being able to watch register values and easily track their changes, and look to the address registers to see where in memory the game is pushing and pulling data, has made figuring out what the game is doing immensly easier. I now think I might actually finish this hack :)
+
+Before I tried this, I spent days picking at the game, trying to figure this color thing out. After I made these trace diffs, I had alternate colors figured out in about 5 minutes.
+
+And once again I want to thank the MAME team for making such an awesome debugger.
+
+Oh and if you enjoy this kind of stuff and want even more, I've been posting on [Bluesky](https://bsky.app/profile/mattgreer.dev). Till next time!

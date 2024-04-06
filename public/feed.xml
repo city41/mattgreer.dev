@@ -4,7 +4,7 @@
         <title>Matt Greer</title>
         <link>https://mattgreer.dev</link>
         <description>Mostly web dev related articles</description>
-        <lastBuildDate>Tue, 05 Mar 2024 15:01:02 GMT</lastBuildDate>
+        <lastBuildDate>Sat, 06 Apr 2024 03:09:37 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
@@ -16,11 +16,19 @@
         <copyright>Copyright Matt Greer</copyright>
         <atom:link href="https://mattgreer.dev/feed.xml" rel="self" type="application/rss+xml"/>
         <item>
-            <title><![CDATA[MAME Lua for Retro Dev]]></title>
-            <link>https://mattgreer.dev/blog/mame-lua-for-retro-dev</link>
-            <guid>https://mattgreer.dev/blog/mame-lua-for-retro-dev</guid>
+            <title><![CDATA[Neo Geo ROM Hacking: Digging Into MAME Traces]]></title>
+            <link>https://mattgreer.dev/blog/neo-geo-rom-hacking-digging-into-mame-traces</link>
+            <guid>https://mattgreer.dev/blog/neo-geo-rom-hacking-digging-into-mame-traces</guid>
+            <pubDate>Fri, 05 Apr 2024 00:00:00 GMT</pubDate>
+            <description><![CDATA[How I used MAME's tracing to learn a tricky part of a Neo Geo game]]></description>
+            <author>matt.e.greer@gmail.com (Matt Greer)</author>
+        </item>
+        <item>
+            <title><![CDATA[MAME Lua for Better Retro Dev]]></title>
+            <link>https://mattgreer.dev/blog/mame-lua-for-better-retro-dev</link>
+            <guid>https://mattgreer.dev/blog/mame-lua-for-better-retro-dev</guid>
             <pubDate>Tue, 05 Mar 2024 00:00:00 GMT</pubDate>
-            <description><![CDATA[How I used MAME's Lua to greatly improve my retro development experience]]></description>
+            <description><![CDATA[How I used MAME's Lua integration to greatly improve my retro development experience]]></description>
             <author>matt.e.greer@gmail.com (Matt Greer)</author>
         </item>
         <item>
