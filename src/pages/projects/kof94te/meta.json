@@ -1,0 +1,14 @@
+{
+	"draft": false,
+	"title": "King of Fighters 94: Team Edit Edition",
+	"type": "game",
+	"tags": ["Assembly", "Retro gaming", "Reverse engineering"],
+	"description": [
+		"King of Fighters 94 was the first game in the King of Fighters series. It lacked the team edit feature present in all of its sequels. I reverse engineered the game and added the feature in."
+	],
+	"url": "https://neorh.mattgreer.dev",
+	"imgAlt": "King of Fighters 94 title screen",
+	"featureIndex": 0,
+	"pixelateImage": false,
+	"projectPagePriority": 0
+}
