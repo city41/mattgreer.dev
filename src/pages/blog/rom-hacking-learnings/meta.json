@@ -1,0 +1,10 @@
+{
+	"title": "ROM Hacking Learnings",
+	"date": "2024-05-21",
+	"type": "technical article",
+	"tags": ["Debugging", "Reverse engineering", "Retro gaming"],
+	"description": [
+		"Now that I have a finished a big ROM hack, some random thoughts on the process."
+	],
+	"imgAlt": "The Neo Geo logo"
+}
