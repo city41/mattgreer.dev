@@ -34,7 +34,6 @@ King of Fighters is a fighting game series from SNK that started on the Neo Geo.
 	/>
 	<figcaption>King of Fighters 94's team select screen</figcaption>
 </figure>
-```
 
 Its sequel, King of Fighters 95, added the ability to create custom teams
 
@@ -58,7 +57,7 @@ My hack added in this custom team creation feature
 	<figcaption>The character select screen from the hack</figcaption>
 </figure>
 
-Then from there, I changed just about the entire rest of the game to show the custom teams being used in the continue screen, cutscenes, etc. My hack gets the game pretty darn close to being as if SNK originally made the game with this feature. And that was my goal, seeing a "what if" scenario played out.
+Then from there, I changed just about the entire rest of the game to show the custom teams being used in the continue screen, cutscenes, etc. My hack gets the game pretty close to being as if SNK originally made the game with this feature. And that was my goal, seeing a "what if" scenario played out.
 
 <figure>
 	<img
@@ -91,13 +90,13 @@ s: 0xf1800, e: 0x100001 -- 59393
 s: 0x1ff034, e: 0x1ffb0d -- 2777
 ```
 
-This output tells where a span of zeros starts (s), ends (e) and how many bytes it is. That 4th span of 169,529 bytes looked really promising. That's a lot of room! I then wrote a script that would fill those spans with random bytes. With the spans filled, I ran the game and see if anything bad happened. Nothing ever did. And to this day, sticking my hack's code into that 165kb space never caused any issues. When the hack was done, there was still 142,432 bytes of that span unused.
+This output tells where a span of zeros starts (s), ends (e) and how many bytes it is. That 4th span of 169,529 bytes looked really promising. That's a lot of room! I then wrote a script that would fill those spans with random bytes. With the spans filled, I ran the game to see if anything bad would happen. Nothing ever did. And to this day, sticking my hack's code into that 165kb space never caused any issues. When the hack was done, there was still 142,432 bytes of that span left unused.
 
-I then checked how many free graphic tiles are there in the tile ROMs? I just did this manually by looking through the graphic tiles in my [tile viewer](https://neospriteviewer.mattgreer.dev/). I found one pocket of 343 seemingly unused tiles and another pocket of 219. I estimated I would need about 400 tiles, so this seemed pretty good too.
+I then checked how many free graphic tiles are there in the tile ROMs. I just did this manually by looking through the graphic tiles in my [tile viewer](https://neospriteviewer.mattgreer.dev/). I found one pocket of 343 seemingly unused tiles and another pocket of 219. I estimated I would need about 400 tiles, so this seemed pretty good too.
 
-Then I ram the game with MAME's debugger turned on and got an idea of how much RAM the game was not using. Looked to be plenty left over, I didn't expect any problems there. And I also dug a bit to get an idea of how many of the system's 381 sprites the game was not using. It looked like I could grab about 30 unused sprites without causing too much trouble.
+Then I ran the game with MAME's debugger turned on and got an idea of how much RAM the game was not using. Looked to be plenty left over, I didn't expect any problems there. And I also dug a bit to get an idea of how many of the system's 381 sprites the game was not using. It looked like I could grab about 30 unused sprites without causing too much trouble.
 
-I didn't investigate palettes at this point, and that might have been a mistake. The Neo Geo allows 256 palettes to be used at a time. It turns out the game uses _a lot_ of palettes. Quite a bit of my effort ended up finding ways I could steal palettes away from the game give them back. Palette corruption was a common bug in the hack
+I didn't investigate palettes at this point, and that might have been a mistake. The Neo Geo allows 256 palettes to be used at a time. It turns out the game uses _a lot_ of palettes. Quite a bit of my effort ended up finding ways I could steal palettes away from the game and later give them back. Palette corruption was a common bug in the hack
 
 <figure>
 	<img
@@ -115,9 +114,9 @@ I didn't investigate palettes at this point, and that might have been a mistake.
 
 In the end I concluded there seemed to be plenty of room for the hack. I turned out to be right, thankfully. But for sure, taking sprites and palettes from the running game was an ongoing challenge throughout the hack.
 
-KOF94 has a complex and powerful graphics engine. The game sort of has a "back end" and "front end", similar to webapps of today. The back end is concerned about logic, and ultimately saying what should be on the screen. This part of the game tells the "front end" what to put on the screen using a complex sytstem of sprite and palette pools. The graphics system draws from these pools and just puts whatever it finds onto the screen. So even though the game just returned back to say the character select screen, it might now be using an entirely different set of sprites and palettes to render it.
+KOF94 has a complex and powerful graphics engine. The game sort of has a "back end" and "front end", similar to webapps of today. The back end is concerned about logic, and ultimately saying what should be on the screen. This part of the game tells the "front end" what to put on the screen using a complex system of sprite and palette pools. The graphics system pulls from these pools and just puts whatever it finds in them onto the screen. So even though the game just returned back to say the character select screen for the second time, it might now be using an entirely different set of sprites and palettes to render it.
 
-I learned how this system worked a bit, but I never really cracked it. It's extremely complex, and reverse engineering is hard no matter how you slice it. If I had learned how it worked, I could have had the hack use the system and likely ended up not fighting the game at all for graphics resources. But instead I ended up running my graphics on top of the running game. Due to the dynamic nature of the graphics system, I found it stealing my sprites/palettes away from me at inopportune times, and vice versa.
+I learned how this system worked a bit, but I never really cracked it. It's extremely complex, and reverse engineering is hard no matter how you slice it. If I had learned how it worked, I could have had the hack use the system and likely ended up not fighting the game at all for graphics resources. But instead I ended up running my graphics on top of the running game. Due to the dynamic nature of the graphics system, I found the game stealing my sprites/palettes away from me at inopportune times, and vice versa.
 
 In the end, I think I made the right choice. If I stuck with learning the system, I have a feeling I'd still be learning it :) It all worked out, and in the end I was able to make nice with the system and give myself a good amount of flexibility and space to do my work.
 
@@ -127,7 +126,7 @@ Understanding how a game works by only examining its machine code is very tough.
 
 ### Prerequisite: know your debugger
 
-To have a fighting chance, you really should use an emulator that has a good debugger, and learn the debugger well. I use MAME's debugger, and it is an absolutely invaluable tool. How people made ROM hacks before something like this was around, I'll never know. Major props to them, that has to be incredibly difficult.
+To have a fighting chance, you really should use an emulator that has a good debugger, and learn the debugger well. I use MAME's debugger, and it is an absolutely invaluable tool. How people made ROM hacks before something like this was around, I'll never know. Major props to them, that had to be incredibly difficult.
 
 <wisdom>
 	I have written an article on MAME's debugger{' '}
@@ -136,19 +135,19 @@ To have a fighting chance, you really should use an emulator that has a good deb
 
 ### Prerequisite: know the hardware well
 
-King of Fighters 94 is a Neo Geo game. I've been messing with and coding for the Neo Geo for a long time now and know it pretty well. Knowing how say a Neo Geo game gets input from the joystick, works with graphics, etc, is very useful knowledge for reverse engineering. It gives you "hooks" into the machine code to start looking. It also gives clues on what a section of the code is doing. Oh it's sending values over to video RAM? Then this part of the game is involved with graphics and sprites.
+King of Fighters 94 is a Neo Geo game. I've been messing with and coding for the Neo Geo for a long time now and know it pretty well. Knowing how say a Neo Geo game gets input from the joystick, works with graphics, etc, is very useful knowledge for reverse engineering. It gives you "hooks" into the machine code to start looking. It also gives clues on what a section of the code is doing. Oh it's writing values to the `VRAMRW` memory mapped register? Then this part of the game is working with graphics and sprites.
 
 For the Neo Geo, there is the awesome [dev wiki](https://wiki.neogeodev.org/index.php?title=Main_Page). An amazing resource that has helped in this area a lot. I would think trying to ROM hack a game that runs on obscure hardware that isn't well known or documented would be significantly more difficult.
 
 ### Ghidra wasn't helpful
 
-Ghidra is a reverse engineering tool focused on taking binaries that were compiled and "decompiling" them to understand what they do. I found Ghidra was totally not helpful at all. And it's really not surprising. Ghidra targets binaries that were compiled from languages like C. KOF94 was hand written in assembly.
+[Ghidra](https://ghidra-sre.org/) is a reverse engineering tool made by the NSA which is focused on taking binaries that were compiled and "decompiling" them to understand what they do. I found Ghidra was really not helpful at all. And it's not surprising. Ghidra targets binaries that were compiled from languages like C. KOF94 was hand written in assembly. In the end, the information that Ghidra provided wasn't any better than what MAME's disassembly had already shown me.
 
-WHen a compiler generates assembly, it does so in relatively predictable ways, and Ghidra takes advantage of that. When a human writes assembly, anything goes. KOF94's assembly at times does absolutely wild things, like jumping out of the middle of one subroutine into the middle of another one, clear out of the blue. I quickly learned to not be surprised, any routine can (and will) do just about anything at all.
+When a compiler generates assembly, it does so in relatively predictable ways, and Ghidra takes advantage of that. When a human writes assembly, anything goes. KOF94's assembly at times does absolutely wild things, like jumping out of the middle of one subroutine into the middle of another one, clear out of the blue. I quickly learned to not be surprised, any routine can (and will) do just about anything at all.
 
 ### Stepping through line by line of execution is usually only a starting point
 
-Breaking into MAME's debugger, then stepping through execution one opcode at a time while the game is running seems to be the way to learn how the game works. But it usually isn't. For simple things it can be. But usually the mental "stack" of registers, memory values, and branches you are keeping in your head as you follow along overflows very quickly.
+Breaking into MAME's debugger, then stepping through execution one opcode at a time while the game is running seems to be the way to learn how the game works. But it usually isn't. For simple things it can be. But usually the mental "stack" of registers, memory values, and branches you are keeping in your head as you follow along overflows very quickly. I found it wasn't long that I really had no idea what I was even looking at anymore.
 
 I think one of the most important lessons I learned is to stop single stepping and move onto more advanced methods pretty quickly. Really single stepping like this is just a means to know where to employ the more advanced techniques.
 
@@ -183,7 +182,7 @@ The game was writing these words just before this scene
 03C1AE: move.w (A6)+, ($2c,A1)
 ```
 
-So I wrote up four little patches that each denied one of these writes. And when I denied the first write, I got this for that scene
+So I wrote up four little patches that each took out one of these writes. And when I prevented the first word from being written, I got this for that scene
 
 <figure>
 	<img
@@ -196,37 +195,37 @@ So I wrote up four little patches that each denied one of these writes. And when
 	</figcaption>
 </figure>
 
-Oh! Useful information! I now knew for sure these words directly influenced what characters showed up in this scene. The single character that did show up with my patch is Heidern. His ID is zero. He often shows up in situations like this when a byte doesn't get written to. The game saw the zero and figured it needed to load Heidern.
+Oh! Useful information! I now knew for sure these words directly influenced what characters showed up in this scene. The single character that did show up with my patch is Heidern. His ID is zero. More on why Heidern proved useful later on in this post.
 
-With this information I was able to zero in on these writes and crack the code on how characters are placed in this scene.
+With this information I was able to focus on these writes and crack the code on how characters are placed in this scene.
 
 ### Tracing: the most useful tool
 
-Tracing what the CPU does was by far the most useful tool for figuring out the game. In MAME you can have it log to a file everything the CPU executes. Then examine that file. Assuming you traced while the game did what you were interested in, the answer _is_ in the trace, it then just becomes a matter of finding it.
+Tracing what the CPU does was by far the most useful tool for figuring out the game. In MAME you can have it log to a file everything the CPU executes. Then later examine that file. Assuming you were tracing while the game did what you were interested in, the answer _is_ in the trace, it then just becomes a matter of finding it.
 
 Tracing is tricky and an art onto itself. Even the ancient 12mhz CPU inside the Neo Geo can execute thousands and thousands of opcodes in a matter of seconds. Tracing for just a few seconds can result in a file that is hundreds of thousands and even millions of lines long.
 
 Once you figure out how to narrow down the trace as much as possible -- and single stepping through execution in the debugger is a way to do that -- you can then examine the trace and pretty much always figure the mystery out.
 
-I won't go into any more details on this, as I have a [post on tracing](https://mattgreer.dev/blog/neo-geo-rom-hacking-digging-into-mame-traces/) you can read if curious.
+I won't go into any more details on this, as I have a [post on tracing](https://mattgreer.dev/blog/neo-geo-rom-hacking-digging-into-mame-traces/) you can read if you are curious.
 
 ### Write down everything you learn. Everything.
 
-No matter how small, if you figure something out about the game, write it down. You never know. And it's usually these tiny advancements that lead to big breakthroughs.
+No matter how small, if you figure something out about the game, write it down. You never know. And it's usually these tiny advancements that lead to big breakthroughs. For my hack, I had a [findings](https://github.com/city41/kof94te/tree/main/findings) directory with all kinds of text files in it. The whole directory is a mess. But writing stuff down made piecing everything together so much easier. It also enabled me to take a break and come back later.
 
 ## Assembly is brutal
 
 I ended up writing about 5000 lines of assembly for this hack. In the grand scheme of things, that's a tiny project. But it's by far the biggest exposure to assembly I've ever had.
 
-At first assembly is pretty fun. You get to tell the cpu exactly what to do. It soon wore on my and ultimately I can't say I'm a fan :) Ah well, assembly is just a fact of life on projects like this. I think it would be possible to create a tool that lets you write your hack in C, then inject the compiled binary into the ROM at the correct locations. But that is likely quite an undertaking. I think I'd rather just make all new games for the system than do that.
+At first assembly is pretty fun. You get to tell the CPU exactly what to do. It soon wore on my and ultimately I can't say I'm a fan :) Ah well, assembly is just a fact of life on projects like this. I think it would be possible to create a tool that lets you write your hack in C, then inject the compiled binary into the ROM at the correct locations. But that is likely quite an undertaking. I think I'd rather just make all new games for the system than do that.
 
-The real key to assembly is comments galore. I got in the habit of adding a comment to nearly every line. At first it seems kind of silly. But when you come back to a file you wrote a week ago, the comments prove to be essential in reaquanting what you were doing.
+The real key to assembly is comments galore. I got in the habit of adding a comment to nearly every line. At first it seems kind of silly. But when you come back to a file you wrote a week ago, the comments prove to be essential in getting reacquainted with what you were doing.
 
 ### Keep in mind your project's goal
 
 For my hack, my goal was to add team edit and that was it. I knew there was a stopping point. This is very different from trying to break a game wide open and create a modding community on top of it, such as has been done with Super Mario World. Knowing your goal here can help with writing code, believe it or not.
 
-Some of my assembly code is really bad. Some is pretty good. It just ended depending on how much of the rest of my hack was using that part of the code. There are parts of the hack that are truly a hack. I just took a sledgehammer to the game and forced it to do what I needed, code cleanliness and readability be damned. It's a risk, for sure, but I think for a project like this it can be fine. If you employ this technique well, it can save you a lot of time (and frustration).
+Some of my assembly code is really bad. Some is pretty good. It just ended up depending on how much of the rest of my hack was using that part of the code. There are parts of the hack that are truly a hack. I just took a sledgehammer to the game and forced it to do what I needed, code cleanliness and readability be damned. It's a risk, for sure, but I think for a project like this it can be fine. If you employ this technique well, it can save you a lot of time (and frustration). And if you employ it poorly, you often pay the price. Tread carefully :)
 
 ### Exposure to assembly is healthy
 
@@ -285,7 +284,9 @@ For King of Fighters 94, every character was given an id
 
 (left out from this table are the other 21 characters)
 
-Terry, Andy and Joe make up Team Italy, one of the teams in the original game. Whenever I see the values `f` then `10` then `11` get set in a register, or flow through a routine, written to memory, whatever, then I am pretty confident that routine is dealing with characters in some fashion. These little "tracer bullets" most often lead to useful discoveries.
+Terry, Andy and Joe make up Team Italy, one of the teams in the original game. Whenever I see the values `f` then `10` then `11` get set in a register, or flow through a routine, written to memory, whatever, then I am pretty confident that routine is dealing with characters in some fashion. These little "tracer bullets" most often lead to useful discoveries. I could also restart the game, choose a different team, and watch the values again. If the new values I see correspond with the team I just chose, then for sure I'm on to something.
+
+### Useful Zeros
 
 Heidern's ID of zero is also useful, as zero is the default value for RAM locations. Often Heidern would just show up somewhere unexpectedly. And when he did, I knew the game was reading a byte that was zero when it wasn't expecting it to be.
 
@@ -304,10 +305,10 @@ Such as here. In the early days of my hack I had situations like this come up. S
 
 Reverse engineering is really hard. Honestly I think it's more tedious than anything. Sometimes during this hack I would hit a wall and not make any progress for days, weeks even. When that happened I would take a break. Coming back the next day or so with a fresh mind almost always led to new discoveries.
 
-Sometimes the discovery is teeny tiny. That's ok. Just keep pushing along. These tiny discoveries build up, and eventually you get that eureka moment where it all makes sense.
+Sometimes the discovery is teeny tiny. That's ok. Just keep pushing along. These tiny discoveries build up, and eventually you get that eureka moment where it all makes sense. Ok, so it rarely "all" makes sense :) But usually you learn enough to hack the game to make it do what you want, and that's enough.
 
 ## Conclusion
 
-Do I like ROM hacking? Hmmmm, I'm not sure :) I have mixed feelings about it. When I got a huge breakthrough, I'd often jump out of my seat and yell. Those were really exciting. But they often only came after days or even weeks of frustration and tediousness. In the end, seeing one of my favorite games have a feature we've always wondered about was super satisfying, to say the least.
+Do I like ROM hacking? Hmmmm, I'm not sure :) I have mixed feelings about it. When I got a huge breakthrough, I'd often jump out of my seat and yell in glee. Those were really exciting. But they often only came after days or even weeks of frustration and tediousness. In the end, seeing one of my favorite games have a feature we've always wondered about was super satisfying, to say the least.
 
 I'm definitely done with them for a while. It's time to let me brain heal back a bit :)
