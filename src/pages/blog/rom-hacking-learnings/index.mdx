@@ -217,13 +217,13 @@ No matter how small, if you figure something out about the game, write it down. 
 
 I ended up writing about 5000 lines of assembly for this hack. In the grand scheme of things, that's a tiny project. But it's by far the biggest exposure to assembly I've ever had.
 
-At first assembly is pretty fun. You get to tell the CPU exactly what to do. It soon wore on my and ultimately I can't say I'm a fan :) Ah well, assembly is just a fact of life on projects like this. I think it would be possible to create a tool that lets you write your hack in C, then inject the compiled binary into the ROM at the correct locations. But that is likely quite an undertaking. I think I'd rather just make all new games for the system than do that.
+At first assembly is pretty fun. You get to tell the CPU exactly what to do. It soon wore on me and ultimately I can't say I'm a fan :) Ah well, assembly is just a fact of life on projects like this. I think it would be possible to create a tool that lets you write your hack in C, then inject the compiled binary into the ROM at the correct locations. But that is likely quite an undertaking. I think I'd rather just make all new games for the system than do that.
 
 The real key to assembly is comments galore. I got in the habit of adding a comment to nearly every line. At first it seems kind of silly. But when you come back to a file you wrote a week ago, the comments prove to be essential in getting reacquainted with what you were doing.
 
 ### Keep in mind your project's goal
 
-For my hack, my goal was to add team edit and that was it. I knew there was a stopping point. This is very different from trying to break a game wide open and create a modding community on top of it, such as has been done with Super Mario World. Knowing your goal here can help with writing code, believe it or not.
+For my hack, my goal was to add team edit and that was it. I knew there was a stopping point. This is very different from trying to break a game wide open and create a modding community on top of it, such as what has been done with Super Mario World. Knowing your goal here can help with writing code, believe it or not.
 
 Some of my assembly code is really bad. Some is pretty good. It just ended up depending on how much of the rest of my hack was using that part of the code. There are parts of the hack that are truly a hack. I just took a sledgehammer to the game and forced it to do what I needed, code cleanliness and readability be damned. It's a risk, for sure, but I think for a project like this it can be fine. If you employ this technique well, it can save you a lot of time (and frustration). And if you employ it poorly, you often pay the price. Tread carefully :)
 
@@ -282,7 +282,7 @@ For King of Fighters 94, every character was given an id
 	</tbody>
 </table>
 
-(left out from this table are the other 21 characters)
+(left out from this table are the other 22 characters)
 
 Terry, Andy and Joe make up Team Italy, one of the teams in the original game. Whenever I see the values `f` then `10` then `11` get set in a register, or flow through a routine, written to memory, whatever, then I am pretty confident that routine is dealing with characters in some fashion. These little "tracer bullets" most often lead to useful discoveries. I could also restart the game, choose a different team, and watch the values again. If the new values I see correspond with the team I just chose, then for sure I'm on to something.
 
