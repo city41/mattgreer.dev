@@ -126,7 +126,7 @@ Ok cool, the game is reading the input, moving it into a register, then what? Ta
 001032: 1039 0010 FD9C move.b  $10fd9c.l, D0
 ```
 
-So it `not`s the input on the next line (that flips all the bits), then writes it off into memory somewhere (`move.b D0, (-$5da4,a5)`), `not`s it again, flipping all the bytes back, `and`s it with whatever is in D2, saves that value off somewhere, moves a couple more bytes around, then reads `$10fd9c` into D0.
+So it `not`s the input on the next line (that flips all the bits), then writes it off into memory somewhere (`move.b D0, (-$5da4,a5)`), `not`s it again, flipping all the bits back, `and`s it with whatever is in D2, saves that value off somewhere, moves a couple more bytes around, then reads `$10fd9c` into D0.
 
 Turns out `$10fd9c` is `BIOS_P2CURRENT`. So it's probably safe to assume it's done with player one's input as it has moved onto player 2 (even though player 2 isn't currently playing. This routine is the main gameplay input routine for all game types).
 
