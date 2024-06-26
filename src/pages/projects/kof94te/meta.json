@@ -6,7 +6,7 @@
 	"description": [
 		"King of Fighters 94 was the first game in the King of Fighters series. It lacked the team edit feature present in all of its sequels. I reverse engineered the game and added the feature in."
 	],
-	"url": "https://neorh.mattgreer.dev",
+	"url": "https://kof94te.mattgreer.dev",
 	"imgAlt": "King of Fighters 94 title screen",
 	"featureIndex": 0,
 	"pixelateImage": false,
