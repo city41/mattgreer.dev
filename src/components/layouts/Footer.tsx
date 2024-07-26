@@ -9,7 +9,6 @@ import {
 	FaRss,
 } from 'react-icons/fa';
 import { LightDarkToggle } from './LightDarkToggle';
-import { BlueSkyLogo } from './BlueSkyLogo';
 
 type FooterProps = {
 	className?: string;
@@ -76,13 +75,6 @@ function Footer({ className }: FooterProps) {
 						Icon={FaLinkedin}
 						href="https://www.linkedin.com/in/matt-greer-133405ab/"
 						label="my LinkedIn profile"
-					/>
-				</li>
-				<li>
-					<IconLink
-						Icon={BlueSkyLogo}
-						href="https://bsky.app/profile/mattgreer.dev"
-						label="my BlueSky profile"
 					/>
 				</li>
 			</ul>
