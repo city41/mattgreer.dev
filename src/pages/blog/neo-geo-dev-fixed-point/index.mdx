@@ -10,7 +10,7 @@ export default ({ children }) => (
 		{...meta}
 		img={require('./feature.svg').default.src}
 		socialMediaImg={require('./twitter.png').default.src}
-		intro="Let's take a look at how to work with decimal numbers on an ancient CPU."
+		intro="Let's take a look at how to work with decimal numbers on an ancient cpu."
 	>
 		{children}
 	</Article>
@@ -24,24 +24,25 @@ Thankfully there is a way to get them on something as old as the Neo Geo, using 
 
 Floating point numbers are decimal numbers where the decimal itself can be in any position. This allows computers to work with small decimal numbers like `3.00000000001` or big numbers like `12345678.2`, by moving the decimal point around, the decimal system is much more flexible. This article won't go into the details of how floating point works. But just know that when writing a program nowadays, you typically just use decimal numbers and hardly think much about them, as they just work.
 
+Floating point is complicated, so it's pretty slow. Modern computers deal with this by doing floating point calculations in hardware instead of software. Old systems like the Neo Geo "dealt" with this by not supporting it at all :)
+
 ## Fixed Point
 
 In a fixed point system, the decimal point is locked in place. For example one system might use six decimal digits and 10 integer digits, like `1234567890.450012`
 
 <wisdom>
 	Computers actually work in binary, so the system would really be like
-	<pre> 1101001001.011011</pre>. But for simplicity, I'm just going to pretend they
-	use base ten.
+	<pre> 1101001001.011011</pre>
 </wisdom>
 
 The advantage to this is being very simple and very fast. Behind the scenes the fixed point number is actually stored in an integer. The CPU itself has no idea it is working with fixed point, it just sees integers and can do arithmetic on them just like any other number it encounters.
 
 <pitfall>
-	This is not entirely true, as we will see below. Multiplication and division a
-	tad more complicated.
+	This is not entirely true, as we will see below. Multiplication and division
+	are a tad more complicated.
 </pitfall>
 
-The disadvantage is precision and flexibility. If you need really precise decimal numbers, you might choose your fixed point system to have 4 integer digits and 12 decimal. But that means the maximum integer in that system is only 7! If you go the opposite direction, 12 integer and 4 decimal, your maximum integer is 2047. Which gives you more breathing room, but you're then unable to form precision decimal numbers.
+The disadvantage is precision and flexibility. If you need really precise decimal numbers, you might choose your fixed point system to have 4 integer digits and 12 decimal. But that means the maximum integer in that system is only 7! If you go the opposite direction, 12 integer and 4 decimal, your maximum integer is 2047. Which gives you more breathing room, but you're then unable to form precise decimal numbers.
 
 <figure>
 	<img
@@ -51,7 +52,7 @@ The disadvantage is precision and flexibility. If you need really precise decima
 	<figcaption>Where you place the decimal point is a trade-off</figcaption>
 </figure>
 
-Where you place it just depends on what your needs are. For my game, I've opted for a system that creates pretty precise decimal numbers at the cost of smallish integers. Usually that is ok. Typically you're calculating where on the screen something will be, and since the Neo Geo's resolution is only 320x224, having smaller integers is often ok.
+Where you place it just depends on what your needs are. For my game, I've opted for a system that creates pretty precise decimal numbers at the cost of smallish integers. Usually that is ok. Typically you're calculating where on the screen something will be, and since the Neo Geo's resolution is only 320x224, having smaller integers is often just fine.
 
 ## But why do you need fixed point?
 
@@ -68,7 +69,7 @@ Pretend you have a character that can walk across the screen, like Blue here
 	<figcaption>Blue walking across the screen</figcaption>
 </figure>
 
-A simple way to do that is to decide Blue moves at 1 pixel per frame. So the code might be something like this
+A simple way to do that is to decide Blue moves 1 pixel every frame. So the code might be something like this
 
 ```c
 if (pressingRight) {
@@ -82,9 +83,9 @@ graphics_moveSprite(blue.spriteIndex, blue.x, blue.y);
 	This is not real Blue's Journey code :) I'm just using it for a simple example
 </pitfall>
 
-That's fine, `1` pixel per frame means he moves 60 pixels every second. He'd cross the screen in about 5 seconds. Ok what if we want him to move faster? `2` pixels per frame? He'd cross the screen in about 2.5 seconds. What if that is too fast? There isn't much you can do to deal with that. It's either too slow at `1` pixel, or too fast at `2` pixels. You can try fancy things like only moving him 2 out of every 3 frames. But that gets complex quick, and not to mention you're game is essentially no longer 60fps if you do that.
+That's fine, `1` pixel per frame means he moves 60 pixels every second. He'd cross the screen in about 5 seconds. Ok what if we want him to move faster? `2` pixels per frame? He'd cross the screen in about 2.5 seconds. What if that is too fast? There isn't much that can be done to deal with that. It's either too slow at `1` pixel, or too fast at `2` pixels. You can try fancy things like only moving him 2 out of every 3 frames. But that gets complex quick, and not to mention you're game isn't really 60fps anymore if you do that.
 
-With fixed point, we could say that Blue moves at `1.2` pixels per frame, or just about any fractional value we want. We can decide exactly how fast Blue moves, move him every frame, and it will all just work, nice and simple.
+With fixed point, we could say that Blue moves at `1.2` pixels per frame, or just about any fractional value we want (within reason). We can decide exactly how fast Blue moves, move him every frame, and it will all just work, nice and simple.
 
 With our fixed point system, Blue might be at 32.2 pixels one frame, then 32.8 pixels the next. Since sprites have to be placed on the screen using integers, that might mean visually Blue is at 32 pixels for two frames, then 33 pixels on the third frame. Not ideal, but also nothing we can really do about it. That's just the reality on these old low resolution systems.
 
@@ -93,6 +94,8 @@ With our fixed point system, Blue might be at 32.2 pixels one frame, then 32.8 p
 	this is exactly what they are referring to. The <pre>.2</pre> and{' '}
 	<pre>.8</pre> are Blue's subpixels in this example.
 </wisdom>
+
+Thankfully that is only a visual limitation. The logic of your game remains precise, so your controls and the "feel" of the game remains snappy.
 
 ## Making a fixed point system
 
@@ -121,8 +124,6 @@ Then we need some simple macros to convert to and from our fixed point numbers
 #define TO_FIXED(a) ((a) * SCALE)
 #define FROM_FIXED(a) ((a) / SCALE)
 ```
-
-You could also define these as `TO_FIXED(a) (a << DECIMAL_BITS)` but I find this a tad easier to read and reason about. Bit shifting is faster, but no worries, the compiler will make these changes for us.
 
 And yeah, all we are really doing is moving our numbers up higher in the 32 bit space. That's pretty much all it takes to simulate decimals.
 
@@ -164,7 +165,7 @@ That code is very simplified, but you get the idea.
 
 ### Multiplication
 
-Now things get a tad more complex. When multiplying two fixed numbers together, the "decimal point's location" will double. Basically each fixed number has `SCALE` applied to it, so after a multiplication, the result with have `SCALE*2` applied to it, so a division is needed to bring the result back down to a single `SCALE`.
+Now things get a tad more complex. When multiplying two fixed numbers together, the "decimal point's location" will move. Basically each fixed number has `SCALE` applied to it, so after a multiplication, the result with have `SCALE*2` applied to it, so a division is needed to bring the result back down to a single `SCALE`.
 
 ```c
 fixed fixed_multiply(fixed a, fixed b) {
@@ -208,7 +209,7 @@ fixed doubledFa = fixed_multiply(fa * TO_FIXED(2));
 
 ### Multiplication Overflow
 
-Multiplying two 32 bit numbers together and storing the result in a 32 bit number can cause overflow. Basically take two very big numbers. When multiplied together, the result will be gigantic. Too big to fit into 32 bits, so some of it will get thrown away, causing the result to be incorrect. The common way to avoid this problem is to make `temp` be 64 bits.
+Multiplying two 32 bit numbers together and storing the result in a 32 bit number can cause overflow. Take two very big numbers, when multiplied together, the result will be gigantic. Too big to fit into 32 bits, so some of it will get thrown away, causing the result to be incorrect. The common way to avoid this problem is to make `temp` be 64 bits.
 
 But that is a problem on the Neo Geo, it has no 64 bit numbers!
 
