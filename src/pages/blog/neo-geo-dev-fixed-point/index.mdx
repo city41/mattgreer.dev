@@ -243,7 +243,7 @@ fixed fixed_multiply(fixed a, fixed b) {
 If after multiplying is finished, if `temp` is smaller than `a`, that is a sign the result was too big. This is not ideal, because if you have multiplication overflow there isn't anything you can do except change your game to avoid it. But this is way better than just allowing the error to happen and having a broken game.
 
 <wisdom>
-	<pre>ngassert()</pre> is something I built myself. I explain how in my{' '}
+	<pre>ngassert()</pre> is something I built myself. I talk more about it in my{' '}
 	<a href="https://mattgreer.dev/blog/mame-lua-for-better-retro-dev/#primitive-assertions">
 		MAME Lua for Better Retro Dev
 	</a>{' '}
