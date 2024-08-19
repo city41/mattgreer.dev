@@ -4,7 +4,7 @@
         <title>Matt Greer</title>
         <link>https://mattgreer.dev</link>
         <description>Mostly web dev related articles</description>
-        <lastBuildDate>Tue, 21 May 2024 13:47:31 GMT</lastBuildDate>
+        <lastBuildDate>Mon, 19 Aug 2024 15:26:29 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
@@ -15,6 +15,14 @@
         </image>
         <copyright>Copyright Matt Greer</copyright>
         <atom:link href="https://mattgreer.dev/feed.xml" rel="self" type="application/rss+xml"/>
+        <item>
+            <title><![CDATA[Neo Geo Dev: Fixed Point Numbers]]></title>
+            <link>https://mattgreer.dev/blog/neogeo-dev-fixed-point</link>
+            <guid>https://mattgreer.dev/blog/neogeo-dev-fixed-point</guid>
+            <pubDate>Mon, 19 Aug 2024 00:00:00 GMT</pubDate>
+            <description><![CDATA[Let's take a look at how to work with decimal numbers on an ancient CPU.]]></description>
+            <author>matt.e.greer@gmail.com (Matt Greer)</author>
+        </item>
         <item>
             <title><![CDATA[ROM Hacking Learnings]]></title>
             <link>https://mattgreer.dev/blog/rom-hacking-learnings</link>

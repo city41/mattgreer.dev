@@ -1,0 +1,10 @@
+{
+	"title": "Neo Geo Dev: Fixed Point Numbers",
+	"date": "2024-08-19",
+	"type": "technical article",
+	"tags": ["Computer Science", "Retro gaming"],
+	"description": [
+		"Let's take a look at how to work with decimal numbers on an ancient CPU."
+	],
+	"imgAlt": "The Neo Geo logo"
+}

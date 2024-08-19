@@ -1,0 +1,384 @@
+import { Article } from '../../../components/layouts/Article';
+import meta from './meta.json';
+
+export const config = {
+	unstable_runtimeJS: false,
+};
+
+export default ({ children }) => (
+	<Article
+		{...meta}
+		img={require('./feature.svg').default.src}
+		socialMediaImg={require('./twitter.png').default.src}
+		intro="Let's take a look at how to work with decimal numbers on an ancient CPU."
+	>
+		{children}
+	</Article>
+);
+
+Modern computers work with decimals, like `0.5`, using a system called [floating point](https://en.wikipedia.org/wiki/Floating-point_arithmetic). If you remember scientific notation from your science classes, it's based on the same idea. These types of numbers are handled by the cpu in modern computers, and so programs can calculate with them very quickly. The Neo Geo can not work with decimals at all. It only knows how to calculate integers, like `1+3`, `88*4`, or `-45 / 5`. If you wan't to do `8 * 0.5` on the Neo Geo, you just can't. But for games, you almost always need decimal numbers, so what to do?
+
+Thankfully there is a way to get them on something as old as the Neo Geo, using a number system called fixed point.
+
+## Floating Point
+
+Floating point numbers are decimal numbers where the decimal itself can be in any position. This allows computers to work with small decimal numbers like `3.00000000001` or big numbers like `12345678.2`, by moving the decimal point around, the decimal system is much more flexible. This article won't go into the details of how floating point works. But just know that when writing a program nowadays, you typically just use decimal numbers and hardly think much about them, as they just work.
+
+## Fixed Point
+
+In a fixed point system, the decimal point is locked in place. For example one system might use six decimal digits and 10 integer digits, like `1234567890.450012`
+
+<wisdom>
+	Computers actually work in binary, so the system would really be like
+	<pre> 1101001001.011011</pre>. But for simplicity, I'm just going to pretend they
+	use base ten.
+</wisdom>
+
+The advantage to this is being very simple and very fast. Behind the scenes the fixed point number is actually stored in an integer. The CPU itself has no idea it is working with fixed point, it just sees integers and can do arithmetic on them just like any other number it encounters.
+
+<pitfall>
+	This is not entirely true, as we will see below. Multiplication and division a
+	tad more complicated.
+</pitfall>
+
+The disadvantage is precision and flexibility. If you need really precise decimal numbers, you might choose your fixed point system to have 4 integer digits and 12 decimal. But that means the maximum integer in that system is only 7! If you go the opposite direction, 12 integer and 4 decimal, your maximum integer is 2047. Which gives you more breathing room, but you're then unable to form precision decimal numbers.
+
+<figure>
+	<img
+		src={require('./fixedPointDiagram.svg').default.src}
+		alt="Where you place the decimal point is a trade-off"
+	/>
+	<figcaption>Where you place the decimal point is a trade-off</figcaption>
+</figure>
+
+Where you place it just depends on what your needs are. For my game, I've opted for a system that creates pretty precise decimal numbers at the cost of smallish integers. Usually that is ok. Typically you're calculating where on the screen something will be, and since the Neo Geo's resolution is only 320x224, having smaller integers is often ok.
+
+## But why do you need fixed point?
+
+This is a fair question. At the end of the day, it's all about placing sprites on the screen. You can't place a sprite at `(32.84, 44.9442)`, so what's the point?
+
+Pretend you have a character that can walk across the screen, like Blue here
+
+<figure>
+	<img
+		src={require('./bjourney.png').default.src}
+		alt="Blue walking across the screen"
+		pixelated
+	/>
+	<figcaption>Blue walking across the screen</figcaption>
+</figure>
+
+A simple way to do that is to decide Blue moves at 1 pixel per frame. So the code might be something like this
+
+```c
+if (pressingRight) {
+	blue.x += 1;
+}
+
+graphics_moveSprite(blue.spriteIndex, blue.x, blue.y);
+```
+
+<pitfall>
+	This is not real Blue's Journey code :) I'm just using it for a simple example
+</pitfall>
+
+That's fine, `1` pixel per frame means he moves 60 pixels every second. He'd cross the screen in about 5 seconds. Ok what if we want him to move faster? `2` pixels per frame? He'd cross the screen in about 2.5 seconds. What if that is too fast? There isn't much you can do to deal with that. It's either too slow at `1` pixel, or too fast at `2` pixels. You can try fancy things like only moving him 2 out of every 3 frames. But that gets complex quick, and not to mention you're game is essentially no longer 60fps if you do that.
+
+With fixed point, we could say that Blue moves at `1.2` pixels per frame, or just about any fractional value we want. We can decide exactly how fast Blue moves, move him every frame, and it will all just work, nice and simple.
+
+With our fixed point system, Blue might be at 32.2 pixels one frame, then 32.8 pixels the next. Since sprites have to be placed on the screen using integers, that might mean visually Blue is at 32 pixels for two frames, then 33 pixels on the third frame. Not ideal, but also nothing we can really do about it. That's just the reality on these old low resolution systems.
+
+<wisdom>
+	If you have ever heard Super Mario Bros. players talking about "sub pixels",
+	this is exactly what they are referring to. The <pre>.2</pre> and{' '}
+	<pre>.8</pre> are Blue's subpixels in this example.
+</wisdom>
+
+## Making a fixed point system
+
+A fixed point system is pretty simple to build. First, decide which size of integer to use for fixed point. The Neo Geo can work with up to 32 bits pretty well. If you are using [ngdevkit](https://github.com/dciabrin/ngdevkit), that is `s32`. That's what I'm using in my game and it is working well.
+
+Then decide how many of those bits will be for the decimal portion, something like this:
+
+```c
+typedef s32 fixed;
+#define DECIMAL_BITS 5
+```
+
+<pitfall>
+	32 bits on the Neo Geo's 68k processor is a trade-off in itself. It has 32 bit
+	registers so once the number is loaded into the cpu, it can work with it just
+	fine. But to pull a number in from memory, it needs to do it in two steps as
+	it can only access memory 16 bits at a time. But I have found 16 bit fixed
+	point is just not adequate, and in practice 32 bit numbers are still quite
+	fast.
+</pitfall>
+
+Then we need some simple macros to convert to and from our fixed point numbers
+
+```
+#define SCALE (1 << DECIMAL_BITS)
+#define TO_FIXED(a) ((a) * SCALE)
+#define FROM_FIXED(a) ((a) / SCALE)
+```
+
+You could also define these as `TO_FIXED(a) (a << DECIMAL_BITS)` but I find this a tad easier to read and reason about. Bit shifting is faster, but no worries, the compiler will make these changes for us.
+
+And yeah, all we are really doing is moving our numbers up higher in the 32 bit space. That's pretty much all it takes to simulate decimals.
+
+Now with those in place, addition and subtraction are simple to do
+
+```
+// create two integers
+s16 a = 5;
+s16 b = 6;
+// convert them into a our fixed system
+fixed fa = TO_FIXED(a);
+fixed fb = TO_FIXED(b);
+// add them together
+fixed fc = fa + fb;
+// or subtract
+fixed fc = fa - fb;
+// convert them back into integers
+s16 c = FROM_FIXED(fc);
+```
+
+In my game, I almost always store something's `x` and `y` values for its location on screen as `fixed`, then right before I need to update its sprite, I will convert it back to integers.
+
+```c
+struct Bullet {
+	fixed xF;
+	fixed yF;
+	u16 spriteIndex;
+};
+
+struct Bullet b;
+
+b.xF = <<SOME FIXED CALCULATION>>
+b.yF = <<SOME FIXED CALCULATION>>
+
+graphics_moveSprite(b.spriteIndex, FROM_FIXED(b.xF), FROM_FIXED(b.yF));
+```
+
+That code is very simplified, but you get the idea.
+
+### Multiplication
+
+Now things get a tad more complex. When multiplying two fixed numbers together, the "decimal point's location" will double. Basically each fixed number has `SCALE` applied to it, so after a multiplication, the result with have `SCALE*2` applied to it, so a division is needed to bring the result back down to a single `SCALE`.
+
+```c
+fixed fixed_multiply(fixed a, fixed b) {
+    fixed temp = a * b;
+
+    // temp has been SCALE'd up twice, so bring it back down
+    fixed result = temp / SCALE;
+
+    return result;
+}
+```
+
+<pitfall>
+	<b>Hey!</b> don't use the code from this blog post directly. I have simplified
+	it as this post is just about the basics of fixed point. Most notably,
+	multiplication and division should both round their results. See the
+	conclusion section below.
+</pitfall>
+
+And to use it, just call `fixed_multiply` instead of using `*` directly
+
+```c
+fixed fa = TO_FIXED(5);
+fixed fb = TO_FIXED(8);
+fixed fc = fixed_multiply(fa, fb);
+```
+
+You only need to use `fixed_multiply` when both numbers are in the fixed system. Just need to double a fixed number? This will work
+
+```c
+fixed fa = TO_FIXED(5);
+fixed doubledFa = fa * 2;
+```
+
+It will be a little bit faster, but mixing `*` and `fixed_multiply` incorrectly will lead to bugs, so if not sure or worried, just stick with `fixed_multiply`
+
+```c
+fixed fa = TO_FIXED(5);
+fixed doubledFa = fixed_multiply(fa * TO_FIXED(2));
+```
+
+### Multiplication Overflow
+
+Multiplying two 32 bit numbers together and storing the result in a 32 bit number can cause overflow. Basically take two very big numbers. When multiplied together, the result will be gigantic. Too big to fit into 32 bits, so some of it will get thrown away, causing the result to be incorrect. The common way to avoid this problem is to make `temp` be 64 bits.
+
+But that is a problem on the Neo Geo, it has no 64 bit numbers!
+
+<pitfall>
+	64 bit numbers can be simulated by the compiler. But since the 68k processor
+	has 32 bit registers, the cpu really needs to jump through a lot of hoops to
+	work with 64 bit numbers. This can be extremely slow.
+</pitfall>
+
+The way I handle this is to assert the result hasn't overflown
+
+```c
+fixed fixed_multiply(fixed a, fixed b) {
+    fixed temp = a * b;
+
+    ngassert(
+		a == 0 ||
+	    b == 0 ||
+	    abs(temp) >= abs(a),
+        "fixed_multiply overflow, a: %d, b: %d, temp: %d", a, b, temp
+	);
+
+    // temp has been SCALE'd up twice, so bring it back down
+    fixed result = temp / SCALE;
+
+    return result;
+}
+
+```
+
+If after multiplying is finished, if `temp` is smaller than `a`, that is a sign the result was too big. This is not ideal, because if you have multiplication overflow there isn't anything you can do except change your game to avoid it. But this is way better than just allowing the error to happen and having a broken game.
+
+<wisdom>
+	<pre>ngassert()</pre> is something I built myself. I explain how in my{' '}
+	<a href="https://mattgreer.dev/blog/mame-lua-for-better-retro-dev/#primitive-assertions">
+		MAME Lua for Better Retro Dev
+	</a>{' '}
+	post.
+</wisdom>
+
+### Division
+
+Similarly, division needs to be a function too
+
+```c
+ fixed fixed_divide(fixed a, fixed b) {
+    fixed temp = a * SCALE;
+
+    ngassert(
+		a == 0 ||
+		abs(temp) >= abs(a),
+		"fixed_divide overflow"
+	);
+
+    return temp / b;
+}
+```
+
+Division deals with `SCALE` in the opposite way as multiplication. Here the result will have `SCALE` removed from it, so first we `SCALE` up the input a second time. After division, the result is back to the correct scale.
+
+Just like in `fixed_multiply`, there might not be enough room to scale up a, so we again check for that with `ngassert()`.
+
+Also dividing by a large number (say `1 / 1000000000`) can result in `0` if there isn't enough decimal precision. I should probably assert on that too...
+
+## Fixed literals
+
+You may have noticed I've never done `fixed fa = TO_FIXED(5.5)`, as that isn't possible. The way to do that is unfortunately
+
+```c
+// fa will be "5.5"
+fixed fa = TO_FIXED(5) + fixed_divide(TO_FIXED(1), TO_FIXED(2));
+```
+
+This is hard to read, but also `fixed_divide` is a function, not a macro, so this initialization will happen at runtime instead of compile time. To work around this, I have a "fixedConstants.h" in my game, which makes this a little more simple
+
+```C
+#include "fixedConstants.h"
+
+fixed fa = TO_FIXED(5) + FIXED_ONE_HALF;
+```
+
+Easier to read, and all resolved by the compiler instead of the cpu. I wrote a little script to generate fixedConstants.h
+
+```typescript
+import path from 'node:path';
+import fsp from 'node:fs/promises';
+
+const decimalBits = 6;
+const scale = 1 << decimalBits;
+
+function toFixed(a: number) {
+	return Math.floor(a * scale);
+}
+
+async function main(outputDir: string): Promise<void> {
+	const rawDefines: string[] = [];
+
+	rawDefines.push(`ONE_HALF ${toFixed(1 / 2)}`);
+	rawDefines.push(`ONE_THIRD ${toFixed(1 / 3)}`);
+	rawDefines.push(`ONE_FOURTH ${toFixed(1 / 4)}`);
+	rawDefines.push(`ONE_FIFTH ${toFixed(1 / 5)}`);
+	rawDefines.push(`ONE_SIXTH ${toFixed(1 / 6)}`);
+	rawDefines.push(`ONE_TENTH ${toFixed(1 / 10)}`);
+	rawDefines.push(`ONE_TWENTIETH ${toFixed(1 / 20)}`);
+	rawDefines.push(`THREE_FOURTHS ${toFixed(3 / 4)}`);
+	rawDefines.push(`TWO_THIRDS ${toFixed(2 / 3)}`);
+
+	const defines = rawDefines.map((rd) => {
+		return `#define FIXED_${rd}`;
+	});
+
+	const src = `#pragma once
+${defines.join('\n')}
+`;
+
+	const definesOutputPath = path.resolve(outputDir, 'fixedConstants.h');
+	await fsp.writeFile(definesOutputPath, src);
+	console.log('wrote', definesOutputPath);
+}
+
+const [_node, _buildFixedConstants, outputDir] = process.argv;
+
+if (!outputDir) {
+	console.error('usage: ts-node buildFixedConstants <output-dir>');
+	process.exit(1);
+}
+
+main(path.resolve(outputDir))
+	.then(() => console.log('done'))
+	.catch((e) => console.error(e));
+```
+
+## Changing the precision
+
+As I worked on my game, I realized I needed to change how many bits I used for decimal and integer in my fixed point system. Just today I found I didn't have enough decimal bits and couldn't create the small fractions I needed (which inspired me to write this post).
+
+To deal with this, I have actually defined the number of decimal bits as an environment variable. My C code, makefile, and scripts all feed off of that environment variable. So if I need to change the precision, I just need to update the variable, regenerate things like fixedConstants.h, and then do a full recompile. This is way better than hunting down every place that deals with decimal bits.
+
+<pitfall>
+	A lot of people don't like placing key information like this in environment
+	variables. But since I'm the only one working on this codebase, it works for
+	me. You do you :)
+</pitfall>
+
+So for example, in the script above, it's actually doing this in my real version
+
+```typescript
+if (
+	process.env.NEO_DECIMAL_BITS === undefined ||
+	Number.isNaN(parseInt(process.env.NEO_DECIMAL_BITS))
+) {
+	throw new Error('NEO_DECIMAL_BITS env variable was not set');
+}
+
+const decimalBits = parseInt(process.env.NEO_DECIMAL_BITS);
+const scale = 1 << decimalBits;
+
+function toFixed(a: number) {
+	return Math.floor(a * scale);
+}
+```
+
+## Simulating floating point with GCC
+
+As a side note, if you are using ngdevkit, then you can using floating point numbers like `float` and even `double`. The catch is, GCC will create a software floating point implementation. It's _horrifically_ slow, especially if you try to use `double`. This almost certainly can't be used in a real game. But it can be used in a pinch when just trying something or making a quick demo. It's good the option is there.
+
+To use it, just add a `float` number to your code like you would when writing for a modern system. GCC will do the rest. One way I used it was to help confirm the fixed point system I created was accurate. I'd do some calculations in my system as well as GCC's floating point system and confirm both got the same result.
+
+## Conclusion
+
+This post was really just a basic introduction to fixed point. I am far from an expert on the subject. In fact, I'd never used a fixed point system until I started hacking on the Neo Geo. I recommend more detailed reading such as [this article](http://www.sunshine2k.de/articles/coding/fp/sunfp.html) before adding a fixed point system to your game.
+
+You typically need to create your own fixed point system on something like the Neo Geo instead of using a library because most libraries make assumptions that won't hold true on on old game systems. Mostly they will promote multiplication and division to 64 bit numbers which isn't really feasable.
