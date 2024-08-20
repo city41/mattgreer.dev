@@ -204,7 +204,7 @@ It will be a little bit faster, but mixing `*` and `fixed_multiply` incorrectly 
 
 ```c
 fixed fa = TO_FIXED(5);
-fixed doubledFa = fixed_multiply(fa * TO_FIXED(2));
+fixed doubledFa = fixed_multiply(fa, TO_FIXED(2));
 ```
 
 ### Multiplication Overflow
