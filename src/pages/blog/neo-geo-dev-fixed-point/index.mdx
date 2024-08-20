@@ -133,7 +133,7 @@ Now with those in place, addition and subtraction are simple to do
 // create two integers
 s16 a = 5;
 s16 b = 6;
-// convert them into a our fixed system
+// convert them into our fixed system
 fixed fa = TO_FIXED(a);
 fixed fb = TO_FIXED(b);
 // add them together
@@ -165,7 +165,7 @@ That code is very simplified, but you get the idea.
 
 ### Multiplication
 
-Now things get a tad more complex. When multiplying two fixed numbers together, the "decimal point's location" will move. Basically each fixed number has `SCALE` applied to it, so after a multiplication, the result with have `SCALE*2` applied to it, so a division is needed to bring the result back down to a single `SCALE`.
+Now things get a tad more complex. When multiplying two fixed numbers together, the "decimal point's location" will move. Basically each fixed number has `SCALE` applied to it, so after a multiplication, the result with have `SCALE*SCALE` applied to it, so a division is needed to bring the result back down to a single `SCALE`.
 
 ```c
 fixed fixed_multiply(fixed a, fixed b) {
