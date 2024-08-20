@@ -42,7 +42,7 @@ The advantage to this is being very simple and very fast. Behind the scenes the 
 	are a tad more complicated.
 </pitfall>
 
-The disadvantage is precision and flexibility. If you need really precise decimal numbers, you might choose your fixed point system to have 4 integer digits and 12 decimal. But that means the maximum integer in that system is only 7! If you go the opposite direction, 12 integer and 4 decimal, your maximum integer is 2047. Which gives you more breathing room, but you're then unable to form precise decimal numbers.
+The disadvantage is precision and flexibility. If you need really precise decimal numbers, you might choose your fixed point system to have 4 integer digits and 12 decimal. But that means the maximum integer in that system is only 7! If you go the opposite direction, 12 integer and 4 decimal, your maximum integer is 2047. Which gives you more breathing room, but then you're unable to form precise decimal numbers.
 
 <figure>
 	<img
@@ -209,7 +209,7 @@ fixed doubledFa = fixed_multiply(fa * TO_FIXED(2));
 
 ### Multiplication Overflow
 
-Multiplying two 32 bit numbers together and storing the result in a 32 bit number can cause overflow. Take two very big numbers, when multiplied together, the result will be gigantic. Too big to fit into 32 bits, so some of it will get thrown away, causing the result to be incorrect. The common way to avoid this problem is to make `temp` be 64 bits.
+Multiplying two 32 bit numbers together and storing the result in a 32 bit number can cause overflow. take two very big numbers. When multiplied together, the result will be gigantic. Too big to fit into 32 bits, so some of it will get thrown away, causing the result to be incorrect. The common way to avoid this problem is to make `temp` be 64 bits.
 
 But that is a problem on the Neo Geo, it has no 64 bit numbers!
 
@@ -243,7 +243,7 @@ fixed fixed_multiply(fixed a, fixed b) {
 If after multiplying is finished, if `temp` is smaller than `a`, that is a sign the result was too big. This is not ideal, because if you have multiplication overflow there isn't anything you can do except change your game to avoid it. But this is way better than just allowing the error to happen and having a broken game.
 
 <wisdom>
-	<pre>ngassert()</pre> is something I built myself. I talk more about it in my{' '}
+	<pre>ngassert()</pre> is something I built myself. I explain how in my{' '}
 	<a href="https://mattgreer.dev/blog/mame-lua-for-better-retro-dev/#primitive-assertions">
 		MAME Lua for Better Retro Dev
 	</a>{' '}
