@@ -235,7 +235,7 @@ If you are a software developer, taking on a largish assembly project like this 
 
 ### btst is your friend
 
-On the 68k CPU, `btst` is "bit test". In other words, is a certain bit of a byte set or not? `btst`'s often stand out as little beacons because on the Neo Geo, it's how all games determine the current controller input. When coming through a giant trace, `btst`'s can often lead you to areas where the game is responding to the player's input. Normally the game does things like "if A is pressed, select this character", and so the code near these btst's is often fruitful.
+On the 68k CPU, `btst` is "bit test". In other words, is a certain bit of a byte set or not? `btst`'s often stand out as little beacons because on the Neo Geo, it's how all games determine the current controller input. When combing through a giant trace, `btst`'s can often lead you to areas where the game is responding to the player's input. Normally the game does things like "if A is pressed, select this character", and so the code near these btst's is often fruitful.
 
 ### get to know the common constants in the game
 
