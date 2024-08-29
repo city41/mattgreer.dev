@@ -4,7 +4,7 @@
 	"type": "website",
 	"tags": ["React", "TypeScript", "Retro gaming"],
 	"description": ["A website for players of the game Dance Dance Revolution"],
-	"url": "https://ddr.stepcharts.com",
-	"imgAlt": "Screenshot of stepcharts.com",
+	"url": "https://stepcharts.mattgreer.dev",
+	"imgAlt": "Screenshot of stepcharts",
 	"projectPagePriority": 0
 }

@@ -4,7 +4,7 @@
 	"type": "website",
 	"tags": ["React", "TypeScript", "Postgres", "Game dev"],
 	"description": ["A web based level creator for Super Mario Bros. 3"],
-	"url": "https://smaghetti.com",
+	"url": "https://smaghetti.mattgreer.dev",
 	"featureIndex": 1,
 	"imgAlt": "Screenshot of my game maker, Smaghetti",
 	"projectPagePriority": 0

@@ -89,8 +89,8 @@ function AboutPage() {
 				</P>
 				<P>
 					I enjoy the game so much I created{' '}
-					<FocalColorLink href="https://ddr.stepcharts.com" external>
-						Stepcharts.com
+					<FocalColorLink href="https://stepcharts.mattgreer.dev" external>
+						Stepcharts
 					</FocalColorLink>{' '}
 					to help people find interesting songs they didn't know about.
 				</P>
