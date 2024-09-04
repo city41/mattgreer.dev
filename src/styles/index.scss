@@ -56,4 +56,7 @@ p {
   @include light-theme;
 }
 
+option, select {
+  @apply text-black;
+}
 
