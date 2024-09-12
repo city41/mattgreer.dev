@@ -1,0 +1,4 @@
+.canvas {
+	image-rendering: pixelated;
+	@apply border border-blue-50 mx-auto w-full;
+}

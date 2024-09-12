@@ -1,0 +1,61 @@
+import { Article } from '../../../components/layouts/Article';
+import { SimulationCmp } from '../../../components/waypoints/simulation/SimulationCmp';
+import meta from './meta.json';
+
+export const config = {
+	unstable_runtimeJS: false,
+};
+
+export default ({ children }) => (
+	<Article
+		{...meta}
+		img={require('./feature.png').default.src}
+		socialMediaImg={require('./twitter.png').default.src}
+		intro="How can you make a CPU car drive around a track?"
+	>
+		{children}
+	</Article>
+);
+
+In an old school, top down racing game, how do you make the CPU drivers? They need to follow the track, have a variety of racing styles, and employ all of the driving mechanics the game offers, such as drifting.
+
+After exploring this topic for a while, I decided to go with a simple waypoint system. This blog post series is basically what I wish existed before I started. I'm not an expert on this subject, and I'm not saying what I did was ideal or even correct. But I've now had good success getting artificial drivers to drift around my courses, so I thought I'd document what I learned and built.
+
+<pitfall>
+	One limitation of my game is only having digital controls. No steering wheel,
+	no analog sticks. For human players, I have built a system that simulates
+	wheels/analog through repeating digital inputs. But for the CPU drivers, I
+	gave up on this and so yes, <b>my CPU drivers do cheat a bit.</b> That is
+	something you really want to avoid in racing games, but adding a tiny bit of
+	cheating made this so much easier. Maybe I'll revisit this later.
+</pitfall>
+
+## What are waypoints?
+
+At their simplest, waypoints are just points dropped onto the track that a CPU driver should drive towards. Once the arrive at the first waypoint, they will then start driving towards the next one.
+
+Here is the track this blog series will use,
+
+<figure>
+	<img
+		src={require('./bareTrack.png').default.src}
+		alt="The track that is being used"
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>The track that is being used</figcaption>
+</figure>
+
+and here it is with some waypoints plopped onto it
+
+<figure>
+	<img
+		src={require('./trackWithBasicWaypoints.png').default.src}
+		alt="The track with basic waypoints"
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>The track with basic waypoints</figcaption>
+</figure>
+
+So if we just place a CPU car at the starting line, and have it drive towards 0, then 1, and so on, it will get around the track in a very primitive and unrealistic way. But hey, it's a start.
+
+<SimulationCmp level="basic" />
