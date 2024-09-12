@@ -1,6 +1,10 @@
 import { MutableRefObject, useEffect, useRef, useState } from 'react';
 import { Simulation } from '../sim/Simulation';
-import { basicWaypoints, smoothTurningWaypoints } from '../sim/waypoints';
+import {
+	basicWaypoints,
+	basicWaypointsWithRadiusDisplayed,
+	smoothTurningWaypoints,
+} from '../sim/waypoints';
 import { Button } from '../Button';
 
 import styles from './SimulationCmp.module.css';
@@ -38,7 +42,7 @@ function getSimulation(level: Level, canvas: HTMLCanvasElement) {
 			return new Simulation(
 				canvas,
 				[new SmoothTurningVehicle(105, 120, 1 / 4, 'rgb(200, 255, 100)')],
-				basicWaypoints,
+				basicWaypointsWithRadiusDisplayed,
 				500
 			);
 		case 'smooth-turning-2':
