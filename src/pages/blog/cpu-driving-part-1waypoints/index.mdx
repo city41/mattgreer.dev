@@ -1,0 +1,367 @@
+import { Article } from '../../../components/layouts/Article';
+import { SimulationCmp } from '../../../components/waypoints/simulation/SimulationCmp';
+import meta from './meta.json';
+
+export const config = {
+	unstable_runtimeJS: false,
+};
+
+export default ({ children }) => (
+	<Article
+		{...meta}
+		img={require('./feature.png').default.src}
+		socialMediaImg={require('./twitter.png').default.src}
+		intro="How can you make a CPU car drive around a track?"
+	>
+		{children}
+	</Article>
+);
+
+In an old school, top down racing game, how do you make the CPU drivers? They need to follow the track, have a variety of racing styles, and employ all of the driving mechanics the game offers, such as drifting.
+
+After exploring this topic for a while, I decided to go with a simple waypoint system. This blog post series is basically what I wish existed before I started. I'm not an expert on this subject, and I'm not saying what I did was ideal or even correct. But I've now had good success getting artificial drivers to drift around my courses, so I thought I'd document what I learned and built.
+
+## What are waypoints?
+
+At their simplest, waypoints are just points dropped onto the track that a CPU driver should drive towards. Once it arrives at the first waypoint, it will then start driving towards the next one.
+
+Here is the track this blog series will use,
+
+<figure>
+	<img
+		src={require('./bareTrack.png').default.src}
+		alt="The track that is being used"
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>The track that is being used</figcaption>
+</figure>
+
+and here it is with some basic waypoints plopped onto it
+
+<figure>
+	<img
+		src={require('./trackWithBasicWaypoints.png').default.src}
+		alt="The track with basic waypoints"
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>The track with basic waypoints</figcaption>
+</figure>
+
+So if we just place a CPU car at the starting line, and have it drive towards 0, then 1, and so on, it will get around the track in a very primitive and unrealistic way. But hey, it's a start. Press play to see our amazing green driver in action.
+
+<SimulationCmp level="basic" />
+
+The car keeps track of its target waypoint, and figures out the angle it needs to point straight at it
+
+```typescript
+getAngleToWaypoint(): number {
+	const waypoint = this.waypoints[this.targetWaypoint];
+	const x = waypoint.x - this.x;
+	const y = waypoint.y - this.y;
+
+	const angle = Math.atan(Math.abs(y) / Math.abs(x));
+
+	if (x >= 0 && y >= 0) {
+		// upper right quadrant
+		return angle;
+	}
+
+	if (x < 0 && y >= 0) {
+		// upper left quadrant
+		return Math.PI - angle;
+	}
+
+	if (x < 0 && y < 0) {
+		// lower left quadrant
+		return Math.PI + angle;
+	}
+
+	// lower right quadrant
+	return 2 * Math.PI - angle;
+}
+```
+
+It uses this angle to move forward
+
+```typescript
+handleAcceleration() {
+	this.airDrag = this.getAirDrag(this.speed);
+
+	this.acceleration = this.accelValue - FRICTION - this.airDrag;
+
+	this.speed = Math.max(0, this.speed + this.acceleration);
+
+	const cos = Math.cos(this.velocityAngle);
+	const sin = Math.sin(this.velocityAngle);
+
+	this.velocity.x = this.speed * cos;
+	this.velocity.y = this.speed * sin;
+
+	this.x += this.velocity.x;
+	this.y += this.velocity.y;
+}
+```
+
+It also checks to see if it has arrived at the waypoint, and if so, sets up the next waypoint as its target
+
+```typescript
+updateCurrentWaypoint() {
+	const currentWaypoint = this.waypoints[this.targetWaypoint];
+
+	const distance = getDistance(
+		this.x,
+		this.y,
+		currentWaypoint.x,
+		currentWaypoint.y
+	);
+
+	if (distance <= this.speed) {
+		this.targetWaypoint += 1;
+
+		if (this.targetWaypoint >= this.waypoints.length) {
+			this.targetWaypoint = 0;
+		}
+	}
+}
+```
+
+## Turning towards the next waypoint
+
+Let's improve our driver so it smoothly turns towards its target waypoint. This will be easier if waypoints have a radius added to them, so we can say we've arrived at a waypoint as long as we end up somewhere inside its circle
+
+<figure>
+	<img
+		src={require('./trackWithRadiusWaypoints.png').default.src}
+		alt="Adding radiuses to our waypoints"
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>Adding radiuses to our waypoints</figcaption>
+</figure>
+
+As soon as we arrive within the radius, the driver will target the next waypoint, and start to gradually turn towards it.
+
+<SimulationCmp level="smooth-turning-1" />
+
+Well... it's kind of working (watch it go past waypoint 3 to see what I mean). This will get better, but for now let's look at how the turning works.
+
+In the first version, it was easy to point the car directly towards the next waypoint. Just figure out what that angle is and set the car to it. But when gradually turning instead, the car can either turn left or right. How do we know which one is correct?
+
+<figure>
+	<img
+		src={require('./20Vs340.svg').default.src}
+		alt="Turning right is better than turning left"
+	/>
+	<figcaption>Turning right is better than turning left</figcaption>
+</figure>
+
+In this simple example the car could turn right 20 degrees to point at the waypoint, or left 340 degrees. Both will ultimately get there, but obviously turning right is better here.
+
+To figure out which turn is the better one, I just simulate turning a little bit in both directions and pick the one that pointed me more closely at the waypoint.
+
+Ok, but how to know which turn was better? Thankfully the dot product can tell us. The larger the dot product, the more two vectors are pointing in the same direction. So simulate turning left a little, grab a dot product. Simulate turning right a little, and grab another dot product. Whichever dot product is larger, that's the way to turn.
+
+<wisdom>
+	It's also possible that just going straight is the best answer. So I actually
+	compare three dot products.{' '}
+</wisdom>
+
+<figure>
+	<img
+		src={require('./turningDots.svg').default.src}
+		alt="Calculating dot products to figure out which way to turn"
+	/>
+	<figcaption>
+		Calculating dot products to figure out which way to turn
+	</figcaption>
+</figure>
+
+How large should the simulated turns be? I tend to do a few degrees. Enough to make sure the dot results are different enough, but not too much such that the results become meaningless. What about the length of the turning vectors? I think it's best to avoid really long vectors. I tend to take the remaining distance the waypoint and divide that by two.
+
+And here is the code for doing this
+
+```typescript
+type TurnDecision = -1 | 0 | 1;
+
+calcTurnDecision(waypoint: Point): TurnDecision {
+	if (this.speed == 0) {
+		// not moving? no need to turn
+		return 0;
+	}
+
+	const distanceToWp = getDistance(
+		this.x,
+		this.y,
+		waypoint.x,
+		waypoint.y
+	);
+	const vectorMagnitude = distanceToWp / 2;
+
+	// translate the waypoint's center vector to be based
+	// off the vehicle's location, so that the vectors
+	// can be compared
+	const translatedWaypoint: Point = {
+		x: waypoint.x - this.x,
+		y: waypoint.y - this.y,
+	};
+
+	let bestD = Number.MIN_SAFE_INTEGER;
+	let bestTurnResult = 0;
+
+	for (let t = 1; t >= -1; t -= 1) {
+		const turnedAngle = this.velocityAngle
+			+ degreesToRadians(t * 3);
+
+		const turnedCos = Math.cos(turnedAngle);
+		const turnedSin = Math.sin(turnedAngle);
+
+		// form a new hypothetical velocity vector
+		// based on the hypothetical turn
+		const turnedVelocity: Point = {
+			x: vectorMagnitude * turnedCos,
+			y: vectorMagnitude * turnedSin,
+		};
+
+		// and calculate a new dot
+		const turnedD = dot(turnedVelocity, translatedWaypoint);
+
+		if (turnedD > bestD) {
+			bestD = turnedD;
+			bestTurnResult = t;
+		}
+	}
+
+	return bestTurnResult as TurnDecision;
+}
+```
+
+Now that we know which direction to turn, we now need to know how much to turn each frame to accomplish the smooth turning.
+
+<figure>
+	<img
+		src={require('./whatIsTheAngle.svg').default.src}
+		alt="What is the angle needed to point the car at the waypoint?"
+	/>
+	<figcaption>
+		What is the angle needed to point the car at the waypoint?
+	</figcaption>
+</figure>
+
+We can see how much the car needs to turn by determining the angle between the car's direction vector and the vector from the car to the waypoint. This can again be accomplished by using the dot product.
+
+The dot product will only tell us the size of this angle, nothing about which way to turn, but that's fine as we already have that information.
+
+Now by noting how far the car is away from the waypoint, and how fast it is going, we can roughly determine how many frames it takes to arrive. By dividing the angle by that number of frames, we know how much to turn the car each frame.
+
+```typescript
+calcVelocityAngleChangeRate(
+	waypoint: Waypoint,
+	turnDecision: -1 | 0 | 1
+): number {
+	const distanceToWp = getDistance(
+		this.x,
+		this.y,
+		waypoint.x,
+		waypoint.y
+	);
+	const framesTillWp =
+		Math.max(
+			distanceToWp - waypoint.radius,
+			1
+		) / this.speed;
+
+	const translatedWaypoint = {
+		x: waypoint.x - this.x,
+		y: waypoint.y - this.y,
+	};
+
+	const normD = normalizedDot(
+		this.velocity,
+		this.speed,
+		translatedWaypoint,
+		distanceToWp
+	);
+
+	if (normD < -1 || normD > 1) {
+		throw new Error(`Invalid normalized dot: ${normD}`);
+	}
+
+	let velocityAngleSpan = Math.acos(normD) * 1.5;
+
+	if (velocityAngleSpan > 2 * Math.PI) {
+		velocityAngleSpan -= 2 * Math.PI;
+		turnDecision = -turnDecision as TurnDecision;
+	}
+
+	return (velocityAngleSpan / framesTillWp) * turnDecision;
+}
+```
+
+and with the turn rate in hand, we can move the car
+
+```typescript
+update(waypoints: Waypoint[]) {
+	// move onto the next waypoint if we have
+	// arrived at the current one
+	this.updateCurrentWaypoint(waypoints);
+
+	// grab the current waypoint
+	const currentWaypoint = waypoints[this.targetWaypoint];
+
+	// figure out how much to turn each frame to smoothly
+	// arrive at that waypoint
+	const angleChangeRate =
+		this.determineAngleChangeRate(currentWaypoint);
+
+	// update our turning accordingly
+	this.velocityAngle += angleChangeRate;
+
+	// and move the car
+	this.handleAcceleration();
+}
+
+handleAcceleration() {
+	const airDrag = this.getAirDrag(this.speed);
+
+	this.acceleration = this.accelValue - FRICTION - airDrag;
+
+	this.speed = Math.max(0, this.speed + this.acceleration);
+
+	const cos = Math.cos(this.velocityAngle);
+	const sin = Math.sin(this.velocityAngle);
+
+	this.velocity.x = this.speed * cos;
+	this.velocity.y = this.speed * sin;
+
+	this.x += this.velocity.x;
+	this.y += this.velocity.y;
+}
+```
+
+## Fixing the wild turning
+
+Ok that is all great, but if you play with the simulator above you can see the car drives like it's drunk. What's the deal?
+
+In short, we don't have enough waypoints. Let's look at going from waypoint 3 to 4 as an example
+
+<figure>
+	<img
+		src={require('./fromThreeToFourWildly.png').default.src}
+		alt="The car's exaggerated arc from three to four"
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>The car's exaggerated arc from three to four</figcaption>
+</figure>
+
+When it first arrives at 3, it's roughly going up towards the top of the screen, and 4 is roughly to its direct right. So to get to 4, the car needs to about 80 degrees or so. But when calculating how much to turn per frame, we take that 80 degrees and divide it by how far the car needs to go. Since 3 and 4 are so far apart, it has all the time in the world to turn towards 4. Since a car is both turning and driving, the end result is a large arcing motion. What we really want is for the car to smoothly point at 4 pretty early, and then head straight at it. Kind of a middle ground between our first naive implementation and what we currently have.
+
+The easiest way to do that is just to add more waypoints, adjust their radiuses to make the car start turning earlier or later, and move the waypoints around. There's a lot of art behind waypoint placement.
+
+<SimulationCmp level="smooth-turning-2" />
+
+With the new waypoints in place, it's not driving bad at all!
+
+If you scroll back up to the `calcVelocityAngleChangeRate` code, we actually take the angle between the car and waypoint and bump it up a bit by multiplying it be 1.5. This goes back to waypoints being a bit of an art form. Sometimes you just gotta play around with things until things feel ok. By bumping up the angle a bit, we get the cart to turn a bit sharper, and so its traversal around the track is more realistic as it has long spans of driving straight.
+
+## Conclusion
+
+And with that we have a basic CPU car driving around our track. Not a bad start. In part 2 we'll see about adding drifting into the mix, and in part 3 we'll add more CPU cars and see about making sure they avoid each other.

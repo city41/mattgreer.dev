@@ -19,6 +19,8 @@ class BasicVehicle implements IVehicle {
 	color = 'white';
 	targetWaypoint = 0;
 	nearnessSphere: Sphere = { x: 0, y: 0, radius: 0 };
+	waypoints: Waypoint[] = [];
+	airDrag = 0;
 
 	constructor(x: number, y: number, accelValue: number, color: string) {
 		this.x = x;
@@ -27,7 +29,8 @@ class BasicVehicle implements IVehicle {
 		this.color = color;
 	}
 
-	getAngleToWaypoint(waypoint: Waypoint): number {
+	getAngleToWaypoint(): number {
+		const waypoint = this.waypoints[this.targetWaypoint];
 		const x = waypoint.x - this.x;
 		const y = waypoint.y - this.y;
 
@@ -44,18 +47,20 @@ class BasicVehicle implements IVehicle {
 		}
 
 		if (x < 0 && y < 0) {
+			// lower left quadrant
 			return Math.PI + angle;
 		}
 
+		// lower right quadrant
 		return 2 * Math.PI - angle;
 	}
 
-	processWaypoint(waypoint: Waypoint) {
-		this.velocityAngle = this.getAngleToWaypoint(waypoint);
+	processWaypoint() {
+		this.velocityAngle = this.getAngleToWaypoint();
 	}
 
-	updateCurrentWaypoint(waypoints: Waypoint[]) {
-		const currentWaypoint = waypoints[this.targetWaypoint];
+	updateCurrentWaypoint() {
+		const currentWaypoint = this.waypoints[this.targetWaypoint];
 
 		const distance = getDistance(
 			this.x,
@@ -67,13 +72,11 @@ class BasicVehicle implements IVehicle {
 		if (distance <= this.speed) {
 			this.targetWaypoint += 1;
 
-			if (this.targetWaypoint >= waypoints.length) {
+			if (this.targetWaypoint >= this.waypoints.length) {
 				this.targetWaypoint = 0;
 			}
 		}
 	}
-
-	airDrag = 0;
 
 	getAirDrag(speed: number) {
 		return (1 / 12) * speed;
@@ -97,9 +100,9 @@ class BasicVehicle implements IVehicle {
 	}
 
 	update(waypoints: Waypoint[]) {
-		this.updateCurrentWaypoint(waypoints);
-		const currentWaypoint = waypoints[this.targetWaypoint];
-		this.processWaypoint(currentWaypoint);
+		this.waypoints = waypoints;
+		this.updateCurrentWaypoint();
+		this.processWaypoint();
 		this.handleAcceleration();
 	}
 

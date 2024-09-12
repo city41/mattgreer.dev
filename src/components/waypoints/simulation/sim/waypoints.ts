@@ -4,17 +4,17 @@ import { Waypoint } from './Waypoint';
 // the track when it always goes straight towards the next
 // waypoint
 const basicWaypoints: Waypoint[] = [
-	new Waypoint(261, 128, 16, 0),
+	new Waypoint(261, 128, 20, 0),
 	new Waypoint(270, 193, 20, 1),
-	new Waypoint(160, 189, 20, 2),
-	new Waypoint(158, 81, 20, 3),
-	new Waypoint(272, 71, 16, 4),
-	new Waypoint(260, 32, 16, 5),
-	new Waypoint(60, 25, 20, 6),
-	new Waypoint(65, 112, 20, 7),
+	new Waypoint(165, 189, 20, 2),
+	new Waypoint(158, 74, 20, 3),
+	new Waypoint(272, 71, 20, 4),
+	new Waypoint(260, 32, 20, 5),
+	new Waypoint(70, 25, 20, 6),
+	new Waypoint(60, 118, 20, 7),
 ];
 
-const waypoints: Waypoint[] = [
+const smoothTurningWaypoints: Waypoint[] = [
 	new Waypoint(261, 128, 16, 0),
 	new Waypoint(230, 193, 20, 1, true),
 	new Waypoint(160, 189, 20, 2),
@@ -28,4 +28,4 @@ const waypoints: Waypoint[] = [
 	new Waypoint(129, 122, 16, 10),
 ];
 
-export { basicWaypoints, waypoints };
+export { basicWaypoints, smoothTurningWaypoints };

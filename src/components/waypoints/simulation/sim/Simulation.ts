@@ -112,7 +112,12 @@ class Simulation {
 			}
 		});
 
-		this.#waypoints.forEach((w) => w.draw(context, false));
+		this.#waypoints.forEach((w, i) =>
+			w.draw(
+				context,
+				this.#vehicles.length === 1 && this.#vehicles[0].targetWaypoint === i
+			)
+		);
 	}
 
 	goTo(frame: number) {

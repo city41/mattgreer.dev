@@ -1,12 +1,17 @@
-import clsx from "clsx";
+import clsx from 'clsx';
 
-function Button({ className, ...rest }: JSX.IntrinsicElements["button"]) {
-  return (
-    <button
-      className={clsx(className, "p-2 border border-blue-600")}
-      {...rest}
-    />
-  );
+type ButtonProps = JSX.IntrinsicElements['button'] & {
+	tooltip?: string;
+};
+
+function Button({ className, tooltip, ...rest }: ButtonProps) {
+	return (
+		<button
+			title={tooltip}
+			className={clsx(className, 'hover:bg-blue-200')}
+			{...rest}
+		/>
+	);
 }
 
 export { Button };

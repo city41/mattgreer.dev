@@ -1,12 +1,21 @@
 import { MutableRefObject, useEffect, useRef, useState } from 'react';
 import { Simulation } from '../sim/Simulation';
-import { basicWaypoints, waypoints } from '../sim/waypoints';
+import { basicWaypoints, smoothTurningWaypoints } from '../sim/waypoints';
 import { Button } from '../Button';
 
 import styles from './SimulationCmp.module.css';
 import { BasicVehicle } from '../sim/BasicVehicle';
+import { SmoothTurningVehicle } from '../sim/SmoothTurningVehicle';
+import {
+	RiPlayLargeFill,
+	RiPlayReverseLargeFill,
+	RiRewindStartFill,
+	RiStopFill,
+	RiStopLargeFill,
+} from 'react-icons/ri';
+import { FaStepBackward, FaStepForward } from 'react-icons/fa';
 
-type Level = 'basic';
+type Level = 'basic' | 'smooth-turning-1' | 'smooth-turning-2';
 
 type SimulationCmpProps = {
 	level: Level;
@@ -21,12 +30,28 @@ function getSimulation(level: Level, canvas: HTMLCanvasElement) {
 		case 'basic':
 			return new Simulation(
 				canvas,
-				[new BasicVehicle(105, 120, 1 / 2, 'green')],
+				[new BasicVehicle(105, 120, 1 / 4, 'rgb(200, 255, 100)')],
 				basicWaypoints,
-				300
+				500
+			);
+		case 'smooth-turning-1':
+			return new Simulation(
+				canvas,
+				[new SmoothTurningVehicle(105, 120, 1 / 4, 'rgb(200, 255, 100)')],
+				basicWaypoints,
+				500
+			);
+		case 'smooth-turning-2':
+			return new Simulation(
+				canvas,
+				[new SmoothTurningVehicle(105, 120, 1 / 4, 'rgb(200, 255, 100)')],
+				smoothTurningWaypoints,
+				500
 			);
 	}
 }
+
+const DEFAULT_DELAY = 24;
 
 function SimulationCmp({ level }: SimulationCmpProps) {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -35,7 +60,7 @@ function SimulationCmp({ level }: SimulationCmpProps) {
 		'stopped'
 	);
 	const [frame, setFrame] = useState(0);
-	const [delay, setDelay] = useState(60);
+	const [delay, setDelay] = useState(DEFAULT_DELAY);
 
 	useEffect(() => {
 		if (canvasRef.current && !sim.current) {
@@ -77,7 +102,7 @@ function SimulationCmp({ level }: SimulationCmpProps) {
 
 	function handleReset() {
 		setMode('stopped');
-		setDelay(60);
+		setDelay(DEFAULT_DELAY);
 		sim.current?.goTo(0);
 		setFrame(0);
 	}
@@ -85,7 +110,7 @@ function SimulationCmp({ level }: SimulationCmpProps) {
 	sim.current?.goTo(clamp(frame, 0, sim.current!.historySize - 1));
 
 	return (
-		<>
+		<div className="border-4 border-focal">
 			<div>
 				<canvas
 					className={styles.canvas}
@@ -94,28 +119,35 @@ function SimulationCmp({ level }: SimulationCmpProps) {
 					height={224}
 				/>
 			</div>
-			<div>
-				<div>
-					frame: {frame}, delay: {delay}
-				</div>
-			</div>
-			<div>
-				<Button onClick={() => setMode('playing')}>Play</Button>
-				<Button onClick={() => setMode('reversing')}>Reverse</Button>
-				<Button onClick={() => setMode('stopped')}>Stop</Button>
-				<Button onClick={handleReset}>Reset</Button>
-			</div>
-			<div>
-				<Button onClick={() => setDelay((d) => Math.max(d - 10, 10))}>
-					Faster
+			<div className="flex flex-row gap-x-1 justify-center text-4xl">
+				<Button onClick={handleReset}>
+					<RiRewindStartFill />
 				</Button>
-				<Button onClick={() => setDelay((d) => d + 10)}>Slower</Button>
+				<div className="w-4" />
+				<Button onClick={() => setMode('reversing')} tooltip="play in reverse">
+					<RiPlayReverseLargeFill />
+				</Button>
+				<Button onClick={() => setMode('playing')} tooltip="play">
+					<RiPlayLargeFill className="text-green-700" />
+				</Button>
+				<Button onClick={() => setMode('stopped')} tooltip="stop">
+					<RiStopFill className="text-red-700 " />
+				</Button>
+				<div className="w-4" />
+				<Button
+					onClick={() => setFrame((f) => f - 1)}
+					tooltip="one frame backwards"
+				>
+					<FaStepBackward />
+				</Button>
+				<Button
+					onClick={() => setFrame((f) => f + 1)}
+					tooltip="one frame forward"
+				>
+					<FaStepForward />
+				</Button>
 			</div>
-			<div>
-				<Button onClick={() => setFrame((f) => f + 1)}>+ 1</Button>
-				<Button onClick={() => setFrame((f) => f - 1)}>- 1</Button>
-			</div>
-		</>
+		</div>
 	);
 }
 
