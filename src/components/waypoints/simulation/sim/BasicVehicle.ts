@@ -12,15 +12,12 @@ class BasicVehicle implements IVehicle {
 	x: number;
 	y: number;
 	accelValue: number;
-	acceleration = 0;
 	speed = 0;
 	velocityAngle = 0;
-	velocity: Point = { x: 0, y: 0 };
 	color = 'white';
 	targetWaypoint = 0;
 	nearnessSphere: Sphere = { x: 0, y: 0, radius: 0 };
 	waypoints: Waypoint[] = [];
-	airDrag = 0;
 
 	constructor(x: number, y: number, accelValue: number, color: string) {
 		this.x = x;
@@ -83,20 +80,20 @@ class BasicVehicle implements IVehicle {
 	}
 
 	handleAcceleration() {
-		this.airDrag = this.getAirDrag(this.speed);
+		const airDrag = this.getAirDrag(this.speed);
 
-		this.acceleration = this.accelValue - FRICTION - this.airDrag;
+		const acceleration = this.accelValue - FRICTION - airDrag;
 
-		this.speed = Math.max(0, this.speed + this.acceleration);
+		this.speed = Math.max(0, this.speed + acceleration);
 
 		const cos = Math.cos(this.velocityAngle);
 		const sin = Math.sin(this.velocityAngle);
 
-		this.velocity.x = this.speed * cos;
-		this.velocity.y = this.speed * sin;
+		const velX = this.speed * cos;
+		const velY = this.speed * sin;
 
-		this.x += this.velocity.x;
-		this.y += this.velocity.y;
+		this.x += velX;
+		this.y += velY;
 	}
 
 	update(waypoints: Waypoint[]) {

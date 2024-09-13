@@ -15,7 +15,6 @@ import {
 	RiPlayReverseLargeFill,
 	RiRewindStartFill,
 	RiStopFill,
-	RiStopLargeFill,
 } from 'react-icons/ri';
 import { FaStepBackward, FaStepForward } from 'react-icons/fa';
 
@@ -36,7 +35,7 @@ function getSimulation(level: Level, canvas: HTMLCanvasElement) {
 				canvas,
 				[new BasicVehicle(105, 120, 1 / 4, 'rgb(200, 255, 100)')],
 				basicWaypoints,
-				500
+				393
 			);
 		case 'smooth-turning-1':
 			return new Simulation(
@@ -121,6 +120,7 @@ function SimulationCmp({ level }: SimulationCmpProps) {
 				width={320}
 				height={224}
 			/>
+			<div className="text-xs -mt-6 pl-1 pb-1">frame: {frame}</div>
 			<div className="flex flex-row gap-x-1 justify-center text-4xl border-t-8 border-focal py-2">
 				<Button onClick={handleReset}>
 					<RiRewindStartFill />

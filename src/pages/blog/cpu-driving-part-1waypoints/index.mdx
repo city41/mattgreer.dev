@@ -83,15 +83,15 @@ getAngleToWaypoint(): number {
 }
 ```
 
-It uses this angle to move forward
+It then uses this angle to move forward
 
 ```typescript
 handleAcceleration() {
-	this.airDrag = this.getAirDrag(this.speed);
+	const airDrag = this.getAirDrag(this.speed);
 
-	this.acceleration = this.accelValue - FRICTION - this.airDrag;
+	const acceleration = this.accelValue - FRICTION - airDrag;
 
-	this.speed = Math.max(0, this.speed + this.acceleration);
+	this.speed = Math.max(0, this.speed + acceleration);
 
 	const cos = Math.cos(this.velocityAngle);
 	const sin = Math.sin(this.velocityAngle);
@@ -117,6 +117,8 @@ updateCurrentWaypoint() {
 		currentWaypoint.y
 	);
 
+	// are we going to arrive within one frame?
+	// then consider us there
 	if (distance <= this.speed) {
 		this.targetWaypoint += 1;
 
@@ -140,13 +142,13 @@ Let's improve our driver so it smoothly turns towards its target waypoint. This 
 	<figcaption>Adding radiuses to our waypoints</figcaption>
 </figure>
 
-As soon as we arrive within the radius, the driver will target the next waypoint, and start to gradually turn towards it.
+As soon as we arrive within the radius, the driver will target the next waypoint, and start to gradually turn towards it. Here is what we'll have
 
 <SimulationCmp level="smooth-turning-1" />
 
-Well... it's kind of working (watch it go past waypoint 3 to see what I mean). This will get better, but for now let's look at how the turning works.
+Well... it's kind of working (watch it go past waypoint 3 to see what I mean). This will get better, but for now let's look at how the smooth turning works.
 
-In the first version, it was easy to point the car directly towards the next waypoint. Just figure out what that angle is and set the car to it. But when gradually turning instead, the car can either turn left or right. How do we know which one is correct?
+In the first version, it was easy to point the car directly towards the next waypoint. Just figure out what that angle is and set the car to it. But when gradually turning instead, the car can either turn left or right. How do we know which way is correct?
 
 <figure>
 	<img
@@ -163,7 +165,11 @@ In this simple example the car could turn right 20 degrees to point at the waypo
 
 To figure out which turn is the better one, I just simulate turning a little bit in both directions and pick the one that pointed me more closely at the waypoint.
 
-Ok, but how to know which turn was better? Thankfully the dot product can tell us. The larger the dot product, the more two vectors are pointing in the same direction. So simulate turning left a little, grab a dot product. Simulate turning right a little, and grab another dot product. Whichever dot product is larger, that's the way to turn.
+Ok, but how to know which turn was better? Thankfully the dot product can tell us. The larger the dot product of two vectors, the more those two vectors are pointing in the same direction.
+
+<< interactive dot product here >>
+
+So simulate turning left a little, grab a dot product. Simulate turning right a little, and grab another dot product. Whichever dot product is larger, that's the way to turn.
 
 <wisdom>
 	It's also possible that just going straight is the best answer. So I actually
@@ -181,7 +187,7 @@ Ok, but how to know which turn was better? Thankfully the dot product can tell u
 	</figcaption>
 </figure>
 
-How large should the simulated turns be? I tend to do a few degrees. Enough to make sure the dot results are different enough, but not too much such that the results become meaningless. What about the length of the turning vectors? I think it's best to avoid really long vectors. I tend to take the remaining distance the waypoint and divide that by two.
+How large should the simulated turns be? I tend to do a few degrees. Enough to make sure the dot results are different enough, but not too much such that the results become meaningless. What about the length of the turning vectors? I think it's best to avoid really long vectors. I tend to take the remaining distance to the waypoint and divide that by two.
 
 And here is the code for doing this
 
@@ -240,7 +246,9 @@ calcTurnDecision(waypoint: Point): TurnDecision {
 }
 ```
 
-Now that we know which direction to turn, we now need to know how much to turn each frame to accomplish the smooth turning.
+This code is just seeing if left, straight or right will get us closer to the waypoint, and returning that result.
+
+Now that we know which direction to turn, we now need to know how much to turn each frame to accomplish smooth turning.
 
 <figure>
 	<img
@@ -253,9 +261,11 @@ Now that we know which direction to turn, we now need to know how much to turn e
 	</figcaption>
 </figure>
 
-We can see how much the car needs to turn by determining the angle between the car's direction vector and the vector from the car to the waypoint. This can again be accomplished by using the dot product.
+We can see how much the car needs to turn by determining the angle between the car's direction vector and the vector from the car to the waypoint. This can again be accomplished by using the dot product. That is because the dot product of two vectors and the angle between those two vectors are related
 
-The dot product will only tell us the size of this angle, nothing about which way to turn, but that's fine as we already have that information.
+<< dot product formula >>
+
+The dot product will only tell us the size of this angle, nothing about which way to turn. In other words, it will tell us to turn 20 degrees, but not whether that is to the left or the right. But that's ok, `calcTurnDirection()` already figured that out for us.
 
 Now by noting how far the car is away from the waypoint, and how fast it is going, we can roughly determine how many frames it takes to arrive. By dividing the angle by that number of frames, we know how much to turn the car each frame.
 
@@ -270,11 +280,9 @@ calcVelocityAngleChangeRate(
 		waypoint.x,
 		waypoint.y
 	);
+
 	const framesTillWp =
-		Math.max(
-			distanceToWp - waypoint.radius,
-			1
-		) / this.speed;
+		Math.max(distanceToWp - waypoint.radius, 1) / this.speed;
 
 	const translatedWaypoint = {
 		x: waypoint.x - this.x,
@@ -329,9 +337,9 @@ update(waypoints: Waypoint[]) {
 handleAcceleration() {
 	const airDrag = this.getAirDrag(this.speed);
 
-	this.acceleration = this.accelValue - FRICTION - airDrag;
+	const acceleration = this.accelValue - FRICTION - airDrag;
 
-	this.speed = Math.max(0, this.speed + this.acceleration);
+	this.speed = Math.max(0, this.speed + acceleration);
 
 	const cos = Math.cos(this.velocityAngle);
 	const sin = Math.sin(this.velocityAngle);
@@ -349,6 +357,13 @@ handleAcceleration() {
 Ok that is all great, but if you play with the simulator above you can see the car drives like it's drunk. What's the deal?
 
 In short, we don't have enough waypoints. Let's look at going from waypoint 3 to 4 as an example
+
+<wisdom>
+	Adding more waypoints is only one way to solve this problem. But it really is
+	the simplest, so that's what I went with. Other ways is to further develop the
+	driving algorithms to make the CPU driver be aware of more things and react
+	accordingly. But when just adding more waypoins will do, why bother?
+</wisdom>
 
 <figure>
 	<img

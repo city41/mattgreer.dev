@@ -41,7 +41,6 @@ class SmoothTurningVehicle {
 	targetWaypoint = 0;
 	velocityAngle = 0;
 	accelValue: number;
-	acceleration = 0;
 	speed = 0;
 	velocity: Point = { x: 0, y: 0 };
 	color = 'white';
@@ -172,9 +171,9 @@ class SmoothTurningVehicle {
 	handleAcceleration() {
 		const airDrag = this.getAirDrag(this.speed);
 
-		this.acceleration = this.accelValue - FRICTION - airDrag;
+		const acceleration = this.accelValue - FRICTION - airDrag;
 
-		this.speed = Math.max(0, this.speed + this.acceleration);
+		this.speed = Math.max(0, this.speed + acceleration);
 
 		const cos = Math.cos(this.velocityAngle);
 		const sin = Math.sin(this.velocityAngle);
