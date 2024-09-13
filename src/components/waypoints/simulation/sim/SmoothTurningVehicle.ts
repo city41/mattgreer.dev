@@ -1,7 +1,8 @@
+import { IVehicle, VEHICLE_LENGTH, VEHICLE_WIDTH } from './IVehicle';
 import { Waypoint } from './Waypoint';
 import { degreesToRadians, sign0 } from './mathutil';
 import { getDistance } from './trig';
-import { IVehicle, Point, Sphere } from './types';
+import { Point, Sphere } from './types';
 import cloneDeep from 'lodash/cloneDeep';
 
 type TurnDecision = 1 | 0 | -1;
@@ -31,10 +32,8 @@ function normalizedDot(
 	return d / lens;
 }
 
-class SmoothTurningVehicle {
+class SmoothTurningVehicle implements IVehicle {
 	static DRIFT_BOOST_FACTOR = 10;
-	static LENGTH = 10;
-	static WIDTH = 5;
 
 	x: number;
 	y: number;
@@ -50,6 +49,7 @@ class SmoothTurningVehicle {
 	];
 	nearnessSphere: Sphere = { x: 0, y: 0, radius: 0 };
 	steerAwayFromPoint: Point | null = null;
+	calcedTurnDecisionDots = [];
 
 	constructor(x: number, y: number, accelValue: number, color: string) {
 		this.x = x;
@@ -77,6 +77,8 @@ class SmoothTurningVehicle {
 		let bestD = Number.MIN_SAFE_INTEGER;
 		let bestTurnResult = 0;
 
+		this.calcedTurnDecisionDots = [];
+
 		for (let t = 1; t >= -1; t -= 1) {
 			const turnedAngle = this.velocityAngle + degreesToRadians(t * 3);
 
@@ -96,7 +98,18 @@ class SmoothTurningVehicle {
 				bestD = turnedD;
 				bestTurnResult = t;
 			}
+
+			this.calcedTurnDecisionDots.push({
+				turnedAngle,
+				magnitude: vectorMagnitude,
+				best: false,
+				turn: t,
+			});
 		}
+
+		this.calcedTurnDecisionDots.forEach((ctd) => {
+			ctd.best = ctd.turn === bestTurnResult;
+		});
 
 		return bestTurnResult as TurnDecision;
 	}
@@ -207,8 +220,7 @@ class SmoothTurningVehicle {
 		return {
 			x: this.x,
 			y: this.y,
-			radius:
-				Math.max(SmoothTurningVehicle.WIDTH, SmoothTurningVehicle.LENGTH) / 2,
+			radius: Math.max(VEHICLE_WIDTH, VEHICLE_LENGTH) / 2,
 		};
 	}
 
@@ -222,10 +234,10 @@ class SmoothTurningVehicle {
 		context.rotate(this.velocityAngle);
 		context.fillStyle = this.color;
 		context.fillRect(
-			-SmoothTurningVehicle.LENGTH / 2,
-			-SmoothTurningVehicle.WIDTH / 2,
-			SmoothTurningVehicle.LENGTH,
-			SmoothTurningVehicle.WIDTH
+			-VEHICLE_LENGTH / 2,
+			-VEHICLE_WIDTH / 2,
+			VEHICLE_LENGTH,
+			VEHICLE_WIDTH
 		);
 		context.restore();
 

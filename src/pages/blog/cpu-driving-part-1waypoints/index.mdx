@@ -1,5 +1,5 @@
 import { Article } from '../../../components/layouts/Article';
-import { SimulationCmp } from '../../../components/waypoints/simulation/SimulationCmp';
+import { SimulationVisualization } from '../../../components/waypoints/simulation/SimulationComponents/SimulationVisualization';
 import meta from './meta.json';
 
 export const config = {
@@ -51,7 +51,7 @@ and here it is with some basic waypoints plopped onto it
 
 So if we just place a CPU car at the starting line, and have it drive towards 0, then 1, and so on, it will get around the track in a very primitive and unrealistic way. But hey, it's a start. Press play to see our amazing green driver in action.
 
-<SimulationCmp level="basic" />
+<SimulationVisualization level="basic" />
 
 The car keeps track of its target waypoint, and figures out the angle it needs to point straight at it
 
@@ -144,7 +144,7 @@ Let's improve our driver so it smoothly turns towards its target waypoint. This 
 
 As soon as we arrive within the radius, the driver will target the next waypoint, and start to gradually turn towards it. Here is what we'll have
 
-<SimulationCmp level="smooth-turning-1" />
+<SimulationVisualization level="smooth-turning-1" />
 
 Well... it's kind of working (watch it go past waypoint 3 to see what I mean). This will get better, but for now let's look at how the smooth turning works.
 
@@ -409,7 +409,7 @@ When it first arrives at 3, it's roughly going up towards the top of the screen,
 
 The easiest way to do that is just to add more waypoints, adjust their radiuses to make the car start turning earlier or later, and move the waypoints around. There's a lot of art behind waypoint placement.
 
-<SimulationCmp level="smooth-turning-2" />
+<SimulationVisualization level="smooth-turning-2" />
 
 With the new waypoints in place, it's not driving bad at all!
 

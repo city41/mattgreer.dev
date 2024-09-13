@@ -7,7 +7,6 @@ import {
 } from '../sim/waypoints';
 import { Button } from '../Button';
 
-import styles from './SimulationCmp.module.css';
 import { BasicVehicle } from '../sim/BasicVehicle';
 import { SmoothTurningVehicle } from '../sim/SmoothTurningVehicle';
 import {
@@ -18,10 +17,14 @@ import {
 } from 'react-icons/ri';
 import { FaStepBackward, FaStepForward } from 'react-icons/fa';
 
+import styles from './SimulationVisualization.module.css';
+import { VehicleVisualization } from './VehicleVisualization';
+
 type Level = 'basic' | 'smooth-turning-1' | 'smooth-turning-2';
 
-type SimulationCmpProps = {
+type SimulationVisualizationProps = {
 	level: Level;
+	includeVehicleVisualization: boolean;
 };
 
 function clamp<T extends number>(v: T, min: T, max: T) {
@@ -56,7 +59,10 @@ function getSimulation(level: Level, canvas: HTMLCanvasElement) {
 
 const DEFAULT_DELAY = 24;
 
-function SimulationCmp({ level }: SimulationCmpProps) {
+function SimulationVisualization({
+	level,
+	includeVehicleVisualization,
+}: SimulationVisualizationProps) {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const sim = useRef<Simulation>(null);
 	const [mode, setMode] = useState<'playing' | 'reversing' | 'stopped'>(
@@ -149,8 +155,14 @@ function SimulationCmp({ level }: SimulationCmpProps) {
 					<FaStepForward />
 				</Button>
 			</div>
+			{includeVehicleVisualization && sim.current && (
+				<VehicleVisualization
+					vehicle={sim.current.firstVehicle}
+					waypoints={sim.current.waypoints}
+				/>
+			)}
 		</div>
 	);
 }
 
-export { SimulationCmp };
+export { SimulationVisualization };

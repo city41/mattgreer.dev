@@ -1,6 +1,7 @@
+import { IVehicle } from './IVehicle';
 import { Waypoint } from './Waypoint';
 import { getDistance } from './trig';
-import { IVehicle, Sphere } from './types';
+import { Sphere } from './types';
 
 type HistoryEntry = {
 	vehicles: IVehicle[];
@@ -131,6 +132,14 @@ class Simulation {
 
 	get historySize() {
 		return this.#history.length;
+	}
+
+	get firstVehicle() {
+		return this.#vehicles[0];
+	}
+
+	get waypoints() {
+		return this.#waypoints;
 	}
 }
 

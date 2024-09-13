@@ -1,14 +1,12 @@
+import { IVehicle, VEHICLE_LENGTH, VEHICLE_WIDTH } from './IVehicle';
 import { Waypoint } from './Waypoint';
 import { getDistance } from './trig';
-import { IVehicle, Point, Sphere } from './types';
+import { Point, Sphere } from './types';
 import cloneDeep from 'lodash/cloneDeep';
 
 const FRICTION = 1 / 20;
 
 class BasicVehicle implements IVehicle {
-	static LENGTH = 10;
-	static WIDTH = 5;
-
 	x: number;
 	y: number;
 	accelValue: number;
@@ -18,6 +16,7 @@ class BasicVehicle implements IVehicle {
 	targetWaypoint = 0;
 	nearnessSphere: Sphere = { x: 0, y: 0, radius: 0 };
 	waypoints: Waypoint[] = [];
+	calcedTurnDecisionDots = [];
 
 	constructor(x: number, y: number, accelValue: number, color: string) {
 		this.x = x;
@@ -113,10 +112,10 @@ class BasicVehicle implements IVehicle {
 		context.rotate(this.velocityAngle);
 		context.fillStyle = this.color;
 		context.fillRect(
-			-BasicVehicle.LENGTH / 2,
-			-BasicVehicle.WIDTH / 2,
-			BasicVehicle.LENGTH,
-			BasicVehicle.WIDTH
+			-VEHICLE_LENGTH / 2,
+			-VEHICLE_WIDTH / 2,
+			VEHICLE_LENGTH,
+			VEHICLE_WIDTH
 		);
 		context.restore();
 
