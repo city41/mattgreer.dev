@@ -1,5 +1,6 @@
 import { Article } from '../../../components/layouts/Article';
 import { SimulationVisualization } from '../../../components/waypoints/simulation/SimulationComponents/SimulationVisualization';
+import { DotProduct } from '../../../components/waypoints/DotProduct';
 import meta from './meta.json';
 
 export const config = {
@@ -167,7 +168,7 @@ To figure out which turn is the better one, let's simulate turning a little bit 
 
 Ok, but how to know which turn was better? Thankfully the dot product can tell us. The larger the dot product of two vectors, the more those two vectors are pointing in the same direction.
 
-<< interactive dot product here >>
+<DotProduct />
 
 So simulate turning left a little, grab a dot product. Simulate turning right a little, and grab another dot product. Whichever dot product is larger, that's the way to turn.
 
@@ -271,7 +272,17 @@ Now that we know which direction to turn, we now need to know how much to turn e
 
 We can see how much the car needs to turn by determining the angle between the car's direction vector and the vector from the car to the waypoint. This can again be accomplished by using the dot product. That is because the dot product of two vectors and the angle between those two vectors are related
 
-<< dot product formula >>
+<figure>
+	<img
+		src={require('./dotProduct.png').default.src}
+		alt="The geometric dot product formula"
+	/>
+	<figcaption>
+		The geometric dot product formula, courtesy of Wikipedia. This is saying the
+		the dot product of vectors a and b is equal to the length of a, times the
+		length of b, times the cos of the angle between them.
+	</figcaption>
+</figure>
 
 The dot product will only tell us the size of this angle, nothing about which way to turn. In other words, it will tell us to turn 20 degrees, but not whether that is to the left or the right. But that's ok, `calcTurnDirection()` already figured that out for us.
 

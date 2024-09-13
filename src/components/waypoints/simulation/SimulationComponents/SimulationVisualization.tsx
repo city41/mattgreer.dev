@@ -45,7 +45,7 @@ function getSimulation(level: Level, canvas: HTMLCanvasElement) {
 				canvas,
 				[new SmoothTurningVehicle(105, 120, 1 / 4, 'rgb(200, 255, 100)')],
 				basicWaypointsWithRadiusDisplayed,
-				400
+				480
 			);
 		case 'smooth-turning-2':
 			return new Simulation(
@@ -136,8 +136,8 @@ function SimulationVisualization({
 						waypoints={sim.current?.waypoints}
 					/>
 				)}
+				<div className="text-xs -mt-6 pl-1 pb-1">frame: {frame}</div>
 			</div>
-			<div className="text-xs -mt-6 pl-1 pb-1">frame: {frame}</div>
 			<div className="flex flex-row gap-x-1 justify-center text-4xl border-t-8 border-focal py-2">
 				<Button onClick={handleReset}>
 					<RiRewindStartFill />
