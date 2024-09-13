@@ -110,7 +110,7 @@ function DotProduct({ className }: { className?: string }) {
 	const vectorB = getVectorFromAngle(angleB, MAGNITUDE);
 
 	return (
-		<div className={clsx(className, 'flex justify-center')}>
+		<div className={clsx(className, 'flex justify-center text-black')}>
 			<div className="relative">
 				<canvas
 					className="border border-black"
