@@ -1,7 +1,7 @@
 import { IVehicle, VEHICLE_LENGTH, VEHICLE_WIDTH } from './IVehicle';
 import { Waypoint } from './Waypoint';
 import { getDistance } from './trig';
-import { Point, Sphere } from './types';
+import { Point, Circle } from './types';
 import cloneDeep from 'lodash/cloneDeep';
 
 const FRICTION = 1 / 20;
@@ -14,7 +14,7 @@ class BasicVehicle implements IVehicle {
 	velocityAngle = 0;
 	color = 'white';
 	targetWaypoint = 0;
-	nearnessSphere: Sphere = { x: 0, y: 0, radius: 0 };
+	nearnessCircle: Circle = { x: 0, y: 0, radius: 0 };
 	waypoints: Waypoint[] = [];
 	calcedTurnDecisionDots = [];
 
@@ -128,7 +128,7 @@ class BasicVehicle implements IVehicle {
 		context.translate(this.x, this.y);
 		context.strokeStyle = 'white';
 		context.beginPath();
-		context.arc(0, 0, this.nearnessSphere.radius, 0, 2 * Math.PI);
+		context.arc(0, 0, this.nearnessCircle.radius, 0, 2 * Math.PI);
 		context.stroke();
 		context.restore();
 	}

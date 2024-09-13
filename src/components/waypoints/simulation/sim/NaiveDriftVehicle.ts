@@ -32,8 +32,8 @@ function normalizedDot(
 	return d / lens;
 }
 
-class DriftVehicle implements IVehicle {
-	static DRIFT_BOOST_FACTOR = 5;
+class NaiveDriftVehicle implements IVehicle {
+	static DRIFT_BOOST_FACTOR = 10;
 
 	x: number;
 	y: number;
@@ -183,9 +183,7 @@ class DriftVehicle implements IVehicle {
 		if (turnDecision !== 0) {
 			return this.calcSteeringAngleChangeRate(waypoint, turnDecision);
 		} else {
-			if (this.shouldDrift) {
-				this.shouldDrift = this.calcTurnDecision(nextWaypoint) != 0;
-			}
+			this.shouldDrift = false;
 			return 0;
 		}
 	}
@@ -281,7 +279,8 @@ class DriftVehicle implements IVehicle {
 
 			driftBoost =
 				1 +
-				Math.min(this.driftDuration / 60, 2) * DriftVehicle.DRIFT_BOOST_FACTOR;
+				Math.min(this.driftDuration / 60, 2) *
+					NaiveDriftVehicle.DRIFT_BOOST_FACTOR;
 			this.driftDuration = 0;
 
 			this.velocityAngle = this.steeringAngle;
@@ -368,7 +367,7 @@ class DriftVehicle implements IVehicle {
 	}
 
 	clone(): IVehicle {
-		const clone = new DriftVehicle(
+		const clone = new NaiveDriftVehicle(
 			this.x,
 			this.y,
 			this.accelValue,
@@ -376,7 +375,7 @@ class DriftVehicle implements IVehicle {
 			this.allowDrifting
 		);
 
-		(Object.keys(this) as Array<keyof DriftVehicle>).forEach((key) => {
+		(Object.keys(this) as Array<keyof NaiveDriftVehicle>).forEach((key) => {
 			if (typeof this[key] !== 'function') {
 				(clone[key] as any) = cloneDeep(this[key]) as any;
 			}
@@ -386,4 +385,4 @@ class DriftVehicle implements IVehicle {
 	}
 }
 
-export { DriftVehicle };
+export { NaiveDriftVehicle };

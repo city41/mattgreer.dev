@@ -19,8 +19,16 @@ import { FaStepBackward, FaStepForward } from 'react-icons/fa';
 
 import styles from './SimulationVisualization.module.css';
 import { VehicleVisualization } from './VehicleVisualization';
+import { DriftVehicle } from '../sim/DriftVehicle';
+import { NaiveDriftVehicle } from '../sim/NaiveDriftVehicle';
 
-type Level = 'basic' | 'smooth-turning-1' | 'smooth-turning-2';
+type Level =
+	| 'basic'
+	| 'smooth-turning-1'
+	| 'smooth-turning-2'
+	| 'drifting-1'
+	| 'naive-drifting'
+	| 'final-drifting';
 
 type SimulationVisualizationProps = {
 	level: Level;
@@ -53,6 +61,36 @@ function getSimulation(level: Level, canvas: HTMLCanvasElement) {
 				[new SmoothTurningVehicle(105, 120, 1 / 4, 'rgb(200, 255, 100)')],
 				smoothTurningWaypoints,
 				372
+			);
+		case 'drifting-1':
+			return new Simulation(
+				canvas,
+				[new DriftVehicle(105, 120, 1 / 4, 'rgb(200, 255, 100)', true, false)],
+				smoothTurningWaypoints,
+				170
+			);
+		case 'naive-drifting':
+			return new Simulation(
+				canvas,
+				[
+					new NaiveDriftVehicle(
+						105,
+						120,
+						1 / 4,
+						'rgb(200, 255, 100)',
+						true,
+						false
+					),
+				],
+				smoothTurningWaypoints,
+				170
+			);
+		case 'final-drifting':
+			return new Simulation(
+				canvas,
+				[new DriftVehicle(105, 120, 1 / 4, 'rgb(200, 255, 100)', true, false)],
+				smoothTurningWaypoints,
+				570
 			);
 	}
 }

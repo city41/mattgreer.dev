@@ -2,7 +2,7 @@ import { IVehicle, VEHICLE_LENGTH, VEHICLE_WIDTH } from './IVehicle';
 import { Waypoint } from './Waypoint';
 import { degreesToRadians, sign0 } from './mathutil';
 import { getDistance } from './trig';
-import { Point, Sphere } from './types';
+import { Point, Circle } from './types';
 import cloneDeep from 'lodash/cloneDeep';
 
 type TurnDecision = 1 | 0 | -1;
@@ -43,11 +43,11 @@ class SmoothTurningVehicle implements IVehicle {
 	speed = 0;
 	velocity: Point = { x: 0, y: 0 };
 	color = 'white';
-	boundingSpheres: [Sphere, Sphere] = [
+	boundingCircle: [Circle, Circle] = [
 		{ x: 0, y: 0, radius: 0 },
 		{ x: 0, y: 0, radius: 0 },
 	];
-	nearnessSphere: Sphere = { x: 0, y: 0, radius: 0 };
+	nearnessCircle: Circle = { x: 0, y: 0, radius: 0 };
 	steerAwayFromPoint: Point | null = null;
 	calcedTurnDecisionDots = [];
 
@@ -216,7 +216,7 @@ class SmoothTurningVehicle implements IVehicle {
 		this.handleAcceleration();
 	}
 
-	calcNearnessSphere(): Sphere {
+	calcNearnessCircle(): Circle {
 		return {
 			x: this.x,
 			y: this.y,
@@ -250,7 +250,7 @@ class SmoothTurningVehicle implements IVehicle {
 		context.translate(this.x, this.y);
 		context.strokeStyle = 'white';
 		context.beginPath();
-		context.arc(0, 0, this.nearnessSphere.radius, 0, 2 * Math.PI);
+		context.arc(0, 0, this.nearnessCircle.radius, 0, 2 * Math.PI);
 		context.stroke();
 		context.restore();
 	}

@@ -4,7 +4,7 @@
         <title>Matt Greer</title>
         <link>https://mattgreer.dev</link>
         <description>Mostly web dev related articles</description>
-        <lastBuildDate>Thu, 12 Sep 2024 15:06:47 GMT</lastBuildDate>
+        <lastBuildDate>Fri, 13 Sep 2024 13:55:48 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
@@ -16,11 +16,19 @@
         <copyright>Copyright Matt Greer</copyright>
         <atom:link href="https://mattgreer.dev/feed.xml" rel="self" type="application/rss+xml"/>
         <item>
-            <title><![CDATA[CPU Driving With Waypoints, Part 1]]></title>
-            <link>https://mattgreer.dev/blog/cpu-driving-waypoints-part-1</link>
-            <guid>https://mattgreer.dev/blog/cpu-driving-waypoints-part-1</guid>
-            <pubDate>Mon, 19 Aug 2024 00:00:00 GMT</pubDate>
-            <description><![CDATA[How can you make a CPU car drive around a track?]]></description>
+            <title><![CDATA[CPU Driving Part 1: Waypoints]]></title>
+            <link>https://mattgreer.dev/blog/cpu-driving-part-1-waypoints</link>
+            <guid>https://mattgreer.dev/blog/cpu-driving-part-1-waypoints</guid>
+            <pubDate>Thu, 12 Sep 2024 00:00:00 GMT</pubDate>
+            <description><![CDATA[How can you make a CPU car drive around a track in a video game?]]></description>
+            <author>matt.e.greer@gmail.com (Matt Greer)</author>
+        </item>
+        <item>
+            <title><![CDATA[CPU Driving Part 2: Drifting]]></title>
+            <link>https://mattgreer.dev/blog/cpu-driving-part-2-drifting</link>
+            <guid>https://mattgreer.dev/blog/cpu-driving-part-2-drifting</guid>
+            <pubDate>Thu, 12 Sep 2024 00:00:00 GMT</pubDate>
+            <description><![CDATA[How can you make a CPU car drive around a track in a video game?]]></description>
             <author>matt.e.greer@gmail.com (Matt Greer)</author>
         </item>
         <item>

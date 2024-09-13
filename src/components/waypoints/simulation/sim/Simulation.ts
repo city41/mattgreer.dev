@@ -1,13 +1,13 @@
 import { IVehicle } from './IVehicle';
 import { Waypoint } from './Waypoint';
 import { getDistance } from './trig';
-import { Sphere } from './types';
+import { Circle } from './types';
 
 type HistoryEntry = {
 	vehicles: IVehicle[];
 };
 
-function spheresOverlap(a: Sphere, b: Sphere): boolean {
+function circlesOverlap(a: Circle, b: Circle): boolean {
 	const distBetwweenCenters = getDistance(a.x, a.y, b.x, b.y);
 
 	return distBetwweenCenters <= a.radius + b.radius;
@@ -78,7 +78,7 @@ class Simulation {
 				const otherVehicle = this.#vehicles[ov];
 
 				if (
-					spheresOverlap(vehicle.nearnessSphere, otherVehicle.nearnessSphere)
+					circlesOverlap(vehicle.nearnessCircle, otherVehicle.nearnessCircle)
 				) {
 					vehicle.steerAwayFrom(otherVehicle);
 					otherVehicle.steerAwayFrom(vehicle);

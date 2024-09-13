@@ -1,0 +1,143 @@
+import { Article } from '../../../components/layouts/Article';
+import { SimulationVisualization } from '../../../components/waypoints/simulation/SimulationComponents/SimulationVisualization';
+import { DotProduct } from '../../../components/waypoints/DotProduct';
+import meta from './meta.json';
+
+export default ({ children }) => (
+	<Article
+		{...meta}
+		img={require('./feature.png').default.src}
+		socialMediaImg={require('./twitter.png').default.src}
+		intro="Can we make the CPU drift?"
+	>
+		{children}
+	</Article>
+);
+
+In [part 1](https://mattgreer.dev/blog/cpu-driving-part-1-waypoints/), we laid the foundation for a CPU driving system for a video game using waypoints. In this part, we'll add in drifting as a simple example of how you can use waypoints to "script" your CPU to do stuff beyond basic driving.
+
+## What is drifting?
+
+In car racing, drifting is when the car essentially "slides" around a turn. [Here is a simple example](https://www.youtube.com/shorts/qKGp3YdwjRA) of RC cars drifting. To put it simply, the direction the car is going and the direction it is facing are quite different. By controlling those two angles, the driver can make a car drift around corners in a smooth and satisfying way.
+
+Here is our simulator with drifting added
+
+<SimulationVisualization level="drifting-1" />
+
+<wisdom>
+	The simulator also has a "drift boost", a quick burst of speed when the car
+	comes out of its drift. That's not realistic, but hey it's a video game. My
+	actual game is mimicking how Mario Kart does drifting. It's a bit subtle, but
+	it's there.
+</wisdom>
+
+## Implementing drifting
+
+<pitfall>
+	This blog series isn't really about drifting. The implementation here is very
+	simple.
+</pitfall>
+
+To drift, the car now keeps track of `steeringAngle` and `velocityAngle`. Whenever the car turns, it updates `steeringAngle`. This happens just like before, only last time it was updating `velocityAngle`. Then each frame, it calls `moveTowardsSteeringAngle`
+
+```typescript
+moveTowardsSteeringAngle(isDrifting: boolean) {
+	const diff = this.steeringAngle - this.velocityAngle;
+
+	const stepMagnitude = degreesToRadians(isDrifting ? 2 : 8);
+	const stepDirection = sign0(diff);
+
+	const step = stepDirection * stepMagnitude;
+
+	this.velocityAngle += step;
+
+	if (
+		stepDirection > 0 &&
+		this.velocityAngle > this.steeringAngle) {
+		this.velocityAngle = this.steeringAngle;
+	}
+
+	if (stepDirection < 0 &&
+		this.velocityAngle < this.steeringAngle) {
+		this.velocityAngle = this.steeringAngle;
+	}
+}
+```
+
+This function just has the velocity angle (ie, the actual direction the car is going in), "catch up" to the steering angle (the direction the car is pointing). When `isDrifting` is true, it catches up more slowly, and that ultimately enables our simple drift.
+
+## Having the CPU car decide when to start drifting
+
+When should the CPU drift? Generally when it enters large, sweeping turns. This can easily be done by adding a `shouldDrift` flag to our waypoints. In this case, `shouldDrift` was set to true for waypoint 1. When the car arrives at waypoint 0, it will then focus on waypoint 1, and there it will learn it should go into drifting mode
+
+<figure>
+	<img
+		src={require('./whenToDrift.png').default.src}
+		alt="The waypoints tell it to drift here"
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>The waypoints tell it to drift here</figcaption>
+</figure>
+
+That can be seen when the car moves onto its next waypoint
+
+```typescript
+updateCurrentWaypoint(waypoints: Waypoint[]) {
+	const currentWaypoint = waypoints[this.targetWaypoint];
+
+	const distance = getDistance(
+		this.x,
+		this.y,
+		currentWaypoint.x,
+		currentWaypoint.y
+	);
+
+	if (distance <= currentWaypoint.radius) {
+		this.targetWaypoint += 1;
+
+		if (this.targetWaypoint >= waypoints.length) {
+			this.targetWaypoint = 0;
+		}
+
+		// here our waypoint tells the cart to start drifting
+		this.shouldDrift =
+			this.allowDrifting &&
+			waypoints[this.targetWaypoint].shouldDrift;
+	}
+}
+```
+
+## When should the CPU stop drifting?
+
+Starting to drift is easy, knowing when to stop drifting is a bit trickier. When does a human driver stop drifting? They usually stop when they are aligned in the direction they want to go in coming out of the turn. If we can just convince the CPU to do that, it will drift pretty well.
+
+A first stab at this might be "stop drifting once you are pointed at your next waypoint". So in this case, the car will start drifting when it hits waypoint zero, and stop once it is pointed at waypoint 1, let's see how that goes
+
+<SimulationVisualization level="naive-drifting" />
+
+I mean it's decent? But not really what we want. We really want the car to slide throughout the entire turn. To pull this off, let's have the car drift until it's both pointing at waypoint 1 _and_ waypoint 2.
+
+<figure>
+	<img
+		src={require('./pointingAtWaypoint1And2.png').default.src}
+		alt="The car is pointing at both of its upcoming waypoints"
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>The car is pointing at both of its upcoming waypoints</figcaption>
+</figure>
+
+And if you think about it, that's also what human drivers do. They want a nice solid, straight line to exit the turn on.
+
+We need to make sure the next waypoint is positioned well for this, but that's not a big deal.
+
+## Conclusion
+
+And that's it. Our CPU can now drift pretty well around corners.
+
+<SimulationVisualization level="final-drifting" />
+
+If you watch the whole simulation, the CPU will drift around corner 0-1 and corner 8-9. But the second time it drifts around 0-1, it goes way out of bounds. Correcting for that is the topic of a future post :)
+
+The real purpose of this post was just to show you can use waypoints to convey more information to your CPU driver. Drifting was one simple example. You can use waypoints to make your CPU act more naturally and do more interesting things. Maybe a waypoint can tell it to speed up for an upcoming jump.
+
+Anyway, that will do it for this one. Till next time.

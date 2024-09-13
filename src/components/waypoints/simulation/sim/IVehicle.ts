@@ -1,5 +1,5 @@
 import { Waypoint } from './Waypoint';
-import { Point, Sphere } from './types';
+import { Point, Circle } from './types';
 
 export const VEHICLE_LENGTH = 10;
 export const VEHICLE_WIDTH = 5;
@@ -22,7 +22,7 @@ export interface IVehicle {
 	clone(): IVehicle;
 	steerAwayFrom(point: Point);
 
-	nearnessSphere: Sphere;
+	nearnessCircle: Circle;
 
 	calcedTurnDecisionDots: CalcedTurnDecisionDot[];
 }
