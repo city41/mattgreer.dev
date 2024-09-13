@@ -42,14 +42,14 @@ function getSimulation(level: Level, canvas: HTMLCanvasElement) {
 				canvas,
 				[new SmoothTurningVehicle(105, 120, 1 / 4, 'rgb(200, 255, 100)')],
 				basicWaypointsWithRadiusDisplayed,
-				500
+				400
 			);
 		case 'smooth-turning-2':
 			return new Simulation(
 				canvas,
 				[new SmoothTurningVehicle(105, 120, 1 / 4, 'rgb(200, 255, 100)')],
 				smoothTurningWaypoints,
-				500
+				372
 			);
 	}
 }

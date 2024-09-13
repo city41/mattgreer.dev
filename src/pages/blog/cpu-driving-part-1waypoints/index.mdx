@@ -163,7 +163,7 @@ In the first version, it was easy to point the car directly towards the next way
 
 In this simple example the car could turn right 20 degrees to point at the waypoint, or left 340 degrees. Both will ultimately get there, but obviously turning right is better here.
 
-To figure out which turn is the better one, I just simulate turning a little bit in both directions and pick the one that pointed me more closely at the waypoint.
+To figure out which turn is the better one, let's simulate turning a little bit in both directions and pick the one that pointed me more closely at the waypoint.
 
 Ok, but how to know which turn was better? Thankfully the dot product can tell us. The larger the dot product of two vectors, the more those two vectors are pointing in the same direction.
 
@@ -172,8 +172,8 @@ Ok, but how to know which turn was better? Thankfully the dot product can tell u
 So simulate turning left a little, grab a dot product. Simulate turning right a little, and grab another dot product. Whichever dot product is larger, that's the way to turn.
 
 <wisdom>
-	It's also possible that just going straight is the best answer. So I actually
-	compare three dot products.{' '}
+	It's also possible that just going straight is the best answer. So we'll
+	actually compare three dot products.{' '}
 </wisdom>
 
 <figure>
@@ -194,8 +194,12 @@ And here is the code for doing this
 ```typescript
 type TurnDecision = -1 | 0 | 1;
 
+function dot(a: Point, b: Point): number {
+	return a.x * b.x + a.y * b.y;
+}
+
 calcTurnDecision(waypoint: Point): TurnDecision {
-	if (this.speed == 0) {
+	if (this.speed === 0) {
 		// not moving? no need to turn
 		return 0;
 	}
@@ -246,7 +250,7 @@ calcTurnDecision(waypoint: Point): TurnDecision {
 }
 ```
 
-This code is just seeing if left, straight or right will get us closer to the waypoint, and returning that result.
+This code is just seeing if left, straight or right will get us closer to the waypoint, and returning the best result.
 
 Now that we know which direction to turn, we now need to know how much to turn each frame to accomplish smooth turning.
 
@@ -270,6 +274,18 @@ The dot product will only tell us the size of this angle, nothing about which wa
 Now by noting how far the car is away from the waypoint, and how fast it is going, we can roughly determine how many frames it takes to arrive. By dividing the angle by that number of frames, we know how much to turn the car each frame.
 
 ```typescript
+function normalizedDot(
+	a: Point,
+	aLength: number,
+	b: Point,
+	bLength: number
+): number {
+	const d = dot(a, b);
+	const lens = aLength * bLength;
+
+	return d / lens;
+}
+
 calcVelocityAngleChangeRate(
 	waypoint: Waypoint,
 	turnDecision: -1 | 0 | 1
@@ -282,7 +298,7 @@ calcVelocityAngleChangeRate(
 	);
 
 	const framesTillWp =
-		Math.max(distanceToWp - waypoint.radius, 1) / this.speed;
+		(distanceToWp - waypoint.radius) / this.speed;
 
 	const translatedWaypoint = {
 		x: waypoint.x - this.x,
@@ -311,7 +327,20 @@ calcVelocityAngleChangeRate(
 }
 ```
 
-and with the turn rate in hand, we can move the car
+<pitfall>
+	The previous function used <pre>dot()</pre>, and this code is using{' '}
+	<pre>normalizedDot()</pre>. They are almost the same thing. a normalized dot
+	product takes the dot product and divides it by the lengths of the vectors to
+	get an answer that is between -1 and 1. Earlier when we were calculating dot
+	products, we were directly comparing the result so there was no need to
+	normalize them. But here normalizing the dot product is essential when
+	ultimately calculating the angle between two vectors (see the dot product
+	formula graphic just above).
+</pitfall>
+
+When calculating `framesTillWp`, we are using the distance to the next waypoint, minus its radius. That is because we don't care about arriving exactly at the center of the waypoint, just arriving within its circular boundary.
+
+Now with the turn rate in hand, we can move the car
 
 ```typescript
 update(waypoints: Waypoint[]) {
@@ -356,7 +385,7 @@ handleAcceleration() {
 
 Ok that is all great, but if you play with the simulator above you can see the car drives like it's drunk. What's the deal?
 
-In short, we don't have enough waypoints. Let's look at going from waypoint 3 to 4 as an example
+In short, we don't have enough waypoints.
 
 <wisdom>
 	Adding more waypoints is only one way to solve this problem. But it really is
@@ -364,6 +393,8 @@ In short, we don't have enough waypoints. Let's look at going from waypoint 3 to
 	driving algorithms to make the CPU driver be aware of more things and react
 	accordingly. But when just adding more waypoins will do, why bother?
 </wisdom>
+
+Let's look at going from waypoint 3 to 4 as an example
 
 <figure>
 	<img
@@ -374,7 +405,7 @@ In short, we don't have enough waypoints. Let's look at going from waypoint 3 to
 	<figcaption>The car's exaggerated arc from three to four</figcaption>
 </figure>
 
-When it first arrives at 3, it's roughly going up towards the top of the screen, and 4 is roughly to its direct right. So to get to 4, the car needs to about 80 degrees or so. But when calculating how much to turn per frame, we take that 80 degrees and divide it by how far the car needs to go. Since 3 and 4 are so far apart, it has all the time in the world to turn towards 4. Since a car is both turning and driving, the end result is a large arcing motion. What we really want is for the car to smoothly point at 4 pretty early, and then head straight at it. Kind of a middle ground between our first naive implementation and what we currently have.
+When it first arrives at 3, it's roughly going up towards the top of the screen, and 4 is roughly to its direct right. So to get to 4, the car needs to turn about 80 degrees or so. But when calculating how much to turn per frame, we take that 80 degrees and divide it by how far the car needs to travel. Since 3 and 4 are so far apart, it has all the time in the world to turn towards 4. When a car turns it is both turning its front wheels and progressing forward, the end result being a large arcing motion. What we really want is for the car to smoothly turn to point at 4 pretty quickly, and then head straight at it. It ends up being kind of a middle ground between our first naive implementation and what we currently have.
 
 The easiest way to do that is just to add more waypoints, adjust their radiuses to make the car start turning earlier or later, and move the waypoints around. There's a lot of art behind waypoint placement.
 
@@ -382,7 +413,7 @@ The easiest way to do that is just to add more waypoints, adjust their radiuses 
 
 With the new waypoints in place, it's not driving bad at all!
 
-If you scroll back up to the `calcVelocityAngleChangeRate` code, we actually take the angle between the car and waypoint and bump it up a bit by multiplying it be 1.5. This goes back to waypoints being a bit of an art form. Sometimes you just gotta play around with things until things feel ok. By bumping up the angle a bit, we get the cart to turn a bit sharper, and so its traversal around the track is more realistic as it has long spans of driving straight.
+If you scroll back up to the `calcVelocityAngleChangeRate` code, we actually take the angle between the car and waypoint and bump it up a bit by multiplying it by 1.5. This goes back to waypoints being a bit of an art form. Sometimes you just gotta play around with things until they feel ok. By bumping up the angle a bit, we get the cart to turn a bit sharper, and so its traversal around the track is more realistic as it has long spans of driving straight between the turns.
 
 ## Conclusion
 

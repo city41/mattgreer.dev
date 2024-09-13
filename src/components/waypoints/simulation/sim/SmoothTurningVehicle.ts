@@ -59,7 +59,7 @@ class SmoothTurningVehicle {
 	}
 
 	calcTurnDecision(waypoint: Point): TurnDecision {
-		if (this.speed == 0) {
+		if (this.speed === 0) {
 			// not moving? no need to turn
 			return 0;
 		}
@@ -106,8 +106,7 @@ class SmoothTurningVehicle {
 		turnDecision: TurnDecision
 	): number {
 		const distanceToWp = getDistance(this.x, this.y, waypoint.x, waypoint.y);
-		const framesTillWp =
-			Math.max(distanceToWp - waypoint.radius, 1) / this.speed;
+		const framesTillWp = (distanceToWp - waypoint.radius) / this.speed;
 
 		const translatedWaypoint = {
 			x: waypoint.x - this.x,
