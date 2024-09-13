@@ -1,0 +1,145 @@
+import { Article } from '../../../components/layouts/Article';
+import { SimulationVisualization } from '../../../components/waypoints/simulation/SimulationComponents/SimulationVisualization';
+import meta from './meta.json';
+
+export default ({ children }) => (
+	<Article
+		{...meta}
+		img={require('./feature.png').default.src}
+		socialMediaImg={require('./twitter.png').default.src}
+		intro="One is the loneliest number"
+	>
+		{children}
+	</Article>
+);
+
+Here in part 3 of the [CPU driving series](https://mattgreer.dev/blog/CPU%20driving/), let's add another CPU car to the track.
+
+<SimulationVisualization level="two-cars-no-collision" />
+
+Ok, well, they just drive right over top of each other. Let's fix that.
+
+## Attempt one: undo the collision
+
+Often when things collide in a video game, it's enough to just move the objects back to their previous locations. That's easy to do if we keep track of the previous location.
+
+```typescript
+update() {
+	this.prevX = this.x;
+	this.prevY = this.y;
+
+	this.x = ...
+}
+```
+
+Then use the previous location to fix up collisions
+
+```typescript
+if (circlesOverlap(vehicle.boundingCircle, otherVehicle.boundingCircle)) {
+	vehicle.x = vehicle.prevX;
+	vehicle.y = vehicle.prevY;
+	otherVehicle.x = otherVehicle.prevX;
+	otherVehicle.y = otherVehicle.prevY;
+}
+```
+
+Let's see how that plays out
+
+<SimulationVisualization level="two-cars-undo-collision" />
+
+Well, that didn't work. They just deadlock because both cars are returning to where they were, then just driving into each other again, over and over.
+
+### The bounding circle
+
+Just above we check if two cars collided by using their `boundingCircle`. It's really exactly what it sounds like, a circle that marks the boundaries of the car. Seeing if two circles overlap is really simple, so we're using them here for our collision detection needs.
+
+<figure>
+	<img
+		src={require('./circleCollisionDetection.svg').default.src}
+		alt="Checking if two circles overlap"
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>Checking if two circles overlap</figcaption>
+</figure>
+
+If the distance between the two circle centers is less than their radiuses added together, they are overlapping. Super simple and fast, circle collision detection rocks. Of course our cars aren't circular, so it's not entirely accurate. But it will work for our needs just fine. Besides, our cars rotate as they drive around, finding if two rotated rectangles overlap is much more complex.
+
+```typescript
+function circlesOverlap(a: Circle, b: Circle): boolean {
+	const distBetweenCenters = getDistance(a.x, a.y, b.x, b.y);
+
+	return distBetweenCenters <= a.radius + b.radius;
+}
+```
+
+Here is the same simulation, but this time showing the bounding circles
+
+<SimulationVisualization level="two-cars-undo-collision-bounding-circles" />
+
+Ok that deadlock is annoying, let's fix it.
+
+## Steering away from each other
+
+What we really need is to tell the cars to steer away from each other when they get close. Fortunately this is simple to do
+
+```typescript
+if (circlesOverlap(vehicle.boundingCircle, otherVehicle.boundingCircle)) {
+	vehicle.steerAwayFrom(otherVehicle);
+	otherVehicle.steerAwayFrom(vehicle);
+}
+```
+
+So when they get so close their circles overlap, tell both cars to veer away. For the car to do that, it will just take this account when determining which way to turn
+
+```typescript
+steerAwayFrom(p: Point) {
+	this.steerAwayFromPoint = p;
+}
+
+determineAngleChangeRate(waypoint: Waypoint) {
+	let turnDecision: TurnDecision = 0;
+
+	if (this.steerAwayFromPoint) {
+		turnDecision =
+			this.calcTurnDecision(this.steerAwayFromPoint) * -1;
+
+		this.steerAwayFromPoint = null;
+	} else {
+		turnDecision = this.calcTurnDecision(waypoint);
+	}
+
+	if (turnDecision !== 0) {
+		return this.calcVelocityAngleChangeRate(
+			waypoint,
+			turnDecision
+		);
+	} else {
+		return 0;
+	}
+}
+```
+
+If the car was told to steer away from something, it will hold onto that point for one frame. Then when figuring out how it should turn, if that point is set, it will decide to turn away from it. To do that, we just pass in `steerAwayFromPoint` into `calcTurnDecision`. Normally `calcTurnDecision` wants to to steer towards something (usually the target waypoint). But since we want to steer _away_ from something, we can just flip the answer by multiplying it by `-1`.
+
+<pitfall>
+	Multiplying the answer by -1 is nice and simple, but not always correct. If
+	the decision was to keep going straight (ie, zero), then the multiplication
+	would do nothing and the car would still drive towards what we want it to
+	avoid.
+</pitfall>
+
+With that, the cars will avoid each other and successfully navigate the course
+
+<SimulationVisualization level="two-cars-steer-away-collision-bounding-circles" />
+
+And for the heck of it, here is three cars on the track
+
+<SimulationVisualization level="three-cars-steer-away-collision-bounding-circles" />
+
+Well blue's a jerk, he knocked green clear off the track!
+
+## Conclusion
+
+And that's all there is to this one. Obviously collision detection and avoidance is much more complex than this, as the three car example starts to show. But you'd be surprised how far this simple "steer away from each other" technique can go. Maybe later on I'll expand on this series and look into more complex scenarios and solutions in this space.
+
+As usual, the code for the car is [here](https://github.com/city41/mattgreer.dev/blob/main/src/components/waypoints/simulation/sim/SmoothTurningVehicle.ts).

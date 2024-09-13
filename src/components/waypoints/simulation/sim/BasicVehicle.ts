@@ -9,12 +9,14 @@ const FRICTION = 1 / 20;
 class BasicVehicle implements IVehicle {
 	x: number;
 	y: number;
+	prevX = 0;
+	prevY = 0;
 	accelValue: number;
 	speed = 0;
 	velocityAngle = 0;
 	color = 'white';
 	targetWaypoint = 0;
-	nearnessCircle: Circle = { x: 0, y: 0, radius: 0 };
+	boundingCircle: Circle = { x: 0, y: 0, radius: 0 };
 	waypoints: Waypoint[] = [];
 	calcedTurnDecisionDots = [];
 
@@ -106,7 +108,7 @@ class BasicVehicle implements IVehicle {
 		// not needed, but must implement IVehicle
 	}
 
-	draw(context: CanvasRenderingContext2D) {
+	draw(context: CanvasRenderingContext2D, shouldDrawBoundingCircle: boolean) {
 		context.save();
 		context.translate(this.x, this.y);
 		context.rotate(this.velocityAngle);
@@ -124,13 +126,15 @@ class BasicVehicle implements IVehicle {
 		context.fillRect(this.x, this.y, 1, 1);
 		context.restore();
 
-		context.save();
-		context.translate(this.x, this.y);
-		context.strokeStyle = 'white';
-		context.beginPath();
-		context.arc(0, 0, this.nearnessCircle.radius, 0, 2 * Math.PI);
-		context.stroke();
-		context.restore();
+		if (shouldDrawBoundingCircle) {
+			context.save();
+			context.translate(this.x, this.y);
+			context.strokeStyle = 'white';
+			context.beginPath();
+			context.arc(0, 0, this.boundingCircle.radius, 0, 2 * Math.PI);
+			context.stroke();
+			context.restore();
+		}
 	}
 
 	clone(): IVehicle {

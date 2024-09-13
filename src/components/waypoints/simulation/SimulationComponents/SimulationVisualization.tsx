@@ -28,7 +28,12 @@ type Level =
 	| 'smooth-turning-2'
 	| 'drifting-1'
 	| 'naive-drifting'
-	| 'final-drifting';
+	| 'final-drifting'
+	| 'two-cars-no-collision'
+	| 'two-cars-undo-collision'
+	| 'two-cars-undo-collision-bounding-circles'
+	| 'two-cars-steer-away-collision-bounding-circles'
+	| 'three-cars-steer-away-collision-bounding-circles';
 
 type SimulationVisualizationProps = {
 	level: Level;
@@ -46,51 +51,125 @@ function getSimulation(level: Level, canvas: HTMLCanvasElement) {
 				canvas,
 				[new BasicVehicle(105, 120, 1 / 4, 'rgb(200, 255, 100)')],
 				basicWaypoints,
-				393
+				{
+					frames: 393,
+					collisionDetection: 'none',
+					drawboundingCircles: false,
+				}
 			);
 		case 'smooth-turning-1':
 			return new Simulation(
 				canvas,
 				[new SmoothTurningVehicle(105, 120, 1 / 4, 'rgb(200, 255, 100)')],
 				basicWaypointsWithRadiusDisplayed,
-				480
+				{
+					frames: 480,
+					collisionDetection: 'none',
+					drawboundingCircles: false,
+				}
 			);
 		case 'smooth-turning-2':
 			return new Simulation(
 				canvas,
 				[new SmoothTurningVehicle(105, 120, 1 / 4, 'rgb(200, 255, 100)')],
 				smoothTurningWaypoints,
-				372
+				{
+					frames: 372,
+					collisionDetection: 'none',
+					drawboundingCircles: false,
+				}
 			);
 		case 'drifting-1':
 			return new Simulation(
 				canvas,
-				[new DriftVehicle(105, 120, 1 / 4, 'rgb(200, 255, 100)', true, false)],
+				[new DriftVehicle(105, 120, 1 / 4, 'rgb(200, 255, 100)')],
 				smoothTurningWaypoints,
-				170
+				{
+					frames: 170,
+					collisionDetection: 'none',
+					drawboundingCircles: false,
+				}
 			);
 		case 'naive-drifting':
 			return new Simulation(
 				canvas,
-				[
-					new NaiveDriftVehicle(
-						105,
-						120,
-						1 / 4,
-						'rgb(200, 255, 100)',
-						true,
-						false
-					),
-				],
+				[new NaiveDriftVehicle(105, 120, 1 / 4, 'rgb(200, 255, 100)')],
 				smoothTurningWaypoints,
-				170
+				{
+					frames: 170,
+					collisionDetection: 'none',
+					drawboundingCircles: false,
+				}
 			);
 		case 'final-drifting':
 			return new Simulation(
 				canvas,
-				[new DriftVehicle(105, 120, 1 / 4, 'rgb(200, 255, 100)', true, false)],
+				[new DriftVehicle(105, 120, 1 / 4, 'rgb(200, 255, 100)')],
 				smoothTurningWaypoints,
-				570
+				{
+					frames: 570,
+					collisionDetection: 'none',
+					drawboundingCircles: false,
+				}
+			);
+		case 'two-cars-no-collision':
+			return new Simulation(
+				canvas,
+				[
+					new SmoothTurningVehicle(80, 120, 11 / 50, 'rgb(200, 255, 100)'),
+					new SmoothTurningVehicle(105, 130, 10 / 50, 'rgb(255, 100, 200)'),
+				],
+				smoothTurningWaypoints,
+				{
+					frames: 300,
+					collisionDetection: 'none',
+					drawboundingCircles: false,
+				}
+			);
+		case 'two-cars-undo-collision':
+		case 'two-cars-undo-collision-bounding-circles':
+			return new Simulation(
+				canvas,
+				[
+					new SmoothTurningVehicle(80, 120, 11 / 50, 'rgb(200, 255, 100)'),
+					new SmoothTurningVehicle(105, 130, 10 / 50, 'rgb(255, 100, 200)'),
+				],
+				smoothTurningWaypoints,
+				{
+					frames: 300,
+					collisionDetection: 'undo',
+					drawboundingCircles:
+						level === 'two-cars-undo-collision-bounding-circles',
+				}
+			);
+		case 'two-cars-steer-away-collision-bounding-circles':
+			return new Simulation(
+				canvas,
+				[
+					new SmoothTurningVehicle(80, 120, 11 / 50, 'rgb(200, 255, 100)'),
+					new SmoothTurningVehicle(105, 130, 10 / 50, 'rgb(255, 100, 200)'),
+				],
+				smoothTurningWaypoints,
+				{
+					frames: 450,
+					collisionDetection: 'steer-away',
+					drawboundingCircles: true,
+				}
+			);
+		case 'three-cars-steer-away-collision-bounding-circles':
+			return new Simulation(
+				canvas,
+				[
+					new SmoothTurningVehicle(80, 110, 20 / 100, 'rgb(200, 255, 100)'),
+					new SmoothTurningVehicle(105, 125, 18 / 100, 'rgb(255, 100, 200)'),
+					new SmoothTurningVehicle(30, 110, 21 / 100, 'rgb(100, 100, 255)'),
+				],
+				smoothTurningWaypoints,
+				{
+					frames: 550,
+					collisionDetection: 'steer-away',
+					drawboundingCircles: true,
+				}
 			);
 	}
 }

@@ -37,6 +37,8 @@ class NaiveDriftVehicle implements IVehicle {
 
 	x: number;
 	y: number;
+	prevX = 0;
+	prevY = 0;
 	targetWaypoint = 0;
 	steeringAngle = 0;
 	velocityAngle = 0;
@@ -48,13 +50,8 @@ class NaiveDriftVehicle implements IVehicle {
 	shouldDrift = false;
 	driftDuration = 0;
 	color = 'white';
-	boundingCircles: [Circle, Circle] = [
-		{ x: 0, y: 0, radius: 0 },
-		{ x: 0, y: 0, radius: 0 },
-	];
-	nearnessCircle: Circle = { x: 0, y: 0, radius: 0 };
+	boundingCircle: Circle = { x: 0, y: 0, radius: 0 };
 	steerAwayFromPoint: Point | null = null;
-	shouldDrawNearnessCircle = true;
 
 	calcedTurnDecisionDots = [];
 
@@ -63,15 +60,13 @@ class NaiveDriftVehicle implements IVehicle {
 		y: number,
 		accelValue: number,
 		color: string,
-		allowDrifting = true,
-		shouldDrawNearnessCircle = true
+		allowDrifting = true
 	) {
 		this.x = x;
 		this.y = y;
 		this.accelValue = accelValue;
 		this.color = color;
 		this.allowDrifting = allowDrifting;
-		this.shouldDrawNearnessCircle = shouldDrawNearnessCircle;
 	}
 
 	calcTurnDecision(waypoint: Point): TurnDecision {
@@ -293,35 +288,10 @@ class NaiveDriftVehicle implements IVehicle {
 		this.moveTowardsSteeringAngle(this.shouldDrift);
 		this.handleAcceleration(driftBoost);
 
-		this.boundingCircles = this.calcBoundingCircles();
-		this.nearnessCircle = this.calcNearnessCircle();
+		this.boundingCircle = this.calcBoundingCircle();
 	}
 
-	calcBoundingCircles(): [Circle, Circle] {
-		const radius = VEHICLE_LENGTH / 4;
-
-		const cos = Math.cos(this.steeringAngle);
-		const sin = Math.sin(this.steeringAngle);
-
-		const cosOffset = radius * cos;
-		const sinOffset = radius * sin;
-
-		const center1: Point = {
-			x: this.x + cosOffset,
-			y: this.y + sinOffset,
-		};
-		const center2 = {
-			x: this.x - cosOffset,
-			y: this.y - sinOffset,
-		};
-
-		return [
-			{ ...center1, radius },
-			{ ...center2, radius },
-		];
-	}
-
-	calcNearnessCircle(): Circle {
+	calcBoundingCircle(): Circle {
 		return {
 			x: this.x,
 			y: this.y,
@@ -333,17 +303,17 @@ class NaiveDriftVehicle implements IVehicle {
 		this.steerAwayFromPoint = p;
 	}
 
-	drawNearnessCircle(context: CanvasRenderingContext2D) {
+	drawBoundingCircle(context: CanvasRenderingContext2D) {
 		context.save();
 		context.translate(this.x, this.y);
 		context.strokeStyle = 'white';
 		context.beginPath();
-		context.arc(0, 0, this.nearnessCircle.radius, 0, 2 * Math.PI);
+		context.arc(0, 0, this.boundingCircle.radius, 0, 2 * Math.PI);
 		context.stroke();
 		context.restore();
 	}
 
-	draw(context: CanvasRenderingContext2D) {
+	draw(context: CanvasRenderingContext2D, shouldDrawBoundingCircle: boolean) {
 		context.save();
 		context.translate(this.x, this.y);
 		context.rotate(this.steeringAngle);
@@ -361,8 +331,8 @@ class NaiveDriftVehicle implements IVehicle {
 		context.fillRect(this.x, this.y, 1, 1);
 		context.restore();
 
-		if (this.shouldDrawNearnessCircle) {
-			this.drawNearnessCircle(context);
+		if (shouldDrawBoundingCircle) {
+			this.drawBoundingCircle(context);
 		}
 	}
 

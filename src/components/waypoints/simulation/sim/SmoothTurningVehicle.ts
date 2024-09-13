@@ -37,17 +37,15 @@ class SmoothTurningVehicle implements IVehicle {
 
 	x: number;
 	y: number;
+	prevX: number;
+	prevY: number;
 	targetWaypoint = 0;
 	velocityAngle = 0;
 	accelValue: number;
 	speed = 0;
 	velocity: Point = { x: 0, y: 0 };
 	color = 'white';
-	boundingCircle: [Circle, Circle] = [
-		{ x: 0, y: 0, radius: 0 },
-		{ x: 0, y: 0, radius: 0 },
-	];
-	nearnessCircle: Circle = { x: 0, y: 0, radius: 0 };
+	boundingCircle: Circle = { x: 0, y: 0, radius: 0 };
 	steerAwayFromPoint: Point | null = null;
 	calcedTurnDecisionDots = [];
 
@@ -148,9 +146,17 @@ class SmoothTurningVehicle implements IVehicle {
 	}
 
 	determineAngleChangeRate(waypoint: Waypoint) {
-		const turnDecision = this.calcTurnDecision(waypoint);
+		let turnDecision: TurnDecision = 0;
 
-		if (turnDecision != 0) {
+		if (this.steerAwayFromPoint) {
+			turnDecision = (this.calcTurnDecision(this.steerAwayFromPoint) *
+				-1) as TurnDecision;
+			this.steerAwayFromPoint = null;
+		} else {
+			turnDecision = this.calcTurnDecision(waypoint);
+		}
+
+		if (turnDecision !== 0) {
 			return this.calcVelocityAngleChangeRate(waypoint, turnDecision);
 		} else {
 			return 0;
@@ -198,6 +204,9 @@ class SmoothTurningVehicle implements IVehicle {
 	}
 
 	update(waypoints: Waypoint[]) {
+		this.prevX = this.x;
+		this.prevY = this.y;
+
 		// move onto the next waypoint if we have
 		// arrived at the current one
 		this.updateCurrentWaypoint(waypoints);
@@ -214,9 +223,10 @@ class SmoothTurningVehicle implements IVehicle {
 
 		// and move the car
 		this.handleAcceleration();
+		this.boundingCircle = this.calcBoundingCircle();
 	}
 
-	calcNearnessCircle(): Circle {
+	calcBoundingCircle(): Circle {
 		return {
 			x: this.x,
 			y: this.y,
@@ -228,7 +238,7 @@ class SmoothTurningVehicle implements IVehicle {
 		this.steerAwayFromPoint = p;
 	}
 
-	draw(context: CanvasRenderingContext2D) {
+	draw(context: CanvasRenderingContext2D, shouldDrawBoundingCircle: boolean) {
 		context.save();
 		context.translate(this.x, this.y);
 		context.rotate(this.velocityAngle);
@@ -246,13 +256,15 @@ class SmoothTurningVehicle implements IVehicle {
 		context.fillRect(this.x, this.y, 1, 1);
 		context.restore();
 
-		context.save();
-		context.translate(this.x, this.y);
-		context.strokeStyle = 'white';
-		context.beginPath();
-		context.arc(0, 0, this.nearnessCircle.radius, 0, 2 * Math.PI);
-		context.stroke();
-		context.restore();
+		if (shouldDrawBoundingCircle) {
+			context.save();
+			context.translate(this.x, this.y);
+			context.strokeStyle = 'white';
+			context.beginPath();
+			context.arc(0, 0, this.boundingCircle.radius, 0, 2 * Math.PI);
+			context.stroke();
+			context.restore();
+		}
 	}
 
 	clone(): IVehicle {

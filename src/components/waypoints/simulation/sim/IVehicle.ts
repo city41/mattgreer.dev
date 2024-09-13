@@ -14,15 +14,17 @@ type CalcedTurnDecisionDot = {
 export interface IVehicle {
 	x: number;
 	y: number;
+	prevX: number;
+	prevY: number;
 	targetWaypoint: number;
 	velocityAngle: number;
 
 	update(waypoints: Waypoint[]);
-	draw(context: CanvasRenderingContext2D);
+	draw(context: CanvasRenderingContext2D, shouldDrawBoundingCircle: boolean);
 	clone(): IVehicle;
 	steerAwayFrom(point: Point);
 
-	nearnessCircle: Circle;
+	boundingCircle: Circle;
 
 	calcedTurnDecisionDots: CalcedTurnDecisionDot[];
 }

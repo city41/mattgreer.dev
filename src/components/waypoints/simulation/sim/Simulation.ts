@@ -8,10 +8,24 @@ type HistoryEntry = {
 };
 
 function circlesOverlap(a: Circle, b: Circle): boolean {
-	const distBetwweenCenters = getDistance(a.x, a.y, b.x, b.y);
+	const distBetweenCenters = getDistance(a.x, a.y, b.x, b.y);
 
-	return distBetwweenCenters <= a.radius + b.radius;
+	return distBetweenCenters <= a.radius + b.radius;
 }
+
+type CollisionDetection = 'none' | 'undo' | 'steer-away';
+
+type SimulationOptions = {
+	frames: number;
+	collisionDetection: CollisionDetection;
+	drawboundingCircles: boolean;
+};
+
+const DEFAULT_OPTIONS: SimulationOptions = {
+	frames: 100,
+	collisionDetection: 'none',
+	drawboundingCircles: false,
+};
 
 class Simulation {
 	#canvas: HTMLCanvasElement;
@@ -20,13 +34,16 @@ class Simulation {
 	#track: HTMLImageElement | null;
 	#trackBridge: HTMLImageElement | null;
 	#history: HistoryEntry[];
+	#fullOptions: SimulationOptions = DEFAULT_OPTIONS;
 
 	constructor(
 		canvas: HTMLCanvasElement,
 		vehicles: IVehicle[],
 		waypoints: Waypoint[],
-		frames = 100
+		options: Partial<SimulationOptions> = DEFAULT_OPTIONS
 	) {
+		this.#fullOptions = { ...DEFAULT_OPTIONS, ...options };
+
 		this.#canvas = canvas;
 
 		canvas.width = 320;
@@ -37,9 +54,9 @@ class Simulation {
 
 		this.#history = [];
 
-		for (let i = 0; i < frames; ++i) {
+		for (let i = 0; i < this.#fullOptions.frames; ++i) {
 			this.#vehicles.forEach((v) => v.update(this.#waypoints));
-			this.#collisionDetect();
+			this.#collisionDetect(this.#fullOptions.collisionDetection);
 			this.#history.push({
 				vehicles: this.#vehicles.map((v) => v.clone()),
 			});
@@ -66,9 +83,13 @@ class Simulation {
 		trackBridgeImage.src = '/trackBridge.png';
 	}
 
-	#collisionDetect() {
+	#collisionDetect(collisionDetectionType: CollisionDetection) {
 		if (this.#vehicles.length <= 1) {
 			// at most one car? no collisions can occur
+			return;
+		}
+
+		if (collisionDetectionType === 'none') {
 			return;
 		}
 
@@ -78,10 +99,17 @@ class Simulation {
 				const otherVehicle = this.#vehicles[ov];
 
 				if (
-					circlesOverlap(vehicle.nearnessCircle, otherVehicle.nearnessCircle)
+					circlesOverlap(vehicle.boundingCircle, otherVehicle.boundingCircle)
 				) {
-					vehicle.steerAwayFrom(otherVehicle);
-					otherVehicle.steerAwayFrom(vehicle);
+					if (collisionDetectionType === 'undo') {
+						vehicle.x = vehicle.prevX;
+						vehicle.y = vehicle.prevY;
+						otherVehicle.x = otherVehicle.prevX;
+						otherVehicle.y = otherVehicle.prevY;
+					} else {
+						vehicle.steerAwayFrom(otherVehicle);
+						otherVehicle.steerAwayFrom(vehicle);
+					}
 				}
 			}
 		}
@@ -99,7 +127,9 @@ class Simulation {
 		}
 
 		context.drawImage(this.#track, 0, 0, this.#track.width, this.#track.height);
-		this.#vehicles.forEach((v) => v.draw(context));
+		this.#vehicles.forEach((v) =>
+			v.draw(context, this.#fullOptions.drawboundingCircles)
+		);
 		context.drawImage(
 			this.#trackBridge,
 			0,
@@ -109,7 +139,7 @@ class Simulation {
 		);
 		this.#vehicles.forEach((v) => {
 			if (v.targetWaypoint === 0) {
-				v.draw(context);
+				v.draw(context, this.#fullOptions.drawboundingCircles);
 			}
 		});
 

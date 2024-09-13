@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg width="252.91mm" height="168.87mm" version="1.1" viewBox="0 0 252.91 168.87" xmlns="http://www.w3.org/2000/svg">
+ <rect x="-.43095" y="-.41738" width="253.42" height="169.34" fill="#fff" stop-color="#000000" stroke-width=".26458"/>
+ <g fill="none" stroke-width="1.3229">
+  <path d="m59.836 60.125 27.251-27.251" stroke="#f60"/>
+  <path d="m168.69 72.56 27.251-27.251" stroke="#800000"/>
+  <path d="m59.836 60.125 136.1-14.817" stroke="#0f0"/>
+ </g>
+ <circle cx="59.812" cy="59.989" r="1.3361" fill="#00f" stop-color="#000000"/>
+ <circle cx="59.812" cy="59.989" r="38.737" fill="none" stop-color="#000000" stroke="#00f" stroke-width="1.5875"/>
+ <circle cx="195.81" cy="45.172" r="1.3361" fill="#00f" stop-color="#000000"/>
+ <g fill="none">
+  <circle cx="195.81" cy="45.172" r="38.737" stop-color="#000000" stroke="#00f" stroke-width="1.5875"/>
+  <g>
+   <path d="m59.876 102.78v17.602h136.03v-16.81" stroke="#0f0" stroke-width="1.3229"/>
+   <path d="m59.876 127.79v17.602h38.866" stroke="#f60" stroke-width="1.3229"/>
+   <path d="m98.742 145.39h38.866v-16.81" stroke="#800000" stroke-width="1.3229"/>
+  </g>
+ </g>
+ <text x="88.071655" y="102.5918" fill="#000000" font-family="sans-serif" font-size="10.583px" stroke-width=".26458" style="line-height:1.25" xml:space="preserve"><tspan x="88.071655" y="102.5918">distance from</tspan><tspan x="88.071655" y="115.82093">center to center</tspan></text>
+ <text x="11.015656" y="159.00006" fill="#000000" font-family="sans-serif" font-size="10.583px" stroke-width=".26458" style="line-height:1.25" xml:space="preserve"><tspan x="11.015656" y="159.00006" stroke-width=".26458">compared to their radiuses added together</tspan></text>
+</svg>
