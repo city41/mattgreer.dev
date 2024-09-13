@@ -99,7 +99,7 @@ updateCurrentWaypoint(waypoints: Waypoint[]) {
 			this.targetWaypoint = 0;
 		}
 
-		// here our waypoint tells the cart to start drifting
+		// here our waypoint tells the car to start drifting
 		this.shouldDrift =
 			this.allowDrifting &&
 			waypoints[this.targetWaypoint].shouldDrift;
@@ -130,6 +130,30 @@ And if you think about it, that's also what human drivers do. They want a nice s
 
 We need to make sure the next waypoint is positioned well for this, but that's not a big deal.
 
+In the code, this just means calc a turn decision for the next waypoint and the one after it. If both come up 0 (ie, straight), stop drifting
+
+```typescript
+determineSteeringAngleChangeRate(waypoint: Waypoint, nextWaypoint: Waypoint) {
+	const turnDecision = this.calcTurnDecision(waypoint);
+
+	if (turnDecision !== 0) {
+		return this.calcSteeringAngleChangeRate(
+			waypoint,
+			turnDecision
+		);
+	} else {
+		if (this.shouldDrift) {
+			// check the next waypoint to see
+			// if the car is pointed
+			// well to exit its drift
+			this.shouldDrift =
+				this.calcTurnDecision(nextWaypoint) != 0;
+		}
+		return 0;
+	}
+}
+```
+
 ## Conclusion
 
 And that's it. Our CPU can now drift pretty well around corners.
@@ -139,5 +163,7 @@ And that's it. Our CPU can now drift pretty well around corners.
 If you watch the whole simulation, the CPU will drift around corner 0-1 and corner 8-9. But the second time it drifts around 0-1, it goes way out of bounds. Correcting for that is the topic of a future post :)
 
 The real purpose of this post was just to show you can use waypoints to convey more information to your CPU driver. Drifting was one simple example. You can use waypoints to make your CPU act more naturally and do more interesting things. Maybe a waypoint can tell it to speed up for an upcoming jump.
+
+Oh and [here is the code for the drift car](https://github.com/city41/mattgreer.dev/blob/main/src/components/waypoints/simulation/sim/DriftVehicle.ts).
 
 Anyway, that will do it for this one. Till next time.
