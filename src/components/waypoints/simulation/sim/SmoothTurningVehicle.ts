@@ -80,7 +80,7 @@ class SmoothTurningVehicle implements IVehicle {
 		this.calcedTurnDecisionDots = [];
 
 		for (let t = 1; t >= -1; t -= 1) {
-			const turnedAngle = this.velocityAngle + degreesToRadians(t * 3);
+			const turnedAngle = this.velocityAngle + degreesToRadians(t * 15);
 
 			const turnedCos = Math.cos(turnedAngle);
 			const turnedSin = Math.sin(turnedAngle);

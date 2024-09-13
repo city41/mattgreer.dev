@@ -1,24 +1,26 @@
 import { useEffect, useRef } from 'react';
-import { DEGREES_PER_INDEX, degreesToRadians } from '../sim/mathutil';
 import { Point } from '../sim/types';
-import clsx from 'clsx';
 import { IVehicle, VEHICLE_LENGTH, VEHICLE_WIDTH } from '../sim/IVehicle';
 import { Waypoint } from '../sim/Waypoint';
 
-const SCALE = 10;
-const SIZE = 500;
+const SCALE = 8;
+const SIZE = 200;
 
 type VehicleVisualizationProps = {
-	vehicle: IVehicle;
-	waypoints: Waypoint[];
+	className?: string;
+	vehicle?: IVehicle;
+	waypoints?: Waypoint[];
 };
 
-function drawBody(context: CanvasRenderingContext2D, vehicle: IVehicle) {
+function drawBody(
+	context: CanvasRenderingContext2D,
+	vehicle: IVehicle | undefined
+) {
 	context.save();
 	context.translate(SIZE / 2, SIZE / 2);
-	context.rotate(vehicle.velocityAngle);
+	context.rotate(vehicle?.velocityAngle ?? 0);
 
-	context.fillStyle = 'green';
+	context.fillStyle = 'rgb(200, 255, 200)';
 
 	const l = VEHICLE_LENGTH * SCALE;
 	const w = VEHICLE_WIDTH * SCALE;
@@ -58,8 +60,8 @@ function getVectorFromAngle(angle: number, magnitude: number) {
 
 function visualizeVehicle(
 	canvas: HTMLCanvasElement,
-	vehicle: IVehicle,
-	waypoints: Waypoint[]
+	vehicle: IVehicle | undefined,
+	waypoints: Waypoint[] | undefined
 ) {
 	canvas.width = SIZE;
 	canvas.height = SIZE;
@@ -72,28 +74,31 @@ function visualizeVehicle(
 
 	context.fillStyle = 'rgb(255, 200, 200)';
 	context.fillRect(0, 0, canvas.width, canvas.height);
-
-	const waypoint = waypoints[vehicle.targetWaypoint];
-	const translatedWaypoint = {
-		x: waypoint.x - vehicle.x,
-		y: waypoint.y - vehicle.y,
-	};
-
 	drawBody(context, vehicle);
-	drawVector(context, translatedWaypoint, 'blue');
 
-	vehicle.calcedTurnDecisionDots.forEach((ctdd) => {
-		const vector = getVectorFromAngle(ctdd.turnedAngle, ctdd.magnitude);
-		drawVector(
-			context,
-			vector,
-			ctdd.best ? 'orange' : ctdd.turn == 0 ? 'white' : 'black',
-			ctdd.best ? 3 : 1
-		);
-	});
+	if (vehicle && waypoints) {
+		const waypoint = waypoints[vehicle.targetWaypoint];
+		const translatedWaypoint = {
+			x: waypoint.x - vehicle.x,
+			y: waypoint.y - vehicle.y,
+		};
+
+		drawVector(context, translatedWaypoint, 'red');
+
+		vehicle.calcedTurnDecisionDots.forEach((ctdd) => {
+			const vector = getVectorFromAngle(ctdd.turnedAngle, ctdd.magnitude);
+			drawVector(
+				context,
+				vector,
+				ctdd.best ? 'green' : 'black',
+				ctdd.best ? 4 : 2
+			);
+		});
+	}
 }
 
 function VehicleVisualization({
+	className,
 	vehicle,
 	waypoints,
 }: VehicleVisualizationProps) {
@@ -105,7 +110,15 @@ function VehicleVisualization({
 		}
 	}, [vehicle]);
 
-	return <canvas ref={canvasRef} width={SIZE} height={SIZE} />;
+	return (
+		<canvas
+			style={{ backgroundColor: 'purple' }}
+			className={className}
+			ref={canvasRef}
+			width={SIZE}
+			height={SIZE}
+		/>
+	);
 }
 
 export { VehicleVisualization };

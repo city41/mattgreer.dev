@@ -69,7 +69,9 @@ function SimulationVisualization({
 		'stopped'
 	);
 	const [frame, setFrame] = useState(0);
-	const [delay, setDelay] = useState(DEFAULT_DELAY);
+	const [delay, setDelay] = useState(
+		includeVehicleVisualization ? DEFAULT_DELAY * 2 : DEFAULT_DELAY
+	);
 
 	useEffect(() => {
 		if (canvasRef.current && !sim.current) {
@@ -120,12 +122,21 @@ function SimulationVisualization({
 
 	return (
 		<div className="border-4 border-focal">
-			<canvas
-				className={styles.canvas}
-				ref={canvasRef}
-				width={320}
-				height={224}
-			/>
+			<div className="relative">
+				<canvas
+					className={styles.canvas}
+					ref={canvasRef}
+					width={320}
+					height={224}
+				/>
+				{includeVehicleVisualization && (
+					<VehicleVisualization
+						className="absolute left-0 bottom-0"
+						vehicle={sim.current?.firstVehicle}
+						waypoints={sim.current?.waypoints}
+					/>
+				)}
+			</div>
 			<div className="text-xs -mt-6 pl-1 pb-1">frame: {frame}</div>
 			<div className="flex flex-row gap-x-1 justify-center text-4xl border-t-8 border-focal py-2">
 				<Button onClick={handleReset}>
@@ -155,12 +166,6 @@ function SimulationVisualization({
 					<FaStepForward />
 				</Button>
 			</div>
-			{includeVehicleVisualization && sim.current && (
-				<VehicleVisualization
-					vehicle={sim.current.firstVehicle}
-					waypoints={sim.current.waypoints}
-				/>
-			)}
 		</div>
 	);
 }

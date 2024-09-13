@@ -252,6 +252,10 @@ calcTurnDecision(waypoint: Point): TurnDecision {
 
 This code is just seeing if left, straight or right will get us closer to the waypoint, and returning the best result.
 
+Here is another simulation, but this time also showing the turn decisions the car is making. The red line is the vector to the waypoint, the other lines are the simulated turns, with the thick green one being the one that was chosen.
+
+<SimulationVisualization level="smooth-turning-1" includeVehicleVisualization />
+
 Now that we know which direction to turn, we now need to know how much to turn each frame to accomplish smooth turning.
 
 <figure>
