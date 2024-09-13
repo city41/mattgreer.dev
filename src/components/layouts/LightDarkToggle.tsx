@@ -12,11 +12,41 @@ const BUTTON_ID = 'LightDarkToggleButton';
 function LightDarkToggle({ className }: LightDarkToggleProps) {
 	return (
 		<>
-			<Head>
-				<script
-					type="text/javascript"
-					dangerouslySetInnerHTML={{
-						__html: `
+			<button
+				id={BUTTON_ID}
+				className={clsx(
+					className,
+					'invisible text-fg-fade hover:bg-bg rounded'
+				)}
+				style={{ outline: 'none' }}
+				aria-label="color scheme toggle"
+				disabled
+			>
+				<div
+					id="lightLabel"
+					className="hidden p-2 flex flex-row items-center text-fg"
+				>
+					<FiMoon
+						className="text-2xl mr-2 hidden sm:block"
+						aria-label="dark mode"
+					/>
+					switch to dark theme
+				</div>
+				<div
+					id="darkLabel"
+					className="hidden p-2 flex flex-row items-center text-fg"
+				>
+					<FiSun
+						className="text-2xl mr-2 hidden sm:block"
+						aria-label="light mode"
+					/>
+					switch to light theme
+				</div>
+			</button>
+			<script
+				type="text/javascript"
+				dangerouslySetInnerHTML={{
+					__html: `
 var DARK_CLASS = 'forcedDark';
 var LIGHT_CLASS = 'forcedLight';
 							
@@ -79,40 +109,8 @@ if (typeof window !== 'undefined') {
 	document.addEventListener('DOMContentLoaded', onDomContentLoaded);
 }
 							`,
-					}}
-				></script>
-			</Head>
-			<button
-				id={BUTTON_ID}
-				className={clsx(
-					className,
-					'invisible text-fg-fade hover:bg-bg rounded'
-				)}
-				style={{ outline: 'none' }}
-				aria-label="color scheme toggle"
-				disabled
-			>
-				<div
-					id="lightLabel"
-					className="hidden p-2 flex flex-row items-center text-fg"
-				>
-					<FiMoon
-						className="text-2xl mr-2 hidden sm:block"
-						aria-label="dark mode"
-					/>
-					switch to dark theme
-				</div>
-				<div
-					id="darkLabel"
-					className="hidden p-2 flex flex-row items-center text-fg"
-				>
-					<FiSun
-						className="text-2xl mr-2 hidden sm:block"
-						aria-label="light mode"
-					/>
-					switch to light theme
-				</div>
-			</button>
+				}}
+			></script>
 		</>
 	);
 }
