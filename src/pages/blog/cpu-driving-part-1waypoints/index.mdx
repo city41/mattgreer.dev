@@ -166,9 +166,16 @@ In this simple example the car could turn right 20 degrees to point at the waypo
 
 To figure out which turn is the better one, let's simulate turning a little bit in both directions and pick the one that pointed me more closely at the waypoint.
 
-Ok, but how to know which turn was better? Thankfully the dot product can tell us. The larger the dot product of two vectors, the more those two vectors are pointing in the same direction.
+Ok, but how to know which turn was better? Thankfully the dot product can tell us. The larger the dot product of two vectors, the more those two vectors are pointing in the same direction. The dot product is obtained by multiplying the x and y values of each vector and adding them together.
 
-<DotProduct />
+<figure>
+	<DotProduct className="mx-auto" />
+	<figcaption>
+		A simple little interactive dot product thing. Notice when you bring the red
+		vector closer to the blue one using the arrows, the dot product value gets
+		larger and larger?
+	</figcaption>
+</figure>
 
 So simulate turning left a little, grab a dot product. Simulate turning right a little, and grab another dot product. Whichever dot product is larger, that's the way to turn.
 

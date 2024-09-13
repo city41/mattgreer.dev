@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { useEffect, useRef, useState } from 'react';
 import { Point } from './simulation/sim/types';
 import { Button } from './simulation/Button';
@@ -47,8 +48,8 @@ function drawVector(
 	context.font = '12pt sans-serif';
 	context.fillText(
 		`(${round(vector.x)},${round(vector.y)})`,
-		centerX + vector.x,
-		centerY + vector.y
+		centerX + vector.x + 4,
+		centerY + vector.y + 4
 	);
 }
 
@@ -68,10 +69,10 @@ function drawAngles(canvas: HTMLCanvasElement, angleA: number, angleB: number) {
 	drawVector(context, vectorB, 'blue', 2);
 }
 
-function DotProduct() {
+function DotProduct({ className }: { className?: string }) {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const [angleA, setAngleA] = useState(0);
-	const angleB = Math.PI / 2;
+	const angleB = Math.PI / 2 - 0.1;
 
 	useEffect(() => {
 		if (canvasRef.current) {
@@ -83,25 +84,29 @@ function DotProduct() {
 	const vectorB = getVectorFromAngle(angleB, MAGNITUDE);
 
 	return (
-		<div className="relative">
-			<canvas
-				className="border border-black"
-				ref={canvasRef}
-				width={320}
-				height={224}
-			/>
-			<div className="absolute top-2 left-2">
-				dot product: (a.x*b.x) + (a.y*b.y)
-				<br />({round(vectorA.x)}*{round(vectorB.x)} + ({round(vectorA.y)}*
-				{round(vectorB.y)})) = <b>{round(dot(vectorA, vectorB))}</b>
-			</div>
-			<div className="text-3xl">
-				<Button onClick={() => setAngleA((a) => a + 0.1)} tooltip="play">
-					<RiPlayReverseLargeFill />
-				</Button>
-				<Button onClick={() => setAngleA((a) => a - 0.1)} tooltip="stop">
-					<RiPlayLargeFill />
-				</Button>
+		<div className={clsx(className, 'flex justify-center')}>
+			<div className="relative">
+				<canvas
+					className="border border-black"
+					ref={canvasRef}
+					width={320}
+					height={224}
+				/>
+				<div className="absolute top-2 left-0 right-0 w-full flex flex-col gap-y-2 items-center">
+					<div>dot product: (a.x*b.x) + (a.y*b.y)</div>
+					<div>
+						({round(vectorA.x)}*{round(vectorB.x)}) + ({round(vectorA.y)}*
+						{round(vectorB.y)}) = <b>{round(dot(vectorA, vectorB))}</b>
+					</div>
+				</div>
+				<div className="text-3xl absolute left-0 bottom-0">
+					<Button onClick={() => setAngleA((a) => a + 0.1)} tooltip="play">
+						<RiPlayReverseLargeFill />
+					</Button>
+					<Button onClick={() => setAngleA((a) => a - 0.1)} tooltip="stop">
+						<RiPlayLargeFill />
+					</Button>
+				</div>
 			</div>
 		</div>
 	);
