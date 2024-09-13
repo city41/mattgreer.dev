@@ -115,15 +115,13 @@ function SimulationCmp({ level }: SimulationCmpProps) {
 
 	return (
 		<div className="border-4 border-focal">
-			<div>
-				<canvas
-					className={styles.canvas}
-					ref={canvasRef}
-					width={320}
-					height={224}
-				/>
-			</div>
-			<div className="flex flex-row gap-x-1 justify-center text-4xl">
+			<canvas
+				className={styles.canvas}
+				ref={canvasRef}
+				width={320}
+				height={224}
+			/>
+			<div className="flex flex-row gap-x-1 justify-center text-4xl border-t-8 border-focal py-2">
 				<Button onClick={handleReset}>
 					<RiRewindStartFill />
 				</Button>

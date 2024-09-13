@@ -11,7 +11,7 @@ export default ({ children }) => (
 		{...meta}
 		img={require('./feature.png').default.src}
 		socialMediaImg={require('./twitter.png').default.src}
-		intro="How can you make a CPU car drive around a track?"
+		intro="How can you make a CPU car drive around a track in a video game?"
 	>
 		{children}
 	</Article>
@@ -153,7 +153,10 @@ In the first version, it was easy to point the car directly towards the next way
 		src={require('./20Vs340.svg').default.src}
 		alt="Turning right is better than turning left"
 	/>
-	<figcaption>Turning right is better than turning left</figcaption>
+	<figcaption>
+		Turning right is better than turning left, car art from
+		<a href="https://www.vecteezy.com/free-vector/car-overhead">Vecteezy</a>
+	</figcaption>
 </figure>
 
 In this simple example the car could turn right 20 degrees to point at the waypoint, or left 340 degrees. Both will ultimately get there, but obviously turning right is better here.
@@ -173,7 +176,8 @@ Ok, but how to know which turn was better? Thankfully the dot product can tell u
 		alt="Calculating dot products to figure out which way to turn"
 	/>
 	<figcaption>
-		Calculating dot products to figure out which way to turn
+		Calculating dot products to figure out which way to turn, car art from{' '}
+		<a href="https://www.vecteezy.com/free-vector/car-overhead">Vecteezy</a>
 	</figcaption>
 </figure>
 
@@ -244,7 +248,8 @@ Now that we know which direction to turn, we now need to know how much to turn e
 		alt="What is the angle needed to point the car at the waypoint?"
 	/>
 	<figcaption>
-		What is the angle needed to point the car at the waypoint?
+		What is the angle needed to point the car at the waypoint?, Car art from{' '}
+		<a href="https://www.vecteezy.com/free-vector/car-overhead">Vecteezy</a>
 	</figcaption>
 </figure>
 
