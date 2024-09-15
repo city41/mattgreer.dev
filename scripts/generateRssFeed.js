@@ -8,7 +8,6 @@ const AUTHOR = {
 	link: 'https://mattgreer.dev',
 };
 
-const ARTICLE_DIR = path.join(__dirname, '../src/pages/articles');
 const BLOG_DIR = path.join(__dirname, '../src/pages/blog');
 
 function getDirs(root) {
@@ -32,10 +31,9 @@ function getDirs(root) {
 		});
 }
 
-const articleDirs = getDirs(ARTICLE_DIR);
 const blogDirs = getDirs(BLOG_DIR);
 
-const sortedArticleDirs = articleDirs.concat(blogDirs).sort((a, b) => {
+const sortedArticleDirs = blogDirs.sort((a, b) => {
 	const aMeta = require(path.join(a.root, a.dir, 'meta.json'));
 	const bMeta = require(path.join(b.root, b.dir, 'meta.json'));
 
@@ -47,7 +45,7 @@ const sortedArticleDirs = articleDirs.concat(blogDirs).sort((a, b) => {
 
 const feed = new Feed({
 	title: 'Matt Greer',
-	description: 'Mostly web dev related articles',
+	description: 'Mostly web dev and game dev related articles',
 	id: 'https://mattgreer.dev',
 	link: 'https://mattgreer.dev',
 	language: 'en',
@@ -62,8 +60,7 @@ const feed = new Feed({
 
 sortedArticleDirs.forEach((a) => {
 	const meta = require(path.join(a.root, a.dir, 'meta.json'));
-	const root = a.root === ARTICLE_DIR ? 'articles' : 'blog';
-	const url = `https://mattgreer.dev/${root}/${a.dir}`;
+	const url = `https://mattgreer.dev/blog/${a.dir}`;
 
 	feed.addItem({
 		title: meta.title,

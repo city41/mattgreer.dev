@@ -3,8 +3,8 @@
     <channel>
         <title>Matt Greer</title>
         <link>https://mattgreer.dev</link>
-        <description>Mostly web dev related articles</description>
-        <lastBuildDate>Fri, 13 Sep 2024 13:55:48 GMT</lastBuildDate>
+        <description>Mostly web dev and game dev related articles</description>
+        <lastBuildDate>Sun, 15 Sep 2024 14:55:24 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
@@ -16,17 +16,25 @@
         <copyright>Copyright Matt Greer</copyright>
         <atom:link href="https://mattgreer.dev/feed.xml" rel="self" type="application/rss+xml"/>
         <item>
-            <title><![CDATA[CPU Driving Part 1: Waypoints]]></title>
-            <link>https://mattgreer.dev/blog/cpu-driving-part-1-waypoints</link>
-            <guid>https://mattgreer.dev/blog/cpu-driving-part-1-waypoints</guid>
-            <pubDate>Thu, 12 Sep 2024 00:00:00 GMT</pubDate>
-            <description><![CDATA[How can you make a CPU car drive around a track in a video game?]]></description>
+            <title><![CDATA[CPU Driving Part 3: Multiple Cars]]></title>
+            <link>https://mattgreer.dev/blog/cpu-driving-part-3-multiple-cars</link>
+            <guid>https://mattgreer.dev/blog/cpu-driving-part-3-multiple-cars</guid>
+            <pubDate>Sat, 14 Sep 2024 00:00:00 GMT</pubDate>
+            <description><![CDATA[One is the loneliest number]]></description>
             <author>matt.e.greer@gmail.com (Matt Greer)</author>
         </item>
         <item>
             <title><![CDATA[CPU Driving Part 2: Drifting]]></title>
             <link>https://mattgreer.dev/blog/cpu-driving-part-2-drifting</link>
             <guid>https://mattgreer.dev/blog/cpu-driving-part-2-drifting</guid>
+            <pubDate>Fri, 13 Sep 2024 00:00:00 GMT</pubDate>
+            <description><![CDATA[Can we make the CPU drift?]]></description>
+            <author>matt.e.greer@gmail.com (Matt Greer)</author>
+        </item>
+        <item>
+            <title><![CDATA[CPU Driving Part 1: Waypoints]]></title>
+            <link>https://mattgreer.dev/blog/cpu-driving-part-1-waypoints</link>
+            <guid>https://mattgreer.dev/blog/cpu-driving-part-1-waypoints</guid>
             <pubDate>Thu, 12 Sep 2024 00:00:00 GMT</pubDate>
             <description><![CDATA[How can you make a CPU car drive around a track in a video game?]]></description>
             <author>matt.e.greer@gmail.com (Matt Greer)</author>
@@ -161,40 +169,40 @@
         </item>
         <item>
             <title><![CDATA[React Internals Part Five: Transactions]]></title>
-            <link>https://mattgreer.dev/articles/react-internals-part-five-transactions</link>
-            <guid>https://mattgreer.dev/articles/react-internals-part-five-transactions</guid>
+            <link>https://mattgreer.dev/blog/react-internals-part-five-transactions</link>
+            <guid>https://mattgreer.dev/blog/react-internals-part-five-transactions</guid>
             <pubDate>Sat, 12 Aug 2017 00:00:00 GMT</pubDate>
             <description><![CDATA[In this final installment, we take a quick look at transactions and how they help React do its job.]]></description>
             <author>matt.e.greer@gmail.com (Matt Greer)</author>
         </item>
         <item>
             <title><![CDATA[React Internals Part Four: setState]]></title>
-            <link>https://mattgreer.dev/articles/react-internals-part-four-setState</link>
-            <guid>https://mattgreer.dev/articles/react-internals-part-four-setState</guid>
+            <link>https://mattgreer.dev/blog/react-internals-part-four-setState</link>
+            <guid>https://mattgreer.dev/blog/react-internals-part-four-setState</guid>
             <pubDate>Mon, 17 Jul 2017 00:00:00 GMT</pubDate>
             <description><![CDATA[Part four implements setState, an important function that drives much of what React does.]]></description>
             <author>matt.e.greer@gmail.com (Matt Greer)</author>
         </item>
         <item>
             <title><![CDATA[React Internals Part Three: Basic Updating]]></title>
-            <link>https://mattgreer.dev/articles/react-internals-part-three-basic-updating</link>
-            <guid>https://mattgreer.dev/articles/react-internals-part-three-basic-updating</guid>
+            <link>https://mattgreer.dev/blog/react-internals-part-three-basic-updating</link>
+            <guid>https://mattgreer.dev/blog/react-internals-part-three-basic-updating</guid>
             <pubDate>Sun, 16 Jul 2017 00:00:00 GMT</pubDate>
             <description><![CDATA[This part explores how React updates the DOM after props change.]]></description>
             <author>matt.e.greer@gmail.com (Matt Greer)</author>
         </item>
         <item>
             <title><![CDATA[React Internals Part Two: component­Will­Mount and component­Did­Mount]]></title>
-            <link>https://mattgreer.dev/articles/react-internals-part-two-componentWillMount-and-componentDidMount</link>
-            <guid>https://mattgreer.dev/articles/react-internals-part-two-componentWillMount-and-componentDidMount</guid>
+            <link>https://mattgreer.dev/blog/react-internals-part-two-componentWillMount-and-componentDidMount</link>
+            <guid>https://mattgreer.dev/blog/react-internals-part-two-componentWillMount-and-componentDidMount</guid>
             <pubDate>Sat, 15 Jul 2017 00:00:00 GMT</pubDate>
             <description><![CDATA[Today we are looking at how lifecycle methods in React work.]]></description>
             <author>matt.e.greer@gmail.com (Matt Greer)</author>
         </item>
         <item>
             <title><![CDATA[React Internals Part One: Basic Rendering]]></title>
-            <link>https://mattgreer.dev/articles/react-internals-part-one-basic-rendering</link>
-            <guid>https://mattgreer.dev/articles/react-internals-part-one-basic-rendering</guid>
+            <link>https://mattgreer.dev/blog/react-internals-part-one-basic-rendering</link>
+            <guid>https://mattgreer.dev/blog/react-internals-part-one-basic-rendering</guid>
             <pubDate>Fri, 14 Jul 2017 00:00:00 GMT</pubDate>
             <description><![CDATA[This article series creates a small clone of React to learn how it works. We kick things off with the most basic of rendering.]]></description>
             <author>matt.e.greer@gmail.com (Matt Greer)</author>
@@ -209,8 +217,8 @@
         </item>
         <item>
             <title><![CDATA[The Sega Saturn and Transparency]]></title>
-            <link>https://mattgreer.dev/articles/sega-saturn-and-transparency</link>
-            <guid>https://mattgreer.dev/articles/sega-saturn-and-transparency</guid>
+            <link>https://mattgreer.dev/blog/sega-saturn-and-transparency</link>
+            <guid>https://mattgreer.dev/blog/sega-saturn-and-transparency</guid>
             <pubDate>Sat, 23 Jan 2016 00:00:00 GMT</pubDate>
             <description><![CDATA[The Saturn's complex hardware architecture meant implementing semi-transparent entities in a game was challenging. This interactive article explains the conundrum, and shows why game developers often settled for inferior alternatives.]]></description>
             <author>matt.e.greer@gmail.com (Matt Greer)</author>
@@ -249,8 +257,8 @@
         </item>
         <item>
             <title><![CDATA[ClojureScript Internals: Vectors]]></title>
-            <link>https://mattgreer.dev/articles/clojurescript-internals-vectors</link>
-            <guid>https://mattgreer.dev/articles/clojurescript-internals-vectors</guid>
+            <link>https://mattgreer.dev/blog/clojurescript-internals-vectors</link>
+            <guid>https://mattgreer.dev/blog/clojurescript-internals-vectors</guid>
             <pubDate>Mon, 26 Jan 2015 00:00:00 GMT</pubDate>
             <description><![CDATA[A detailed dive into how vectors in ClojureScript work.]]></description>
             <author>matt.e.greer@gmail.com (Matt Greer)</author>
@@ -273,8 +281,8 @@
         </item>
         <item>
             <title><![CDATA[JavaScript Promises ... in Wicked Detail]]></title>
-            <link>https://mattgreer.dev/articles/promises-in-wicked-detail</link>
-            <guid>https://mattgreer.dev/articles/promises-in-wicked-detail</guid>
+            <link>https://mattgreer.dev/blog/promises-in-wicked-detail</link>
+            <guid>https://mattgreer.dev/blog/promises-in-wicked-detail</guid>
             <pubDate>Tue, 04 Feb 2014 00:00:00 GMT</pubDate>
             <description><![CDATA[A detailed article that implements a simple Promise type from scratch. By building the Promise implementation gradually, it shows the why and how of Promises.]]></description>
             <author>matt.e.greer@gmail.com (Matt Greer)</author>

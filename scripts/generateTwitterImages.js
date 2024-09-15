@@ -5,7 +5,6 @@ const { createCanvas, Image: CanvasImage } = require('canvas');
 const WIDTH = 1000;
 const HEIGHT = 500;
 
-const ARTICLE_ROOT = join(__dirname, '../src/pages/articles');
 const BLOG_ROOT = join(__dirname, '../src/pages/blog');
 const FEATURE_IMAGES = ['feature.svg', 'feature.png', 'feature.jpg'];
 
@@ -114,7 +113,6 @@ function generateForDirectory(directory) {
 }
 
 function main() {
-	generateForDirectory(ARTICLE_ROOT);
 	generateForDirectory(BLOG_ROOT);
 }
 
