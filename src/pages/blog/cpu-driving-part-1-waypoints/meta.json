@@ -2,7 +2,7 @@
 	"title": "CPU Driving Part 1: Waypoints",
 	"date": "2024-09-12",
 	"type": "technical article",
-	"tags": ["Game dev", "Retro gaming", "CPU driving"],
+	"tags": ["Game dev", "CPU driving"],
 	"description": [
 		"How can you make a CPU car drive around a track in a video game?"
 	],
