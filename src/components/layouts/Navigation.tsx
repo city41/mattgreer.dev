@@ -39,7 +39,6 @@ function Navigation({ className }: NavigationProps) {
 		>
 			<ul className="flex flex-row space-x-1 sm:space-x-4 text-xs">
 				<NavLink href="/projects">Projects</NavLink>
-				<NavLink href="/articles">Articles</NavLink>
 				<NavLink href="/blog">Blog</NavLink>
 				<NavLink href="/about">About</NavLink>
 				<NavLink href="/now">Now</NavLink>

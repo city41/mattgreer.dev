@@ -104,23 +104,6 @@ function buildUrl(classification: string, slug: string): string {
 	return `/${classification}/${slug}`;
 }
 
-export function getAllArticleItems(
-	options: GetAllArticleItemsOptions = {}
-): FeatureItem[] {
-	const items = getItems('articles').map((i) => {
-		return {
-			...i,
-			url: buildUrl('articles', i.slug),
-		};
-	});
-
-	if (options.sortByDateDescending) {
-		return sortItemsByDateDescending(items);
-	} else {
-		return items;
-	}
-}
-
 export function getAllBlogItems(
 	options: GetAllArticleItemsOptions = {}
 ): FeatureItem[] {
@@ -147,7 +130,5 @@ export function getAllProjectItems(): FeatureItem[] {
 }
 
 export function getAllItems(): FeatureItem[] {
-	return getAllArticleItems()
-		.concat(getAllProjectItems())
-		.concat(getAllBlogItems());
+	return getAllProjectItems().concat(getAllBlogItems());
 }

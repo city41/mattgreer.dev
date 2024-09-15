@@ -3,8 +3,8 @@ import { TagFilter } from '../TagFilter';
 import { BlogFeature } from './BlogFeature';
 import { Root } from '../layouts/Root';
 
-import laptopSvg from '../articles/laptop.svg';
-import laptopPng from '../articles/laptop.png';
+import laptopSvg from './laptop.svg';
+import laptopPng from './laptop.png';
 
 type BlogPageProps = {
 	tag?: string;
