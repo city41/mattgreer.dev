@@ -24,5 +24,19 @@ module.exports = withPlugins(
 			PROJECT_ROOT: path.join(__dirname, 'src'),
 			ROOT_DOMAIN: 'mattgreer.dev',
 		},
+		async redirects() {
+			return [
+				{
+					source: '/articles/:slug',
+					destination: 'blog/:slug',
+					permanent: true,
+				},
+				{
+					source: '/articles/',
+					destination: '/blog/',
+					permanent: true,
+				},
+			];
+		},
 	}
 );
