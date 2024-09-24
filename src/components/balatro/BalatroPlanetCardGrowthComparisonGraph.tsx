@@ -113,13 +113,6 @@ function BalatroPlanetCardGrowthComparisonGraph({
 				x: i + 1,
 				y: result.chips * result.mult,
 			});
-
-			if (cardData.hand === '3 Kind' || cardData.hand === 'Straight') {
-				console.log(
-					cardData.hand,
-					JSON.stringify(scoreData[scoreData.length - 1])
-				);
-			}
 		}
 		return {
 			id: cardData.hand,
