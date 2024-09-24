@@ -76,7 +76,7 @@ const cardDatas = [
 		addedChips: 35,
 	},
 	{
-		hand: 'Flsh House',
+		hand: 'Flush House',
 		baseMult: 14,
 		baseChips: 140,
 		addedMult: 4,
