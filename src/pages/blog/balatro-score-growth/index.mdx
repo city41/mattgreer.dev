@@ -3,6 +3,7 @@ import { BalatroScore } from '../../../components/balatro/BalatroScore';
 import { BalatroPlayingCard } from '../../../components/balatro/BalatroPlayingCard';
 import { BalatroScoreGraph } from '../../../components/balatro/BalatroScoreGraph';
 import { BalatroScoreComparisonGraph } from '../../../components/balatro/BalatroScoreComparisonGraph';
+import { BalatroPlanetCardGrowthComparisonGraph } from '../../../components/balatro/BalatroPlanetCardGrowthComparisonGraph';
 import meta from './meta.json';
 
 export default ({ children }) => (
@@ -80,7 +81,11 @@ Just getting seven chips each round is a quick game over for sure.
 Linear scaling happens when you add to the chips or the multiplier -- but not both -- steadily each round. Pretend you have Wee Joker and you play your single 2 high card once per round, so Wee Joker progressively adds 8 chips each round.
 
 <figure>
-	<img src={require('./wee.png').default.src} alt="Wee Joker" />
+	<img
+		src={require('./wee.png').default.src}
+		alt="Wee Joker"
+		style={{ imageRendering: 'pixelated' }}
+	/>
 	<figcaption>Wee Joker</figcaption>
 </figure>
 
@@ -485,6 +490,14 @@ As the game progresses, adding to your mult with jokers like Swashbuckler has di
 Cards are always processed from left to right. So you want additive jokers to the left, multiplying jokers to the right. You want your multiplying jokers to amplify as much of the additive mult as possible. Addition and multiplication are both communitive. This means that the order you have your adding or multiplying jokers doesn't matter, `x3 -> x2` is the same as `x2 -> x3`, they both work out to `x6`.
 
 Ideally both the chips number and the mult number will be as close to each other as possible. `1 x 100` is only `100`, but `50 x 50` is `2500`. So don't just focus on mult, you need to bump up the chip number too. I usually dedicate one joker to chips, such as Wee Joker or Castle. Since all the multiplying happens to mult, you want to focus more on that, just don't completely forget about chips.
+
+## Planet card growths
+
+Out of curiousity, I thought it'd be interesting to see how planet cards grow.
+
+<BalatroPlanetCardGrowthComparisonGraph />
+
+I find it interesting that Three of a Kind scales a tad better than a Straight.
 
 ## Conclusion
 
