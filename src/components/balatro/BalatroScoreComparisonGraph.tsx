@@ -13,6 +13,7 @@ type BalatroScoreComparisonGraphProps = {
 	scaleType?: 'linear' | 'symlog';
 	max?: number;
 	height?: number;
+	roundScale?: number;
 	titles: string[];
 	aggregators: (({
 		round,
@@ -34,6 +35,7 @@ function BalatroScoreComparisonGraph({
 	scaleType = 'linear',
 	max = 10000,
 	height = 400,
+	roundScale = 1,
 	titles,
 	aggregators,
 }: BalatroScoreComparisonGraphProps) {
@@ -42,12 +44,12 @@ function BalatroScoreComparisonGraph({
 
 		for (let i = 0; i < 10; ++i) {
 			const result = aggregator({
-				round: i,
+				round: i * roundScale,
 				chips,
 				mult,
 			});
 			scoreData.push({
-				x: i + 1,
+				x: ((i + 1) * roundScale).toString(),
 				y: result.chips * result.mult,
 				yFormatted: 'score',
 			});
@@ -59,15 +61,12 @@ function BalatroScoreComparisonGraph({
 		};
 	});
 
-	console.log(JSON.stringify(datas));
-
 	return (
 		<div style={{ height }} className="balatro-graph">
 			<ResponsiveLine
 				data={datas}
 				colors={[SCORE_COLOR1, SCORE_COLOR2]}
 				margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
-				xScale={{ type: 'linear', min: 1, max: datas[0].data.length }}
 				yScale={{
 					type: scaleType,
 					min: 0,
@@ -84,6 +83,7 @@ function BalatroScoreComparisonGraph({
 					legendOffset: 36,
 					legendPosition: 'middle',
 					truncateTickAt: 0,
+					format: 'a',
 				}}
 				axisLeft={{
 					tickSize: 5,

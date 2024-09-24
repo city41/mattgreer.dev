@@ -37,10 +37,16 @@ Let's look into more detail what this all means.
 For all the examples in this blog post, we will simply be playing a 2 as a high card. The high card scoring starts at <BalatroScore baseChips={5} baseMult={1} inline />. So a played 2 (which is worth 2 chips) would be <BalatroScore baseChips={5} additiveChips={[2]} baseMult={1} inline />.
 
 <pitfall>
-	Balatro has a layered and fairly complex scoring system. This blog post is
-	going to ignore the layering and keep it really simple. The main concept we'll
-	be exploring applies to Balatro as a whole and when looking at a specific
-	"layer" of the scoring system.
+	<p>
+		Balatro has a layered and fairly complex scoring system. This blog post is
+		going to ignore the layering and keep it really simple. The main concept
+		we'll be exploring applies to Balatro as a whole and when looking at a
+		specific "layer" of the scoring system.
+	</p>
+	<p>
+		Experience Balatro players will find small errors in this post and some
+		things I'm glossing over. I think that is fine for the purpose of this post.
+	</p>
 </pitfall>
 
 ## No scaling, aka constant
@@ -48,6 +54,12 @@ For all the examples in this blog post, we will simply be playing a 2 as a high 
 If you make no improvements to your deck, well your scaling graph is just a flat line.
 
 <BalatroScoreGraph chips={7} mult={1} max={10} aggregator={(s) => s} />
+
+<wisdom>
+	These graphs have three lines in them: mult, chips and score. In this
+	particular one, the score and mult lines are the same, so that's why you only
+	see two
+</wisdom>
 
 Obviously not ideal, but sometimes this happens when there's nothing in the shop that can help you or you don't improve any of your jokers during a round. There is a lot of luck in Balatro, and often times it just doesn't go your way.
 
@@ -299,7 +311,26 @@ Here is a comparison between Baseball Card and Wee/Swashbuckler/Egg.
 <BalatroScoreComparisonGraph
 	chips={7}
 	mult={1}
-	max={1500}
+	max={500}
+	titles={['WeeSwshEgg', 'Baseball']}
+	aggregators={[
+		(s) => ({ chips: s.round * 8, mult: s.mult + s.round * 3 }),
+		(s) => ({
+			mult: s.mult * 1.5 ** s.round,
+			chips: s.chips,
+		}),
+	]}
+/>
+
+Whoa, wait a minute, Baseball Card is growing way slower. What gives? A characteristic of exponential growth is it often starts slowly. Let's say we have two uncommon jokers, so Baseball Card gives `x1.5` to each. `1.5 x 1.5` is just 2.25. It's bigger, sure, but not by much. The thing is exponential growth rate overall will always be much larger than quadratic, as long as the base of the exponent is greater than 1.
+
+Here is another Baseball Card vs Wee/Swashbuckler/Egg chart.
+
+<BalatroScoreComparisonGraph
+	chips={7}
+	mult={1}
+	max={20000}
+	roundScale={3}
 	titles={['WeeSwshEgg', 'Baseball']}
 	aggregators={[
 		(s) => ({ chips: s.round * 8, mult: s.mult + s.round * 3 }),
@@ -310,8 +341,116 @@ Here is a comparison between Baseball Card and Wee/Swashbuckler/Egg.
 	]}
 />
 
+This graph is going to 30 rounds instead of just 10. At about round 16, the exponential scaling overtakes the quadratic and then it quick says "see ya" and just rockets out of site.
+
 Baseball Card is a top notch joker and great way to add a lot to your score, assuming you have at least a couple uncommon jokers.
 
 But the base being 1.5 is holding us back, what if we can get that base even higher?
 
 ### Retriggering
+
+The legendary joker, Triboulet, seems pretty innocent at first
+
+<figure>
+	<img
+		src={require('./triboulet.png').default.src}
+		alt="The legendary joker, Triboulet"
+	/>
+	<figcaption>The legendary joker, Triboulet</figcaption>
+</figure>
+
+What's the big deal, why is he legendary? I mean Cavendish does `x3`. Heck, Triboulet's ability only applies to kings and queens!
+
+Actually having his ability apply to single cards instead of an entire hand is the key here. When you play a king, it will double the mult. If you can get that king to retrigger, it will double the mult again. This is exponential
+
+<<< triboulet equation >>>
+
+Baseball Card had 1.5 as its base, but Triboulet has 2. Sounds like a minor difference, but it's not. Triboulet can let scores reach astronomical levels.
+
+Here is Baseball Card versus Triboulet
+
+<BalatroScoreComparisonGraph
+	chips={7}
+	mult={1}
+	max={20000}
+	roundScale={3}
+	titles={['Baseball', 'Triboulet']}
+	aggregators={[
+		(s) => ({
+			mult: s.mult + 1.5 ** s.round,
+			chips: s.chips,
+		}),
+		(s) => ({
+			mult: s.mult + 2 ** s.round,
+			chips: s.chips,
+		}),
+	]}
+/>
+
+and here it is again, this time using a logarithmic y scale so we can fit even bigger numbers on the graph
+
+<BalatroScoreComparisonGraph
+	chips={7}
+	mult={1}
+	max={5000000}
+	height={600}
+	scaleType="symlog"
+	roundScale={4}
+	titles={['Baseball', 'Triboulet']}
+	aggregators={[
+		(s) => ({
+			mult: s.mult + 1.5 ** s.round,
+			chips: s.chips,
+		}),
+		(s) => ({
+			mult: s.mult + 2 ** s.round,
+			chips: s.chips,
+		}),
+	]}
+/>
+
+The difference might not look like a lot. But take round 24 for example. Baseball Card's score at round 24 is 23,283. Triboulet's is 7,340,039!
+
+Here is a video of a hand I had one time when playing with Triboulet
+
+<iframe
+	width={560}
+	height={315}
+	style={{ margin: '3em 0' }}
+	src="https://www.youtube.com/watch?v=hMdYc5QIb4Y"
+	frameBorder={0}
+	allowFullScreen
+></iframe>
+
+With two Seltzers (Brainstorm is one of them), two Hanging Chads, Photograph, Triboulet, and two red sealed cards, this hand resulted in
+
+<<< 2^(14+6+6+8+6) >>>
+
+which resulted in such a large score the game had to resort to scientific notation to display it.
+
+And yet, we can go even higher...
+
+## Mime and Baron
+
+Mime is a joker that allows retriggering of in hand effects. Baron offers an effect of `x1.5` for all Kings held in the hand.
+
+<figure>
+	<img
+		src={require('./mimeBaron.png').default.src}
+		alt="Mime and Baron, one of the best combos in the game"
+	/>
+	<figcaption>Mime and Baron, one of the best combos in the game</figcaption>
+</figure>
+
+But wait, `x1.5`? Triboulet offers `x2`, isn't that better? Yes, but Triboulet operates on played cards. At most, you can play five cards. But your hand size can get really big. Through the combination of a large hand size, and as much retriggering as possible, Mime and Baron can get a significantly higher score than Triboulet.
+
+Here is an example. I did this by hacking the game to get quite an amazing deck. The chances of getting this to happen in real life is uh rather slim :)
+
+<iframe
+	width={560}
+	height={315}
+	style={{ margin: '3em 0' }}
+	src="https://www.youtube.com/watch?v=OPLZ99cJhBw"
+	frameBorder={0}
+	allowFullScreen
+></iframe>
