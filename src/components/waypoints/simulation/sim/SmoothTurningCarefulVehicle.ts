@@ -240,6 +240,8 @@ class SmoothTurningCarefuleVehicle implements IVehicle {
 			targetWaypoint.radius * 2,
 			distanceFromTargetToNext
 		);
+
+		return true;
 	}
 
 	update(waypoints: Waypoint[]) {
