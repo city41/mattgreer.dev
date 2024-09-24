@@ -44,7 +44,7 @@ For all the examples in this blog post, we will simply be playing a 2 as a high 
 		specific "layer" of the scoring system.
 	</p>
 	<p>
-		Experience Balatro players will find small errors in this post and some
+		Experienced Balatro players will find small errors in this post and some
 		things I'm glossing over. I think that is fine for the purpose of this post.
 	</p>
 </pitfall>
@@ -140,7 +140,7 @@ Quadratic scaling allows our score to grow faster as each time the value is bein
 
 ### Shallow quadratic growth
 
-The simplest form of quadratic scaling is planet cards. For high cards, the Pluto card will add 10 chips and 1 mult to the base score each time one is played.
+The simplest form of quadratic scaling are planet cards. For high cards, the Pluto card will add 10 chips and 1 mult to the base score each time one is played.
 
 <figure>
 	<img src={require('./pluto.png').default.src} alt="The lowely Pluto" />
@@ -218,7 +218,7 @@ Let's quickly talk about multiplicative mult, such as jokers like Card Sharp or 
 	<figcaption>The mighty Cavendish!</figcaption>
 </figure>
 
-By themselves, these jokers offer no growth at all. It will just take the no growth case above, and notch it up a few levels, from 7 to 21 (ie, 7x3), but that is it.
+By themselves, these jokers offer no growth at all. It will just take the no growth case above, and notch it up a few levels, from 7 to 21 (ie, `7x3`), but that is it.
 
 <BalatroScoreGraph
 	chips={7}
@@ -256,13 +256,15 @@ But just like Cavendish and Card Sharp, by themselves they actually aren't that 
 
 They actually only increase the score linearly! Jokers like Hologram really need to be paired with other jokers to shine (no pun intended).
 
-So multiplicitive jokers can really help a lot. But they can only take you so far.
+So a single multiplicitive joker can really help a lot. But it can only take you so far.
 
 ## Exponential growth
 
-Getting a deck to exhibit exponential growth is where you can really send your score to the moon. With exponential growth, the variable is the exponent, instead of the base
+Getting a deck to exhibit exponential growth is how you can really send your score to the moon. With exponential growth, the variable is the exponent, instead of the base
 
 <<< figure comparing polynomial to exponent >>>
+
+So with quadratic scaling, we were multiplying a number by itself. As the number got bigger, the score got bigger. But with exponential growth, we are instead increasing the number of times we multiply.
 
 Theoretically, Balatro lets you do quite a bit of exponential growth. But realistically, it's held back quite a bit. There are two major ways to cause exponential growth: having multiple multiplicitive jokers, and retriggering.
 
@@ -271,9 +273,9 @@ Theoretically, Balatro lets you do quite a bit of exponential growth. But realis
 <figure>
 	<img
 		src={require('./baseballcard.png').default.src}
-		alt="Baseball Card giving jokers x1.5"
+		alt="Baseball Card giving the other jokers x1.5 each"
 	/>
-	<figcaption>Baseball Card giving jokers x1.5</figcaption>
+	<figcaption>Baseball Card giving the other jokers x1.5 each</figcaption>
 </figure>
 
 The classic example is Baseball Card. It gives `x1.5` to all your uncommon jokers. So its score equation is this
@@ -322,7 +324,7 @@ Here is a comparison between Baseball Card and Wee/Swashbuckler/Egg.
 	]}
 />
 
-Whoa, wait a minute, Baseball Card is growing way slower. What gives? A characteristic of exponential growth is it often starts slowly. Let's say we have two uncommon jokers, so Baseball Card gives `x1.5` to each. `1.5 x 1.5` is just 2.25. It's bigger, sure, but not by much. The thing is exponential growth rate overall will always be much larger than quadratic, as long as the base of the exponent is greater than 1.
+Whoa, wait a minute, Baseball Card is growing way slower. What gives? A characteristic of exponential growth is it often starts slowly. Let's say we have two uncommon jokers, so Baseball Card gives `x1.5` to each. `1.5 x 1.5` is just `2.25`. It's bigger, sure, but not by much. The exponential growth rate overall will always be much larger than quadratic, as long as the base of the exponent is greater than 1. Even if the base is just `1.0000000000001`, eventually exponential growth will catch up and outpace quadratic growth.
 
 Here is another Baseball Card vs Wee/Swashbuckler/Egg chart.
 
@@ -341,11 +343,11 @@ Here is another Baseball Card vs Wee/Swashbuckler/Egg chart.
 	]}
 />
 
-This graph is going to 30 rounds instead of just 10. At about round 16, the exponential scaling overtakes the quadratic and then it quick says "see ya" and just rockets out of site.
+This graph is going to 30 rounds instead of just 10. At about round 16, the exponential scaling overtakes the quadratic and then it quickly says "see ya" as it rockets out of site.
 
 Baseball Card is a top notch joker and great way to add a lot to your score, assuming you have at least a couple uncommon jokers.
 
-But the base being 1.5 is holding us back, what if we can get that base even higher?
+But the base being `1.5` is holding us back, what if we can get that base even higher?
 
 ### Retriggering
 
@@ -365,7 +367,7 @@ Actually having his ability apply to single cards instead of an entire hand is t
 
 <<< triboulet equation >>>
 
-Baseball Card had 1.5 as its base, but Triboulet has 2. Sounds like a minor difference, but it's not. Triboulet can let scores reach astronomical levels.
+Baseball Card had 1.5 as its base, but Triboulet has 2. Sounds like a minor difference, but it's not. Triboulet can let scores go much higher than Baseball Card can.
 
 Here is Baseball Card versus Triboulet
 
@@ -428,7 +430,7 @@ With two Seltzers (Brainstorm is one of them), two Hanging Chads, Photograph, Tr
 
 which resulted in such a large score the game had to resort to scientific notation to display it.
 
-And yet, we can go even higher...
+And yet, we can go much, much higher...
 
 ## Mime and Baron
 
@@ -446,7 +448,7 @@ But wait, `x1.5`? Triboulet offers `x2`, isn't that better? Yes, but Triboulet o
 
 Here is an example. I did this by hacking the game to get quite an amazing deck. The chances of getting this to happen in real life is uh rather slim :)
 
-It starts out slow, but don't worry, it will progress quite rapidly
+The video starts out slow, but don't worry, it will progress quite rapidly
 
 <iframe
 	width={560}
@@ -457,7 +459,7 @@ It starts out slow, but don't worry, it will progress quite rapidly
 	allowFullScreen
 ></iframe>
 
-The end score of `5.052e50` is over 500 quindecillion. A 5 with 50 zeroes after it.
+The end score of `5.052e50` is over 500 quindecillion. A 5 with 50 zeroes after it!
 
 ## Strategy takeaways
 
