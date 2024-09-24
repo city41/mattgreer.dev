@@ -60,3 +60,8 @@ option, select {
   @apply text-black;
 }
 
+.balatro-graph text {
+  // @apply text-fg;
+  fill: var(--color-fg-deep) !important;
+}
+

@@ -1,0 +1,260 @@
+import { Article } from '../../../components/layouts/Article';
+import { BalatroScore } from '../../../components/balatro/BalatroScore';
+import { BalatroPlayingCard } from '../../../components/balatro/BalatroPlayingCard';
+import { BalatroScoreGraph } from '../../../components/balatro/BalatroScoreGraph';
+import meta from './meta.json';
+
+export default ({ children }) => (
+	<Article
+		{...meta}
+		img={require('./feature.png').default.src}
+		socialMediaImg={require('./twitter.png').default.src}
+		intro="How do decks increase their scoring in Balatro?"
+	>
+		{children}
+	</Article>
+);
+
+<wisdom>
+	<b>Hey!</b> This blog post assumes you are familiar with the game{' '}
+	<a href="https://www.playbalatro.com/">Balatro</a>. If you've not played it
+	and enjoy card games, strategy games, and especially games like Magic the
+	Gathering, you should check it out. You'll love it. I'm absolutely obsessed
+	with it :)
+</wisdom>
+
+In Balatro you need to achieve a certain score by playing poker hands to beat the round and move onto the next. The needed score each round increases, so you need to improve your deck's scoring ability if you want to keep up. Let's take a look at ways deck scoring can increase.
+
+## In short
+
+Balatro decks mostly improve polynomially. Of the different types of polynomial growth, quadratic is the most common, assuming you're keeping up on improvements in the shop between rounds and improving any building jokers you may have (like Wee Joker, Spare Trousers, etc) during rounds. In some cases the deck can not improve at all, or only improve linerally. Both are bad and can be a sign you need to turn things around or it might be game over. And on the opposite side, really top notch decks can scale exponentially, but only so much and it takes some luck to get decks that do this.
+
+Let's look into more detail what this all means.
+
+## Our simple example
+
+For all the examples in this blog post, we will simply be playing a 2 as a high card. The high card scoring starts at <BalatroScore baseChips={5} baseMult={1} inline />. So a played 2 (which is worth 2 chips) would be <BalatroScore baseChips={5} additiveChips={[2]} baseMult={1} inline />.
+
+<pitfall>
+	Balatro has a layered and fairly complex scoring system. This blog post is
+	going to ignore the layering and keep it really simple. The main concept we'll
+	be exploring applies to Balatro as a whole and when looking at a specific
+	"layer" of the scoring system.
+</pitfall>
+
+## No scaling, aka constant
+
+If you make no improvements to your deck, well your scaling graph is just a flat line.
+
+<BalatroScoreGraph chips={7} mult={1} max={10} aggregator={(s) => s} />
+
+Obviously not ideal, but sometimes this happens when there's nothing in the shop that can help you or you don't improve any of your jokers during a round. There is a lot of luck in Balatro, and often times it just doesn't go your way.
+
+This is just <BalatroScore baseChips={5} additiveChips={[2]} baseMult={1} inline /> for each round. If we were to describe this growth as a mathematical function, it'd just be
+
+<figure>
+	<img
+		src={require('./highCardConstantScore.svg').default.src}
+		alt="High card's constant score equation"
+	/>
+	<figcaption>High card's constant score equation</figcaption>
+</figure>
+
+Just getting seven chips each round is a quick game over for sure.
+
+## Linear scaling
+
+Linear scaling happens when you add to the chips or the multiplier -- but not both -- steadily each round. Pretend you have Wee Joker and you play your single 2 high card once per round, so Wee Joker progressively adds 8 chips each round.
+
+<figure>
+	<img src={require('./wee.png').default.src} alt="Wee Joker" />
+	<figcaption>Wee Joker</figcaption>
+</figure>
+
+So the first round would be <BalatroScore baseChips={5} additiveChips={[2]} baseMult={1} inline /> as before. Then your Wee Joker grows by 8 chips, so the next round would be <BalatroScore baseChips={5} additiveChips={[8,2]} baseMult={1} inline />. Then next round Wee Joker gains another 8, which would be <BalatroScore baseChips={5} baseMult={1} additiveChips={[8,8,2]} inline />.
+
+<BalatroScoreGraph
+	chips={7}
+	mult={1}
+	max={200}
+	aggregator={(s) => ({ chips: s.chips + 8 * s.round, mult: s.mult })}
+/>
+
+Wee Joker is simply adding 8 every round. An improvement, but not much of one.
+
+Linear scaling can also happen by adding to the mult each round. This can be seen with Swashbuckler and Egg. Each round, Swashbuckler will add 3 more to the mult.
+
+<figure>
+	<img
+		src={require('./swashbucklerEgg.png').default.src}
+		alt="Swashbuckler and Egg, a classic combo"
+	/>
+	<figcaption>Swashbuckler and Egg, a classic combo</figcaption>
+</figure>
+
+<BalatroScoreGraph
+	chips={7}
+	mult={3}
+	max={200}
+	aggregator={(s) => ({ chips: s.chips, mult: s.mult + s.round * 3 })}
+/>
+
+Which ends up being
+
+round 1: <BalatroScore baseChips={5} additiveChips={[2]} baseMult={1} inline />
+
+round 2: <BalatroScore
+	baseChips={5}
+	additiveChips={[2]}
+	baseMult={1}
+	additiveMult={[3]}
+	inline
+/>
+
+round 3: <BalatroScore
+baseChips={5}
+additiveChips={[2]}
+baseMult={1}
+additiveMult={[3, 3]}
+inline
+/>
+
+Here Swashbuckler/Egg end up adding 21 chips (the 5 base chips, + 2 chips from the played 2 card, added together then times 3) each round. A bit faster growth, but still linear.
+
+## Quadratic scaling
+
+Quadratic scaling allows our score to grow faster as each time the value is being multiplied by a larger and larger number. Almost all scaling in Balatro is quadratic. What changes the most is how aggressive the quadratic growth is.
+
+### Shallow quadratic growth
+
+The simplest form of quadratic scaling is planet cards. For high cards, the Pluto card will add 10 chips and 1 mult to the base score each time one is played.
+
+<figure>
+	<img src={require('./pluto.png').default.src} alt="The lowely Pluto" />
+	<figcaption>The lowely Pluto</figcaption>
+</figure>
+
+So if we play one Pluto card per round, we'll get even faster scaling compared to Wee Joker.
+
+<BalatroScoreGraph
+	chips={7}
+	mult={1}
+	max={1500}
+	aggregator={(s) => ({ chips: s.round * 10, mult: s.mult + s.round * 1 })}
+/>
+
+Quadratic scaling can be spotted by the curve of the line, instead of it being dead straight like in the linear examples above. Pluto leads to very mild scaling, so the curve is mild and the increase overall is not that great. It will be hard to get far in Balatro using only Pluto cards.
+
+The equation for Pluto card scaling is
+
+<figure>
+	<img
+		src={require('./plutoScalingEquation.svg').default.src}
+		alt="Pluto's scaling equation"
+	/>
+	<figcaption>Pluto's scaling equation</figcaption>
+</figure>
+
+The exponent being 2 is what makes this a quadratic polynomial, btw.
+
+What if we had Wee Joker and Swashbuckler/Egg going? We'd add 8 chips and 3 mult each round. This is still quadratic, but at a faster clip
+
+<BalatroScoreGraph
+	chips={7}
+	mult={1}
+	max={1500}
+	aggregator={(s) => ({ chips: s.round * 8, mult: s.mult + s.round * 3 })}
+/>
+
+The equation for Wee Joker + Swashbuckler/Egg is
+
+<figure>
+	<img
+		src={require('./weeJokerSwashbucklerEggEquation.svg').default.src}
+		alt="The scaling equation for Wee Joker, Swashbuckler and Egg"
+	/>
+	<figcaption>
+		The scaling equation for Wee Joker, Swashbuckler and Egg
+	</figcaption>
+</figure>
+
+In both cases, it's n squared, but in the second example that is being multiplied by a larger constant, allowing faster growth. Often the gains you see in Balatro scoring come from increasing the size of this constant.
+
+Here is Pluto and Wee/Swashbuckler/Egg in the same graph for comparison
+
+<GraphComparison titles={['Pluto', 'Wee/Swash/Egg']}>
+	<BalatroScoreGraph
+		chips={7}
+		mult={1}
+		max={1500}
+		aggregator={(s) => ({ chips: s.round * 10, mult: s.mult + s.round * 1 })}
+	/>
+	<BalatroScoreGraph
+		chips={7}
+		mult={1}
+		max={1500}
+		aggregator={(s) => ({ chips: s.round * 8, mult: s.mult + s.round * 3 })}
+	/>
+</GraphComparison>
+
+## Multiplicitive Mult
+
+Let's quickly talk about multiplicative mult, such as jokers like Card Sharp or Cavendish. They multiply the mult by a fixed constant, for both of these jokers it is `x3`. By themselves, these jokers offer no growth at all. It will just take the no growth case above, and notch it up a few levels, from 7 to 21 (ie, 7x3), but that is it.
+
+<BalatroScoreGraph
+	chips={7}
+	mult={1}
+	max={25}
+	aggregator={(s) => ({
+		mult: s.mult * 3,
+		chips: s.chips,
+	})}
+/>
+
+These jokers are great in that they take the work that something like Swashbuckler does and amplifies it. So if you have Swashbuckler and Cavendish, it's like having three Swashbucklers. If you have Swashbuckler, Cavendish and Card Sharp, it's like having 9 Swashbucklers!
+
+What about jokers like Hologram? They offer multiplicitive mult that can be scaled. But just like Cavendish and Card Sharp, by themselves they really aren't that great
+
+<BalatroScoreGraph
+	chips={7}
+	mult={1}
+	max={25}
+	aggregator={(s) => ({
+		mult: 1 + 0.25 * s.round,
+		chips: s.chips,
+	})}
+/>
+
+They actually only increase the score linearly! When combined with say Swashbuckler, they allow for polynomial growth. All they are doing is increasing the size of that first constant.
+
+So multiplicitive jokers can really help a lot. But they can only take you so far.
+
+## Exponential growth
+
+Getting a deck to exhibit exponential growth is where you can really shoot your score to the moon. With exponential growth, the variable is the exponent, instead of the base
+
+<<< figure comparing polynomial to exponent >>>
+
+Theoretically, Balatro lets you do quite a bit of exponential growth. But realistically, it's held back quite a bit. There are two major ways to cause exponential growth: having multiply multiplicitive jokers, and retriggering.
+
+### Multiple multiplicitive jokers
+
+<figure>
+	<img
+		src={require('./baseballcard.png').default.src}
+		alt="Baseball Card giving jokers x1.5"
+	/>
+	<figcaption>Baseball Card giving jokers x1.5</figcaption>
+</figure>
+
+<BalatroScoreGraph
+	chips={7}
+	mult={1}
+	max={25}
+	aggregator={(s) => ({
+		mult: 1 + 1.5 ** s.round,
+		chips: s.chips,
+	})}
+/>
+
+### Retriggering

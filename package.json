@@ -13,6 +13,8 @@
 		"@mdx-js/loader": "^1.6.21",
 		"@mdx-js/react": "^1.6.21",
 		"@next/mdx": "^10.0.3",
+		"@nivo/core": "^0.87.0",
+		"@nivo/line": "^0.87.0",
 		"clsx": "^1.1.1",
 		"feed": "^4.2.1",
 		"imagemin-mozjpeg": "^9.0.0",
