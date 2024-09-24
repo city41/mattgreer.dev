@@ -6,7 +6,7 @@ const ResponsiveLine = dynamic(
 
 const cardDatas = [
 	{
-		hand: 'High',
+		hand: 'High Card',
 		baseMult: 1,
 		baseChips: 5,
 		addedMult: 1,
