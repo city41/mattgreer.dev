@@ -4,17 +4,17 @@ const ResponsiveLine = dynamic(
 	{ ssr: false }
 );
 
-const CHIP_COLOR = '#0092ff';
-const MULT_COLOR = '#fe4c3e';
-const SCORE_COLOR = '#c361d2';
+const SCORE_COLOR1 = '#d938f2';
+const SCORE_COLOR2 = '#9a72a1';
 
-type BalatroScoreGraphProps = {
+type BalatroScoreComparisonGraphProps = {
 	chips: number;
 	mult: number;
 	scaleType?: 'linear' | 'symlog';
 	max?: number;
 	height?: number;
-	aggregator: ({
+	titles: string[];
+	aggregators: (({
 		round,
 		chips,
 		mult,
@@ -25,66 +25,49 @@ type BalatroScoreGraphProps = {
 	}) => {
 		chips: number;
 		mult: number;
-	};
+	})[];
 };
 
-function BalatroScoreGraph({
+function BalatroScoreComparisonGraph({
 	chips,
 	mult,
 	scaleType = 'linear',
 	max = 10000,
 	height = 400,
-	aggregator,
-}: BalatroScoreGraphProps) {
-	const chipData = [];
-	const multData = [];
-	const scoreData = [];
+	titles,
+	aggregators,
+}: BalatroScoreComparisonGraphProps) {
+	const datas = aggregators.map((aggregator, i) => {
+		const scoreData = [];
 
-	for (let i = 0; i < 10; ++i) {
-		const result = aggregator({
-			round: i,
-			chips,
-			mult,
-		});
+		for (let i = 0; i < 10; ++i) {
+			const result = aggregator({
+				round: i,
+				chips,
+				mult,
+			});
+			scoreData.push({
+				x: i + 1,
+				y: result.chips * result.mult,
+				yFormatted: 'score',
+			});
+		}
 
-		chipData.push({
-			x: i + 1,
-			y: result.chips,
-		});
-		multData.push({
-			x: i + 1,
-			y: result.mult,
-		});
-
-		scoreData.push({
-			x: i + 1,
-			y: result.chips * result.mult,
-			yFormatted: 'score',
-		});
-	}
-
-	const data = [
-		{
-			id: 'score',
+		return {
+			id: titles[i],
 			data: scoreData,
-		},
-		{
-			id: 'chips',
-			data: chipData,
-		},
-		{
-			id: 'mult',
-			data: multData,
-		},
-	];
+		};
+	});
+
+	console.log(JSON.stringify(datas));
 
 	return (
 		<div style={{ height }} className="balatro-graph">
 			<ResponsiveLine
-				data={data}
-				colors={[SCORE_COLOR, CHIP_COLOR, MULT_COLOR]}
+				data={datas}
+				colors={[SCORE_COLOR1, SCORE_COLOR2]}
 				margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
-				xScale={{ type: 'linear', min: 1, max: data[0].data.length }}
+				xScale={{ type: 'linear', min: 1, max: datas[0].data.length }}
 				yScale={{
 					type: scaleType,
 					min: 0,
@@ -151,4 +134,4 @@ function BalatroScoreGraph({
 	);
 }
 
-export { BalatroScoreGraph };
+export { BalatroScoreComparisonGraph };

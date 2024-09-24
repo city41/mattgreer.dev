@@ -2,6 +2,7 @@ import { Article } from '../../../components/layouts/Article';
 import { BalatroScore } from '../../../components/balatro/BalatroScore';
 import { BalatroPlayingCard } from '../../../components/balatro/BalatroPlayingCard';
 import { BalatroScoreGraph } from '../../../components/balatro/BalatroScoreGraph';
+import { BalatroScoreComparisonGraph } from '../../../components/balatro/BalatroScoreComparisonGraph';
 import meta from './meta.json';
 
 export default ({ children }) => (
@@ -182,24 +183,30 @@ In both cases, it's n squared, but in the second example that is being multiplie
 
 Here is Pluto and Wee/Swashbuckler/Egg in the same graph for comparison
 
-<GraphComparison titles={['Pluto', 'Wee/Swash/Egg']}>
-	<BalatroScoreGraph
-		chips={7}
-		mult={1}
-		max={1500}
-		aggregator={(s) => ({ chips: s.round * 10, mult: s.mult + s.round * 1 })}
-	/>
-	<BalatroScoreGraph
-		chips={7}
-		mult={1}
-		max={1500}
-		aggregator={(s) => ({ chips: s.round * 8, mult: s.mult + s.round * 3 })}
-	/>
-</GraphComparison>
+<BalatroScoreComparisonGraph
+	chips={7}
+	mult={1}
+	max={1500}
+	titles={['Pluto', 'WeeSwshEgg']}
+	aggregators={[
+		(s) => ({ chips: s.round * 10, mult: s.mult + s.round * 1 }),
+		(s) => ({ chips: s.round * 8, mult: s.mult + s.round * 3 }),
+	]}
+/>
 
 ## Multiplicitive Mult
 
-Let's quickly talk about multiplicative mult, such as jokers like Card Sharp or Cavendish. They multiply the mult by a fixed constant, for both of these jokers it is `x3`. By themselves, these jokers offer no growth at all. It will just take the no growth case above, and notch it up a few levels, from 7 to 21 (ie, 7x3), but that is it.
+Let's quickly talk about multiplicative mult, such as jokers like Card Sharp or Cavendish. They multiply the mult by a fixed constant, for both of these jokers it is `x3`.
+
+<figure>
+	<img
+		src={require('./cavendish.png').default.src}
+		alt="The mighty Cavendish!"
+	/>
+	<figcaption>The mighty Cavendish!</figcaption>
+</figure>
+
+By themselves, these jokers offer no growth at all. It will just take the no growth case above, and notch it up a few levels, from 7 to 21 (ie, 7x3), but that is it.
 
 <BalatroScoreGraph
 	chips={7}
@@ -211,31 +218,41 @@ Let's quickly talk about multiplicative mult, such as jokers like Card Sharp or 
 	})}
 />
 
-These jokers are great in that they take the work that something like Swashbuckler does and amplifies it. So if you have Swashbuckler and Cavendish, it's like having three Swashbucklers. If you have Swashbuckler, Cavendish and Card Sharp, it's like having 9 Swashbucklers!
+These jokers are great in that they take the work that something like Swashbuckler does and amplifies it. So if you have Swashbuckler and Cavendish, it's like having three Swashbucklers. If you have Swashbuckler, Cavendish and Card Sharp, it's like having 9 Swashbucklers! But we're getting ahead of ourselves...
 
-What about jokers like Hologram? They offer multiplicitive mult that can be scaled. But just like Cavendish and Card Sharp, by themselves they really aren't that great
+What about jokers like Hologram? They offer multiplicitive mult that can be scaled.
+
+<figure>
+	<img
+		src={require('./hologram.png').default.src}
+		alt="Hologram, a personal favorite"
+	/>
+	<figcaption>Hologram, a personal favorite</figcaption>
+</figure>
+
+But just like Cavendish and Card Sharp, by themselves they actually aren't that great
 
 <BalatroScoreGraph
 	chips={7}
 	mult={1}
 	max={25}
 	aggregator={(s) => ({
-		mult: 1 + 0.25 * s.round,
+		mult: s.mult + 0.25 * s.round,
 		chips: s.chips,
 	})}
 />
 
-They actually only increase the score linearly! When combined with say Swashbuckler, they allow for polynomial growth. All they are doing is increasing the size of that first constant.
+They actually only increase the score linearly! Jokers like Hologram really need to be paired with other jokers to shine (no pun intended).
 
 So multiplicitive jokers can really help a lot. But they can only take you so far.
 
 ## Exponential growth
 
-Getting a deck to exhibit exponential growth is where you can really shoot your score to the moon. With exponential growth, the variable is the exponent, instead of the base
+Getting a deck to exhibit exponential growth is where you can really send your score to the moon. With exponential growth, the variable is the exponent, instead of the base
 
 <<< figure comparing polynomial to exponent >>>
 
-Theoretically, Balatro lets you do quite a bit of exponential growth. But realistically, it's held back quite a bit. There are two major ways to cause exponential growth: having multiply multiplicitive jokers, and retriggering.
+Theoretically, Balatro lets you do quite a bit of exponential growth. But realistically, it's held back quite a bit. There are two major ways to cause exponential growth: having multiple multiplicitive jokers, and retriggering.
 
 ### Multiple multiplicitive jokers
 
@@ -247,6 +264,12 @@ Theoretically, Balatro lets you do quite a bit of exponential growth. But realis
 	<figcaption>Baseball Card giving jokers x1.5</figcaption>
 </figure>
 
+The classic example is Baseball Card. It gives `x1.5` to all your uncommon jokers. So its score equation is this
+
+<<< baseball card score equation >>>
+
+Realistically, you can only get so many uncommon jokers. So as I said earlier, the exponential growth is quite firmly capped. But pretending you can add one uncommon joker every round, you'd see growth like this
+
 <BalatroScoreGraph
 	chips={7}
 	mult={1}
@@ -256,5 +279,39 @@ Theoretically, Balatro lets you do quite a bit of exponential growth. But realis
 		chips: s.chips,
 	})}
 />
+
+It goes off the chart very quickly, exponential growth is far faster than quadratic. To see the growth, here is the chart using a logarithmic scale. Each point on the chart is much larger than the previous one (hover over the dots to see)
+
+<BalatroScoreGraph
+	chips={7}
+	mult={1}
+	max={100}
+	height={600}
+	scaleType="symlog"
+	aggregator={(s) => ({
+		mult: s.mult + 1.5 ** s.round,
+		chips: s.chips,
+	})}
+/>
+
+Here is a comparison between Baseball Card and Wee/Swashbuckler/Egg.
+
+<BalatroScoreComparisonGraph
+	chips={7}
+	mult={1}
+	max={1500}
+	titles={['WeeSwshEgg', 'Baseball']}
+	aggregators={[
+		(s) => ({ chips: s.round * 8, mult: s.mult + s.round * 3 }),
+		(s) => ({
+			mult: s.mult + 1.5 ** s.round,
+			chips: s.chips,
+		}),
+	]}
+/>
+
+Baseball Card is a top notch joker and great way to add a lot to your score, assuming you have at least a couple uncommon jokers.
+
+But the base being 1.5 is holding us back, what if we can get that base even higher?
 
 ### Retriggering
