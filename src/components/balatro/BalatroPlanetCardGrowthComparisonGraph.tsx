@@ -4,28 +4,7 @@ const ResponsiveLine = dynamic(
 	{ ssr: false }
 );
 
-const cardDatas = [
-	{
-		hand: 'High Card',
-		baseMult: 1,
-		baseChips: 5,
-		addedMult: 1,
-		addedChips: 10,
-	},
-	{
-		hand: 'Pair',
-		baseMult: 2,
-		baseChips: 10,
-		addedMult: 1,
-		addedChips: 15,
-	},
-	{
-		hand: '2 Pair',
-		baseMult: 2,
-		baseChips: 20,
-		addedMult: 1,
-		addedChips: 20,
-	},
+const justFourData = [
 	{
 		hand: '3 Kind',
 		baseMult: 3,
@@ -54,6 +33,31 @@ const cardDatas = [
 		addedMult: 2,
 		addedChips: 25,
 	},
+];
+
+const cardDatas = [
+	{
+		hand: 'High Card',
+		baseMult: 1,
+		baseChips: 5,
+		addedMult: 1,
+		addedChips: 10,
+	},
+	{
+		hand: 'Pair',
+		baseMult: 2,
+		baseChips: 10,
+		addedMult: 1,
+		addedChips: 15,
+	},
+	{
+		hand: '2 Pair',
+		baseMult: 2,
+		baseChips: 20,
+		addedMult: 1,
+		addedChips: 20,
+	},
+	...justFourData,
 	{
 		hand: '4 Kind',
 		baseMult: 7,
@@ -91,17 +95,13 @@ const cardDatas = [
 	},
 ];
 
-function getColor(i: number): string {
-	const baseColor = [292, 88, 58];
-	const h = baseColor[0] - i * 15;
-
-	return `hsl(${h}, ${baseColor[1]}%, ${baseColor[2]}%)`;
-}
-
-function BalatroPlanetCardGrowthComparisonGraph() {
-	const colors = [];
-
-	const datas = cardDatas.map((cardData, i) => {
+function BalatroPlanetCardGrowthComparisonGraph({
+	justFour,
+}: {
+	justFour: boolean;
+}) {
+	const currentCardDatas = justFour ? justFourData : cardDatas;
+	const datas = currentCardDatas.map((cardData, ci) => {
 		const scoreData = [];
 
 		for (let i = 0; i < 10; ++i) {
@@ -112,11 +112,15 @@ function BalatroPlanetCardGrowthComparisonGraph() {
 			scoreData.push({
 				x: i + 1,
 				y: result.chips * result.mult,
-				yFormatted: 'score',
 			});
-		}
-		colors.push(getColor(i));
 
+			if (cardData.hand === '3 Kind' || cardData.hand === 'Straight') {
+				console.log(
+					cardData.hand,
+					JSON.stringify(scoreData[scoreData.length - 1])
+				);
+			}
+		}
 		return {
 			id: cardData.hand,
 			data: scoreData,
@@ -127,7 +131,6 @@ function BalatroPlanetCardGrowthComparisonGraph() {
 		<div style={{ height: 500 }} className="balatro-graph">
 			<ResponsiveLine
 				data={datas}
-				colors={colors}
 				margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
 				yScale={{
 					type: 'linear',
