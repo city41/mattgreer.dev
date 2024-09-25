@@ -76,7 +76,7 @@ This is just <BalatroScore baseChips={5} additiveChips={[2]} baseMult={1} inline
 
 <BalatroMathJax
 	latex={[
-		'score = (base\\ chips + card\\ value) \\times mult',
+		'score = (base chips + card value) \\times base mult',
 		's = (b+c) \\times m',
 		's = (5+2) \\times 1',
 		's = 7',
@@ -87,7 +87,7 @@ If you remember back in algebra class, plotting `y = 7` would indeed just be the
 
 ## Linear scaling
 
-Linear scaling happens when you add to the chips or the multiplier -- but not both -- steadily each round. Pretend you have Wee Joker and you play your single 2 high card once per round, so Wee Joker progressively adds 8 chips each round.
+Linear scaling happens when you add to the chips or the multiplier &mdash; but not both &mdash; steadily each round. Pretend you have Wee Joker and you play your single 2 high card once per round, so Wee Joker progressively adds 8 chips each round.
 
 <figure>
 	<img
@@ -108,6 +108,16 @@ So the first round would be <BalatroScore baseChips={5} additiveChips={[2]} base
 />
 
 Wee Joker is simply adding 8 every round. An improvement, but not much of one.
+
+And for completeness, here is this situation as a math function
+
+<BalatroMathJax
+	latex={[
+		's = (base chips+card value+round\\times wee chips)\\times base mult',
+		's = (5 + 2 + r \\times 8) \\times 1',
+		's = 7 + 8r',
+	]}
+/>
 
 Linear scaling can also happen by adding to the mult each round. This can be seen with Swashbuckler and Egg. Each round, Swashbuckler will add 3 more to the mult.
 
@@ -146,7 +156,19 @@ additiveMult={[3, 3]}
 inline
 />
 
-Here Swashbuckler/Egg end up adding 21 chips (the 5 base chips, + 2 chips from the played 2 card, added together then times 3) each round. A bit faster growth, but still linear.
+In other words
+
+<BalatroMathJax
+	latex={[
+		's = (base chips+card value)\\times (base mult + round\\times swash mult)',
+		's = (5 + 2) \\times (1 + r \\times 3)',
+		's = 7\\times (3r + 1)',
+		's = 21r + 1',
+		's = 1 + 21r',
+	]}
+/>
+
+Just like the egg equation above, but multiplying `r` by a larger constant, which explains the steeper line. Still linear growth, but a bit faster at least.
 
 ## Quadratic scaling
 
@@ -174,15 +196,16 @@ Quadratic scaling can be spotted by the curve of the line, instead of it being d
 
 The equation for Pluto card scaling is
 
-<figure>
-	<img
-		src={require('./plutoScalingEquation.svg').default.src}
-		alt="Pluto's scaling equation"
-	/>
-	<figcaption>Pluto's scaling equation</figcaption>
-</figure>
+<BalatroMathJax
+	latex={[
+		's = pluto level\\times ((10 + card value)\\times 1)',
+		's = l\\times ((10+2)\\times 1)',
+		's = 12l\\times l',
+		's = 12l^2',
+	]}
+/>
 
-The exponent being 2 is what makes this a quadratic polynomial, btw.
+The exponent being 2 is what causes the quadratic growth.
 
 What if we had Wee Joker and Swashbuckler/Egg going? We'd add 8 chips and 3 mult each round. This is still quadratic, but at a faster clip
 
@@ -195,17 +218,17 @@ What if we had Wee Joker and Swashbuckler/Egg going? We'd add 8 chips and 3 mult
 
 The equation for Wee Joker + Swashbuckler/Egg is
 
-<figure>
-	<img
-		src={require('./weeJokerSwashbucklerEggEquation.svg').default.src}
-		alt="The scaling equation for Wee Joker, Swashbuckler and Egg"
-	/>
-	<figcaption>
-		The scaling equation for Wee Joker, Swashbuckler and Egg
-	</figcaption>
-</figure>
+<BalatroMathJax
+	latex={[
+		's = (base chips + card value + round\\times wee chips)\\times(base mult + round\\times swash mult)',
+		's = (5 + 2 + r\\times8)\\times(1 + round\\times3)',
+		's = (8r + 7)\\times(3r + 1)',
+		's = 24r^2 + 8r + 21r + 7',
+		's = 24r^2 + 29r + 7',
+	]}
+/>
 
-In both cases, it's n squared, but in the second example that is being multiplied by a larger constant, allowing faster growth. Often the gains you see in Balatro scoring come from increasing the size of this constant.
+In both cases, it's n squared, but in the second example that is being multiplied by a larger constant, allowing faster growth. The `29r` is also linear growth added on as a small bonus, but the total growth still remains quadratic.
 
 Here is Pluto and Wee/Swashbuckler/Egg in the same graph for comparison
 
@@ -232,7 +255,16 @@ Let's quickly talk about multiplicative mult, such as jokers like Card Sharp or 
 	<figcaption>The mighty Cavendish!</figcaption>
 </figure>
 
-By themselves, these jokers offer no growth at all. It will just take the no growth case above, and notch it up a few levels, from 7 to 21 (ie, `7x3`), but that is it.
+By themselves, these jokers offer no growth at all. It will just take the no growth case above, and notch it up a few levels, from 7 to 21, but that's it
+
+<BalatroMathJax
+	latex={[
+		's = (base chips + card value)\\times(base mult\\times cavendish multiplier)',
+		's = (5 + 2)\\times(1\\times3)',
+		's = 7\\times3',
+		's = 21',
+	]}
+/>
 
 <BalatroScoreGraph
 	chips={7}
@@ -258,6 +290,15 @@ What about jokers like Hologram? They offer multiplicitive mult that can be scal
 
 But just like Cavendish and Card Sharp, by themselves they actually aren't that great
 
+<BalatroMathJax
+	latex={[
+		's = (base chips + card value)\\times(base mult \\times round\\times hologram multiplier)',
+		's = (5 + 2)\\times(1 \\times .25r)',
+		's = 7\\times.25r',
+		's = 1.75r',
+	]}
+/>
+
 <BalatroScoreGraph
 	chips={7}
 	mult={1}
@@ -274,13 +315,26 @@ So a single multiplicitive joker can really help a lot. But it can only take you
 
 ## Exponential growth
 
-Getting a deck to exhibit exponential growth is how you can really send your score to the moon. With exponential growth, the variable is the exponent, instead of the base
+Getting a deck to exhibit exponential growth is how you can really send your score
+to the moon. With exponential growth, the variable is the exponent, instead of the
+base
 
-<<< figure comparing polynomial to exponent >>>
+<BalatroMathJax
+	latex={[
+		'simple\\ quadratic\\ equation',
+		's = r^2',
+		'simple\\ exponential\\ equation',
+		's = 2^r',
+	]}
+/>
 
-So with quadratic scaling, we were multiplying a number by itself. As the number got bigger, the score got bigger. But with exponential growth, we are instead increasing the number of times we multiply.
+This simple twist leads to a massive change in how the equations grow as `r` gets bigger. But there is one catch, the base must be greater than one. In this case, the base is `2`. If the equation was
 
-Theoretically, Balatro lets you do quite a bit of exponential growth. But realistically, it's held back quite a bit. There are two major ways to cause exponential growth: having multiple multiplicitive jokers, and retriggering.
+<BalatroMathJax latex={['s = 0.5^r']} />
+
+The score would actually get smaller as `r` increases. But no worries, that can't happen in Balatro.
+
+Theoretically, Balatro lets you do quite a bit of exponential growth. But realistically, it's held back quite a bit. There are two main ways to cause exponential growth: having multiple multiplicitive jokers, and retriggering.
 
 ### Multiple multiplicitive jokers
 
@@ -294,7 +348,15 @@ Theoretically, Balatro lets you do quite a bit of exponential growth. But realis
 
 The classic example is Baseball Card. It gives `x1.5` to all your uncommon jokers. So its score equation is this
 
-<<< baseball card score equation >>>
+<BalatroMathJax
+	latex={[
+		's = (base chips + card value)\\times(base mult\\times1.5^{numjokers})',
+		's = (5 + 2)\\times(1\\times1.5^j)',
+		's = 7\\times1.5^j',
+	]}
+/>
+
+Here the variable, `j`, which is the number of uncommon jokers, is in the exponent. If we pretend you can always get more uncommon jokers, then this equation would rise rapidly.
 
 Realistically, you can only get so many uncommon jokers. So as I said earlier, the exponential growth is quite firmly capped. But pretending you can add one uncommon joker every round, you'd see growth like this
 
@@ -381,7 +443,11 @@ Actually having his ability apply to single cards instead of an entire hand is t
 
 <<< triboulet equation >>>
 
-Baseball Card had 1.5 as its base, but Triboulet has 2. Sounds like a minor difference, but it's not. Triboulet can let scores go much higher than Baseball Card can.
+<BalatroMathJax
+	latex={['mult = base mult\\times2^{numretrigger}', 'm = b\\times2^r']}
+/>
+
+Baseball Card had `1.5` as its base, but Triboulet has `2`. Sounds like a minor difference, but it's not. Triboulet can let scores go much higher than Baseball Card can.
 
 Here is Baseball Card versus Triboulet
 
@@ -440,7 +506,13 @@ Here is a video of a hand I had one time when playing with Triboulet
 
 With two Seltzers (Brainstorm is one of them), two Hanging Chads, Photograph, Triboulet, and two red sealed cards, this hand resulted in
 
-<<< 2^(14+6+6+8+6) >>>
+<BalatroMathJax
+	latex={[
+		'mult = base mult\\times2^{14+6+6+8+6}',
+		'm = b\\times2^{40}',
+		'm = b\\times109951162776',
+	]}
+/>
 
 which resulted in such a large score the game had to resort to scientific notation to display it.
 
@@ -458,7 +530,7 @@ Mime is a joker that allows retriggering of in hand effects. Baron offers an eff
 	<figcaption>Mime and Baron, one of the best combos in the game</figcaption>
 </figure>
 
-But wait, `x1.5`? Triboulet offers `x2`, isn't that better? Yes, but Triboulet operates on played cards. At most, you can play five cards. But your hand size can get really big. Through the combination of a large hand size, and as much retriggering as possible, Mime and Baron can get a significantly higher score than Triboulet.
+But wait, `x1.5`? Triboulet offers `x2`, isn't that better? Yes, but Triboulet operates on played cards. At most, you can play five cards. But your hand size can get really big. Through the combination of a large hand size, and as much retriggering as possible, Mime and Baron can get a significantly higher score than Triboulet in most cases.
 
 Here is an example. I did this by hacking the game to get quite an amazing deck. The chances of getting this to happen in real life is uh rather slim :)
 
@@ -475,7 +547,11 @@ The video starts out slow, but don't worry, it will progress quite rapidly
 
 The end score of `5.052e50` is over 500 quindecillion. A 5 with 50 zeroes after it!
 
-And what the heck, let's break the game! This is obviously not realistic at all. And I don't blame you if you skip ahead in the video (about 3:00 is just before the game breaks). But this hand scores so high it ends up at `naneinf`, which is NaN (not a number) multiplied by 10 to the infinite power. In other words, the score got too high for the game to keep track of.
+And what the heck, let's break the game! This is obviously not realistic at all. And I don't blame you if you skip ahead in the video (about 3:00 is just before the game breaks). But this hand scores so high it ends up at `naneinf`, which is NaN (not a number) multiplied by 10 to the infinite power
+
+<BalatroMathJax latex={['score = NaN\\times10^{\\infty}']} />
+
+which really is just pure gibberish. It's basically the number system inside the computer telling the game the number got so big it could no longer keep track of it.
 
 <iframe
 	width={560}
