@@ -46,20 +46,20 @@ function BalatroScore(props: BalatroScoreProps) {
 	} = props;
 
 	const body = (
-		<div className="flex flex-row items-center font-bold my-1">
-			<div className="bg-blue-700 text-white rounded-lg p-1 text-right min-w-10">
+		<span className="flex flex-row items-center font-bold my-1">
+			<span className="bg-blue-700 text-white rounded-lg p-1 text-right min-w-10">
 				{baseChips}
 				{additiveChips.length > 0 ? '+' : ''}
 				{additiveChips.join('+')}
-			</div>
-			<div className="px-0.5">x</div>
-			<div className="bg-red-600 text-white rounded-lg p-1 text-left min-w-10">
+			</span>
+			<span className="px-0.5">x</span>
+			<span className="bg-red-600 text-white rounded-lg p-1 text-left min-w-10">
 				{baseMult}
 				{additiveMult.length > 0 ? '+' : ''}
 				{additiveMult.join('+')}
-			</div>
-			<div className="px-0.5">= {calc(props)}</div>
-		</div>
+			</span>
+			<span className="px-0.5">= {calc(props)}</span>
+		</span>
 	);
 
 	if (inline) {

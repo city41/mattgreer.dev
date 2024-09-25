@@ -188,24 +188,28 @@ So if we play one Pluto card per round, we'll get even faster scaling compared t
 <BalatroScoreGraph
 	chips={7}
 	mult={1}
-	max={1500}
-	aggregator={(s) => ({ chips: s.round * 10, mult: s.mult + s.round * 1 })}
+	max={1000}
+	aggregator={(s) => ({
+		chips: s.chips + s.round * 10,
+		mult: s.mult + s.round * 1,
+	})}
 />
 
 Quadratic scaling can be spotted by the curve of the line, instead of it being dead straight like in the linear examples above. Pluto leads to very mild scaling, so the curve is mild and the increase overall is not that great. It will be hard to get far in Balatro using only Pluto cards.
 
-The equation for Pluto card scaling is
+The equation for Pluto card scaling (when playing a 2) is
 
 <BalatroMathJax
 	latex={[
-		's = pluto level\\times ((10 + card value)\\times 1)',
-		's = l\\times ((10+2)\\times 1)',
-		's = 12l\\times l',
-		's = 12l^2',
+		's = (5 + card value + pluto level\\times10)\\times (1 + pluto level\\times1)',
+		's = (5 + 2 + 10p)\\times(1 + p)',
+		's = (7 + 10p)\\times(1 + p)',
+		's = 7 + 7p + 10p + p^2',
+		's = p^2 + 17p + 7',
 	]}
 />
 
-The exponent being 2 is what causes the quadratic growth.
+The exponent being 2 is what causes the quadratic growth. The `17p` adds in some bonus linear growth too, but really it's the `p squared` that mostly matters here.
 
 What if we had Wee Joker and Swashbuckler/Egg going? We'd add 8 chips and 3 mult each round. This is still quadratic, but at a faster clip
 
@@ -220,7 +224,8 @@ The equation for Wee Joker + Swashbuckler/Egg is
 
 <BalatroMathJax
 	latex={[
-		's = (base chips + card value + round\\times wee chips)\\times(base mult + round\\times swash mult)',
+		's = (base chips + card value + round\\times wee chips)',
+		'\\ \\ \\ \\ \\times(base mult + round\\times swash mult)',
 		's = (5 + 2 + r\\times8)\\times(1 + round\\times3)',
 		's = (8r + 7)\\times(3r + 1)',
 		's = 24r^2 + 8r + 21r + 7',
@@ -228,7 +233,7 @@ The equation for Wee Joker + Swashbuckler/Egg is
 	]}
 />
 
-In both cases, it's n squared, but in the second example that is being multiplied by a larger constant, allowing faster growth. The `29r` is also linear growth added on as a small bonus, but the total growth still remains quadratic.
+In both cases, it's n squared, but in the second example that is being multiplied by a larger constant, allowing faster growth. The <BalatroMathJax latex="29r" /> is linear growth just like we saw back in the Pluto example.
 
 Here is Pluto and Wee/Swashbuckler/Egg in the same graph for comparison
 
@@ -321,9 +326,9 @@ base
 
 <BalatroMathJax
 	latex={[
-		'simple\\ quadratic\\ equation',
+		'\\text{simple quadratic equation}',
 		's = r^2',
-		'simple\\ exponential\\ equation',
+		'\\text{simple exponential equation}',
 		's = 2^r',
 	]}
 />

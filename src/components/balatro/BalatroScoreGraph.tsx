@@ -42,7 +42,7 @@ function BalatroScoreGraph({
 
 	for (let i = 0; i < 10; ++i) {
 		const result = aggregator({
-			round: i,
+			round: i + 1,
 			chips,
 			mult,
 		});
