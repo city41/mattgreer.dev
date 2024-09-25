@@ -4,6 +4,7 @@ import { BalatroPlayingCard } from '../../../components/balatro/BalatroPlayingCa
 import { BalatroScoreGraph } from '../../../components/balatro/BalatroScoreGraph';
 import { BalatroScoreComparisonGraph } from '../../../components/balatro/BalatroScoreComparisonGraph';
 import { BalatroPlanetCardGrowthComparisonGraph } from '../../../components/balatro/BalatroPlanetCardGrowthComparisonGraph';
+import { BalatroMathJax } from '../../../components/balatro/BalatroMathJax';
 import meta from './meta.json';
 
 export default ({ children }) => (
@@ -16,6 +17,13 @@ export default ({ children }) => (
 		{children}
 	</Article>
 );
+
+<noscript>
+	<div className="my-16 p-4 bg-red-100 text-red-900">
+		This article requires JavaScript be enabled for everything to show up
+		properly.
+	</div>
+</noscript>
 
 <wisdom>
 	<b>Hey!</b> This blog post assumes you are familiar with the game{' '}
@@ -66,15 +74,16 @@ Obviously not ideal, but sometimes this happens when there's nothing in the shop
 
 This is just <BalatroScore baseChips={5} additiveChips={[2]} baseMult={1} inline /> for each round. If we were to describe this growth as a mathematical function, it'd just be
 
-<figure>
-	<img
-		src={require('./highCardConstantScore.svg').default.src}
-		alt="High card's constant score equation"
-	/>
-	<figcaption>High card's constant score equation</figcaption>
-</figure>
+<BalatroMathJax
+	latex={[
+		'score = (base\\ chips + card\\ value) \\times mult',
+		's = (b+c) \\times m',
+		's = (5+2) \\times 1',
+		's = 7',
+	]}
+/>
 
-Just getting seven chips each round is a quick game over for sure.
+If you remember back in algebra class, plotting `y = 7` would indeed just be the flat horizontal line we saw just above. Just getting seven chips each round is a quick game over for sure.
 
 ## Linear scaling
 
