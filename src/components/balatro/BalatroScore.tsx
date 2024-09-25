@@ -1,3 +1,5 @@
+import clsx from 'clsx';
+
 type BalatroScoreProps = {
 	baseChips: number;
 	baseMult: number;
@@ -44,21 +46,28 @@ function BalatroScore(props: BalatroScoreProps) {
 	} = props;
 
 	const body = (
-		<>
-			{additiveChips.length > 0 ? '(' : ''}
-			{baseChips}
-			{additiveChips.length > 0 ? '+' : ''}
-			{additiveChips.join('+')}
-			{additiveChips.length > 0 ? ')' : ''}x{additiveMult.length > 0 ? '(' : ''}
-			{baseMult}
-			{additiveMult.length > 0 ? '+' : ''}
-			{additiveMult.join('+')}
-			{additiveMult.length > 0 ? ')' : ''}={calc(props)}
-		</>
+		<div className="flex flex-row items-center font-bold my-1">
+			<div className="bg-blue-700 text-white rounded-lg p-1 text-right min-w-10">
+				{baseChips}
+				{additiveChips.length > 0 ? '+' : ''}
+				{additiveChips.join('+')}
+			</div>
+			<div className="px-0.5">x</div>
+			<div className="bg-red-600 text-white rounded-lg p-1 text-left min-w-10">
+				{baseMult}
+				{additiveMult.length > 0 ? '+' : ''}
+				{additiveMult.join('+')}
+			</div>
+			<div className="px-0.5">= {calc(props)}</div>
+		</div>
 	);
 
 	if (inline) {
-		return <span>{body}</span>;
+		return (
+			<span className={clsx({ 'inline-block': inline, block: !inline })}>
+				{body}
+			</span>
+		);
 	} else {
 		return <div>{body}</div>;
 	}
