@@ -236,12 +236,19 @@ class SmoothTurningCarefuleVehicle implements IVehicle {
 			nextWaypoint.y
 		);
 
+<<<<<<< HEAD
 		const turningDistance = Math.min(
 			targetWaypoint.radius * 2,
 			distanceFromTargetToNext
 		);
 
 		return true;
+=======
+		const distanceToTurn = Math.min(
+			targetWaypoint.radius * 2,
+			distanceFromTargetToNext
+		);
+>>>>>>> carefulDrivers
 	}
 
 	update(waypoints: Waypoint[]) {
