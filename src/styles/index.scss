@@ -60,3 +60,12 @@ option, select {
   @apply text-black;
 }
 
+.balatro-graph text {
+  // @apply text-fg;
+  fill: var(--color-fg-deep) !important;
+}
+
+mjx-container[jax="SVG"] {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}

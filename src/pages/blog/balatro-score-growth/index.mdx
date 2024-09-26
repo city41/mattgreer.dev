@@ -1,0 +1,605 @@
+import { Article } from '../../../components/layouts/Article';
+import { BalatroScore } from '../../../components/balatro/BalatroScore';
+import { BalatroPlayingCard } from '../../../components/balatro/BalatroPlayingCard';
+import { BalatroScoreGraph } from '../../../components/balatro/BalatroScoreGraph';
+import { BalatroScoreComparisonGraph } from '../../../components/balatro/BalatroScoreComparisonGraph';
+import { BalatroPlanetCardGrowthComparisonGraph } from '../../../components/balatro/BalatroPlanetCardGrowthComparisonGraph';
+import { BalatroMathJax } from '../../../components/balatro/BalatroMathJax';
+import meta from './meta.json';
+
+export default ({ children }) => (
+	<Article
+		{...meta}
+		img={require('./feature.png').default.src}
+		socialMediaImg={require('./twitter.png').default.src}
+		intro="How do decks increase their scoring in Balatro?"
+	>
+		{children}
+	</Article>
+);
+
+<noscript>
+	<div className="my-16 p-4 bg-red-100 text-red-900">
+		This article requires JavaScript be enabled for everything to show up
+		properly.
+	</div>
+</noscript>
+
+<wisdom>
+	<b>Hey!</b> This blog post assumes you are familiar with the game{' '}
+	<a href="https://www.playbalatro.com/">Balatro</a>. If you've not played it
+	and enjoy card games, strategy games, and especially games like Magic the
+	Gathering, you should check it out. You'll love it. I'm absolutely obsessed
+	with it :)
+</wisdom>
+
+In Balatro you need to achieve a certain score by playing poker hands to beat the round and move onto the next. The needed score each round increases, so you need to improve your deck's scoring ability if you want to keep up. Let's take a look at ways deck scoring can increase.
+
+## In short
+
+Balatro decks mostly improve polynomially. Of the different types of polynomial growth, quadratic is the most common, assuming you're keeping up on improvements in the shop between rounds and improving any building jokers you may have (like Wee Joker, Spare Trousers, etc) during rounds. In some cases the deck can not improve at all, or only improve linearly. Both are bad and can be a sign you need to turn things around or it might be game over. And on the opposite side, really top notch decks can scale exponentially, but only so much and it takes some luck to get decks that do this.
+
+Let's look into more detail what this all means.
+
+## Our simple example
+
+For all the examples in this blog post, we will be playing a **2** as a high card. The high card scoring starts at <BalatroScore baseChips={5} baseMult={1} inline />. So a played 2 (which is worth 2 chips) would be <BalatroScore baseChips={5} additiveChips={[2]} baseMult={1} inline />.
+
+<pitfall>
+	<p>
+		Balatro has a layered and fairly complex scoring system. This blog post is
+		going to ignore the layering and keep it really simple. The main concept
+		we'll be exploring applies to Balatro as a whole and when looking at a
+		specific "layer" of the scoring system.
+	</p>
+	<p>
+		Experienced Balatro players will find small errors in this post and some
+		things I'm glossing over. I think that is fine for the purpose of this post.
+	</p>
+</pitfall>
+
+## No scaling, aka constant
+
+If you make no improvements to your deck, well your scaling graph is just a flat line.
+
+<BalatroScoreGraph chips={7} mult={1} max={10} aggregator={(s) => s} />
+
+<wisdom>
+	These graphs have three lines in them: mult, chips and score. In this
+	particular one, the score and chips lines are the same, so that's why you only
+	see two
+</wisdom>
+
+Obviously not ideal, but sometimes this happens when there's nothing in the shop that can help you or you don't improve any of your jokers during a round. There is a lot of luck in Balatro, and sometimes it just doesn't go your way.
+
+This is just <BalatroScore baseChips={5} additiveChips={[2]} baseMult={1} inline /> for each round. If we were to describe this growth as a mathematical function, it'd be
+
+<BalatroMathJax
+	latex={[
+		'score = (base chips + card value) \\times base mult',
+		's = (b+c) \\times m',
+		's = (5+2) \\times 1',
+		's = 7',
+	]}
+/>
+
+## Linear scaling
+
+Linear scaling happens when you add to the chips _or_ the multiplier &mdash; but not both &mdash; steadily each round. Pretend you have Wee Joker and you play your single 2 high card once per round, so Wee Joker progressively adds 8 chips each round.
+
+<wisdom>
+	And yeah, just playing a single high card won't even win the first round of
+	the game. Just keeping things simple for this blog post.
+</wisdom>
+
+<figure>
+	<img
+		src={require('./wee.png').default.src}
+		alt="Wee Joker"
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>Wee Joker</figcaption>
+</figure>
+
+So the first round would be <BalatroScore baseChips={5} additiveChips={[2,8]} baseMult={1} inline /> as before. Then your Wee Joker grows by 8 chips, so the next round would be <BalatroScore baseChips={5} additiveChips={[2,8,8]} baseMult={1} inline />. Then next round Wee Joker gains another 8, which would be <BalatroScore baseChips={5} baseMult={1} additiveChips={[2,8,8,8]} inline />.
+
+<BalatroScoreGraph
+	chips={7}
+	mult={1}
+	max={100}
+	aggregator={(s) => ({ chips: s.chips + 8 * s.round, mult: s.mult })}
+/>
+
+Wee Joker is just adding 8 every round. An improvement, but not much of one.
+
+Here is this situation as a math function
+
+<BalatroMathJax
+	latex={[
+		's = (base chips+card value+round\\times wee chips)\\times base mult',
+		's = (b + c + r\\times w)\\times m',
+		's = (5 + 2 + r \\times 8) \\times 1',
+		's = 8r + 7',
+	]}
+/>
+
+Not having an exponent on the variable is a sure sign of linear scaling. Linear scaling can also happen by adding to the mult each round. This can be seen with Swashbuckler and Egg. Each round, Swashbuckler will add 3 more to the mult.
+
+<figure>
+	<img
+		src={require('./swashbucklerEgg.png').default.src}
+		alt="Swashbuckler and Egg, a classic combo"
+	/>
+	<figcaption>Swashbuckler and Egg, a classic combo</figcaption>
+</figure>
+
+<wisdom>
+	Since the Egg's initial value is $2, then at first Swashbuckler will add +2
+	mult, like in the screenshot. But I'm ignoring that for simplicity
+</wisdom>
+
+<BalatroScoreGraph
+	chips={7}
+	mult={1}
+	max={200}
+	aggregator={(s) => ({ chips: s.chips, mult: s.mult + s.round * 3 })}
+/>
+
+Which ends up being
+
+round 1: <BalatroScore baseChips={5} additiveChips={[2]} baseMult={1} additiveMult={[3]} inline />
+
+round 2: <BalatroScore
+	baseChips={5}
+	additiveChips={[2]}
+	baseMult={1}
+	additiveMult={[3,3]}
+	inline
+/>
+
+round 3: <BalatroScore
+baseChips={5}
+additiveChips={[2]}
+baseMult={1}
+additiveMult={[3, 3, 3]}
+inline
+/>
+
+In other words
+
+<BalatroMathJax
+	latex={[
+		's = (base chips+card value)\\times (base mult + round\\times swash mult)',
+		's = (b + c)\\times(m + r\\times s)',
+		's = (5 + 2) \\times (1 + r \\times 3)',
+		's = 7\\times (3r + 1)',
+		's = 21r + 7',
+	]}
+/>
+
+Just like the egg equation above, but multiplying `r` by a larger constant, which explains the steeper line. Still linear growth, but a bit faster at least.
+
+## Quadratic scaling
+
+Quadratic scaling allows our score to grow faster as each time the value is being multiplied by a larger and larger number. Almost all scaling in Balatro is quadratic. What changes the most is how aggressive the quadratic growth is.
+
+### Shallow quadratic growth
+
+The simplest form of quadratic scaling are planet cards. For high cards, the Pluto card will add 10 chips and 1 mult to the base score each time one is played.
+
+<figure>
+	<img src={require('./pluto.png').default.src} alt="The lowely Pluto" />
+	<figcaption>The lowly, but lovable, Pluto</figcaption>
+</figure>
+
+So if we play one Pluto card per round, we'll get even faster scaling compared to Wee Joker.
+
+<BalatroScoreGraph
+	chips={7}
+	mult={1}
+	max={1000}
+	aggregator={(s) => ({
+		chips: s.chips + s.round * 10,
+		mult: s.mult + s.round * 1,
+	})}
+/>
+
+Quadratic scaling can be spotted by the curve of the line, instead of it being dead straight like in the linear examples above. Pluto leads to mild scaling, so the curve is shallow and the increase overall is not that great. It will be hard to get far in Balatro using only Pluto cards.
+
+The equation for Pluto card scaling (when playing a 2) is
+
+<BalatroMathJax
+	latex={[
+		's = (base chips + card value + pluto level\\times10)\\times (1 + pluto level\\times1)',
+		's = (b + c + p\\times10)\\times(1 + p\\times1)',
+		's = (5 + 2 + 10p)\\times(1 + p)',
+		's = (7 + 10p)\\times(1 + p)',
+		's = 7 + 7p + 10p + 10p^2',
+		's = 10p^2 + 17p + 7',
+	]}
+/>
+
+The exponent being 2 is what causes the quadratic growth. The <BalatroMathJax latex="17p" /> adds in some bonus linear growth too, but really it's the <BalatroMathJax latex="10p^2" /> that really matters here.
+
+What if we had Wee Joker and Swashbuckler/Egg going? We'd add 8 chips from Wee and 3 mult from Swash each round. This is still quadratic, but at a faster clip
+
+<BalatroScoreGraph
+	chips={7}
+	mult={1}
+	max={1500}
+	aggregator={(s) => ({ chips: s.round * 8, mult: s.mult + s.round * 3 })}
+/>
+
+The equation for Wee Joker + Swashbuckler/Egg is
+
+<BalatroMathJax
+	latex={[
+		's = (base chips + card value + round\\times wee chips)',
+		'\\ \\ \\ \\ \\times(base mult + round\\times swash mult)',
+		's = (5 + 2 + r\\times8)\\times(1 + r\\times3)',
+		's = (8r + 7)\\times(3r + 1)',
+		's = 24r^2 + 8r + 21r + 7',
+		's = 24r^2 + 29r + 7',
+	]}
+/>
+
+In both cases, it's n squared, but in the second example it is being multiplied by a larger constant, allowing faster growth. The <BalatroMathJax latex="29r" /> is added linear growth just like we saw back in the Pluto example.
+
+Here is Pluto and Wee/Swashbuckler/Egg in the same graph for comparison
+
+<BalatroScoreComparisonGraph
+	chips={7}
+	mult={1}
+	max={1500}
+	titles={['Pluto', 'WeeSwshEgg']}
+	aggregators={[
+		(s) => ({ chips: s.chips + s.round * 10, mult: s.mult + s.round * 1 }),
+		(s) => ({ chips: s.chips + s.round * 8, mult: s.mult + s.round * 3 }),
+	]}
+/>
+
+## Multiplicitive Mult
+
+Let's quickly talk about multiplicative mult, such as jokers like Card Sharp or Cavendish. They multiply the mult by a fixed constant, for both of these jokers it is <BalatroMathJax latex={"\\times3"} />.
+
+<figure>
+	<img src={require('./cavendish.png').default.src} alt="Ohhhh banana!" />
+	<figcaption>Ohhhh banana!</figcaption>
+</figure>
+
+By themselves, these jokers offer no growth at all. It will just take the no growth case above, and notch it up a few levels, from 7 to 21
+
+<BalatroMathJax
+	latex={[
+		's = (base chips + card value)\\times(base mult\\times cavendish multiplier)',
+		's = (5 + 2)\\times(1\\times3)',
+		's = 7\\times3',
+		's = 21',
+	]}
+/>
+
+<BalatroScoreGraph
+	chips={7}
+	mult={1}
+	max={25}
+	aggregator={(s) => ({
+		mult: s.mult * 3,
+		chips: s.chips,
+	})}
+/>
+
+These jokers are great in that they take the work that something like Swashbuckler does and amplifies it. So if you have Swashbuckler and Cavendish, it's like having three Swashbucklers. If you have Swashbuckler, Cavendish and Card Sharp, it's like having 9 Swashbucklers! But we're getting ahead of ourselves...
+
+What about jokers like Hologram? They offer multiplicitive mult that can be scaled.
+
+<figure>
+	<img
+		src={require('./hologram.png').default.src}
+		alt="Hologram, a personal favorite"
+	/>
+	<figcaption>Hologram, a personal favorite</figcaption>
+</figure>
+
+But just like Cavendish and Card Sharp, by themselves they actually aren't that great...
+
+<BalatroMathJax
+	latex={[
+		's = (base chips + card value)\\times(base mult \\times(1 + .25\\times round))',
+		's = (5 + 2)\\times(1 \\times (1 + .25r))',
+		's = 7\\times(1 + .25r)',
+		's = 7 + 1.75r',
+	]}
+/>
+
+<BalatroScoreGraph
+	chips={7}
+	mult={1}
+	max={25}
+	aggregator={(s) => ({
+		mult: s.mult * (1 + 0.25 * s.round),
+		chips: s.chips,
+	})}
+/>
+
+They actually only increase the score linearly! Jokers like Hologram really need to be paired with other jokers to shine (no pun intended).
+
+A single multiplicitive joker can really help a lot. But it can only take you so far...
+
+## Exponential growth
+
+Getting a deck to exhibit exponential growth is how you can really send your score
+to the moon. With exponential growth, the variable is the exponent, instead of the
+base
+
+<BalatroMathJax
+	latex={[
+		'\\text{simple quadratic equation}',
+		's = r^2',
+		'\\text{simple exponential equation}',
+		's = 2^r',
+	]}
+/>
+
+This simple twist leads to a massive change in how the equations grow as `r` gets bigger. But there is one catch, the base must be greater than one. In this case, the base is `2`. If the equation was
+
+<BalatroMathJax latex={['s = 0.5^r']} />
+
+The score would actually get smaller as `r` increases. But no worries, that can't happen in Balatro.
+
+Theoretically, Balatro lets you do quite a bit of exponential growth. But realistically, it's held back quite a bit. There are two main ways to cause exponential growth: having multiple multiplicitive jokers, and retriggering.
+
+### Multiple multiplicitive jokers
+
+<figure>
+	<img
+		src={require('./baseballcard.png').default.src}
+		alt="Baseball Card giving the other jokers x1.5 each"
+	/>
+	<figcaption>Baseball Card giving the other jokers x1.5 each</figcaption>
+</figure>
+
+The classic example is Baseball Card. It gives <BalatroMathJax latex={"\\times1.5"} /> to all your uncommon jokers. So its score equation is this
+
+<BalatroMathJax
+	latex={[
+		's = (base chips + card value)\\times(base mult\\times1.5^{numjokers})',
+		's = (5 + 2)\\times(1\\times1.5^j)',
+		's = 7\\times1.5^j',
+	]}
+/>
+
+Here the variable, `j`, which is the number of uncommon jokers, is in the exponent. If we pretend you can always get more uncommon jokers, then this equation would rise rapidly.
+
+Realistically, you can only get so many uncommon jokers. So as I said earlier, the exponential growth is quite firmly capped. But pretending you can add one uncommon joker every round, you'd see growth like this
+
+<BalatroScoreGraph
+	chips={7}
+	mult={1}
+	max={25}
+	aggregator={(s) => ({
+		mult: 1 + 1.5 ** s.round,
+		chips: s.chips,
+	})}
+/>
+
+It goes off the chart very quickly, exponential growth is far faster than quadratic. To see the growth, here is the chart using a logarithmic scale. Each point on the chart is much larger than the previous one (hover over the dots to see)
+
+<BalatroScoreGraph
+	chips={7}
+	mult={1}
+	max={100}
+	height={600}
+	scaleType="symlog"
+	aggregator={(s) => ({
+		mult: s.mult + 1.5 ** s.round,
+		chips: s.chips,
+	})}
+/>
+
+Here is a comparison between Baseball Card and Wee/Swashbuckler/Egg.
+
+<BalatroScoreComparisonGraph
+	chips={7}
+	mult={1}
+	max={500}
+	titles={['WeeSwshEgg', 'Baseball']}
+	aggregators={[
+		(s) => ({ chips: s.round * 8, mult: s.mult + s.round * 3 }),
+		(s) => ({
+			mult: s.mult * 1.5 ** s.round,
+			chips: s.chips,
+		}),
+	]}
+/>
+
+Whoa, wait a minute, Baseball Card is growing way slower. What gives? A characteristic of exponential growth is it often starts slowly. Let's say we have two uncommon jokers, so Baseball Card gives <BalatroMathJax latex={"\\times1.5"} /> to each. <BalatroMathJax latex={"1.5\\times1.5"} /> is just <BalatroMathJax latex={"2.25"} />. It's bigger, sure, but not by much. The exponential growth rate overall will always be much larger than quadratic, as long as the base of the exponent is greater than 1. Even if the base is just <BalatroMathJax latex={"1.0000000000001"} />, eventually exponential growth will catch up and outpace quadratic growth.
+
+Here is another Baseball Card vs Wee/Swashbuckler/Egg chart.
+
+<BalatroScoreComparisonGraph
+	chips={7}
+	mult={1}
+	max={20000}
+	roundScale={3}
+	titles={['WeeSwshEgg', 'Baseball']}
+	aggregators={[
+		(s) => ({ chips: s.round * 8, mult: s.mult + s.round * 3 }),
+		(s) => ({
+			mult: s.mult + 1.5 ** s.round,
+			chips: s.chips,
+		}),
+	]}
+/>
+
+This graph is going to 30 rounds instead of just 10. At about round 16, the exponential scaling overtakes the quadratic and then it quickly says "see ya" as it rockets out of site.
+
+Baseball Card is a top notch joker and great way to add a lot to your score, assuming you have at least a couple uncommon jokers.
+
+But the base being <BalatroMathJax latex={"1.5"} /> is holding us back, what if we can get that base even higher?
+
+### Retriggering
+
+The legendary joker, Triboulet, seems pretty innocent at first
+
+<figure>
+	<img
+		src={require('./triboulet.png').default.src}
+		alt="The legendary joker, Triboulet"
+	/>
+	<figcaption>The legendary joker, Triboulet</figcaption>
+</figure>
+
+What's the big deal, why is he legendary? I mean Cavendish does <BalatroMathJax latex={"\\times3"} />. Heck, Triboulet's ability only applies to Kings and Queens!
+
+Actually having his ability apply to single cards instead of an entire hand is the key here. When you play a King, it will double the mult. If you can get that King to retrigger, it will double the mult again. This is exponential
+
+<BalatroMathJax
+	latex={['mult = base mult\\times2^{numretrigger}', 'm = b\\times2^r']}
+/>
+
+Baseball Card had <BalatroMathJax latex={"1.5"} /> as its base, but Triboulet has <BalatroMathJax latex={"2"} />. Sounds like a minor difference, but it's not. Triboulet can let scores go much higher than Baseball Card can.
+
+Here is Baseball Card versus Triboulet
+
+<BalatroScoreComparisonGraph
+	chips={7}
+	mult={1}
+	max={20000}
+	roundScale={3}
+	titles={['Baseball', 'Triboulet']}
+	aggregators={[
+		(s) => ({
+			mult: s.mult + 1.5 ** s.round,
+			chips: s.chips,
+		}),
+		(s) => ({
+			mult: s.mult + 2 ** s.round,
+			chips: s.chips,
+		}),
+	]}
+/>
+
+and here it is again, this time using a logarithmic y scale so we can fit even bigger numbers on the graph
+
+<BalatroScoreComparisonGraph
+	chips={7}
+	mult={1}
+	max={5000000}
+	height={600}
+	scaleType="symlog"
+	roundScale={4}
+	titles={['Baseball', 'Triboulet']}
+	aggregators={[
+		(s) => ({
+			mult: s.mult + 1.5 ** s.round,
+			chips: s.chips,
+		}),
+		(s) => ({
+			mult: s.mult + 2 ** s.round,
+			chips: s.chips,
+		}),
+	]}
+/>
+
+The difference might not look like a lot. But take round 24 for example. Baseball Card's score at round 24 is 23,283. Triboulet's is 7,340,039!
+
+Here is a video of a hand I had one time when playing with Triboulet
+
+<iframe
+	width={560}
+	height={315}
+	style={{ margin: '3em 0' }}
+	src="https://www.youtube.com/embed/hMdYc5QIb4Y"
+	frameBorder={0}
+	allowFullScreen
+></iframe>
+
+With two Seltzers (Brainstorm is one of them), two Hanging Chads, Photograph, Triboulet, and two red sealed cards, this hand resulted in
+
+<BalatroMathJax
+	latex={[
+		'mult = base mult\\times2^{14+6+6+8+6}',
+		'm = b\\times2^{40}',
+		'm = b\\times109951162776',
+	]}
+/>
+
+which resulted in such a large score the game had to resort to scientific notation to display it.
+
+And yet, we can go much, much higher...
+
+## Mime and Baron
+
+Mime is a joker that allows retriggering of in hand effects. Baron offers an effect of <BalatroMathJax latex={"\\times1.5"} /> for all Kings held in the hand.
+
+<figure>
+	<img
+		src={require('./mimeBaron.png').default.src}
+		alt="Mime and Baron, one of the best combos in the game"
+	/>
+	<figcaption>Mime and Baron, which can be a potent combo</figcaption>
+</figure>
+
+But wait, <BalatroMathJax latex={"\\times1.5"} />? Triboulet offers <BalatroMathJax latex={"\\times2"} />, isn't that better? Yes, but Triboulet operates on played cards. At most, you can play five cards. But your hand size can get really big. Through the combination of a large hand size, and as much retriggering as possible, Mime and Baron can get a significantly higher score than Triboulet in most cases.
+
+Here is an example. I did this by hacking the game to get quite an amazing deck. The chances of getting this to happen in real life is uh rather slim :)
+
+The video starts out slow, but don't worry, it will progress quite rapidly
+
+<iframe
+	width={560}
+	height={315}
+	style={{ margin: '3em 0' }}
+	src="https://www.youtube.com/embed/OPLZ99cJhBw"
+	frameBorder={0}
+	allowFullScreen
+></iframe>
+
+The end score of `5.052e50` is over 500 quindecillion. A 5 with 50 zeroes after it!
+
+And what the heck, let's break the game! This is obviously not realistic at all. And I don't blame you if you skip ahead in the video (about 3:00 is just before the game breaks).
+
+<iframe
+	width={560}
+	height={315}
+	style={{ margin: '3em 0' }}
+	src="https://www.youtube.com/embed/NVDvdseyxJk"
+	frameBorder={0}
+	allowFullScreen
+></iframe>
+
+This hand scores so high it ends up at `naneinf`, which is NaN (not a number) multiplied by 10 to the infinite power
+
+<BalatroMathJax latex={['score = NaN\\times10^{\\infty}']} />
+
+which really is just pure gibberish. It's basically the number system inside the computer telling the game the number got so big it could no longer keep track of it.
+
+## Strategy takeaways
+
+Now with this monster of a blog post out of the way, we can use what we learn to apply some basic strategy to the game.
+
+In the early game, additive mult (sometimes called flat mult) is your best bet. A joker that adds <BalatroMathJax latex={"+3"} /> mult early on will do better than multiplicitive jokers. If you're desperate in the early game, a joker that adds chips such as Wee Joker, Blue Joker, etc, can get you by. But if that happens you really need to be on the look out for mult jokers as chips alone won't get you far.
+
+Polychrome jokers aren't great in the beginning. A typically early hand might only have 2 mult. Multiply that by 1.5 and you get 3, big whoop. Adding 3 to get 5 is a lot better. Polychrome and multiplicitive jokers are at their best somewhere around the midgame on.
+
+As the game progresses, adding to your mult with jokers like Swashbuckler has diminishing returns. What you really want is multiplicitive jokers who will double, triple, etc that mult. As the game progresses into the later antes, the more multiplying, the better.
+
+Cards are always processed from left to right. So you want additive jokers to the left, multiplying jokers to the right. You want your multiplying jokers to amplify as much of the additive mult as possible. Addition and multiplication are both communitive. This means that the order you have your adding or multiplying jokers doesn't matter, <BalatroMathJax latex={"\\times3\\times2"} /> is the same as <BalatroMathJax latex={"\\times2\\times3"} />, they both work out to <BalatroMathJax latex={"\\times6"} />.
+
+Ideally both the chips number and the mult number will be as close to each other as possible. <BalatroMathJax latex={"1\\times100"} /> is only <BalatroMathJax latex={"100"} />, but <BalatroMathJax latex={"50\\times50"} /> is <BalatroMathJax latex={"2500"} />. So don't just focus on mult, you need to bump up the chip number too. I often dedicate one joker to chips, such as Wee Joker or Castle. Since all the multiplying happens to the mult number (ie jokers like Hologram or Baseball Card), you want to focus more on that, but try not to forget chips too. But hey, with how much luck plays into this game, sometimes I roll without any chip jokers. Whatcanyado?
+
+## Planet card growths
+
+Out of curiousity, I thought it'd be interesting to see how planet cards grow.
+
+<BalatroPlanetCardGrowthComparisonGraph />
+
+There's something interesting happening with 3 of a Kind through Flush
+
+<BalatroPlanetCardGrowthComparisonGraph justFour />
+
+it turns out Flush scales the worst of the bunch, and Straight does the best. At first I thought this didn't make sense, but the more I think about it, I think it does. Flushes are easy to get in Balatro thanks to Tarot cards and the like, so it makes sense they get a small penalty here.
+
+## Conclusion
+
+And that's it for this one. This was fun to write, and I learned a few things to boot. Hope you did too!
