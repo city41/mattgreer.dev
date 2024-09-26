@@ -1,0 +1,38 @@
+import { Article } from '../../../components/layouts/Article';
+import { SimulationVisualization } from '../../../components/waypoints/simulation/SimulationComponents/SimulationVisualization';
+import meta from './meta.json';
+
+export default ({ children }) => (
+	<Article
+		{...meta}
+		img={require('./feature.png').default.src}
+		socialMediaImg={require('./twitter.png').default.src}
+		intro="How to make our CPU drivers drive a little more like humans"
+	>
+		{children}
+	</Article>
+);
+
+<SimulationVisualization level="careful-driver" />
+
+Now in part 4 of the [CPU driving series](/blog/CPU%20driving/), let's see about making our CPU drivers act more like human drivers.
+
+Our CPU drivers so far are absolute assasins. They put the pedal to the medal, never let up, and take the corners with razor sharpness. Even when they drift they do so with precision. If this was a real racing game, human players would struggle to compete.
+
+Making CPU drivers more varied, fallible, and "human" is a complex topic. So today we will only look into one thing, slowing down to take turns. The nice thing about this feature is we can decide how much a given driver slows down, allowing us to decide if a driver is aggressive or conservative, giving us some simple knobs to turn to tweak difficulty in a game.
+
+## How the CPU takes turns
+
+As a simple recap, the CPU in this blog series takes turns by calculating a frame angle change rate. By considering how far away the CPU is from its target waypoint, how fast it's going, and how much it needs to turn to arrive at its destination, we can determine how much to turn the car every frame.
+
+<<< graphic describing this sequence >>>
+
+This works really well, but it has the "downside" of being very perfect. The car doesn't need to slow down at all because it can always turn as much as it needs.
+
+A simple way to force it to slow down when taking turns is introducing a maximum turn rate it is allowed. With a maximum turn rate, if it can't turn enough in time to get to the next way point, it will have no choice but to slow down so that it can have more frames of turning.
+
+<wisdom>
+	This has the added bonus of being more realistic. Real cars can only turn so
+	much, and must take that into account when going through curves. We are
+	effectively creating the same limitation with our maximum turn rate.
+</wisdom>

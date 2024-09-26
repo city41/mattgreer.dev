@@ -21,6 +21,7 @@ import styles from './SimulationVisualization.module.css';
 import { VehicleVisualization } from './VehicleVisualization';
 import { DriftVehicle } from '../sim/DriftVehicle';
 import { NaiveDriftVehicle } from '../sim/NaiveDriftVehicle';
+import { SmoothTurningCarefuleVehicle } from '../sim/SmoothTurningCarefulVehicle';
 
 type Level =
 	| 'basic'
@@ -33,7 +34,8 @@ type Level =
 	| 'two-cars-undo-collision'
 	| 'two-cars-undo-collision-bounding-circles'
 	| 'two-cars-steer-away-collision-bounding-circles'
-	| 'three-cars-steer-away-collision-bounding-circles';
+	| 'three-cars-steer-away-collision-bounding-circles'
+	| 'careful-driver';
 
 type SimulationVisualizationProps = {
 	level: Level;
@@ -163,6 +165,24 @@ function getSimulation(level: Level, canvas: HTMLCanvasElement) {
 					new SmoothTurningVehicle(80, 110, 20 / 100, 'rgb(200, 255, 100)'),
 					new SmoothTurningVehicle(105, 125, 18 / 100, 'rgb(255, 100, 200)'),
 					new SmoothTurningVehicle(30, 110, 21 / 100, 'rgb(100, 100, 255)'),
+				],
+				smoothTurningWaypoints,
+				{
+					frames: 550,
+					collisionDetection: 'steer-away',
+					drawboundingCircles: true,
+				}
+			);
+		case 'careful-driver':
+			return new Simulation(
+				canvas,
+				[
+					new SmoothTurningCarefuleVehicle(
+						80,
+						110,
+						20 / 100,
+						'rgb(200, 255, 100)'
+					),
 				],
 				smoothTurningWaypoints,
 				{
