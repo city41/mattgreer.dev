@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg width="256.67mm" height="111.59mm" version="1.1" viewBox="0 0 256.67 111.59" xmlns="http://www.w3.org/2000/svg">
+ <rect x="-.17602" y=".0085312" width="257.01" height="111.18" fill="#fff" stop-color="#000000" stroke-width="1.5875"/>
+ <path d="m185.35 62.354-109.08 23.437" fill="none" stroke="#00c900" stroke-width="1.0583"/>
+ <g>
+  <path d="m81.972 90.392-9.3367-3.8213 7.4092-7.0179z" fill="#00c900" stop-color="#000000" stroke-width="1.0583"/>
+  <text x="8.2549381" y="20.918291" fill="#000000" font-family="sans-serif" font-size="9.8778px" stroke-width=".26458" style="line-height:1.25" xml:space="preserve"><tspan x="8.2549381" y="20.918291">score = numCardsPlayed * (8 + cardValue) * 1)</tspan><tspan x="8.2549381" y="33.265514"/><tspan x="8.2549381" y="45.61274">s = n * ((10+c) * 1)</tspan><tspan x="8.2549381" y="57.959965"/><tspan x="8.2549381" y="70.30719">s = (10+c)n * n</tspan><tspan x="8.2549381" y="82.654419"/><tspan x="8.2549381" y="95.00164">s = (10+c)n</tspan><tspan x="8.2549381" y="107.34887"/><tspan x="8.2549381" y="119.69609"/><tspan x="8.2549381" y="132.04332"/></text>
+  <text x="67.883995" y="89.920822" fill="#000000" font-family="sans-serif" font-size="4.2333px" stroke-width=".26458" style="line-height:1.25" xml:space="preserve"><tspan x="67.883995" y="89.920822" font-size="4.2333px" stroke-width=".26458">2</tspan></text>
+  <rect x="138.82" y="37.666" width="79.387" height="49.465" fill="#fff" stop-color="#000000" stroke="#00c900" stroke-width="2.6458"/>
+  <text x="146.03" y="48.698742" fill="#000000" font-family="sans-serif" font-size="8.7612px" stroke-width=".26458" style="line-height:1.25" xml:space="preserve"><tspan x="146.03" y="48.698742">This n squared</tspan><tspan x="146.03" y="59.650257">is what causes</tspan><tspan x="146.03" y="70.601768">the polynomial </tspan><tspan x="146.03" y="81.553276">growth</tspan></text>
+ </g>
+</svg>

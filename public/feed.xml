@@ -4,7 +4,7 @@
         <title>Matt Greer</title>
         <link>https://mattgreer.dev</link>
         <description>Mostly web dev and game dev related articles</description>
-        <lastBuildDate>Thu, 26 Sep 2024 15:50:30 GMT</lastBuildDate>
+        <lastBuildDate>Fri, 27 Sep 2024 16:39:54 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
@@ -19,6 +19,14 @@
             <title><![CDATA[Balatro Score Growth]]></title>
             <link>https://mattgreer.dev/blog/balatro-score-growth</link>
             <guid>https://mattgreer.dev/blog/balatro-score-growth</guid>
+            <pubDate>Fri, 27 Sep 2024 00:00:00 GMT</pubDate>
+            <description><![CDATA[How do the planet cards grow in Balatro?]]></description>
+            <author>matt.e.greer@gmail.com (Matt Greer)</author>
+        </item>
+        <item>
+            <title><![CDATA[Balatro Planet Growth]]></title>
+            <link>https://mattgreer.dev/blog/balatro-planet-growth</link>
+            <guid>https://mattgreer.dev/blog/balatro-planet-growth</guid>
             <pubDate>Mon, 23 Sep 2024 00:00:00 GMT</pubDate>
             <description><![CDATA[How do decks increase their scoring in Balatro?]]></description>
             <author>matt.e.greer@gmail.com (Matt Greer)</author>

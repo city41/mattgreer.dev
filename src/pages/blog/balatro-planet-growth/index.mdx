@@ -1,0 +1,63 @@
+import { Article } from '../../../components/layouts/Article';
+import { BalatroBlindGrowthGraph } from '../../../components/balatro/BalatroBlindGrowthGraph';
+import { BalatroPlanetCardGrowthComparisonGraph } from '../../../components/balatro/BalatroPlanetCardGrowthComparisonGraph';
+import { BalatroBlindAndPlanetGrowthGraph } from '../../../components/balatro/BalatroBlindAndPlanetGrowthGraph';
+import meta from './meta.json';
+
+export default ({ children }) => (
+	<Article
+		{...meta}
+		img={require('./feature.png').default.src}
+		socialMediaImg={require('./twitter.png').default.src}
+		intro="How do planet cards grow in Balatro?"
+	>
+		{children}
+	</Article>
+);
+
+<noscript>
+	<div className="my-16 p-4 bg-red-100 text-red-900">
+		This article requires JavaScript be enabled for everything to show up
+		properly.
+	</div>
+</noscript>
+
+<wisdom>
+	<b>Hey!</b> This blog post assumes you are familiar with the game{' '}
+	<a href="https://www.playbalatro.com/">Balatro</a>. If you've not played it
+	and enjoy card games, strategy games, and especially games like Magic the
+	Gathering, you should check it out. You'll love it. I'm absolutely obsessed
+	with it :)
+</wisdom>
+
+After looking at [score growth in the last post](/blog/balatro-score-growth), let's quickly take a look at plant cards. This will be a short one, kind of an addendum to the last post.
+
+## How do the blinds grow?
+
+As you progress in the game, the blind score requirements increase. How much they increase depends on what difficulty level you're playing, which boss blinds you end up fighting, and which deck you're using. Here is the bling growth for the starting red deck on the starting white stakes difficulty with typical bosses.
+
+<BalatroBlindGrowthGraph stakes={['white']} />
+
+Once you arrive at green difficulty, the blinds bump up and get a bit harder, and again at purple difficulty. Here is all three
+
+<BalatroBlindGrowthGraph stakes={['white', 'green', 'purple']} />
+
+## Planet Growth
+
+And now, the planet cards
+
+<BalatroPlanetCardGrowthComparisonGraph />
+
+And it's interesting to see what is happening from three of kind through full house
+
+<BalatroPlanetCardGrowthComparisonGraph justFour />
+
+Flush's growth rate is the worst, while straight's is the best. This doesn't follow the expected rarity of the hands as they come in standard poker. But I think this does make sense for Balatro. With tarot cards, it's pretty easy to make flushes, three of a kinds and full houses. But not much in the game offers help for straights.
+
+## Blinds and Planets
+
+And finally, here is the blind growth overlayed with the planet growth
+
+<BalatroBlindAndPlanetGrowthGraph />
+
+The planet growth is "squashed" because this shared graph is using the y axis of the blind growth. That's because the blinds grow much faster and higher. In short, planet cards alone are not a solid strategy for beating Balatro. Even on white difficulty, planet cards can just barely eek out a win. And if a nasty boss like "very big bling" comes, there's no chance.

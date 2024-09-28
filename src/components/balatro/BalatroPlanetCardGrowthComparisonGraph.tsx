@@ -95,16 +95,26 @@ const cardDatas = [
 	},
 ];
 
+type BalatroPlanetCardGrowthComparisonGraphProps = {
+	levels?: number;
+	justFour?: boolean;
+	xAxisLabel?: string;
+	yAxisLabel?: string;
+	max?: number;
+};
+
 function BalatroPlanetCardGrowthComparisonGraph({
-	justFour,
-}: {
-	justFour: boolean;
-}) {
+	levels = 10,
+	justFour = false,
+	xAxisLabel = 'level',
+	yAxisLabel = 'base score',
+	max = 3000,
+}: BalatroPlanetCardGrowthComparisonGraphProps) {
 	const currentCardDatas = justFour ? justFourData : cardDatas;
 	const datas = currentCardDatas.map((cardData, ci) => {
 		const scoreData = [];
 
-		for (let i = 0; i < 10; ++i) {
+		for (let i = 0; i < levels; ++i) {
 			const result = {
 				chips: cardData.baseChips + i * cardData.addedChips,
 				mult: cardData.baseMult + i * cardData.addedMult,
@@ -128,7 +138,7 @@ function BalatroPlanetCardGrowthComparisonGraph({
 				yScale={{
 					type: 'linear',
 					min: 0,
-					max: 3000,
+					max,
 				}}
 				yFormat=" >-.2f"
 				axisTop={null}
@@ -137,7 +147,7 @@ function BalatroPlanetCardGrowthComparisonGraph({
 					tickSize: 5,
 					tickPadding: 5,
 					tickRotation: 0,
-					legend: 'level',
+					legend: xAxisLabel,
 					legendOffset: 36,
 					legendPosition: 'middle',
 					truncateTickAt: 0,
@@ -147,7 +157,7 @@ function BalatroPlanetCardGrowthComparisonGraph({
 					tickSize: 5,
 					tickPadding: 5,
 					tickRotation: 0,
-					legend: 'base score',
+					legend: yAxisLabel,
 					legendOffset: -40,
 					legendPosition: 'middle',
 					truncateTickAt: 0,
