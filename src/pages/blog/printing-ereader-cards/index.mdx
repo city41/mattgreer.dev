@@ -194,6 +194,107 @@ With the printouts from this Ricoh printer, I can get them to scan into an E-Rea
 
 I also tried printouts at FedEx Office and I never got any to work. I'm not sure what printers they have, but I can say for sure they aren't giant behemoths like what I found at the UPS store. Also their glossy paper was thin and pretty low quality.
 
+## Step by step printing
+
+Here is how I print my cards.
+
+### Step one: get a .raw file
+
+You probably want to print rare official cards, like the Pokemon Eon Ticket. I can't help you locate the files, but when you find some you want to make sure they are `.raw` files. E-Reader cards can come in many formats, but .raw is the final one that can be turned into a dotcode image.
+
+[Here](/helloWorld.ereader.raw) is a raw file I made of a simple test program. It has no copyright issues as I wrote it, so feel free to use it.
+
+### Test the .raw file in mGBA
+
+No point in making a card of a faulty file. Fire up mGBA, load up the E-Reader GBA ROM (which you can obtain by dumping your E-Reader, or, uh, you know...) and then when the E-Reader wants you to scan a card, choose "Scane e-Reader dotcodes..."
+
+<figure>
+	<img
+		src={require('./mGBAEReaderMenuItem.png').default.src}
+		alt="Choosing to scan a dotcode in mGBA"
+	/>
+	<figcaption>Choosing to scan a dotcode in mGBA</figcaption>
+</figure>
+
+Wait a few seconds, and if successful, you'll see this
+
+<figure>
+	<img
+		src={require('./mGBAEReaderScanSuccess.png').default.src}
+		alt="E-Reader scan success"
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>E-Reader scan success</figcaption>
+</figure>
+
+then press A to get into the scanned app
+
+<figure>
+	<img
+		src={require('./mGBAHelloScreenshot.png').default.src}
+		alt="A simple E-Reader app running in mGBA"
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>A simple E-Reader app running in mGBA</figcaption>
+</figure>
+
+If this doesn't work, there is no point in going further. It won't work on a real E-Reader either.
+
+### Step two: print the file using raw2bmp
+
+Print the raw file using [raw2bmp.exe](https://caitsith2.com/ereader/devtools.htm). If you are on Linux, this app works fine with wine. Not sure about MacOS
+
+```bash
+raw2bmp.exe -i helloWorld.ereader.raw -o helloWorld -dpi 600
+```
+
+If you don't specify `-dpi`, it will default to 300. I have found 300 is not high enough, best to go with 600.
+
+You will end up with a .bmp like this
+
+<figure>
+	<img
+		src={require('./helloWorld.dotcode.bmp.png').default.src}
+		alt="Hello World as a dotcode bmp"
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>Hello World as dotcode bmp</figcaption>
+</figure>
+
+### Step three: print it out
+
+Print this file at 600 dpi on a high quality printer using high quality glossy paper. Here is one of my print outs. I censored it as I had some other stuff on this card that isn't relevant.
+
+<figure>
+	<img
+		src={require('./printedOutCard.jpg').default.src}
+		alt="Printed out card"
+	/>
+	<figcaption>Printed out card</figcaption>
+</figure>
+
+### Step four: Cut it out
+
+Now you need to trim the paper down to a card size. If you look back above at the dotcard bmp, notice how the right side has more dots? Also notice how the right side with more dots is on the lower right side of the card? That is important. If you orient the dotcode image the opposite way, it won't scan no matter what. It will be pure gibberish to the E-Reader.
+
+<figure>
+	<img
+		src={require('./orientCorrect.png').default.src}
+		alt="The card with the dotcodes oriented correctly"
+	/>
+	<figcaption>The card with the dotcodes oriented correctly</figcaption>
+</figure>
+
+<figure>
+	<img
+		src={require('./orientIncorrect.png').default.src}
+		alt="The card with the dotcodes oriented incorrectly"
+	/>
+	<figcaption>The card with the dotcodes oriented incorrectly</figcaption>
+</figure>
+
+Also keep this in mind when making a card that has two dotcode strips. The upper strip needs to be oriented correctly. You can always just make two single strip cards too.
+
 ## Conclusion
 
 Good luck, this can be frustrating when it doesn't work (believe me, I know...). Hopefully my images and tips can help you be successful.
