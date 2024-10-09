@@ -200,13 +200,13 @@ Here is how I print my cards.
 
 ### Step one: get a .raw file
 
-You probably want to print rare official cards, like the Pokemon Eon Ticket. I can't help you locate the files, but when you find some you want to make sure they are `.raw` files. E-Reader cards can come in many formats, but .raw is the final one that can be turned into a dotcode image.
+You probably want to print rare official cards, like the Pokemon Eon Ticket. I can't help you locate the files, but when you find some you want, make sure they are `.raw` files. E-Reader cards can come in many formats for reasons I won't get into, but .raw is the final one that can be turned into a dotcode image.
 
-[Here](/helloWorld.ereader.raw) is a raw file I made of a simple test program. It has no copyright issues as I wrote it, so feel free to use it.
+[Here](/helloWorld.ereader.raw) is a raw file I made of a simple test program. It has no copyright issues since I wrote it, so feel free to use it.
 
 ### Test the .raw file in mGBA
 
-No point in making a card of a faulty file. Fire up mGBA, load up the E-Reader GBA ROM (which you can obtain by dumping your E-Reader, or, uh, you know...) and then when the E-Reader wants you to scan a card, choose "Scane e-Reader dotcodes..."
+No point in making a card of a faulty file, so best to test it first. Fire up mGBA, load up the E-Reader GBA ROM (which you can obtain by dumping your E-Reader, or, uh, you know...) and then when the E-Reader wants you to scan a card, choose "Scan e-Reader dotcodes..."
 
 <figure>
 	<img
@@ -238,11 +238,11 @@ then press A to get into the scanned app
 	<figcaption>A simple E-Reader app running in mGBA</figcaption>
 </figure>
 
-If this doesn't work, there is no point in going further. It won't work on a real E-Reader either.
+If this doesn't work, there is no point in going further. It won't work on a real E-Reader either. You will probably need to track down another .raw file to try.
 
 ### Step two: print the file using raw2bmp
 
-Print the raw file using [raw2bmp.exe](https://caitsith2.com/ereader/devtools.htm). If you are on Linux, this app works fine with wine. Not sure about MacOS
+Print the raw file using [raw2bmp.exe](https://caitsith2.com/ereader/devtools.htm). If you are on Linux, this app works fine with wine. Not sure about MacOS.
 
 ```bash
 raw2bmp.exe -i helloWorld.ereader.raw -o helloWorld -dpi 600
@@ -256,7 +256,6 @@ You will end up with a .bmp like this
 	<img
 		src={require('./helloWorld.dotcode.bmp.png').default.src}
 		alt="Hello World as a dotcode bmp"
-		style={{ imageRendering: 'pixelated' }}
 	/>
 	<figcaption>Hello World as dotcode bmp</figcaption>
 </figure>
@@ -294,6 +293,16 @@ Now you need to trim the paper down to a card size. If you look back above at th
 </figure>
 
 Also keep this in mind when making a card that has two dotcode strips. The upper strip needs to be oriented correctly. You can always just make two single strip cards too.
+
+#### Use a paper cutter if you can
+
+When trimming the card, having a perfectly straight edge along the dotcode helps a lot. That will ensure it scans smoother without jumping around. This is best done with a paper cutter. Oh and make sure to leave about a 2mm gap between the edge of the card and the dotcode strip.
+
+<wisdom>
+	The dotcodes that raw2bmp creates are a bit bigger than the dotcodes on
+	official cards. That's not an issue. The E-Reader will still read these just
+	fine.
+</wisdom>
 
 ## Conclusion
 
