@@ -1,0 +1,177 @@
+import { Article } from '../../../components/layouts/Article';
+import meta from './meta.json';
+
+export default ({ children }) => (
+	<Article
+		{...meta}
+		img={require('./feature.png').default.src}
+		socialMediaImg={require('./twitter.png').default.src}
+		intro="How I printed Nintendo E-Reader cards so they work"
+	>
+		{children}
+	</Article>
+);
+
+The Game Boy Advance had a device called the E-Reader. It can scan physical cards which contain a dotcode pattern. The E-Reader converts those dots into binary data and executes it.
+
+<figure>
+	<img
+		src={require('./ereaderWithCard.jpg').default.src}
+		alt="The E-Reader and one of its cards"
+	/>
+	<figcaption>The E-Reader and one of its cards</figcaption>
+</figure>
+
+Have you ever wanted to print your own cards and failed? I sure have, holy cow. But I finally got it to work.
+
+<iframe
+	width={500}
+	height={800}
+	style={{ margin: 'auto' }}
+	src="https://www.youtube.com/embed/63lehoxLDic"
+	frameBorder={0}
+	allowFullScreen
+></iframe>
+
+Here is what worked for me and some tips.
+
+## Use glossy paper
+
+I have found the glossier the better. Glossy paper is very smooth. When viewed through a jeweler's loupe, there's almost no discernable texture at all
+
+<figure>
+	<img
+		src={require('./loupe_workingCard.jpg').default.src}
+		alt="Examining a glossy print result through loupe"
+	/>
+	<figcaption>Examining a glossy print result through loupe</figcaption>
+</figure>
+
+<wisdom>
+	Btw I recommend picking up a loupe like this. They are cheap on Amazon and can
+	really help with troubleshooting.
+</wisdom>
+
+Compare that to a printout on matte paper
+
+<figure>
+	<img
+		src={require('./loupe_matteTexture.jpg').default.src}
+		alt="The texture on matte paper"
+	/>
+	<figcaption>The texture on matte paper</figcaption>
+</figure>
+
+To the naked eye you can't see it, but through a loupe it almost looks like cottage cheese :) That texture fights with and confuses the camera, making a successful scan virtually impossible.
+
+Official Nintendo E-Reader cards were printed on a semi-gloss paper that has a little bit of texture. But you're fighting an uphill battle, the less texture you have the better.
+
+## Use a 1-bit, black and white image
+
+If you created your dotcode images with raw2bmp or other E-Reader printing tools, they will create a 1-bit image. That means the image only has black and white in it. That is what you want. If the image is fully color, even if it only has black in it, the printer will print it differently.
+
+In The Gimp, the image will be "indexed" if it is 1-bit
+
+<figure>
+	<img
+		src={require('./gimpIndexed.png').default.src}
+		alt="An image in indexed mode in the Gimp"
+	/>
+	<figcaption>An image in indexed mode in the Gimp</figcaption>
+</figure>
+
+And if you look at the color palette for the image (Windows menu > Dockable Dialogs > Colormap), you should see the palette is just white and black.
+
+Here is a dotcode 1-bit image loaded into aseprite
+
+<figure>
+	<img
+		src={require('./asepriteIndexed.png').default.src}
+		alt="An image in indexed mode in Aseprite"
+	/>
+	<figcaption>An image in indexed mode in Aseprite</figcaption>
+</figure>
+
+Again it is shown as "indexed", and the palette only has black and white in it.
+
+Photoshop and other image programs should be very similar.
+
+If you try to print a full color (RGB) dotcode image, it will look black to the naked eye. But when examined with a loupe
+
+<figure>
+	<img
+		src={require('./loupe_fullColor.jpg').default.src}
+		alt="Examining a full color dotcode printout"
+	/>
+	<figcaption>Examining a full color dotcode printout</figcaption>
+</figure>
+
+See how the dots are yellow, magenta, all kinds of colors? The E-Reader won't read that correctly! Why printers do this is beyond me.
+
+Having the printer print the full color image in greyscale mode will not fix this. You will end up with dots that are varying levels of grey. I never got a color image printed as greyscale to scan correctly at all.
+
+<figure>
+	<img
+		src={require('./loupe_fullColorMadeGreyscale.jpg').default.src}
+		alt="A full color dotcode image printed as greyscale"
+	/>
+	<figcaption>A full color dotcode image printed as greyscale</figcaption>
+</figure>
+
+It's a bit hard to tell, but these dots are "fuzzy" and some are a pale grey. The printer took the full color dots above and converted them into greyscale. Why do printers do this? I have no idea.
+
+A true, 1-bit, black and white image, will produce very solid, vibrant black dots
+
+<figure>
+	<img
+		src={require('./loupe_workingCard.jpg').default.src}
+		alt="Vibrant, black dots from a truly black and white image"
+	/>
+	<figcaption>
+		Vibrant, black dots from a truly black and white image
+	</figcaption>
+</figure>
+
+## Print at 600 dpi
+
+Official E-Reader cards are 342.39 dots per inch (dpi) according to [gbatek](https://rust-console.github.io/gbatek-gbaonly/). That is a strange dpi that regular digital printers won't recreate. You generally have the choice of 300 dpi, 600, or 1200 if you use a really high end printer. I have found 300 is too grainy and does not work. I have also found 1200 is overkill and not needed. 600 dpi is a nice middle ground, and bonus most modern home printers can print at this dpi.
+
+## Printing at home? An ink printer is better than laser
+
+Most people that successfully print out e-reader cards at home do so on ink printers using glossy photo paper (Canon's [Photo Paper Plus Glossy II](https://www.amazon.com/Canon-Glossy-Inches-Sheets-2311B023/dp/B0014WJYOG/ref=sr_1_3?crid=2ZMU7LOZFSVXT&dib=eyJ2IjoiMSJ9.AkxD_qlBaQ_l4UCNhzkVK1oqQppZwha5f5JlboPkjtEybeqxg09t9VVF1aCyoAsjiYoqHBpL2MtuAMUk06z1Q7Xpi7iYqcAckbxpA8W0ZKX3KtXA1_gur2lIOLWtoQZKLEmJ1Z7GYbFUh90r8PWw_pbEixgdXFGAMT1w9yGi7IrrIj4uBnCEj0NAFVRFV6Qqf05vttQWvNY3zE_27i8p1ewzxeGKHg45JmUofykvi6TWYpUNFrLJEuMoqi5EQNIhg_E9hNZu3Dz2uSqHmsSipWWVh3HZN1HfNm5sOTAefLY.mxtQJLncnDmjtYzMmyd0jIsw1I_J93z5iMGI4jMxXps&dib_tag=se&keywords=canon+glossy+photo+paper+plus&qid=1728434460&sprefix=canon+glossy+photo+paper+plu%2Caps%2C130&sr=8-3) is often recommended, although I have never used it myself)
+
+The reason ink printers work better is they can work with better paper. The glossy paper designed for laser printers isn't good enough, at least I couldn't find any that would work. It's far thinner and less glossy than the glossy paper meant for ink printers.
+
+## Printing at home? Make sure you have a proper driver
+
+I'm a Linux user and my Linux printing setup doesn't have the fully correct print driver for my printer. I use a driver meant for a similar printer, but not one meant for my exact printer model. That is fine for documents and normal day to day printing. But with a mismatched driver, I just could not get high dpi prints at all. When I hooked my printer up to a Windows machine and used the correct driver from the manufacturer, the print quality shot way up. It was like night and day.
+
+## If all else fails, take it to a shop
+
+I ended up getting my cards printed at the UPS Store. They have a Ricoh Pro C5300S, which is a very high end, excellent, digital printer.
+
+<figure>
+	<img
+		src={require('./upsStoreRicoh.jpg').default.src}
+		alt="The behemoth printer at the UPS Store"
+	/>
+	<figcaption>The behemoth printer at the UPS store</figcaption>
+</figure>
+
+This printer is able to print E-Reader cards that work no problem. It's totally overkill, but hey, it works! But you have to set it up correctly. When working with the employee, make sure
+
+- To use the highest quality, glossy paper they have. It should be thick, card like, and very glossy.
+- Make sure your image is 1-bit black and white. Yes even this professional printer did not print full color dotcode images correctly.
+- Make sure your image is 600 dpi and that the printer prints at 600 dpi.
+
+After a print is done, pull out your loupe and compare the dots in the print to an offical E-Reader card. They should look very similar. The dots should be solid and pure black, like the image above.
+
+With the printouts from this Ricoh printer, I can get them to scan into an E-Reader 99% of the time, just like real E-Reader cards.
+
+### I also tried FedEx Office
+
+I also tried printouts at FedEx Office and I never got any to work. I'm not sure what printers they have, but I can say for sure they aren't giant behemoths like what I found at the UPS store. Also their glossy paper was thin and pretty low quality.
+
+## Conclusion
+
+Good luck, this can be frustrating when it doesn't work (believe me, I know...). Hopefully my images and tips can help you be successful.
