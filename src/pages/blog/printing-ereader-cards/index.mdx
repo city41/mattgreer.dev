@@ -35,6 +35,28 @@ Have you ever wanted to print your own cards and failed? I sure have, holy cow. 
 
 Here is what worked for me and some tips.
 
+## Make sure the dotcodes remain sharp
+
+I was working on making a custom E-Reader card with graphics, to make it look more like an official one. I didn't realize it at the time, but the graphics software I was using had imported the dotcode images with softening/anti-aliasing on them. They looked this
+
+<figure>
+	<img
+		src={require('./blurryImport.png').default.src}
+		alt="Dotcodes made blurry by my graphics program"
+	/>
+	<figcaption>Dotcodes made blurry by my graphics program</figcaption>
+</figure>
+
+and when they are like this, they won't print correctly. They will come out grey and "soft". They should look like this
+
+<figure>
+	<img
+		src={require('./pixelatedImport.png').default.src}
+		alt="Dotcodes crisp as they should be"
+	/>
+	<figcaption>Dotcodes crips as they should be</figcaption>
+</figure>
+
 ## Use glossy paper
 
 I have found the glossier the better. Glossy paper is very smooth. When viewed through a jeweler's loupe, there's almost no discernable texture at all
