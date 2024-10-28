@@ -1,0 +1,13 @@
+import { Article } from '../../../components/layouts/Article';
+import meta from './meta.json';
+
+export default ({ children }) => (
+	<Article
+		{...meta}
+		img={require('./feature.png').default.src}
+		socialMediaImg={require('./twitter.png').default.src}
+		intro="Making a new game from scratch for Nintendo's forgotten peripheral"
+	>
+		{children}
+	</Article>
+);
