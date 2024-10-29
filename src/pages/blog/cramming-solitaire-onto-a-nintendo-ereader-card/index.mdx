@@ -11,3 +11,218 @@ export default ({ children }) => (
 		{children}
 	</Article>
 );
+
+I recently finished making Solitaire for the Nintendo E-Reader. I managed to fit it onto a single card, and it's a pretty full featured version of the game. I'm really happy with how it turned out. I figured I'd talk a bit about how I made it.
+
+<<<< video >>>>
+
+<<<< CTA for getting a card >>>>
+
+## What is the E-Reader?
+
+The E-Reader was a peripheral that Nintendo released for the Game Boy Advance in 2002. By scanning cards that have a dot code strip on them, you can load games and other things with it.
+
+<figure>
+	<img
+		src={require('../printing-ereader-cards/ereaderWithCard.jpg').default.src}
+		alt="The E-Reader and one of its cards"
+	/>
+	<figcaption>The E-Reader and one of its cards</figcaption>
+</figure>
+
+I've always really liked this device and was sad it didn't do very well in America. So I thought maybe I'd take a stab at it myself and see what I can make for it.
+
+## Tools and docs, starting way back in the past...
+
+I remembered there were some old tools and websites about making E-Reader cards from back around when it first came out &em; twenty years ago! I managed to find <a href="https://www.schuerewegen.tk/">Tim Schuerewegen's</a> original site in the Wayback Machine. It had some examples, source code and tools. I also refound <a href="https://caitsith2.com/ereader/">CaitSith2's E-Reader site</a>, which also has some tools.
+
+<wisdom>
+	These tools are the backbone of E-Reader dev. Thanks to Tim and CaitSith2 for
+	making them! They were originally made for Windows, but they were also made{' '}
+	<a href="https://github.com/breadbored/nedclib">multi-platform here</a>.
+</wisdom>
+
+These initial findings were a great start and got me headed down learning how E-Reader applications are programmed. Gbatek also has [a section on the E-Reader](https://problemkaputt.de/gbatek.htm#gbacartereader) which also contains lots of useful information.
+
+More recently I found [AkBKukU's e-reader-dev repo](https://github.com/AkBKukU/e-reader-dev) which was also a great help.
+
+## Pick your poision: GBA, NES or ... z80?
+
+E-Reader cards can come in four broad formats
+
+### Game Boy Advance applications
+
+These are GBA programs written much like if you were making a normal GBA game. The E-Reader simply loads them in then lets them execute for the most part.
+
+### NES games
+
+The E-Reader contains a simple NES emulator, so it is possible to directly put simple NES games onto E-Reader cards. The keyword here is "simple", it does not support functionality needed by more advanced games. Also the E-Reader has a limit as to how much data you can swipe in. So in the end it is only possible to run early/small NES games. Nintendo used this to release games like Excitebike and Donkey Kong for the E-Reader
+
+<figure>
+	<img
+		src={require('./excitebike.jpg').default.src}
+		alt="Excitebike in E-Reader card format"
+	/>
+	<figcaption>Excitebike in E-Reader card format</figcaption>
+</figure>
+
+### Raw binaries
+
+These E-Reader cards just contain binary information of some kind. Specific games made use of these to add levels, characters, etc. Kind of like a primitive form of DLC. It is up to the specific game to interpret the data as it sees fit.
+
+Super Mario Advance 4 released cards like this, adding additional levels into the game
+
+<<<< sma4 cards >>>>
+
+### z80 Applications
+
+And finally the E-Reader also contains a simple z80 emulator. The z80 is an 8-bit processor that first came out in 1976! It was very successful and found in many different computers. It's a pretty simple processor, and I'm guessing making the emulator for it wasn't too difficult for Nintendo and so they adopted this route.
+
+<figure>
+	<img
+		src={require('./manhole.jpg').default.src}
+		alt="Manhole: a simple E-Reader game written for the z80"
+	/>
+	<figcaption>Manhole: a simple E-Reader game written for the z80</figcaption>
+</figure>
+
+That means E-Reader apps can be written in z80 assembly. The primary advantage here is z80 apps tend to be quite small. In my experimenting, I found a z80 E-Reader app to be about 30-50% smaller than an equivalent E-Reader GBA app. Nintendo almost entirely went this route with their own cards to keep the number of swipes needed for an application down.
+
+## z80 E-Reader apps
+
+I made Solitaire as a z80 application and have become pretty entrenched in this approach. I really like how much smaller the resulting binaries are when using z80 instead of writing a native GBA application. But make no doubt about it, z80 assembly is pretty rough. Especially considering you can write a GBA game in C.
+
+### The ERAPI API
+
+For z80 games, Nintendo embedded a simple but effective [API](https://problemkaputt.de/gbatek.htm#gbacartereaderapifunctions) into the E-Reader that they can take advantage of. Things like creating sprites, playing music, even multiplying and dividing, can all be done through this API.
+
+<wisdom>
+	GBA E-Reader games also make use of this API, but in a different way. There is
+	a lot of overlap and similaries, but the two approaches don't exactly map 1:1
+	to each other.
+</wisdom>
+
+As a simple example, here is how to create a sprite using the API
+
+```asm
+    ; ERAPI_SpriteCreate()
+    ; e  = pal#
+    ; hl = sprite data
+    ld  e, #2
+    ld  hl, #my_sprite_data_struct
+    rst 0
+    .db ERAPI_SpriteCreate
+    ld  (my_sprite_handle), hl
+```
+
+If you're not familiar with z80 assembly this probably looks bizarre. It is basically the equivalent of
+
+```c
+int my_sprite_handle = SpriteCreate(2, my_sprite_data_struct);
+```
+
+The `ld` calls are "load", and here we are loading the `e` register with which palette index we want the sprite to use. The `hl` register is loaded with a pointer to the information about the sprite (its tiles, colors, frames of animation, etc). The `rst 0` and `.db ERAPI_SpriteCreate` lines are where we actually make the API call. Without getting too deep on how the z80 works, this is basically a function call. When it is done, it will leave the handle to the sprite in the hl register, so we `ld (my_sprite_handle), hl` to copy that value off into memory for safe keeping. That handle is later used whenever we want to interact with the sprite, such as changing its position.
+
+### A crippled z80
+
+The E-Reader contains a z80 emulator, and that emulator is not 100% accurate. It is known to not support certain opcodes, and I also found that some opcodes just don't seem to work. It only supports the main subset of registers. The more esoteric registers like `ix`, `iy` and the prime registers do not work.
+
+### A challenge...
+
+My only other exposure to assembly thus far is when I made some [Neo Geo ROM hacks](https://neorh.mattgreer.dev/). The Neo Geo has a Motorola 68000 processor. It is 16 bit and first debuted in 1979 (3 years after the z80) and thus is much easier to work with than the z80.
+
+But I didn't even have a full z80, the cpu's limitatoins compounded with the emulator's limitations at times made coding quite challenging. I often felt like this when trying to do something
+
+<figure>
+	<img
+		src={require('./austinPowers.jpg').default.src}
+		alt="Austin Powers trying to turn around in a tunnel"
+		style={{ imageRendering: 'pixelated' }}
+	/>
+</figure>
+
+### Debugging
+
+Another huge challenge was debugging the game. There's no way to log anything. Running the game on a Game Boy Advance is a total black box. GBA emulators like [mGBA](https://mgba.io/) have good debugging features. But this was a z80 emulator written for the GBA's ARM processor. I figured stepping through ARM instructions trying to figure out how the emulator worked would be a herculean task, so much so I never even tried.
+
+As a first stab at this, I took [z80js](https://github.com/5inf/z80js) and built a small application that would run my binary and log out what the cpu was doing. The output looked like this
+
+```
+...
+0B52: call _deck_gfx_render_column            | a:  17, b:  00, c:  03, d:  08, e:  5c, h:  00, l:  17, bc: 0003, de: 085c, hl: 0017, ix: 0000, iy: 0000
+0B5B: ld   b,#0x13                            | a:  17, b:  00, c:  03, d:  08, e:  5c, h:  00, l:  17, bc: 0003, de: 085c, hl: 0017, ix: 0000, iy: 0000
+0B5D: ld   c,#0x00                            | a:  17, b:  13, c:  03, d:  08, e:  5c, h:  00, l:  17, bc: 1303, de: 085c, hl: 0017, ix: 0000, iy: 0000
+0B5F: ld   hl,(_deck_gfx_cur_column_addr)     | a:  17, b:  13, c:  00, d:  08, e:  5c, h:  00, l:  17, bc: 1300, de: 085c, hl: 0017, ix: 0000, iy: 0000
+0B62: ld   d,#0x00                            | a:  17, b:  13, c:  00, d:  08, e:  5c, h:  08, l:  5c, bc: 1300, de: 085c, hl: 085c, ix: 0000, iy: 0000
+0B64: ld   e,c                                | a:  17, b:  13, c:  00, d:  00, e:  5c, h:  08, l:  5c, bc: 1300, de: 005c, hl: 085c, ix: 0000, iy: 0000
+0B65: add  hl,de                              | a:  17, b:  13, c:  00, d:  00, e:  00, h:  08, l:  5c, bc: 1300, de: 0000, hl: 085c, ix: 0000, iy: 0000
+...
+```
+
+That looks like pure gibberish here in the blog because the lines are very long. Each line contains the opcod the cpu executed, and the state of all its registers at that time.
+
+```
+0B5B: ld b,#0x13 | a:17, b:00, c:03, d:08, e:5c, h:00, l:17,
+	bc:0003, de:085c,hl: 0017, ix:0000, iy:0000
+```
+
+here is a single line, cleaned up a little bit. Looking at this now, I'm not sure why I bothered to dump `ix` and `iy`, as they'd always be zero...
+
+This ... worked. I mean it got the job done and I was able to fix bugs by examining this output. But it wasn't very fun. A huge downside to this approach is it wasn't interactive. If I wanted to investigate a bug that only happened after the player pressed a button, I'd have to add code to the game that simulated the player pressing that button. Then once I figured out what the issue was, go back and remove that dummy code.
+
+### A proper debugger
+
+I used this tracing approach to write most of the game. But towards the end there were two mysterious bugs I just could not figure out. I knew I needed better debugging.
+
+I stumbled across the [DeZog](https://github.com/maziac/DeZog) project, which is a general purpose z80 debugging extension for VS Code. This looked realy promising, but then I found [ZX81-Debugger](https://github.com/andrivet/ZX81-Debugger). Sebastien Andrivet took DeZog as a basis and made a VS Code extension specifically for writing and debugging [ZX81](https://en.wikipedia.org/wiki/ZX81) applications.
+
+I really liked ZX81-Debugger right away, what a great tool. Just install it and boom, you've got a full fledged ZX81 development environment. I forked its code and started adapting it to work with E-Reader apps. Since both computers have the z80 processor in common, this turned out to not be as difficult as I thought it would be.
+
+After a couple days of hacking, I surprisingly had an E-Reader debugger running in VS Code!
+
+<figure>
+	<img
+		src={require('./ereaderDebugger.png').default.src}
+		alt="The E-Reader debuggering running in VS Code"
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>The E-Reader debuggering running in VS Code</figcaption>
+</figure>
+
+[here is that image](/ereaderDebugger.png) full size.
+
+To get this working I removed a few ZX81 things and then wrote a simple ERAPI emulator. As ERAPI calls come in, the debugger sends them over to my little emulator, which then translates them into a visual GBA screen.
+
+<figure>
+	<img
+		src={require('./erapiScreen.png').default.src}
+		alt="A close up of the ERAPI emulator screen output"
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>A close up of the ERAPI emulator screen output</figcaption>
+</figure>
+
+The background is green because I've not added the background related API functions to the emulator yet.
+
+You can even take a commercial E-Reader game and run it in the debugger. It will disassemble the binary and all things considered provide a very nice debugging experience
+
+<figure>
+	<img
+		src={require('./kirbyInDebugger.png').default.src}
+		alt="An official Nintendo E-Reader card, running in the debugger"
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>
+		An official Nintendo E-Reader card, running in the debugger
+	</figcaption>
+</figure>
+
+The colors are all weird because my ERAPI emulator is super raw. A lot more work needs to be done.
+
+But this is just amazing! I can honestly say I never thought I'd get a developer experience this good on a forgotten, 20 year old, Nintendo peripheral.
+
+<wisdom>
+	Ultimately I will open source the E-Reader-Debugger. But as it stands, it's
+	not even alpha quality. It's extremely early. After I've worked out more
+	kinks, I will throw it up on GitHub.
+</wisdom>
