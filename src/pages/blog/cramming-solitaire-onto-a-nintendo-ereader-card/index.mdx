@@ -12,7 +12,7 @@ export default ({ children }) => (
 	</Article>
 );
 
-I recently finished making Solitaire for the Nintendo E-Reader. I managed to fit it onto a single card, and it's a pretty full featured version of the game. I'm really happy with how it turned out. I figured I'd talk a bit about how I made it.
+I recently finished making Solitaire for the Nintendo E-Reader. I managed to fit it onto a single card, and it's a pretty full featured version of the game. I'm really happy with how it turned out. I figured I'd talk a bit about how I made it in what turned out to be a long blog post :)
 
 <<<< video >>>>
 
@@ -31,6 +31,14 @@ The E-Reader was a peripheral that Nintendo released for the Game Boy Advance in
 </figure>
 
 I've always really liked this device and was sad it didn't do very well in America. So I thought maybe I'd take a stab at it myself and see what I can make for it.
+
+<figure>
+	<img
+		src={require('./marge.jpg').default.src}
+		alt="Marge Simpson holding up an E-Reader card"
+	/>
+	<figcaption>Me too, Marge</figcaption>
+</figure>
 
 ## Tools and docs, starting way back in the past...
 
@@ -193,10 +201,10 @@ After a couple days of hacking, I surprisingly had an E-Reader debugger running 
 <figure>
 	<img
 		src={require('./ereaderDebugger.png').default.src}
-		alt="The E-Reader debuggering running in VS Code"
+		alt="The E-Reader debugger running in VS Code"
 		style={{ imageRendering: 'pixelated' }}
 	/>
-	<figcaption>The E-Reader debuggering running in VS Code</figcaption>
+	<figcaption>The E-Reader debugger running in VS Code</figcaption>
 </figure>
 
 [here is that image](/ereaderDebugger.png) full size.
@@ -214,7 +222,7 @@ To get this working I removed a few ZX81 things and then wrote a simple ERAPI em
 
 The background is green because I've not added the background related API functions to the emulator yet. And below the screen I am dumping out the current state of all the sprites that were created through ERAPI.
 
-You can even take a commercial E-Reader game and run it in the debugger. It will disassemble the binary and provide a very nice debugging experience. This will be very helpful to further figure out more about how E-Reader cards and ERAPI works.
+You can even take a commercial E-Reader game and run it in the debugger. It will disassemble the binary and provide a very nice debugging experience. This will be helpful to further figure out more about how E-Reader cards and ERAPI works.
 
 <figure>
 	<img
@@ -227,7 +235,7 @@ You can even take a commercial E-Reader game and run it in the debugger. It will
 	</figcaption>
 </figure>
 
-The colors are all weird because my ERAPI emulator is super raw, it's drawing the image using the wrong palettes. A lot more work needs to be done.
+The colors in that Kirby card are all weird because my ERAPI emulator is super raw and does many things incorrectly. It's drawing the image using the wrong palettes. A lot more work needs to be done.
 
 This is just amazing! I can honestly say I never thought I'd get a developer experience this powerful on a forgotten, 20 year old, Nintendo peripheral. We really live in exciting times sometimes.
 
