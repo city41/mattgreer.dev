@@ -260,7 +260,7 @@ I really struggled with this when rendering the playfield for Solitaire. Being a
 	allowFullScreen
 ></iframe>
 
-This video shows Solitaire when I first started working on it. I wanted to see if I could use sprites to draw all the cards. I concluced I couldn't and instead would need to draw the cards into a background. Using backgrounds for graphics like this is a very common tactic on older game systems. But no worries, ERAPI has the function `SpriteDrawOnBackground`, and it seems to be meant exactly for this use case.
+This video shows Solitaire when I first started working on it. I wanted to see if I could use sprit/s to draw all the cards. I concluced I couldn't and instead would need to draw the cards into a background. Using backgrounds for graphics like this is a very common tactic on older game systems. But no worries, ERAPI has the function `SpriteDrawOnBackground`, and it seems to be meant exactly for this use case.
 
 Using this function, I was able to easily draw my sprites into the background and avoid all graphical glitching ... the first time the playfield was drawn. As it was drawn repeatedly, it seemed like the tiles in video RAM were getting corrupted
 
@@ -290,9 +290,9 @@ ERAPI has another function, `LoadCustomBackground`, and it was this one that was
 
 With this function, it is up to me to figure out which tiles go where to form a background. Then once I've figured it all out, I just send it to the GBA in one function call and it appears on the screen.
 
-## z80 apps are kinda script-like
+## z80 E-Reader apps are kinda script-like
 
-I have found the way E-Reader z80 apps work to be pretty interesting. The emulator kind of co-opted the `halt` opcode to mean "draw a frame to the screen". You can load the `a` register without how many frames it should draw, accomplishing a very simple way to wait in your game.
+I have found the way E-Reader z80 apps work to be pretty interesting. The emulator uses the `halt` opcode to mean "draw a frame to the screen". You can load the `a` register with how many frames it should draw, accomplishing a very simple way to add waits to your game.
 
 <iframe
 	width={560}
@@ -334,7 +334,13 @@ Take this little intro animation. I built it like this
 
 In the actual game this was done in assembly, I turned it into psuedo-code here to make it easier to read.
 
-What I find interesting is I just whipped up a typical game engine loop on the spot, just to deal out the cards. I didn't need to hook all this into a main game loop like you do with most game development. The entire rest of the game doesn't know or even care that this happens. I found this approach kind of refreshing.
+What I find interesting is I just whipped up a typical game engine loop on the spot, just to deal out the cards. I didn't need to hook all this into a main game loop like you do with most game development. The entire rest of the game doesn't know or even care that this happens. I found this approach kind of interesting.
+
+<wisdom>
+	And yes, there's nothing to stop you from doing this in other game development
+	environments. But it's so simple and straightforward here that it almost seems
+	like Nintendo intended it to work like this
+</wisdom>
 
 ## E-Reader assets
 
@@ -349,7 +355,7 @@ You might have noticed my game has music, sound effects, and a Mars-like rocky b
 	<figcaption>Some of the backgrounds found on the E-Reader</figcaption>
 </figure>
 
-Altogether there are over 100 backgrounds, 800 sounds (both sound effects and music) and over 200 Pokémon sprites stored in the E-Reader's ROM. If you're an E-Reader fan, you might have noticed Nintendo's mini games tend to reuse the same sound effects, music and often the same backgrounds. This is why.
+Altogether there are over 100 backgrounds, 800 sounds (both sound effects and music) and over 200 Pokémon sprites stored in the E-Reader's 8MB ROM. If you're an E-Reader fan, you might have noticed Nintendo's mini games tend to reuse the same sound effects, music and often the same backgrounds. This is why.
 
 Using them is usually just a simple API call. For example here is how I play the drum roll sound effect
 
@@ -363,7 +369,7 @@ Crazy ass assembly conventions aside, this is pretty much just `PlaySystemSound(
 
 ## How big can E-Reader apps be?
 
-A single E-Reader dotstrip can store 2,192 bytes of data, which is nearly 3kb. But there is some overhead with the headers, and error correction, making the actual amount of data I've been able to store on a single strip closer to 2kb. This data is compressed though.
+A single E-Reader dotstrip can store 2,192 bytes of data, which is nearly 3kb. But there is some overhead with the headers, and error correction, making the actual amount of data I've been able to store on a single strip closer to 2kb. The data on the dotstrip is compressed though, which helps a lot.
 
 <figure>
 	<img
