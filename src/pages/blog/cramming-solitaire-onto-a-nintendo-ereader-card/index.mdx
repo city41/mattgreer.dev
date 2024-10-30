@@ -237,6 +237,51 @@ This is just amazing! I can honestly say I never thought I'd get a developer exp
 	kinks, I will throw it up on GitHub.
 </wisdom>
 
+## Challenges with the ERAPI API
+
+Overall ERAPI is very useful, and has lots of great stuff to make development easier. But I did find some of the stuff didn't work so great. Either because it wasn't implemented so well, or maybe I just don't yet understand how to use it properly.
+
+I really struggled with this when rendering the playfield for Solitaire. Being an old game system, the GBA has limitations with sprites. It might have 128 you can use, but you can't put too many on the screen at once or else things like this can happen
+
+<iframe
+	width={560}
+	height={315}
+	style={{ margin: '3em 0' }}
+	src="https://www.youtube.com/embed/WE4CgMpjD88"
+	frameBorder={0}
+	allowFullScreen
+></iframe>
+
+This video shows Solitaire when I first started working on it. I wanted to see if I could use sprites to draw all the cards. I concluced I couldn't and instead would need to draw the cards into a background. Using backgrounds for graphics like this is a very common tactic on older game systems. But no worries, ERAPI has the function `SpriteDrawOnBackground`, and it seems to be meant exactly for this use case.
+
+Using this function, I was able to easily draw my sprites into the background and avoid all graphical glitching ... the first time the playfield was drawn. As it was drawn repeatedly, it seemed like the tiles in video RAM were getting corrupted
+
+<iframe
+	width={560}
+	height={315}
+	style={{ margin: '3em 0' }}
+	src="https://www.youtube.com/embed/jz8RZF68B58"
+	frameBorder={0}
+	allowFullScreen
+></iframe>
+
+In this video I was reshuffling and redealing the deck repeatedly. And each time I dealt it out again, graphical glitches would appear.
+
+I tried and tried, but I just could not get this to work. I'm not completely sure I wasn't doing something wrong. But ERAPI and the way z80 apps work with the emulator seems pretty straightforward. So I _think_ this function was not meant for rapid use like this.
+
+ERAPI has another function, `LoadCustomBackground`, and it was this one that was a winner for my game. It's a lower level and harder to use function than `SpriteDrawOnBackground`, but it has never caused graphical glitches on me even once.
+
+<iframe
+	width={560}
+	height={315}
+	style={{ margin: '3em 0' }}
+	src="https://www.youtube.com/embed/4-uaNX9LGN4"
+	frameBorder={0}
+	allowFullScreen
+></iframe>
+
+With this function, it is up to me to figure out which tiles go where to form a background. Then once I've figured it all out, I just send it to the GBA in one function call and it appears on the screen.
+
 ## z80 apps are kinda script-like
 
 I have found the way E-Reader z80 apps work to be pretty interesting. The emulator kind of co-opted the `halt` opcode to mean "draw a frame to the screen". You can load the `a` register without how many frames it should draw, accomplishing a very simple way to wait in your game.
@@ -287,7 +332,16 @@ What I find interesting is I just whipped up a typical game engine loop on the s
 
 You might have noticed my game has music, sound effects, and a Mars-like rocky background. The E-Reader itself has many assets a game can use. This helps keep the E-Reader app small. You can do custom graphics (such as the deck of cards in my game) and sounds, but they tend to be quite large and take up precious space.
 
-If you're an E-Reader fan, you might have noticed Nintendo's mini games tend to have the same sound effects, music and often the same backgrounds. This is why. The card just asks the E-Reader to show them.
+<figure>
+	<img
+		src={require('./ereaderSystemBackgrounds.png').default.src}
+		alt="Some of the backgrounds found on the E-Reader"
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>Some of the backgrounds found on the E-Reader</figcaption>
+</figure>
+
+Altogether there are over 100 backgrounds, 800 sounds (both sound effects and music) and over 200 Pokémon sprites stored in the E-Reader's ROM. If you're an E-Reader fan, you might have noticed Nintendo's mini games tend to reuse the same sound effects, music and often the same backgrounds. This is why.
 
 Using them is usually just a simple API call. For example here is how I play the drum roll sound effect
 
@@ -299,8 +353,57 @@ Using them is usually just a simple API call. For example here is how I play the
 
 Crazy ass assembly conventions aside, this is pretty much just `PlaySystemSound(755)`.
 
-## More cards
+## How big can E-Reader apps be?
 
-My goal is to make many more E-Reader apps. I am hoping to build 10 apps and have them professionally manufactured. Why? Why not. I think the E-Reader is really cool and this is a lot of fun.
+A single E-Reader dotstrip can store 2,192 bytes of data, which is nearly 3kb. But there is some overhead with the headers, and error correction, making the actual amount of data I've been able to store on a single strip closer to 2kb. This data is compressed though.
+
+<figure>
+	<img
+		src={
+			require('../printing-ereader-cards/helloWorld.dotcode.bmp.png').default
+				.src
+		}
+		alt="An example dotcode strip"
+	/>
+	<figcaption>An example dotcode strip</figcaption>
+</figure>
+
+The compression makes the total storage size kind of fuzzy. It really depends on how well your data compresses. For example, here are the tiles for my cards
+
+<figure>
+	<img
+		src={require('./deck_strips.png').default.src}
+		alt="The card graphic tiles for Solitaire"
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>The card graphic tiles for Solitaire</figcaption>
+</figure>
+
+I could have saved space by not repeating the same tile over and over again. But this data compressed _very_ well. So well, I just went with it. Deduping these tiles would have made the drawing routines much more complicated, maybe so much so the space that the routine's code would have taken up might have even killed any space savings.
+
+In the end I didn't need to do too much space optimization to keep Solitaire down to two dotstrips (which can be printed on a single card). I did use up all the space that those two strips alloted me, so any more features would have likely required the game be expanded to three dotstrips, something I really wanted to avoid.
+
+Honestly I'm a bit surprised how many strips are in Nintendo's cards. Based on the game contained inside and my experience writing Solitaire, it seems like some of their games could have been done in fewer dotstrips. But that's just a total guess, I don't really know.
+
+### The E-Reader and GBA limitations on space
+
+The E-Reader itself allows a maximum of 12 strips to be scanned for a single application. Although I've yet to find any application that requires that many. The NES games need 10
+
+<figure>
+	<img
+		src={require('./tenStripsNeeded.png').default.src}
+		alt="The E-Reader waiting for 9 more strips to load Excitebike"
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>
+		The E-Reader waiting for 9 more strips to load Excitebike
+	</figcaption>
+</figure>
+
+As for the Game Boy Advance itself, it has 256kb of RAM which is more than enough to store any E-Reader application. The E-Reader will decompress the data into RAM, then execute it. I suppose technically your data could exceed 256kb when decompressed, but realistically I just can't see that happening.
+
+## More E-Reader cards to come
+
+My goal is to make many more E-Reader apps. I am hoping to build 10 apps and have the cards for them professionally manufactured. Hopefully packaged up in a booster pack, which would be so cool. Why? Why not. I think the E-Reader is really cool and this is a lot of fun.
 
 If new E-Reader cards interests you, check out https://retrodotcards.com. If you want to try Solitaire out for yourself, you can order a card there. They are free.
