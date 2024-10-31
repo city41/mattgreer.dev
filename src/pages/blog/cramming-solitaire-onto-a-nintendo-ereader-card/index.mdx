@@ -25,7 +25,7 @@ I recently finished making Solitaire for the Nintendo E-Reader. I managed to fit
 
 ## What is the E-Reader?
 
-The E-Reader was a peripheral that Nintendo released for the Game Boy Advance in 2002. By scanning cards that have a dot code strip on them, you can load minigames, extra levels, animations and more.
+The E-Reader is a Game Boy Advance peripheral that Nintendo released in 2002. By scanning cards that have a dot code strip on them, you can load mini games, extra levels, animations and more.
 
 <figure>
 	<img
@@ -35,7 +35,7 @@ The E-Reader was a peripheral that Nintendo released for the Game Boy Advance in
 	<figcaption>The E-Reader and one of its cards</figcaption>
 </figure>
 
-I've always really liked the E-Reader and was sad it didn't do very well in America. So I thought maybe I'd take a stab at making games for it myself.
+I've always really liked the E-Reader and was sad it didn't do too well in America. So I thought maybe I'd take a stab at making games for it myself.
 
 <figure>
 	<img
@@ -45,7 +45,7 @@ I've always really liked the E-Reader and was sad it didn't do very well in Amer
 	<figcaption>Me too, Marge</figcaption>
 </figure>
 
-And here is my card
+And here is the result
 
 <figure>
 	<img
@@ -55,7 +55,7 @@ And here is my card
 	<figcaption>Solitaire in its card from</figcaption>
 </figure>
 
-If you would like a card to try, you can get one for free at [retrodotcards.com](https://retrodotcards.com).
+If you would like to try it, you can get a card at [retrodotcards.com](https://retrodotcards.com).
 
 ## Tools and docs, starting way back in the past...
 
@@ -73,7 +73,7 @@ More recently I found [AkBKukU's e-reader-dev repo](https://github.com/AkBKukU/e
 
 ## Pick your poison: GBA, NES or ... z80?
 
-E-Reader cards can come in four broad formats
+What kind of E-Reader card should I make? E-Reader cards can come in four broad formats
 
 ### Game Boy Advance applications
 
@@ -123,11 +123,11 @@ That means E-Reader apps can be written in z80 assembly. The primary advantage h
 
 ## z80 E-Reader apps
 
-I made Solitaire as a z80 application and have become pretty entrenched in this approach. I really like how much smaller the resulting binaries are. But make no doubt about it, z80 assembly is pretty rough. Especially considering you can write a GBA E-Reader card in C.
+I made Solitaire as a z80 application and have become pretty entrenched in this approach. I really like how much smaller the resulting binaries are. But make no doubt about it, z80 assembly is pretty rough. Especially considering you can [write a GBA E-Reader card in C](https://github.com/AkBKukU/e-reader-dev).
 
 ### The ERAPI API
 
-For z80 games, Nintendo embedded a simple but effective [API](https://problemkaputt.de/gbatek.htm#gbacartereaderapifunctions) into the E-Reader that they can take advantage of. Things like creating sprites, playing music, even multiplying and dividing, can all be done through this API.
+For z80 games, Nintendo embedded a simple but effective [API](https://problemkaputt.de/gbatek.htm#gbacartereaderapifunctions) into the E-Reader that they can take advantage of. Things like creating sprites, playing music, even multiplying and dividing, can all be done through this API. This helps keep card sizes small, as common functionality doesn't need to be packed into the cards, the E-Reader itself will provide it.
 
 <wisdom>
 	GBA E-Reader games also can access ERAPI. It's a bit different here and there,
@@ -150,7 +150,8 @@ As a simple example, here is how to create a sprite using the API
 If you're not familiar with z80 assembly this probably looks bizarre. It is basically the equivalent of
 
 ```c
-int my_sprite_handle = SpriteCreate(2, my_sprite_data_struct);
+int palette_number = 2;
+int my_sprite_handle = SpriteCreate(palette_number, my_sprite_data_struct);
 ```
 
 The `ld` calls are "load", and here we are loading the `e` register with which palette index we want the sprite to use. The `hl` register is loaded with a pointer to the information about the sprite (its tiles, colors, frames of animation, etc). The `rst 0` and `.db ERAPI_SpriteCreate` lines are where we actually make the API call. Without getting too deep on how the z80 works, this is a simple function call. When it is done, it will leave the handle to the sprite in the hl register, so we `ld (my_sprite_handle), hl` to copy that value off into memory for safe keeping. That handle is later used whenever we want to interact with the sprite, such as changing its position.
@@ -159,9 +160,9 @@ The `ld` calls are "load", and here we are loading the `e` register with which p
 
 The E-Reader's z80 emulator is not 100% accurate. Nintendo decided to not support some opcodes and some of the registers. I have also found that some opcodes don't seem to work correctly. Hopefully I'm just using them wrong, but some opcodes just cause the GBA to show a black screen and lock up.
 
-The z80 is already a very limited processor, and this makes it even more so. Sometimes E-Reader z80 development is downright painful. But hey, the challenge is part of the fun (right?)
+The z80 is already a very limited processor, and this makes it even more so. Sometimes E-Reader z80 development is absolutely painful. But hey, the challenge is part of the fun (right?)
 
-The limited cpu compounded with the emulator's limitations at times made coding very challenging. I often felt like this when trying to do something
+I often felt like this when trying to implement something
 
 <figure>
 	<img
@@ -223,9 +224,9 @@ After a long weekend of hacking, I surprisingly had an E-Reader debugger running
 	<figcaption>The E-Reader debugger running in VS Code</figcaption>
 </figure>
 
-[here is that image](/ereaderDebugger.png) full size.
+[Here is that image](/ereaderDebugger.png) in full size.
 
-To get this working I removed a few ZX81 things and then wrote a simple ERAPI emulator. As ERAPI calls come in, the debugger sends them over to my little emulator, which then translates them into a visual GBA screen.
+To get this working I removed most of the ZX81 specific things and then wrote a simple ERAPI emulator. As ERAPI calls come in, the debugger sends them over to my little emulator, which then translates them into a visual GBA screen.
 
 <figure>
 	<img
@@ -236,7 +237,7 @@ To get this working I removed a few ZX81 things and then wrote a simple ERAPI em
 	<figcaption>A close up of the ERAPI emulator screen output</figcaption>
 </figure>
 
-The background is green because I've not added the background related API functions to the emulator yet. And below the screen I am dumping out the current state of all the sprites that were created through ERAPI.
+The background is green because I've not added most of the background related API functions to the emulator yet. And below the screen I am dumping out the current state of all the sprites that were created through ERAPI.
 
 You can even take a commercial E-Reader game and run it in the debugger. It will disassemble the binary and provide a nice debugging experience. This will be helpful to further figure out more about how E-Reader cards and ERAPI works.
 
@@ -253,7 +254,7 @@ You can even take a commercial E-Reader game and run it in the debugger. It will
 
 The colors in that Kirby card are all weird because my ERAPI emulator is super raw and does many things incorrectly. It's drawing the image using the wrong palettes. A lot more work needs to be done.
 
-This is just amazing! I can honestly say I never thought I'd get a developer experience this powerful on a forgotten, 20 year old, Nintendo peripheral. We really live in exciting times sometimes.
+This is just amazing! I never imagined I'd get a developer experience this powerful on a forgotten, 20 year old, Nintendo peripheral. We really live in exciting times sometimes.
 
 <wisdom>
 	Ultimately I will open source the E-Reader-Debugger. But as it stands, it's
@@ -276,7 +277,7 @@ I really struggled with this when rendering the playfield for Solitaire. Being a
 	allowFullScreen
 ></iframe>
 
-This video shows Solitaire when I first started working on it. I wanted to see if I could use sprites to draw all the cards. I concluced I couldn't and instead would need to draw the cards into a background. Using backgrounds for graphics like this is a very common tactic on older game systems. And luckily, ERAPI has the function `SpriteDrawOnBackground`, it seems to be meant exactly for this use case.
+This video shows Solitaire when I first started working on it. I wanted to see if I could use sprites to draw all the cards. I concluced I couldn't and instead would need to draw the cards into a background. Using backgrounds for graphics like this is a very common tactic on older game systems. And luckily, ERAPI has the function `SpriteDrawOnBackground`, it seems to be exactly meant for this use case.
 
 Using this function, I was able to easily draw my sprites into the background and avoid all graphical glitching ... the first time the playfield was drawn. As it was drawn repeatedly, it seemed like the tiles in video RAM were getting corrupted
 
@@ -290,12 +291,6 @@ Using this function, I was able to easily draw my sprites into the background an
 ></iframe>
 
 In this video I was reshuffling and redealing the deck repeatedly. And each time I dealt it out again, graphical glitches would appear.
-
-<wisdom>
-	This feels like I was maybe changing video RAM at an unsafe time. But the z80
-	emulator shields your app from this kind of stuff. You have to just ask ERAPI
-	to do something and hope it goes OK.
-</wisdom>
 
 I tried and tried, but I just could not get this to work. I'm not completely sure I wasn't doing something wrong. But ERAPI and the way z80 apps work with the emulator seem pretty straightforward? So I _think_ this function was not meant for rapid use like this.
 
@@ -356,7 +351,7 @@ Take this little intro animation. I built it like this
 
 In the actual game this was done in assembly, I turned it into psuedo-code here to make it easier to read.
 
-What I find interesting is I just whipped up a typical game engine loop on the spot, just to deal out the cards. I didn't need to hook all this into a main game loop like you do with most game development. The entire rest of the game doesn't know or even care that this happens.
+What I find interesting is I just whipped up a typical game engine loop on the spot, just to deal out the cards. I didn't need to hook all this into a main game loop like you often do with most game development. The entire rest of the game doesn't know or even care that this happens.
 
 ## E-Reader assets
 
@@ -371,7 +366,7 @@ You might have noticed my game has music, sound effects, and a Mars-like rocky b
 	<figcaption>Some of the backgrounds found on the E-Reader</figcaption>
 </figure>
 
-Altogether there are over 100 backgrounds, 800 sounds (both sound effects and music) and over 200 Pokémon sprites stored in the E-Reader's 8MB ROM. If you're an E-Reader fan, you might have noticed Nintendo's mini games tend to reuse the same sound effects, music and often the same backgrounds. This is why.
+Altogether there are over 100 backgrounds, over 800 sounds (both sound effects and music) and over 200 Pokémon sprites stored in the E-Reader's 8MB ROM. If you're an E-Reader fan, you might have noticed Nintendo's mini games tend to reuse the same sound effects, music and often the same backgrounds. This is why.
 
 Using them is usually just a simple API call. For example here is how I play the drum roll sound effect
 
@@ -385,7 +380,7 @@ Crazy assembly syntax aside, this is pretty much just `PlaySystemSound(755)`, wh
 
 ## How big can E-Reader apps be?
 
-A single E-Reader dotstrip can store 2,192 bytes of data, which is nearly 3kb. But there is some overhead with the headers, and error correction, making the actual amount of data I've been able to store on a single strip closer to 2kb. This data on the dotstrip is compressed though, which helps a lot.
+A single E-Reader dotstrip can store 2,192 bytes of data, which is just over 2kb. But there is some overhead with the headers, and error correction, making the actual amount of data I've been able to store on a single strip a bit less than 2kb. This data on the dotstrip is compressed though, which helps a lot.
 
 <figure>
 	<img
@@ -417,7 +412,7 @@ The compression makes the total storage size kind of fuzzy. It really depends on
 	<figcaption>The card graphic tiles for Solitaire</figcaption>
 </figure>
 
-I could have saved space by not repeating the same tile over and over again. But this data compressed _very_ well. So well, I just went with it. Deduping these tiles would have made the drawing routines much more complicated, maybe so much so the space that the routine's code would have taken up might have even killed any space savings.
+I could have saved space by not repeating the same tile over and over again. But this data compressed _very_ well. So well, I just went with it. Deduping these tiles would have made the drawing routines much more complicated, maybe so much so it would have killed any space savings I had achieved.
 
 In the end I didn't need to do _too_ much space optimization to keep Solitaire down to two dotstrips (which can be printed onto a single card). I did use up all the space that those two strips alloted me, so any more features would have likely required the game be expanded to three dotstrips, something I really wanted to avoid.
 
@@ -442,6 +437,6 @@ As for the Game Boy Advance itself, it has 256kb of RAM which is more than enoug
 
 ## More E-Reader cards to come
 
-My goal is to make many more E-Reader apps. I am hoping to build at least 10 apps and have the cards for them professionally manufactured. Hopefully packaged up in a booster pack, which would be so cool. Why? Why not. I think the E-Reader is really cool and this is a lot of fun.
+My goal is to make many more E-Reader apps. I'm already deep into development of the next game. I am hoping to build at least 10 apps and have the cards professionally manufactured. Hopefully packaged up in a booster pack, which would be so cool. Why? Why not. I think the E-Reader is really cool and this is a lot of fun.
 
 If new E-Reader cards interests you, check out https://retrodotcards.com. If you want to try Solitaire out for yourself, you can order a card there. They are free.
