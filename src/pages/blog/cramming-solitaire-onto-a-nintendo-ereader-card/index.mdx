@@ -1,0 +1,447 @@
+import { Article } from '../../../components/layouts/Article';
+import meta from './meta.json';
+
+export default ({ children }) => (
+	<Article
+		{...meta}
+		img={require('./feature.png').default.src}
+		socialMediaImg={require('./twitter.png').default.src}
+		intro="Making a new game from scratch for a forgotten Nintendo peripheral"
+	>
+		{children}
+	</Article>
+);
+
+I recently finished making Solitaire for the Nintendo E-Reader. I managed to fit it onto a single card, and it's a pretty full featured version of the game. I'm really happy with how it turned out. I figured I'd talk a bit about how I made it in what turned out to be a long blog post :)
+
+<iframe
+	width={560}
+	height={315}
+	style={{ margin: '3em 0' }}
+	src="https://www.youtube.com/embed/yrCnlQbR8Qw"
+	frameBorder={0}
+	allowFullScreen
+></iframe>
+
+## What is the E-Reader?
+
+The E-Reader was a peripheral that Nintendo released for the Game Boy Advance in 2002. By scanning cards that have a dot code strip on them, you can load minigames, extra levels, animations and more.
+
+<figure>
+	<img
+		src={require('../printing-ereader-cards/ereaderWithCard.jpg').default.src}
+		alt="The E-Reader and one of its cards"
+	/>
+	<figcaption>The E-Reader and one of its cards</figcaption>
+</figure>
+
+I've always really liked the E-Reader and was sad it didn't do very well in America. So I thought maybe I'd take a stab at making games for it myself.
+
+<figure>
+	<img
+		src={require('./marge.jpg').default.src}
+		alt="Marge Simpson holding up an E-Reader card"
+	/>
+	<figcaption>Me too, Marge</figcaption>
+</figure>
+
+And here is my card
+
+<figure>
+	<img
+		src={require('./solitaireCard.svg').default.src}
+		alt="Solitaire as an E-Reader card"
+	/>
+	<figcaption>Solitaire in its card from</figcaption>
+</figure>
+
+If you would like a card to try, you can get one for free at [retrodotcards.com](https://retrodotcards.com).
+
+## Tools and docs, starting way back in the past...
+
+Where to begin? I remembered there were some old tools and websites about making E-Reader cards from back around when it first came out &mdash; twenty years ago! I managed to find <a href="https://www.schuerewegen.tk/">Tim Schuerewegen's</a> original site in the Wayback Machine. It had some examples, source code and tools. I also refound <a href="https://caitsith2.com/ereader/">CaitSith2's E-Reader site</a>, which thankfully is still up. It also has some tools and information.
+
+<wisdom>
+	These tools are the backbone of E-Reader dev. Thanks to Tim and CaitSith2 for
+	making them! They were originally made for Windows, but they were also made{' '}
+	<a href="https://github.com/breadbored/nedclib">multi-platform here</a>.
+</wisdom>
+
+These initial findings were a great start and got me headed down learning how E-Reader applications are programmed. GBATEK also has [a section on the E-Reader](https://problemkaputt.de/gbatek.htm#gbacartereader) which also contains lots of useful information.
+
+More recently I found [AkBKukU's e-reader-dev repo](https://github.com/AkBKukU/e-reader-dev) which has also been very helpful.
+
+## Pick your poison: GBA, NES or ... z80?
+
+E-Reader cards can come in four broad formats
+
+### Game Boy Advance applications
+
+These are GBA programs written much like if you were making a normal GBA game. The E-Reader simply loads them in then lets them execute on their own for the most part.
+
+### NES games
+
+The E-Reader contains a simple NES emulator, so it is possible to directly put simple NES games onto E-Reader cards. The keyword here is "simple", it does not support more advanced NES features. Also the E-Reader has a limit on how many card swipes one application can have. The NES games Nintendo released require 10 card swipes to load! So in the end it is only possible to run early/small NES games. Nintendo used this to release games like Excitebike and Donkey Kong for the E-Reader
+
+<figure>
+	<img
+		src={require('./excitebike.jpg').default.src}
+		alt="Excitebike in E-Reader card format"
+	/>
+	<figcaption>Excitebike in E-Reader card format</figcaption>
+</figure>
+
+### Raw binaries
+
+Raw E-Reader cards just contain binary data of some kind. Specific games made use of these to add levels, characters, etc. Kind of like a primitive form of DLC. It is up to the specific game to interpret the data as it sees fit.
+
+Super Mario Advance 4 released cards like this, adding additional levels, power ups and more for the game
+
+<figure>
+	<img
+		src={require('./sma4LevelCards.jpg').default.src}
+		alt="Super Mario Advance 4 E-Reader level cards"
+	/>
+	<figcaption>Super Mario Advance 4 E-Reader level cards</figcaption>
+</figure>
+
+### z80 Applications
+
+And finally the E-Reader also contains a simple z80 emulator. The z80 is an 8-bit processor that first came out in 1976! It was very successful and found its way into many different computers.
+
+I don't believe Nintendo ever used a z80 processor in any of their game consoles. So this choice is an interesting one. I'm sure the z80's simplicity was a big factor here, it's pretty easy to emulate.
+
+<figure>
+	<img
+		src={require('./manhole.jpg').default.src}
+		alt="Manhole: a simple z80 E-Reader game"
+	/>
+	<figcaption>Manhole: a simple z80 E-Reader game</figcaption>
+</figure>
+
+That means E-Reader apps can be written in z80 assembly. The primary advantage here is z80 apps tend to be quite small. In my experimenting, I found an E-Reader z80 app to be about 30-50% smaller than an equivalent E-Reader GBA app. Nintendo almost entirely went this route with their own cards, I'm guessing to keep the number of swipes needed for an application to a minimum.
+
+## z80 E-Reader apps
+
+I made Solitaire as a z80 application and have become pretty entrenched in this approach. I really like how much smaller the resulting binaries are. But make no doubt about it, z80 assembly is pretty rough. Especially considering you can write a GBA E-Reader card in C.
+
+### The ERAPI API
+
+For z80 games, Nintendo embedded a simple but effective [API](https://problemkaputt.de/gbatek.htm#gbacartereaderapifunctions) into the E-Reader that they can take advantage of. Things like creating sprites, playing music, even multiplying and dividing, can all be done through this API.
+
+<wisdom>
+	GBA E-Reader games also can access ERAPI. It's a bit different here and there,
+	but overall it's the same API.
+</wisdom>
+
+As a simple example, here is how to create a sprite using the API
+
+```asm
+    ; ERAPI_SpriteCreate()
+    ; e  = pal#
+    ; hl = sprite data
+    ld  e, #2
+    ld  hl, #my_sprite_data_struct
+    rst 0
+    .db ERAPI_SpriteCreate
+    ld  (my_sprite_handle), hl
+```
+
+If you're not familiar with z80 assembly this probably looks bizarre. It is basically the equivalent of
+
+```c
+int my_sprite_handle = SpriteCreate(2, my_sprite_data_struct);
+```
+
+The `ld` calls are "load", and here we are loading the `e` register with which palette index we want the sprite to use. The `hl` register is loaded with a pointer to the information about the sprite (its tiles, colors, frames of animation, etc). The `rst 0` and `.db ERAPI_SpriteCreate` lines are where we actually make the API call. Without getting too deep on how the z80 works, this is a simple function call. When it is done, it will leave the handle to the sprite in the hl register, so we `ld (my_sprite_handle), hl` to copy that value off into memory for safe keeping. That handle is later used whenever we want to interact with the sprite, such as changing its position.
+
+### A crippled z80
+
+The E-Reader's z80 emulator is not 100% accurate. Nintendo decided to not support some opcodes and some of the registers. I have also found that some opcodes don't seem to work correctly. Hopefully I'm just using them wrong, but some opcodes just cause the GBA to show a black screen and lock up.
+
+The z80 is already a very limited processor, and this makes it even more so. Sometimes E-Reader z80 development is downright painful. But hey, the challenge is part of the fun (right?)
+
+The limited cpu compounded with the emulator's limitations at times made coding very challenging. I often felt like this when trying to do something
+
+<figure>
+	<img
+		src={require('./austinPowers.jpg').default.src}
+		alt="Austin Powers trying to turn around in a tunnel"
+		style={{ imageRendering: 'pixelated' }}
+	/>
+</figure>
+
+Simple things that I usually take for granted like copying one array to another is just so much harder to do in E-Reader z80 assembly. Thankfully I'm starting to get the hang of it.
+
+### Debugging
+
+Another huge challenge was debugging the game. There's no way to log anything, running the game on a Game Boy Advance is a total black box. GBA emulators like [mGBA](https://mgba.io/) have good debugging features. But this is a z80 emulator running on the GBA's ARM processor. I figured stepping through ARM instructions trying to figure out how z80 instructions worked would be a herculean task, so much so I never even tried. Thankfully I don't think I'll ever need to, more on that below.
+
+For my first attempt at creating a debugger, I took [z80js](https://github.com/5inf/z80js), a z80 emulator core, and built a small application that would run my binary and log out what the cpu was doing. The output looked like this
+
+```
+...
+
+0B52: call _deck_gfx_render_column            | a:  17, b:  00, c:  03, d:  08, e:  5c, h:  00, l:  17, bc: 0003, de: 085c, hl: 0017
+0B5B: ld   b,#0x13                            | a:  17, b:  00, c:  03, d:  08, e:  5c, h:  00, l:  17, bc: 0003, de: 085c, hl: 0017
+0B5D: ld   c,#0x00                            | a:  17, b:  13, c:  03, d:  08, e:  5c, h:  00, l:  17, bc: 1303, de: 085c, hl: 0017
+0B5F: ld   hl,(_deck_gfx_cur_column_addr)     | a:  17, b:  13, c:  00, d:  08, e:  5c, h:  00, l:  17, bc: 1300, de: 085c, hl: 0017
+0B62: ld   d,#0x00                            | a:  17, b:  13, c:  00, d:  08, e:  5c, h:  08, l:  5c, bc: 1300, de: 085c, hl: 085c
+0B64: ld   e,c                                | a:  17, b:  13, c:  00, d:  00, e:  5c, h:  08, l:  5c, bc: 1300, de: 005c, hl: 085c
+0B65: add  hl,de                              | a:  17, b:  13, c:  00, d:  00, e:  00, h:  08, l:  5c, bc: 1300, de: 0000, hl: 085c
+
+...
+```
+
+That looks like pure gibberish here in the blog because the lines are too long to fit. Each line contains the opcode the cpu executed, and the state of all the registers at that time.
+
+Here is a single line, cleaned up a bit
+
+```
+0B5B: ld b,#0x13 | a:17, b:00, c:03, d:08, e:5c, h:00, l:17,
+	bc:0003, de:085c,hl: 0017
+```
+
+This ... worked ... I mean it got the job done and I was able to fix bugs by examining this output. But it wasn't very fun. A huge downside to this approach is it wasn't interactive. It just blindly ran the game without allowing any button presses or anything like that. Because of this, I often had to get very creative to get this emulator to run the part of the game I was having troubles with.
+
+### A proper debugger
+
+I used this tracing approach to write most of the game. But towards the end there were two mysterious bugs I just could not figure out. I knew I needed a better solution.
+
+I stumbled across the [DeZog](https://github.com/maziac/DeZog) project, which is a general purpose z80 debugging extension for VS Code. This looked really promising, but then I found [ZX81-Debugger](https://github.com/andrivet/ZX81-Debugger). Sebastien Andrivet took DeZog as a basis and made a VS Code extension specifically for writing and debugging [ZX81](https://en.wikipedia.org/wiki/ZX81) applications.
+
+I really liked ZX81-Debugger right away, what a great tool! Just install it and _boom_ you've got a full fledged ZX81 development environment. I forked its code and started adapting it to work with E-Reader apps. Since both platforms have the z80 processor in common, this turned out to not be as difficult as I thought it would be.
+
+After a long weekend of hacking, I surprisingly had an E-Reader debugger running in VS Code! In the end, I was positively floored how quickly I got this working. I am truly standing on the shoulders of giants ... so thank you to everyone who made all of this possible.
+
+<figure>
+	<img
+		src={require('./ereaderDebugger.png').default.src}
+		alt="The E-Reader debugger running in VS Code"
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>The E-Reader debugger running in VS Code</figcaption>
+</figure>
+
+[here is that image](/ereaderDebugger.png) full size.
+
+To get this working I removed a few ZX81 things and then wrote a simple ERAPI emulator. As ERAPI calls come in, the debugger sends them over to my little emulator, which then translates them into a visual GBA screen.
+
+<figure>
+	<img
+		src={require('./erapiScreen.png').default.src}
+		alt="A close up of the ERAPI emulator screen output"
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>A close up of the ERAPI emulator screen output</figcaption>
+</figure>
+
+The background is green because I've not added the background related API functions to the emulator yet. And below the screen I am dumping out the current state of all the sprites that were created through ERAPI.
+
+You can even take a commercial E-Reader game and run it in the debugger. It will disassemble the binary and provide a nice debugging experience. This will be helpful to further figure out more about how E-Reader cards and ERAPI works.
+
+<figure>
+	<img
+		src={require('./kirbyInDebugger.png').default.src}
+		alt="An official Nintendo E-Reader card, running in the debugger"
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>
+		An official Nintendo E-Reader card, running in the debugger
+	</figcaption>
+</figure>
+
+The colors in that Kirby card are all weird because my ERAPI emulator is super raw and does many things incorrectly. It's drawing the image using the wrong palettes. A lot more work needs to be done.
+
+This is just amazing! I can honestly say I never thought I'd get a developer experience this powerful on a forgotten, 20 year old, Nintendo peripheral. We really live in exciting times sometimes.
+
+<wisdom>
+	Ultimately I will open source the E-Reader-Debugger. But as it stands, it's
+	not even alpha quality. I mean it is <i>rough</i>. After I've worked out more
+	kinks, I will throw it up on GitHub.
+</wisdom>
+
+## Challenges with the ERAPI API
+
+Overall the E-Reader's ERAPI is very useful, and has lots of great stuff to make development easier. But I did find some of the stuff didn't work out. Either because this stuff is buggy, or maybe I just don't yet understand how to use it properly. Hopefully the latter.
+
+I really struggled with this when rendering the playfield for Solitaire. Being an old game system, the GBA has limitations when drawing sprites to the screen. You can't put too many on the screen at once or else things like this can happen
+
+<iframe
+	width={560}
+	height={315}
+	style={{ margin: '3em 0' }}
+	src="https://www.youtube.com/embed/WE4CgMpjD88"
+	frameBorder={0}
+	allowFullScreen
+></iframe>
+
+This video shows Solitaire when I first started working on it. I wanted to see if I could use sprites to draw all the cards. I concluced I couldn't and instead would need to draw the cards into a background. Using backgrounds for graphics like this is a very common tactic on older game systems. And luckily, ERAPI has the function `SpriteDrawOnBackground`, it seems to be meant exactly for this use case.
+
+Using this function, I was able to easily draw my sprites into the background and avoid all graphical glitching ... the first time the playfield was drawn. As it was drawn repeatedly, it seemed like the tiles in video RAM were getting corrupted
+
+<iframe
+	width={560}
+	height={315}
+	style={{ margin: '3em 0' }}
+	src="https://www.youtube.com/embed/jz8RZF68B58"
+	frameBorder={0}
+	allowFullScreen
+></iframe>
+
+In this video I was reshuffling and redealing the deck repeatedly. And each time I dealt it out again, graphical glitches would appear.
+
+<wisdom>
+	This feels like I was maybe changing video RAM at an unsafe time. But the z80
+	emulator shields your app from this kind of stuff. You have to just ask ERAPI
+	to do something and hope it goes OK.
+</wisdom>
+
+I tried and tried, but I just could not get this to work. I'm not completely sure I wasn't doing something wrong. But ERAPI and the way z80 apps work with the emulator seem pretty straightforward? So I _think_ this function was not meant for rapid use like this.
+
+ERAPI has another function, `LoadCustomBackground`, and it was this one that was a winner for my game. It's a lower level and harder to use function than `SpriteDrawOnBackground`, but it has never caused graphical glitches on me even once.
+
+<iframe
+	width={560}
+	height={315}
+	style={{ margin: '3em 0' }}
+	src="https://www.youtube.com/embed/4-uaNX9LGN4"
+	frameBorder={0}
+	allowFullScreen
+></iframe>
+
+With this function, it is up to me to figure out which tiles go where to form a background. You need to understand how backgrounds work on the GBA to pull this off. Then once I've figured it all out, I just send it to the GBA in one function call and it appears on the screen.
+
+## z80 E-Reader apps are kinda script-like
+
+I have found the way E-Reader z80 apps work to be pretty interesting. The emulator uses the `halt` opcode to mean "draw a frame to the screen". You can load the `a` register with how many frames it should draw, accomplishing a very simple way to add waits to your game.
+
+<iframe
+	width={560}
+	height={315}
+	style={{ margin: '3em 0' }}
+	src="https://www.youtube.com/embed/k5GrjMe4Ef0"
+	frameBorder={0}
+	allowFullScreen
+></iframe>
+
+Take this little intro animation. I built it like this
+
+```typescript
+	logoHandle = createSprite(logo);
+	setSpritePosition(logoHandle, 120, 20);
+
+	footerHandle = createSprite(footer);
+	setSpritePosition(footerHandle, 120, 60)
+
+	playSystemSound(DRUM_ROLL);
+
+	for (let i = 0; i < NUM_CARDS_TO_DEAL) {
+		dealOneCard(i);
+		// render one frame to show the newly dealt card
+		halt(1);
+	}
+
+	playSystemSound(CYMBOL);
+
+	// wait for 30 frames
+	halt(30)
+
+	// tear down the logos
+	freeSprite(logoHandle);
+	freeSprite(footerHandle);
+
+	// let the regular gameplay loop take over from here
+```
+
+In the actual game this was done in assembly, I turned it into psuedo-code here to make it easier to read.
+
+What I find interesting is I just whipped up a typical game engine loop on the spot, just to deal out the cards. I didn't need to hook all this into a main game loop like you do with most game development. The entire rest of the game doesn't know or even care that this happens.
+
+## E-Reader assets
+
+You might have noticed my game has music, sound effects, and a Mars-like rocky background. The E-Reader itself has many assets a game can use. This helps keep the dotcode data small. You can do custom graphics (such as the deck of cards in my game) and sounds, but they tend to be quite large and take up precious space.
+
+<figure>
+	<img
+		src={require('./ereaderSystemBackgrounds.png').default.src}
+		alt="Some of the backgrounds found on the E-Reader"
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>Some of the backgrounds found on the E-Reader</figcaption>
+</figure>
+
+Altogether there are over 100 backgrounds, 800 sounds (both sound effects and music) and over 200 Pokémon sprites stored in the E-Reader's 8MB ROM. If you're an E-Reader fan, you might have noticed Nintendo's mini games tend to reuse the same sound effects, music and often the same backgrounds. This is why.
+
+Using them is usually just a simple API call. For example here is how I play the drum roll sound effect
+
+```asm
+    ld hl, 755
+    rst 8
+    .db ERAPI_PlaySystemSound
+```
+
+Crazy assembly syntax aside, this is pretty much just `PlaySystemSound(755)`, where `755` is the drum roll's id.
+
+## How big can E-Reader apps be?
+
+A single E-Reader dotstrip can store 2,192 bytes of data, which is nearly 3kb. But there is some overhead with the headers, and error correction, making the actual amount of data I've been able to store on a single strip closer to 2kb. This data on the dotstrip is compressed though, which helps a lot.
+
+<figure>
+	<img
+		src={
+			require('../printing-ereader-cards/helloWorld.dotcode.bmp.png').default
+				.src
+		}
+		alt="An example dotcode strip"
+	/>
+	<figcaption>An example dotcode strip</figcaption>
+</figure>
+
+<figure>
+	<img
+		src={require('./helloWorld.dotcode.snippet.bmp.png').default.src}
+		alt="A closer view at part of the dotstip"
+	/>
+	<figcaption>A closer view at part of the dotstrip</figcaption>
+</figure>
+
+The compression makes the total storage size kind of fuzzy. It really depends on how well your data compresses. For example, here are the tiles for my cards
+
+<figure>
+	<img
+		src={require('./deck_strips.png').default.src}
+		alt="The card graphic tiles for Solitaire"
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>The card graphic tiles for Solitaire</figcaption>
+</figure>
+
+I could have saved space by not repeating the same tile over and over again. But this data compressed _very_ well. So well, I just went with it. Deduping these tiles would have made the drawing routines much more complicated, maybe so much so the space that the routine's code would have taken up might have even killed any space savings.
+
+In the end I didn't need to do _too_ much space optimization to keep Solitaire down to two dotstrips (which can be printed onto a single card). I did use up all the space that those two strips alloted me, so any more features would have likely required the game be expanded to three dotstrips, something I really wanted to avoid.
+
+Honestly I'm a bit surprised how many strips are needed for some of Nintendo's cards. Based on the game contained inside and my experience writing Solitaire, it seems like some of their games could have been done in fewer dotstrips. But that's just a total guess, I don't really know.
+
+### The E-Reader and GBA limitations on space
+
+The E-Reader itself allows a maximum of 12 strips to be scanned for a single application. Although I've yet to find any application that requires that many. The NES games need 10
+
+<figure>
+	<img
+		src={require('./tenStripsNeeded.png').default.src}
+		alt="The E-Reader waiting for 9 more strips to load Excitebike"
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>
+		The E-Reader waiting for 9 more strips to load Excitebike
+	</figcaption>
+</figure>
+
+As for the Game Boy Advance itself, it has 256kb of RAM which is more than enough to store any E-Reader application. The E-Reader will decompress the data into RAM, then execute it. I suppose technically your data could exceed 256kb when decompressed, but realistically I just can't see that happening.
+
+## More E-Reader cards to come
+
+My goal is to make many more E-Reader apps. I am hoping to build at least 10 apps and have the cards for them professionally manufactured. Hopefully packaged up in a booster pack, which would be so cool. Why? Why not. I think the E-Reader is really cool and this is a lot of fun.
+
+If new E-Reader cards interests you, check out https://retrodotcards.com. If you want to try Solitaire out for yourself, you can order a card there. They are free.
