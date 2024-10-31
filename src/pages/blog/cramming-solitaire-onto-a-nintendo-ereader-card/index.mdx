@@ -178,7 +178,7 @@ Simple things that I usually take for granted like copying one array to another 
 
 Another huge challenge was debugging the game. There's no way to log anything, running the game on a Game Boy Advance is a total black box. GBA emulators like [mGBA](https://mgba.io/) have good debugging features. But this is a z80 emulator running on the GBA's ARM processor. I figured stepping through ARM instructions trying to figure out how z80 instructions worked would be a herculean task, so much so I never even tried. Thankfully I don't think I'll ever need to, more on that below.
 
-For my first attempt at creating a debugger, I took [z80js](https://github.com/5inf/z80js), a z80 emulator core, and built a small application that would run my binary and log out what the cpu was doing. The output looked like this
+For my first attempt at creating a debugger, I took [z80js](https://github.com/5inf/z80js), a z80 emulator core created by Molly Howell, and built a small application that would run my binary and log out what the cpu was doing. The output looked like this
 
 ```
 ...
