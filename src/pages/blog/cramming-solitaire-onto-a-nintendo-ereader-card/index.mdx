@@ -156,8 +156,11 @@ As a simple example, here is how to create a sprite using the API
 If you're not familiar with z80 assembly this probably looks bizarre. It is basically the equivalent of
 
 ```c
-int palette_number = 2;
-int my_sprite_handle = SpriteCreate(palette_number, my_sprite_data_struct);
+int palette_index = 2;
+int my_sprite_handle = SpriteCreate(
+	palette_index,
+	my_sprite_data_struct
+);
 ```
 
 The `ld` calls are "load", and here we are loading the `e` register with which palette index we want the sprite to use. The `hl` register is loaded with a pointer to the information about the sprite (its tiles, colors, frames of animation, etc). The `rst 0` and `.db ERAPI_SpriteCreate` lines are where we actually make the API call. Without getting too deep on how the z80 works, this is a simple function call. When it is done, it will leave the handle to the sprite in the hl register, so we `ld (my_sprite_handle), hl` to copy that value off into memory for safe keeping. That handle is later used whenever we want to interact with the sprite, such as changing its position.
