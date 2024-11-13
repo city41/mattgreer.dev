@@ -110,7 +110,15 @@ Not knocking the printer. You gotta remember needing such tiny and precise dots 
 
 So out of desperation, I tried a 1200 dpi image. It didn't work at all. Not even a read error, the E-Reader acted as if the card wasn't scanned at all.
 
-But I was perplexed, the dots looked great under the loupe. But when looking at the card with the naked eye, I could notice the dots seemed to have a faint blue tint to them. Sure enough, when I looked at them under the microscope, the dots were made up of blue and black!
+But I was perplexed, the dots looked great under the loupe. But when looking at the card with the naked eye, I could notice the dots seemed to have a faint blue tint to them. Sure enough, when I looked at them under the microscope, the dots were made up of mostly blue and black!
+
+<figure>
+	<img
+		src={require('./ups1200BlueDots.jpg').default.src}
+		alt="The color printed dots from my messed up image file"
+	/>
+	<figcaption>The color printed dots from my messed up image file</figcaption>
+</figure>
 
 It turned out when I converted the image to 1-bit, for some reason The GIMP created an image with three colors in its palette: white, black ... and another black. This feels like a bug in the GIMP? Since there were three colors, it got bumped to an 8-bit image, and from there the printer reverted to printing the dots in color. At least, that is my guess.
 
