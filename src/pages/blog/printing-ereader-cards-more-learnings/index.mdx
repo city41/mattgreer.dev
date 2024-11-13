@@ -1,0 +1,146 @@
+import { Article } from '../../../components/layouts/Article';
+import meta from './meta.json';
+
+export default ({ children }) => (
+	<Article
+		{...meta}
+		img={require('./feature.png').default.src}
+		socialMediaImg={require('./twitter.png').default.src}
+		intro="Even more experience and hard knocks on printing E-Reader cards"
+	>
+		{children}
+	</Article>
+);
+
+I wrote a pretty [detailed post about printing Nintendo E-Reader cards](/blog/printing-ereader-cards). Since then I've done even more printing and learned a few more things. This post is just a quick few follow on points. I recommend reading the first article if you haven't already.
+
+## Printing at home on an inkjet printer
+
+I bought this Canon TR8620a printer and some Canon Photo Paper Plus Glossy II. And yes, you can successfully print E-Reader cards with this setup.
+
+I chose this printer because it comes with a separate "photo black" ink well. Is that necessary? I'm not sure. My hunch is, probably not. I of course can't say for sure, but I am guessing any decent modern inkjet printer will do the trick. As long as you use quality paper.
+
+<figure>
+	<img
+		src={require('./canonPrinter.jpg').default.src}
+		alt="A Canon TR8620a printer"
+	/>
+	<figcaption>A Canon TR8620a printer</figcaption>
+</figure>
+
+I stick with a 1-bit image as before, and print at 1200dpi.
+
+The resulting print is really good, especially considering this printer was pretty inexpensive.
+
+<figure>
+	<img
+		src={require('./canonCloseUp.jpg').default.src}
+		alt="A close up of the dots from a Canon inkjet print"
+	/>
+	<figcaption>A close up of the dots from a Canon inkjet print</figcaption>
+</figure>
+
+They look black, don't they? Interestingly, these are actually in color. When I examine the dots using this magnifying glass
+
+<figure>
+	<img
+		src={require('./magnifyingGlass.jpg').default.src}
+		alt="A cheap magnifying glass"
+	/>
+	<figcaption>A cheap magnifying glass</figcaption>
+</figure>
+
+I can see the dots are actually varying patterns of cyan, magenta, yellow and black ink. Unfortunately I can't get a photo that looks down inside the magnifying glass.
+
+I tried to force the printer to only use black and it did not work at all. If you set it to only use black but also to the glossy paper, it will insist on printing the dots in color. Even though the image itself is 1-bit.
+
+If you pretend you are using regular paper, you can get it to print in black only. But when it does, the print quality is very poor. I tried and tried, but I could not get a high quality, black only, print.
+
+### They do scan though
+
+These print outs do scan in an E-Reader. They are a bit flaky and sometimes take a few tries. It's also good to scan a bit slower than usual. But they will ultimately scan. I am glad I bought this printer as now I can make test prints at home. But they are not good enough to share with other people in my opinion.
+
+## The UPS store's printer can be finnicky
+
+This is a very nice printer.
+
+<figure>
+	<img
+		src={require('../printing-ereader-cards/upsStoreRicoh.jpg').default.src}
+		alt="The giant Ricoh printer at the UPS store"
+	/>
+	<figcaption>The giant Ricoh printer at the UPS store</figcaption>
+</figure>
+
+But it is not perfect.
+
+I went to the UPS store and printed out a round of [Solitaire cards](/blog/cramming-solitaire-onto-a-nintendo-ereader-card/) at 600 dpi, with four cards on one sheet. I had one copy made first, cut out a single card from it, tested it, and then proceeded to have more copies printed. But of the four cards on the sheet, only two would scan. Of the two, one would scan very well, and the other could take a few tries. I sadly only realized this after I had sent these cards out to many people :(
+
+When I finished the Japanese version of Solitaire, I went back to have them printed up, again at 600 dpi.
+
+<figure>
+	<img
+		src={require('./solitaireCardJpn.png').default.src}
+		alt="The Japanese version of Solitaire"
+	/>
+	<figcaption>The Japanese version of Solitaire</figcaption>
+</figure>
+
+I never got a single 600 dpi Japanese card to scan! On any of my **six** E-Readers! I tried and tried, and ultimately had like five or six different images printed that would not work. I tried something different each time. At the very best got half of a card to scan. BTW, thanks to the UPS store employees for being so helpful with this. I'm sure I was a pain :)
+
+I now understand that the first 600 dpi run that made successful cards was probably more luck than anything.
+
+This printer takes your image and converts it to a PDF before printing. I think that conversion process can introduce some mistakes in the dotcodes sometimes. I noticed the dots were either faint as I've seen before, or were all smudgy and totally messed up
+
+<figure>
+	<img src={require('./smudgyLoupe.jpg').default.src} alt="Smudgy dots" />
+	<figcaption>Smudgy dots</figcaption>
+</figure>
+
+Yeah that's not going to scan whatsoever...
+
+Not knocking the printer. You gotta remember needing such tiny and precise dots like this is a very unusual need. For 99.999% of printing needs, this printer does an excellent job.
+
+### Let's try 1200 dpi
+
+So out of desperation, I tried a 1200 dpi image. It didn't work at all. Not even a read error, the E-Reader acted as if the card wasn't scanned at all.
+
+But I was perplexed, the dots looked great under the loupe. But when looking at the card with the naked eye, I could notice the dots seemed to have a faint blue tint to them. Sure enough, when I looked at them under the microscope, the dots were made up of blue and black!
+
+It turned out when I converted the image to 1-bit, for some reason The GIMP created an image with three colors in its palette: white, black ... and another black. This feels like a bug in the GIMP? Since there were three colors, it got bumped to an 8-bit image, and from there the printer reverted to printing the dots in color. At least, that is my guess.
+
+After I fixed the image and made sure it was truly 1-bit, it then printed in pure black and these cards scanned like a charm!
+
+These 1200 dpi cards scan very well. I would say about 95% as good as official cards.
+
+### But 1200 dpi is still not foolproof
+
+I had this sheet printed off at 1200 dpi.
+
+<figure>
+	<img
+		src={require('./solitaireJpnEngSheet.jpg').default.src}
+		alt="A sheet of Solitaire cards"
+	/>
+	<figcaption>A sheet of Solitaire cards</figcaption>
+</figure>
+
+Of these 10 cards, 9 scan great and 1 does not scan at all. Looking at the bad one under the loupe,
+
+<figure>
+	<img
+		src={require('./bad1200UnderLoupe.jpg').default.src}
+		alt="The faulty card examined under a loupe"
+	/>
+	<figcaption>The faulty card examined under a loupe</figcaption>
+</figure>
+
+you can see some of the dots are faint. I again think it is the PDF conversion process.
+
+This is not a one off. In other words, the printer didn't just happen to run low on toner when it got to this card. This card has the exact same faint dot pattern on all sheets.
+
+## Conclusion
+
+And that's it. I think the main lesson here is 1200 dpi is better if you can swing it.
+
+BTW, if you haven't guessed I've kind of gone off the deep end on E-Reader cards. I am making new games for it and ultimately will be releasing a set. If you want to know more or get updates, head to https://retrodotcards.com or join me on [Bluesky](https://bsky.app/profile/retrodotcards.com) or [Reddit](https://reddit.com/r/retrodotcards).

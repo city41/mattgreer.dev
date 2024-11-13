@@ -19,6 +19,11 @@ The Game Boy Advance had a device called the E-Reader. It can scan physical card
 	<a href="#step-by-step-printing">end of the post</a>
 </wisdom>
 
+<wisdom>
+	I wrote a follow up post to this with even more info{' '}
+	<a href="/blog/printing-ereader-cards-more-learnings">here</a>.
+</wisdom>
+
 <figure>
 	<img
 		src={require('./ereaderWithCard.jpg').default.src}
@@ -135,6 +140,11 @@ If you try to print a full color (RGB) dotcode image, it will look black to the 
 
 See how the dots are yellow, magenta, all kinds of colors? The E-Reader won't read that correctly! Why printers do this is beyond me.
 
+<pitfall>
+	Turns out colored prints can work sometimes. More info{' '}
+	<a href="/blog/printing-ereader-cards-more-learnings">here</a>.
+</pitfall>
+
 Having the printer print the full color image in greyscale mode will not fix this. You will end up with dots that are varying levels of grey. I never got a color image printed as greyscale to scan correctly at all.
 
 <figure>
@@ -161,6 +171,11 @@ A true, 1-bit, black and white image, will produce very solid, vibrant black dot
 
 ## Print at 600 dpi
 
+<pitfall>
+	I now recommend 1200 dpi if you can. More info{' '}
+	<a href="/blog/printing-ereader-cards-more-learnings">here</a>.
+</pitfall>
+
 Official E-Reader cards are 342.39 dots per inch (dpi) according to [gbatek](https://rust-console.github.io/gbatek-gbaonly/). That is a strange dpi that regular digital printers won't recreate. You generally have the choice of 300 dpi, 600, or 1200 if you use a really high end printer. I have found 300 is too grainy and does not work. I have also found 1200 is overkill and not needed. 600 dpi is a nice middle ground, and bonus most modern home printers can print at this dpi.
 
 Here is a 300 dpi print. See how chunky the dots are? I could never get this to work.
@@ -184,6 +199,11 @@ The reason ink printers work better is they can work with better paper. The glos
 I'm a Linux user and my Linux printing setup doesn't have the fully correct print driver for my printer. I use a driver meant for a similar printer, but not one meant for my exact printer model. That is fine for documents and normal day to day printing. But with a mismatched driver, I just could not get high dpi prints at all. When I hooked my printer up to a Windows machine and used the correct driver from the manufacturer, the print quality shot way up. It was like night and day.
 
 ## If all else fails, take it to a shop
+
+<pitfall>
+	I still think a print shop is a good bet. But it's not 100% perfect. More info{' '}
+	<a href="/blog/printing-ereader-cards-more-learnings">here</a>.
+</pitfall>
 
 I ended up getting my cards printed at the UPS Store. They have a Ricoh Pro C5300S, which is a very high end, excellent, digital printer.
 
@@ -322,3 +342,8 @@ When trimming the card, having a perfectly straight edge along the dotcode helps
 ## Conclusion
 
 Good luck, this can be frustrating when it doesn't work (believe me, I know...). Hopefully my images and tips can help you be successful.
+
+<wisdom>
+	Check my follow up post for even more printing tips{' '}
+	<a href="/blog/printing-ereader-cards-more-learnings">here</a>.
+</wisdom>
