@@ -2,7 +2,7 @@
 	"name": "with-tailwindcss",
 	"version": "1.0.0",
 	"scripts": {
-		"develop": "next --hostname 0.0.0.0",
+		"dev": "next --hostname 0.0.0.0",
 		"local-build": "node scripts/generateRssFeed.js && node scripts/generateTwitterImages.js",
 		"build": "sh scripts/minimgs.sh && next build",
 		"start": "next start",

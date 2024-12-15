@@ -10,6 +10,7 @@ import theme from 'prism-react-renderer/themes/vsDark';
 require('prismjs/components/prism-clojure');
 require('prismjs/components/prism-csharp');
 require('prismjs/components/prism-lua');
+require('prismjs/components/prism-nasm');
 
 type CodeBlockProps = {
 	className?: string;
