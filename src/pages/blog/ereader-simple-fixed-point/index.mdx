@@ -12,7 +12,7 @@ export default ({ children }) => (
 	</Article>
 );
 
-Fixed point is a reality on older hardware, especially gaming systems. The [Nintendo E-Reader](https://en.wikipedia.org/wiki/Nintendo_e-Reader) is no different, it uses a simple 16 bit fixed point system. I like how intuitive it is, and it has helped hammer the point home that fixed point at its core is a simple concept.
+Fixed point is a reality on older hardware, especially gaming systems. The [Nintendo E-Reader](https://en.wikipedia.org/wiki/Nintendo_e-Reader) is no different, it uses a simple 16-bit fixed point system. I like how intuitive it is, and it has helped hammer the point home that fixed point at its core is a simple concept.
 
 <wisdom>
 	Fixed point is a way to do decimal numbers on a CPU that doesn't normally
@@ -29,7 +29,7 @@ It's so big because this function is using a simple fixed point system. All ERAP
 
 ## ERAPI's fixed point system
 
-The z80 is an 8-bit processor, and can stretch to work with 16 bit numbers. Nintendo took advantage of this when creating the ERAPI fixed point system. It's simply 8 bits of integer, and 8 bits of decimal.
+The z80 is an 8-bit processor, and can stretch to work with 16-bit numbers. Nintendo took advantage of this when creating the ERAPI fixed point system. It's simply 8 bits of integer, and 8 bits of decimal.
 
 <figure>
 	<img src={require('./fixedPointDiagram.svg').default.src} />
@@ -38,7 +38,7 @@ The z80 is an 8-bit processor, and can stretch to work with 16 bit numbers. Nint
 
 ### Whole numbers
 
-This makes whole numbers easy to write and reason about. `0x0100` is `1`, `0x0200` is `2`, etc. In hexadecimal, each digit is 4 bits. A 16 bit number will have four hexadecimal digits, so here the top two digits are the integer, and bottom two are the decimal.
+This makes whole numbers easy to write and reason about. `0x0100` is `1`, `0x0200` is `2`, etc. In hexadecimal, each digit is 4 bits. A 16-bit number will have four hexadecimal digits, so here the top two digits are the integer, and bottom two are the decimal.
 
 The simplicity here is only present if you express the number in hexadecimal. So getting comfortable with hex helps here.
 
@@ -50,14 +50,14 @@ In hexadecimal, 8 is the halfway point (like 5 is in decimal), so `0x0180` is `1
 
 Inevitably, you need to leave fixed point and convert your value to a simple integer. A good example of this is ERAPI's `SetSpritePos`, which takes an x in pixels and y in pixels. If you accidentally stay in the fixed point system and give it `0x100` for x, that is off the screen and usually not what you want.
 
-To get from fixed point to integer, we just need to move the number down 8 bits to chop off the decimal portion. The z80 cannot do division, but fortunately this can be accomplished with a simple bitshift instead. Just move the number over by 8 bits and we've got it. But the z80 can only shift one bit at a time, and even worse, only on 8 bit numbers!
+To get from fixed point to integer, we just need to move the number down 8 bits to chop off the decimal portion. The z80 cannot do division, but fortunately this can be accomplished with a simple bitshift instead. Just move the number over by 8 bits and we've got it. But the z80 can only shift one bit at a time, and even worse, only on 8-bit numbers!
 
 ### A clever solution
 
-The z80 has 8 bit registers, such as `a`, `h` and `l`. But you can combine two registers to get a 16 bit register, such as `hl`. Let's say we have our player's x position in the `hl` register
+The z80 has 8-bit registers, such as `a`, `h` and `l`. But you can combine two registers to get a 16-bit register, such as `hl`. Let's say we have our player's x position in the `hl` register
 
 ```nasm
-;; moves the 16 bit number from the _player_x variable into hl
+;; moves the 16-bit number from the _player_x variable into hl
 ld hl, (_player_x)
 ```
 
@@ -85,7 +85,7 @@ ld h, 0
 
 ### And the other direction
 
-Going the other way is just as simple. Since the top 8 bits of the 16 bit number is the integer, we again just need to do some register loads.
+Going the other way is just as simple. Since the top 8 bits of the 16-bit number is the integer, we again just need to do some register loads.
 
 ```nasm
 ;; our starting integer 8, in a
@@ -113,7 +113,7 @@ _player_x:
 	.dw 0
 ```
 
-We define a word (a 16 bit number) and start it out at 0.
+We define a word (a 16-bit number) and start it out at 0.
 
 Then whenever right is pressed on the d-pad, we call this function
 
@@ -122,7 +122,7 @@ player_go_right:
 	;; load the current player's x
 	;; from memory into the hl register
 	ld hl, (_player_x)
-	;; get our delta into another 16 bit register
+	;; get our delta into another 16-bit register
 	ld bc, DELTA_X
 	;; change the x value
 	;; this add call is hl = hl + bc
@@ -160,8 +160,18 @@ player_render:
 
 The `rst 0` followed by `.db ERAPI_SetSpritePos` is a very z80 specific way of basically calling `SetSpritePos(handle, x, y)`
 
+## Negative gotcha
+
+Things can get tricky with negative numbers (when are negative numbers not tricky in assembly?). When converting from the fixed system to an integer, we move h down to l, and zero h out. That is fine if you plan just use l by itself as an 8-bit number. If it was negative in the fixed system, then l will be negative too.
+
+But if you are converting from 16-bit fixed to a 16-bit integer and need to account for negatives, then making h zero is incorrect if the value was negative in fixed point. In that case, h needs to become `0xff`.
+
 ## Conclusion
 
+<<<<<<< Updated upstream
 And that's all there is to it. If you read my [Neo Geo fixed point article](/blog/neo-geo-dev-fixed-point/), there I constructed a somewhat elaborate fixed point "system". But here we're really just working with 16 bit numbers and shifting down and up as needed. It's a nice reminder that at the end of the day, fixed point isn't very complex.
+=======
+And that's all there is to it. If you read my [Neo Geo fixed point article](/blog/neo-geo-dev-fixed-point/), there I constructed a somewhat elaborate fixed point "system". But here we're really just working with 16-bit numbers and shifting down and up as needed. It's a nice reminder that at the end of the day, fixed point really isn't very complex.
+>>>>>>> Stashed changes
 
 Oh and if you're curious about my E-Reader games, check out https://retrodotcards.com.
