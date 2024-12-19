@@ -162,7 +162,7 @@ The `rst 0` followed by `.db ERAPI_SetSpritePos` is a very z80 specific way of b
 
 ## Negative gotcha
 
-Things can get tricky with negative numbers (when are negative numbers not tricky in assembly?). When converting from the fixed system to an integer, we move h down to l, and zero h out. That is fine if you plan just use l by itself as an 8-bit number. If it was negative in the fixed system, then l will be negative too.
+Things can get tricky with negative numbers (when are negative numbers not tricky in assembly?). When converting from the fixed system to an integer, we move h down to l, and zero h out. That is fine if you plan to just use l by itself as an 8-bit number. If it was negative in the fixed system, then l will be negative too.
 
 But if you are converting from 16-bit fixed to a 16-bit integer and need to account for negatives, then making h zero is incorrect if the value was negative in fixed point. In that case, h needs to become `0xff`.
 
