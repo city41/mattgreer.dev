@@ -142,7 +142,7 @@ For z80 games, Nintendo embedded a simple but effective [API](https://problemkap
 
 As a simple example, here is how to create a sprite using the API
 
-```asm
+```nasm
     ; ERAPI_SpriteCreate()
     ; e  = pal#
     ; hl = sprite data
@@ -379,7 +379,7 @@ Altogether there are over 100 backgrounds, over 800 sounds (both sound effects a
 
 Using them is usually just a simple API call. For example here is how I play the drum roll sound effect
 
-```asm
+```nasm
     ld hl, 755
     rst 8
     .db ERAPI_PlaySystemSound

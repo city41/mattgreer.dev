@@ -4,7 +4,7 @@
         <title>Matt Greer</title>
         <link>https://mattgreer.dev</link>
         <description>Mostly web dev and game dev related articles</description>
-        <lastBuildDate>Sun, 15 Dec 2024 15:50:03 GMT</lastBuildDate>
+        <lastBuildDate>Thu, 30 Jan 2025 20:01:41 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
@@ -16,11 +16,19 @@
         <copyright>Copyright Matt Greer</copyright>
         <atom:link href="https://mattgreer.dev/feed.xml" rel="self" type="application/rss+xml"/>
         <item>
+            <title><![CDATA[An E-Reader Mystery]]></title>
+            <link>https://mattgreer.dev/blog/an-ereader-mystery</link>
+            <guid>https://mattgreer.dev/blog/an-ereader-mystery</guid>
+            <pubDate>Thu, 30 Jan 2025 00:00:00 GMT</pubDate>
+            <description><![CDATA[Solving a mystery about an E-Reader function]]></description>
+            <author>matt.e.greer@gmail.com (Matt Greer)</author>
+        </item>
+        <item>
             <title><![CDATA[Nintendo E-Reader: Simple Fixed Point]]></title>
             <link>https://mattgreer.dev/blog/ereader-simple-fixed-point</link>
             <guid>https://mattgreer.dev/blog/ereader-simple-fixed-point</guid>
             <pubDate>Sun, 15 Dec 2024 00:00:00 GMT</pubDate>
-            <description><![CDATA[The E-Reader API uses a nice and simple fixed pointer system]]></description>
+            <description><![CDATA[The E-Reader API uses a nice and simple fixed point system]]></description>
             <author>matt.e.greer@gmail.com (Matt Greer)</author>
         </item>
         <item>

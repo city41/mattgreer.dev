@@ -1,0 +1,214 @@
+import { Article } from '../../../components/layouts/Article';
+import meta from './meta.json';
+
+export default ({ children }) => (
+	<Article
+		{...meta}
+		img={require('./feature.png').default.src}
+		socialMediaImg={require('./twitter.png').default.src}
+		intro="Solving a mystery about an E-Reader function"
+	>
+		{children}
+	</Article>
+);
+
+I've been working on a Minesweeper game for the Nintendo E-Reader. I recently added the ability to scroll the playfield around, to allow for larger games.
+
+<iframe
+	width={560}
+	height={315}
+	style={{ margin: '3em 0' }}
+	src="https://www.youtube.com/embed/FocsYn8O5tg"
+	frameBorder={0}
+	allowFullScreen
+></iframe>
+
+As soon as I got this working, it was immediately obvious the game would also need a mini map. Who wants to scroll around the whole board looking for areas they missed? The E-Reader's ERAPI API includes drawing functions like `DrawLine` and `DrawRect`, which would be needed for such a feature. But I didn't yet know how they work, so as is often the case in E-Reader development, these functions had to be figured out.
+
+<wisdom>
+	Not sure what I'm talking about?{' '}
+	<a href="/blog/cramming-solitaire-onto-a-nintendo-ereader-card/">
+		My first post on how I made Solitaire for the E-Reader
+	</a>{' '}
+	has a lot more details. But in short, ERAPI is an API that Nintendo added to
+	the E-Reader to make game development easier. It has functions for creating
+	and working with sprites, backgrounds, sound, etc. All of the typical stuff
+	you'd expect for game development.
+</wisdom>
+
+I was able to figure out how <a href="https://ereader.miraheze.org/wiki/ERAPI-Z80#0x95:_DrawLine">DrawLine</a> works pretty quickly. And even though I could successfully get rectangles drawn onto the screen with `DrawRect`, I hadn't completely figured out how it works. I decided as a first version of the mini map, I'd call `DrawLine` in a loop to accomplish rectangles. Not great, but I only needed one rectangle, so I just rolled with it for now.
+
+Since I needed a 30x16 rectangle, calling `DrawLine` 16 times and drawing a 30 pixel horizontal line each time would do the trick.
+
+After drawing my rectangle with the loop, I ran it and saw ... this?
+
+<iframe
+	width={560}
+	height={315}
+	style={{ margin: '3em 0' }}
+	src="https://www.youtube.com/embed/Fw51biJiuBE"
+	frameBorder={0}
+	allowFullScreen
+></iframe>
+
+In the upper right corner is the mini map, and that rectangle is filling the entire map with "undiscovered tiles" as the game has just started.
+
+What the heck is this? Why are the lines gradually being drawn? It kind of reminds me of a flood fill in really old drawing programs. If you watch long enough, eventually the entire mini map gets filled with orange.
+
+## More than meets the eye
+
+So on the one hand, I had mostly figured out how `DrawLine` works. But since I was met with this surprise, I clearly hadn't completely figured it out. I immediately realized the function has the ability to draw lines over time. But how?
+
+My code for filling the mini map is essentially this
+
+```typescript
+SetLineColor(ORANGE);
+
+for (let y = 16; y > 0; --y) {
+	DrawLine(0, y - 1, 30, y - 1);
+}
+```
+
+except this is all in z80 assembly. So it's actually this
+
+```nasm
+	;; run the loop 16 times
+	ld b, 16
+
+    minimap_init__loop:
+
+	;; save our loop counter onto the stack
+	;; because we are about to clobber it below
+    push bc
+
+	;; set up the parameters for DrawLine
+	;; this is basically x1/y1 -> x2/y2
+    ld e, b
+	dec e   ; e=y - 1, which is y1
+    ld d, 0 ; d=0, which is x1
+    ld b, 30; b=30, which is x2
+    ld c, e ; c=e
+	        ; the same y as these
+			; are horizontal lines
+
+	;; call DrawLine
+    rst 0
+    .db ERAPI_DrawLine
+
+	;; restore the loop counter
+    pop bc
+	;; loop back up and do it again
+    djnz minimap_init__loop
+```
+
+If you're not familiar with z80 assembly, don't worry too much. This code is basically the same thing as the for loop above.
+
+### Watching for clues
+
+Here is the same video as above, but this time zoomed into the mini map
+
+<iframe
+	width={560}
+	height={315}
+	style={{ margin: '3em 0' }}
+	src="https://www.youtube.com/embed/1mbMtr3if3c"
+	frameBorder={0}
+	allowFullScreen
+></iframe>
+
+Ok, so there is some "duration" parameter somewhere. But where? ERAPI functions use the cpu's registers for their parameters. `DrawLine` uses all of the registers except `hl`, so surely `hl` is how duration gets passed? But no matter what I set on `hl`, I got the same result.
+
+Other ERAPI functions that take a lot of parameters usually do so by setting up a struct in memory of all the parameters, and then passing a pointer to the struct. Usually that pointer is set in `hl`. Ok so all of the other parameters are already in registers, so no need to duplicate them in a struct. But maybe `hl` is a pointer to just the duration? That would be pretty silly, but worth a shot. But alas, I just got the same result as before...
+
+Hmmm...
+
+Ok, let's write down everything we know so far
+
+- If we wait long enough, all of the lines do draw correctly.
+- Due to the way z80 loops work, we first draw the bottom line, then work our way up to the top.
+- Each line draws a bit faster than the line before it.
+
+The lines ultimately being correct tells me the parameters for x1/y1/x2/y2 are being passed correctly.
+
+The increasing of the speed for each subsequent line is very interesting though. Where on the z80 cpu or in memory are we increasing a value every time we draw a line?
+
+We actually aren't increasing a value anywhere, but we are decreasing a value. `b` is the loop counter. It starts at 16, then each iteration of the loop is one less: 15, 14, 13... `b` is an eight bit register, but when combined with `c`, becomes the 16 bit register `bc`.
+
+Looking at the loop, we `push bc`, draw the line, then `pop bc`. This means take `bc`'s current value, and save it onto the stack. Then later `pop` will take the top of the stack, and put it back into `bc`. This is very commonly done as the z80 only has so many registers. You often put things on the stack to "stick them to the side" for a bit, then grab them back later. Here is a perfect example, I needed `b` and `c` to tell `DrawLine` the x2/y2 values. But I'm also using `b` for my loop, so throwing it onto the stack allows me to use `b` for two different things.
+
+Is the duration parameter ... the top of the stack?
+
+## Testing out the theory
+
+Ok so if the duration parameter really is the top of the stack, then making sure the top of the stack is zero should get us what we're after.
+
+```nasm
+	;; run the loop 16 times
+	ld b, 16
+	;; get our zero value ready
+	ld hl, 0
+
+    minimap_init__loop:
+
+	;; save our loop counter onto the stack
+	;; because we are about to clobber it below
+    push bc
+
+	;; set up the parameters for DrawLine
+	;; this is basically x1/y1 -> x2/y2
+    ld e, b
+	dec e   ; e=y - 1, which is y1
+    ld d, 0 ; d=0, which is x1
+    ld b, 30; b=30, which is x2
+    ld c, e ; c=e
+	        ; the same y as these
+			; are horizontal lines
+
+	;; push zero onto the stack
+	push hl
+
+	;; call DrawLine
+    rst 0
+    .db ERAPI_DrawLine
+
+	;; pop zero back off the stack
+	pop hl
+
+	;; restore the loop counter
+    pop bc
+	;; loop back up and do it again
+    djnz minimap_init__loop
+```
+
+This is the same loop as before, except it now pushes zero onto the stack just before calling `DrawLine`.
+
+And yup, that did it! The lines all draw instantaneously and we get what we were after.
+
+To demonstrate this, here is pushing `120` onto the stack
+
+<iframe
+	width={560}
+	height={315}
+	style={{ margin: '3em 0' }}
+	src="https://www.youtube.com/embed/s3ocaHxv4Uw"
+	frameBorder={0}
+	allowFullScreen
+></iframe>
+
+Whatever is on the top of the stack, is how long the line will take to draw in frames. Since 120 is on top of the stack here, the lines take 2 seconds to be drawn, as the GBA runs at 60 fps.
+
+## Why did the lines take so long?
+
+Ok, cool, mystery solved! But why did the lines take so long? In the first video, it takes over 1 minute for all the lines to be drawn. I mean, b just goes from `16` down to `1`, so that doesn't make sense?
+
+It is true that `b` is very small. But when combined with `c` to become `bc`, `b` becomes the higher byte of the 16 bit number. So when `b` was 16, we were pushing 4096 onto the stack! 4096 frames is ... 1.13 minutes!
+
+Then when `b` was 15 for the next iteration of the loop, 3840 gets pushed onto the stack, then 3584, 3328... all the way down until the final line pushes 256 onto the stack. So the final line takes 4 seconds to be drawn.
+
+## Conclusion
+
+And now a little bit more about how the E-Reader works is known. Little by little we should eventually fully understand the device. BTW I'm writing down my learnings into [this wiki](https://ereader.miraheze.org/).
+
+If you're familiar with how modern processor work, you might be surprised that I was surprised parameters would be placed onto the stack. After all, that's how modern processors pass virtually all parameters to functions. But the z80 is an ancient processor, and so pushing paramters onto the stack is not so common. I'm a little surprised Nintendo did this when the `hl` register was unused here and seemingly available. But who knows, I'm sure they had a good reason. Maybe one day all of the mysteries of this device will be figured out.
+
+Now I'm wondering, what other ERAPI functions use the stack like this?...
