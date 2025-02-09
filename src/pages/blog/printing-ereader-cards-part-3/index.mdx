@@ -4,346 +4,290 @@ import meta from './meta.json';
 export default ({ children }) => (
 	<Article
 		{...meta}
-		img={require('./feature.png').default.src}
+		img={require('./feature.jpg').default.src}
 		socialMediaImg={require('./twitter.png').default.src}
-		intro="How I printed Nintendo E-Reader cards so they work"
+		intro="More things I have found through my trials and errors"
 	>
 		{children}
 	</Article>
 );
 
-The Game Boy Advance had a device called the E-Reader. It can scan physical cards which contain a dotcode pattern. The E-Reader converts those dots into binary data and executes it.
-
-<wisdom>
-	There is a step by step guide at the{' '}
-	<a href="#step-by-step-printing">end of the post</a>
-</wisdom>
-
-<wisdom>
-	I wrote a follow up post to this with even more info{' '}
-	<a href="/blog/printing-ereader-cards-more-learnings">here</a>.
-</wisdom>
-
-<figure>
-	<img
-		src={require('./ereaderWithCard.jpg').default.src}
-		alt="The E-Reader and one of its cards"
-	/>
-	<figcaption>The E-Reader and one of its cards</figcaption>
-</figure>
-
-Have you ever wanted to print your own cards and failed? I sure have, holy cow. But I finally got it to work.
-
-<iframe
-	width={500}
-	height={800}
-	style={{ margin: 'auto' }}
-	src="https://www.youtube.com/embed/63lehoxLDic"
-	frameBorder={0}
-	allowFullScreen
-></iframe>
-
-Here is what worked for me and some tips.
-
-## Make sure the dotcodes remain sharp
-
-I was working on making a custom E-Reader card with graphics, to make it look more like an official one. I didn't realize it at the time, but the graphics software I was using had imported the dotcode images with softening/anti-aliasing on them. They looked this
-
-<figure>
-	<img
-		src={require('./blurryImport.png').default.src}
-		alt="Dotcodes made blurry by my graphics program"
-	/>
-	<figcaption>Dotcodes made blurry by my graphics program</figcaption>
-</figure>
-
-and when they are like this, they won't print correctly. They will come out grey and "soft". They should look like this
-
-<figure>
-	<img
-		src={require('./pixelatedImport.png').default.src}
-		alt="Dotcodes crisp as they should be"
-	/>
-	<figcaption>Dotcodes crisp as they should be</figcaption>
-</figure>
-
-## Use glossy paper
-
-I have found the glossier the better. Glossy paper is very smooth. When viewed through a jeweler's loupe, there's almost no discernable texture at all
-
-<figure>
-	<img
-		src={require('./loupe_workingCard.jpg').default.src}
-		alt="Examining a glossy print result through loupe"
-	/>
-	<figcaption>Examining a glossy print result through loupe</figcaption>
-</figure>
-
-<wisdom>
-	Btw I recommend picking up a loupe like this. They are cheap on Amazon and can
-	really help with troubleshooting.
-</wisdom>
-
-Compare that to a printout on matte paper
-
-<figure>
-	<img
-		src={require('./loupe_matteTexture.jpg').default.src}
-		alt="The texture on matte paper"
-	/>
-	<figcaption>The texture on matte paper</figcaption>
-</figure>
-
-To the naked eye you can't see it, but through a loupe it almost looks like cottage cheese :) That texture fights with and confuses the camera, making a successful scan virtually impossible.
-
-Official Nintendo E-Reader cards were printed on a semi-gloss paper that has a little bit of texture. But you're fighting an uphill battle, the less texture you have the better.
-
-## Use a 1-bit, black and white image
-
-If you created your dotcode images with raw2bmp or other E-Reader printing tools, they will create a 1-bit image. That means the image only has black and white in it. That is what you want. If the image is fully color, even if it only has black in it, the printer will print it differently.
-
-In The Gimp, the image will be "indexed" if it is 1-bit
-
-<figure>
-	<img
-		src={require('./gimpIndexed.png').default.src}
-		alt="An image in indexed mode in the Gimp"
-	/>
-	<figcaption>An image in indexed mode in the Gimp</figcaption>
-</figure>
-
-And if you look at the color palette for the image (Windows menu > Dockable Dialogs > Colormap), you should see the palette is just white and black.
-
-Here is a dotcode 1-bit image loaded into Aseprite
-
-<figure>
-	<img
-		src={require('./asepriteIndexed.png').default.src}
-		alt="An image in indexed mode in Aseprite"
-	/>
-	<figcaption>An image in indexed mode in Aseprite</figcaption>
-</figure>
-
-Again it is shown as "indexed", and the palette only has black and white in it.
-
-Photoshop and other image programs should be very similar.
-
-If you try to print a full color (RGB) dotcode image, it will look black to the naked eye. But when examined with a loupe
-
-<figure>
-	<img
-		src={require('./loupe_fullColor.jpg').default.src}
-		alt="Examining a full color dotcode printout"
-	/>
-	<figcaption>Examining a full color dotcode printout</figcaption>
-</figure>
-
-See how the dots are yellow, magenta, all kinds of colors? The E-Reader won't read that correctly! Why printers do this is beyond me.
-
 <pitfall>
-	Turns out colored prints can work sometimes. More info{' '}
-	<a href="/blog/printing-ereader-cards-more-learnings">here</a>.
+	<b>Hey!</b> I am not an expert on printing nor the E-Reader's scanning
+	technology. Everything I have learned has been through trial and error, and
+	like I have been wrong about this stuff in the past, some stuff in this
+	article will probably prove to be wrong too.
 </pitfall>
 
-Having the printer print the full color image in greyscale mode will not fix this. You will end up with dots that are varying levels of grey. I never got a color image printed as greyscale to scan correctly at all.
+Here are some updates, findings, thoughts and theories on what it takes to print these cards.
+
+## TL;DR
+
+This is a long post. Here is the real nugget:
+
+> I have printed E-Reader cards using a Kodak digital printing press to great success. They are the best scanning cards I have ever seen (other than the Nintendo originals, of course).
+
+## SVG Dot Strips
+
+For the past 20+ years, CaitSith2's raw2bmp has been the primary way to create dot strip images for printing. It is a pixel based app and can generate dot strips at 300, 600, 1200 and 2400 DPI. For example, here is a 600 DPI strip that it generated (blown up)
 
 <figure>
-	<img
-		src={require('./loupe_fullColorMadeGreyscale.jpg').default.src}
-		alt="A full color dotcode image printed as greyscale"
-	/>
-	<figcaption>A full color dotcode image printed as greyscale</figcaption>
+	<img src={require('./raw2bmp_600dpi.png').default.src} />
+	<figcaption>A raw2bmp 600 dpi dot strip image</figcaption>
 </figure>
 
-It's a bit hard to tell, but these dots are "fuzzy" and some are a pale grey. The printer took the full color dots above and converted them into greyscale. Why do printers do this? I have no idea.
+And here is that same dot strip, but this time at 2400 dpi. It takes advantage of the higher resolution to make the dots a bit more circular.
 
-A true, 1-bit, black and white image, will produce very solid, vibrant black dots
+<figure>
+	<img src={require('./raw2bmp_2400dpi.png').default.src} />
+	<figcaption>A raw2bmp 2400 dpi dot strip image</figcaption>
+</figure>
+
+I [ported raw2bmp to TypeScript](https://github.com/city41/ereader-tools) and added the ability to generate SVG dot strip images.
+
+<wisdom>
+	I am porting all of the E-Reader tools to TypeScript, which is an ongoing
+	effort. They are all at the same link above.
+</wisdom>
+With SVG, you gain fine control over which DPI the dot strip will print at, as well
+as control over the shape of the dots and the spacing between them.
+
+<figure>
+	<img src={require('./exampleSvgDotStrips.svg').default.src} />
+	<figcaption>Various examples of SVG dot strips</figcaption>
+</figure>
+
+A massive downside to using SVG is these files are just murder on your computer. At times I find myself in an Inkscape loop where I do a single thing, wait 30 seconds for it to finish, do another thing, wait 30 seconds, repeat over and over... Sometimes these SVG files are really not fun to work with.
+
+At the time I didn't know if this would make a difference, but I now think it does.
+
+## Getting professionally printed cards
+
+I have been reaching out to local printers looking to get cards printed on an offset printing press. This has proven surprisingly challenging. I think the tiny dots make them nervous? For example, after reaching out to one and including a sample card image, they responded with "Matt, I think that we do not have a print resolution that would be suitable for those codes." and that was it. Shut down right away :)
+
+I'm happy to report I have found a printer who has been great, and I've gotten back an initial test print from them. Instead of using an offset printing press, they were printed on a digital printing press. What's the difference?
+
+### Printing technologies
+
+<pitfall>
+	Like I said at the start of this post, I am not a printing expert.
+</pitfall>
+
+The main difference between printers and presses is how they apply their ink (or toner in the case of laser).
+
+#### Printers
+
+Printers apply all the colors at the same time. If you have a little inkjet or laser printer in your office, the way it prints matches how professional printers print. As you go up in printer quality (and price... and size...) the main difference is how effectively it prints. Professional printers can also work with a wider variety of paper types, as well as do things like stapling or binding (to make books).
 
 <figure>
 	<img
-		src={require('./loupe_workingCard.jpg').default.src}
-		alt="Vibrant, black dots from a truly black and white image"
+		src={require('../printing-ereader-cards/upsStoreRicoh.jpg').default.src}
 	/>
+	<figcaption>The giant Ricoh printer at my local UPS store</figcaption>
+</figure>
+
+This behemoth of a printer, the Ricoh Pro C5300S, is what my local UPS store has. It is how the [Solitaire cards](https://www.retrodotcards.com/series-one/solitaire/order) were made. The actual printer is just this part
+
+<figure>
+	<img src={require('./ricohByItself.jpg').default.src} />
+	<figcaption>The Ricoh C5300S on its own</figcaption>
+</figure>
+
+but it's still massive, about the size of a washing machine. It can print at up to 4800 DPI, in color or black and white. All in all it's an excellent printer and I think I could get it to print even better E-Reader cards than I did before, knowing what I know now.
+
+#### Offset Printing Presses
+
+Presses are a giant step up from printers and are more about printing at scale. They are possitively massive, requiring a dedicated room. Here is an offset printer at a print shop near me.
+
+<figure>
+	<img src={require('./offsetPrintingPress.jpg').default.src} />
+	<figcaption>A Heidelberg offset printing press</figcaption>
+</figure>
+
+A key difference from printers is presses apply one color at a time. Offset printers require metal plates that have the image etched into them using lasers. They are like rubber stamps, but much more precise. An image is usually broken down into four colors for printing: cyan, magenta, yellow and black. So typically one metal plate is made for each color. Then from there the printing press applies ink to the plates, then applies the plate to the paper, again, similar to a rubber stamp. Each plate is applied one at a time, and the end result is a full color print.
+
+<figure>
+	<img src={require('./offsetPlates.jpg').default.src} />
+	<figcaption>Some offset metal plates, taken from printninja.com</figcaption>
+</figure>
+
+#### Digital Printing Presses
+
+Digital presses are kind of halfway between printers and offset presses. Like offset presses they are room filling, massive machines. And like offset presses they also apply each color to the paper one at a time. But unlike offset presses, no metal plate is created. Instead each color is essentially "printed" onto the paper similar to how a laser or inkjet printer works.
+
+They offer many of the same advantages of offset printing, but are more ideal for smaller print runs. The creation of the metal plates is expensive, and so offset printing is often only more economical compared to digital when printing at high volume. Virtually everything around you, from cereal boxes to instruction manuals, are printed on offset presses because at that high volume it is the cheapest way to print something.
+
+## Anyway, back to the cards...
+
+I had a run of test cards printed by a Kodak digital press.
+
+<figure>
+	<img src={require('./singleDigitalPrintTestCards.jpg').default.src} />
 	<figcaption>
-		Vibrant, black dots from a truly black and white image
+		Test E-Reader cards, printed by a digital printing press
 	</figcaption>
 </figure>
 
-## Print at 600 dpi
-
-<pitfall>
-	I now recommend 1200 dpi if you can. More info{' '}
-	<a href="/blog/printing-ereader-cards-more-learnings">here</a>.
-</pitfall>
-
-Official E-Reader cards are 342.39 dots per inch (dpi) according to [gbatek](https://rust-console.github.io/gbatek-gbaonly/). That is a strange dpi that regular digital printers won't recreate. You generally have the choice of 300 dpi, 600, or 1200 if you use a really high end printer. I have found 300 is too grainy and does not work. I have also found 1200 is overkill and not needed. 600 dpi is a nice middle ground, and bonus most modern home printers can print at this dpi.
-
-Here is a 300 dpi print. See how chunky the dots are? I could never get this to work.
+And here's how the cards look after being cut out
 
 <figure>
-	<img
-		src={require('./loupe_300dpi.jpg').default.src}
-		alt="A 300 dpi dotcard print"
-	/>
-	<figcaption>A 300 dpi dotcard print</figcaption>
+	<img src={require('./testCardsCutOut.jpg').default.src} />
+	<figcaption>
+		Test E-Reader cards, printed by a digital printing press
+	</figcaption>
 </figure>
-
-## Printing at home? An ink printer is better than laser
-
-Most people that successfully print out e-reader cards at home do so on ink printers using glossy photo paper (Canon's [Photo Paper Plus Glossy II](https://www.amazon.com/Canon-Glossy-Inches-Sheets-2311B023/dp/B0014WJYOG/ref=sr_1_3?crid=2ZMU7LOZFSVXT&dib=eyJ2IjoiMSJ9.AkxD_qlBaQ_l4UCNhzkVK1oqQppZwha5f5JlboPkjtEybeqxg09t9VVF1aCyoAsjiYoqHBpL2MtuAMUk06z1Q7Xpi7iYqcAckbxpA8W0ZKX3KtXA1_gur2lIOLWtoQZKLEmJ1Z7GYbFUh90r8PWw_pbEixgdXFGAMT1w9yGi7IrrIj4uBnCEj0NAFVRFV6Qqf05vttQWvNY3zE_27i8p1ewzxeGKHg45JmUofykvi6TWYpUNFrLJEuMoqi5EQNIhg_E9hNZu3Dz2uSqHmsSipWWVh3HZN1HfNm5sOTAefLY.mxtQJLncnDmjtYzMmyd0jIsw1I_J93z5iMGI4jMxXps&dib_tag=se&keywords=canon+glossy+photo+paper+plus&qid=1728434460&sprefix=canon+glossy+photo+paper+plu%2Caps%2C130&sr=8-3) is often recommended, although I have never used it myself)
-
-The reason ink printers work better is they can work with better paper. The glossy paper designed for laser printers isn't good enough, at least I couldn't find any that would work. It's far thinner and less glossy than the glossy paper meant for ink printers.
-
-## Printing at home? Make sure you have a proper driver
-
-I'm a Linux user and my Linux printing setup doesn't have the fully correct print driver for my printer. I use a driver meant for a similar printer, but not one meant for my exact printer model. That is fine for documents and normal day to day printing. But with a mismatched driver, I just could not get high dpi prints at all. When I hooked my printer up to a Windows machine and used the correct driver from the manufacturer, the print quality shot way up. It was like night and day.
-
-## If all else fails, take it to a shop
-
-<pitfall>
-	I still think a print shop is a good bet. But it's not 100% perfect. More info{' '}
-	<a href="/blog/printing-ereader-cards-more-learnings">here</a>.
-</pitfall>
-
-I ended up getting my cards printed at the UPS Store. They have a Ricoh Pro C5300S, which is a very high end, excellent, digital printer.
-
-<figure>
-	<img
-		src={require('./upsStoreRicoh.jpg').default.src}
-		alt="The behemoth printer at the UPS Store"
-	/>
-	<figcaption>The behemoth printer at the UPS store</figcaption>
-</figure>
-
-This printer is able to print E-Reader cards that work no problem. It's totally overkill, but hey, it works! But you have to set it up correctly. When working with the employee, make sure
-
-- To use the highest quality, glossy paper they have. It should be thick, card like, and very glossy.
-- Make sure your image is 1-bit black and white. Yes even this professional printer did not print full color dotcode images correctly.
-- Make sure your image is 600 dpi and that the printer prints at 600 dpi.
-
-After a print is done, pull out your loupe and compare the dots in the print to an official E-Reader card. They should look very similar. The dots should be solid and pure black, like the image above.
-
-With the printouts from this Ricoh printer, I can get them to scan into an E-Reader 99% of the time, just like real E-Reader cards.
-
-### I also tried FedEx Office
-
-I also tried printouts at FedEx Office and I never got any to work. I'm not sure what printers they have, but I can say for sure they aren't giant behemoths like what I found at the UPS store. Also their glossy paper was thin and pretty low quality.
-
-## Step by step printing
-
-Here is how I print my cards.
-
-### Step one: get a .raw file
-
-You probably want to print rare official cards, like the Pokemon Eon Ticket. I can't help you locate the files, but when you find some you want, make sure they are `.raw` files. E-Reader cards can come in many formats for reasons I won't get into, but .raw is the final one that can be turned into a dotcode image.
-
-[Here](/helloWorld.ereader.raw) is a raw file I made of a simple test program. It has no copyright issues since I wrote it, based on original code from Tim Schuerewegen, so feel free to use it.
-
-### Test the .raw file in mGBA
-
-No point in making a card of a faulty file, so best to test it first. Fire up mGBA, load up the E-Reader GBA ROM (which you can obtain by dumping your E-Reader, or, uh, you know...) and then when the E-Reader wants you to scan a card, choose "Scan e-Reader dotcodes...", and choose the `.raw` file.
-
-<figure>
-	<img
-		src={require('./mGBAEReaderMenuItem.png').default.src}
-		alt="Choosing to scan a dotcode in mGBA"
-	/>
-	<figcaption>Choosing to scan a dotcode in mGBA</figcaption>
-</figure>
-
-Wait a few seconds, and if successful, you'll see this
-
-<figure>
-	<img
-		src={require('./mGBAEReaderScanSuccess.png').default.src}
-		alt="E-Reader scan success"
-		style={{ imageRendering: 'pixelated' }}
-	/>
-	<figcaption>E-Reader scan success</figcaption>
-</figure>
-
-then press A to get into the scanned app
-
-<figure>
-	<img
-		src={require('./mGBAHelloScreenshot.png').default.src}
-		alt="A simple E-Reader app running in mGBA"
-		style={{ imageRendering: 'pixelated' }}
-	/>
-	<figcaption>A simple E-Reader app running in mGBA</figcaption>
-</figure>
-
-If this doesn't work, there is no point in going further. It won't work on a real E-Reader either. You will probably need to track down another .raw file to try.
-
-### Step two: create the image file using raw2bmp
-
-Run the raw file through [raw2bmp.exe](https://caitsith2.com/ereader/devtools.htm). If you are on Linux, this app works fine with wine. Not sure about MacOS.
-
-```bash
-raw2bmp.exe -i helloWorld.ereader.raw -o helloWorld -dpi 600
-```
-
-If you don't specify `-dpi`, it will default to 300. I have found 300 is not high enough, best to go with 600.
-
-You will end up with a .bmp like this
-
-<figure>
-	<img
-		src={require('./helloWorld.dotcode.bmp.png').default.src}
-		alt="Hello World as a dotcode bmp"
-	/>
-	<figcaption>Hello World as dotcode bmp</figcaption>
-</figure>
-
-### Step three: print it out
-
-Print this file at 600 dpi on a high quality printer using high quality glossy paper. Here is one of my print outs. I censored it as I had some other stuff on this card that isn't relevant.
-
-<figure>
-	<img
-		src={require('./printedOutCard.jpg').default.src}
-		alt="Printed out card"
-	/>
-	<figcaption>Printed out card</figcaption>
-</figure>
-
-### Step four: Cut it out
-
-Now you need to trim the paper down to a card size. If you look back above at the dotcard bmp, notice how the right side has more dots? Also notice how the right side with more dots is on the lower right side of the card? That is important. If you orient the dotcode image the opposite way, it won't scan no matter what. It will be pure gibberish to the E-Reader.
-
-<figure>
-	<img
-		src={require('./orientCorrect.png').default.src}
-		alt="The card with the dotcodes oriented correctly"
-	/>
-	<figcaption>The card with the dotcodes oriented correctly</figcaption>
-</figure>
-
-<figure>
-	<img
-		src={require('./orientIncorrect.png').default.src}
-		alt="The card with the dotcodes oriented incorrectly"
-	/>
-	<figcaption>The card with the dotcodes oriented incorrectly</figcaption>
-</figure>
-
-Also keep this in mind when making a card that has two dotcode strips. The upper strip needs to be oriented correctly. You can always just make two single strip cards too.
-
-#### Use a paper cutter if you can
-
-When trimming the card, having a perfectly straight edge along the dotcode helps a lot. That will ensure it scans smoother without jumping around. This is best done with a paper cutter. Oh and make sure to leave about a 3mm gap between the edge of the card and the dotcode strip.
 
 <wisdom>
-	The dotcodes that raw2bmp creates are a bit bigger than the dotcodes on
-	official cards. That's not an issue. The E-Reader will still read these just
-	fine.
+	Digital presses can take advantage of all of the manufacturing benefits that
+	offset presses can, such as extensive paper and ink choices, machines that cut
+	the cards out precisely, coatings, die cut packaging, the works. But for this
+	small test run, I just got the sheets and cut the cards out myself. That is
+	why the cards are kinda ratty looking on the edges.
 </wisdom>
 
-## Conclusion
+For this test run, I had the same dot strip used throughout all of the cards, but used my SVG dot strip tool to vary the shape, size, and gap of the dots. This test run was also done on three different types of card stock. The result was three SVG dot strip variations that scanned well. One in particular, circle with a 50% gap, scans the best.
 
-Good luck, this can be frustrating when it doesn't work (believe me, I know...). Hopefully my images and tips can help you be successful.
+## Testing the test cards
+
+How do I know circle with a 50% gap scans the best? Because I pretty rigorously scanned the cards in my eight E-Readers and recorded the results in a [spreadsheet](https://docs.google.com/spreadsheets/d/1JzZKbIGYmytKETO_wKgBtT2bMRi2heE7WKYe-w3QMeo).
+
+I concluded that these cards scan dramatically better than the Solitaire cards ever did, and come the closest to Nintendo scan quality I have ever seen. Nintendo cards still scan better, but not by much.
 
 <wisdom>
-	Check my follow up post for even more printing tips{' '}
-	<a href="/blog/printing-ereader-cards-more-learnings">here</a>.
+	When I had the solitaire cards made on the Ricoh, I used bitmaps generated by
+	raw2bmp. I quite confidently feel if I were to go back and do it again, but
+	this time using SVG dot strips, I'd get cards that scan about as well as these
+	Kodak cards do.
 </wisdom>
+
+## How important is DPI?
+
+In [part 1](https://mattgreer.dev/blog/printing-ereader-cards/) I recommended printing at 600 DPI. But then in [part 2](https://mattgreer.dev/blog/printing-ereader-cards-more-learnings/), I recommended 1200 DPI. But these Kodak cards were printed at 600 DPI, so ... what gives?
+
+I do think DPI is important and the higher DPI you can pull off, the better. The main advantage to high DPI is the ability to take more advantage of the SVG dot strips. Or if you aren't using SVGs, you can take more advantage of raw2bmp.
+
+When printing, it's really important to have your image's PPI (pixels per inch) match the printer's DPI. When they match, the printer can more easily place ink dots onto the paper that line up with the pixels in the image without any compromise. Pretend you told a 300 DPI printer to print a 400 PPI image. Each pixel in the image needs to be made from 3/4ths of an ink dot. A printer can't lay down 3/4ths of a dot, so it ends up interpolating and doing the best it can. The end result is an inaccurate image. Usually not a big deal, but it really is for dot strips.
+
+Here is an example of interpolation due to a DPI/PPI mismatch causing havoc in a dot strip
+
+<figure>
+	<img src={require('./interpolatedDotStrip.jpg').default.src} />
+	<figcaption>
+		Interpolation in a dot strip causing some dots to be too big, and others too
+		small.
+	</figcaption>
+</figure>
+
+The Kodak press works at 600 DPI, and I found a 50% gap to be ideal. But if it printed at 1200 DPI, I might have found a 62.5% or 37.5% gap work even better. But like I said, these are the best scanning cards I've ever seen, so DPI is not the be all end all here.
+
+## The color of the dots
+
+I am starting to think what might be the most important factor is that the dots are as pure black as possible, and made from a black that is matte and non reflective.
+
+Here is a Nintendo E-Reader card under a microscope
+
+<figure>
+	<img src={require('./nintendoUnderMicroscope.jpg').default.src} />
+	<figcaption>A Nintendo E-Reader card viewed through a microscope.</figcaption>
+</figure>
+
+Three things really stand out here:
+
+- They are made entirely from a single black ink.
+- There is a discernable gap between every dot.
+- There is virtually no noise at all outside of the dots, just the pure white of the paper.
+
+But, this is also a Nintendo E-Reader card
+
+<figure>
+	<img src={require('./pokemonUnderMicroscope.jpg').default.src} />
+	<figcaption>
+		A yellow Pokemon E-Reader card viewed through a microscope.
+	</figcaption>
+</figure>
+
+Here is that card
+
+<figure>
+	<img src={require('./rapidashCard.jpg').default.src} />
+	<figcaption>A Rapidash Pokemon card with E-Reader dot strips.</figcaption>
+</figure>
+
+The red dots under the microscope are not part of the dot strip, they are there because the card is not pure yellow, it's ever so slightly orange. This card scans perfectly, just as well as any other Nintendo card. I think this shows the scanner is really only looking for black dots, and ignoring everything else. You would expect those red dots to cause a lot of trouble, but they clearly don't.
+
+Here is a card printed from a Canon TR8620a, a cheap consumer printer. It was printed on Canon Photo Paper Plus Gloss II paper.
+
+<figure>
+	<img src={require('./canonUnderMicroscope.jpg').default.src} />
+	<figcaption>A Canon printed card viewed through a microscope.</figcaption>
+</figure>
+
+This card does scan in an E-Reader, but just barely. This is by far the worst scanning card that can still scan I've encountered. The printer is using color inks to help form the dots, and I am guessing the scanner is ignoring them, causing the scanner to be forced to work with very small dots.
+
+### Comparing two seemingly similar cards...
+
+<figure>
+	<img src={require('./kodakVersusEpsonCards.jpg').default.src} />
+	<figcaption>
+		Two E-Reader test cards that look extremely similar to the naked eye.
+	</figcaption>
+</figure>
+
+Here we have two test cards. The upper green one is from the Kodak digital press and is the hallowed "50% gap" that scans so well. The black and white lower one was made on an Epson printer. Sadly I don't know the model. A local printer made the black and white card on the printer they use for proofs (digital prints they send to customers to get their ok before embarking on the expensive offset print).
+
+The dot strips are very similar. Sure the Kodak one is a bit lighter due to less ink bleed, but when viewed under a loupe and through a microscope, the two are extremely similar.
+
+<figure>
+	<img src={require('./kodakAndEpsonUnderMicroscope.jpg').default.src} />
+	<figcaption>
+		Comparing the Kodak and Epson dots through a microscope.
+	</figcaption>
+</figure>
+
+Like I've said throughout this post, the Kodak card scans _very well_. The Epson? It doesn't scan _at all_. It gets a read error every single time.
+
+Unfortunately the photo doesn't do this justice, but the Epson dots are both more reflective, and kind of washed out. Instead of a vibrant black, they are more of a dark grey in many places. Where as the Kodak dots are a nice solid black everywhere, and more matte to boot.
+
+All of this really makes me think that the blackness of the dots is very important.
+
+Oh and one more, here is a Solitaire card that was incorrectly printed causing the dots to have a lot of blue in them.
+
+<figure>
+	<img
+		src={
+			require('../printing-ereader-cards-more-learnings/ups1200BlueDots.jpg')
+				.default.src
+		}
+	/>
+	<figcaption>An incorrectly printed Solitaire card with blue dots</figcaption>
+</figure>
+
+This card did not scan at all. Once I corrected the issue and printed Solitaire cards with proper black dots again, they then scanned as expected.
+
+## How important is dot gap?
+
+If you take a look at a Nintendo card again
+
+<figure>
+	<img src={require('./nintendoUnderMicroscope.jpg').default.src} />
+	<figcaption>A Nintendo E-Reader card viewed through a microscope.</figcaption>
+</figure>
+
+again each dot is very distinct. Where as with the Kodak card just above, the dots bleed into each other. How important is maintaining a gap between the dots? My guess is not that important.
+
+It can't be ingored though. My test cards had gaps ranging from 12% to 75%. And for sure, the different sized dots impacted scanning. The cards with a 75% dot gap had pretty small dots on them, but they would scan. However, not very well. Cards with very little gap caused the dots to really bleed together, and those would not scan at all.
+
+## How important is noise?
+
+Nintendo cards were printed on an offset printer and thus the dot strips have no noise in them. The ink is there to form the dots and that is it, there is no "splatter". Compare that to all the other cards in this post and you can see varying amounts of noise which is inevitable with a digital printing process.
+
+I'm not sure how much of a factor this plays in scanning. The Kodak cards scan _very_ close to as well as Nintendo's. My suspicion is if I had used an offset press instead, I'd probably have cards that scan exactly as we as Nintendo's did. So my guess is less noise is better, but some noise is not a deal breaker.
+
+## Why not get cards offset printed?
+
+I've never had cards printed on an offset press. All of my cards were digitally printed in one way or another. I would _really_ like to do an offset run and see how those cards compare. But there are two factors here
+
+- offset printing is very expensive at small scale. Having the metal plates made and the cost of having an employee run the press and do the actual run is a massive upfront cost that can only be recovered by doing a very large run.
+- The print shops won't let me :) I've asked numerous shops if I can get an offset run done and they have all shot me down.
+
+I'm not too worried about this. The Kodak press's results are fantastic, and inexpensive. For now, I think digital presses are a perfectly fine compromise. I am hoping as I work with the printers more, I will eventually get that holy grail offset run done :)
