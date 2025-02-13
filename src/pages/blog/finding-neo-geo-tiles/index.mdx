@@ -1,0 +1,124 @@
+import { Article } from '../../../components/layouts/Article';
+import meta from './meta.json';
+
+export default ({ children }) => (
+	<Article
+		{...meta}
+		img={require('./feature.png').default.src}
+		socialMediaImg={require('./twitter.png').default.src}
+		intro="How to locate a sprite tile in a Neo Geo game's C ROMs"
+	>
+		{children}
+	</Article>
+);
+
+A question I've now been asked a handful of times is how to locate the tiles in a Neo Geo game. For example, you want to change the graphics in a background. You first need to find where the tiles are that make up that background in the game's C ROMs. Once located, you can change them, then the game will use your changes automatically. This blog post is about locating them, actually changing them is an exercise left up to the reader :)
+
+<pitfall>
+	This technique works on all Neo Geo games. But games released from about 1999
+	on have encrypted C ROMs. If you are working with those later games, it is
+	much easier to work with a decrypted ROM set.
+</pitfall>
+
+## Using King of Fighters 98 as an example.
+
+Let's say you want to change the pots on the left side of the Middle East stage in King of Fighters 98.
+
+<figure>
+	<img
+		src={require('./kof98_middleEastStage.png').default.src}
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>The Middle East stage in KOF98</figcaption>
+</figure>
+
+## Load up the sprite bounding box script
+
+Grab [this MAME lua script](https://github.com/city41/kof94te/blob/main/src/lua/spriteBoundingBoxes.lua). Then fire up MAME using the script
+
+```bash
+mame -autoboot_script spriteBoundingBoxes.lua kof98
+```
+
+I usually add these flags to make MAME run a little nicer
+
+```bash
+mame -nofilter -nomouse -sound none -autoboot_script spriteBoundingBoxes.lua kof98
+```
+
+This script will show the bounding boxes and indexes of all the currently in use sprites
+
+<figure>
+	<img
+		src={require('./kof98_charSelect_sprites.png').default.src}
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>
+		The KOF98 character select screen with the sprite bounding boxes shown
+	</figcaption>
+</figure>
+
+Play the game until you arrive at the graphics you are interested in, then pause the game with Ctrl-P.
+
+<figure>
+	<img
+		src={require('./kof98_middleEast_boundingBoxes.png').default.src}
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>
+		The KOF98 Middle East stage with the sprite bounding boxes shown
+	</figcaption>
+</figure>
+
+We can see the pots are using sprites 171 through about 174, let's just focus on 171. When the game was paused, the lua script dumped the tiles and palettes of all the currently in use sprites. Search that output for sprite 171, it will look like this:
+
+```bash
+Sprite: 171 at (0,592,416), 6 tiles tall
+tiles
+  2693
+  26c3
+  2710
+  2711
+  2288
+  2290
+palettes
+  ea
+  ea
+  ea
+  dd
+  dd
+  dd
+```
+
+This sprite is six tiles tall, and is using the tiles `2693`, `26c3`, etc. These are hex values btw.
+
+## Fire up a tile viewer
+
+Now with the tile indexes in hand, you can find them in a tile viewer, [such as my simple online one](https://neospriteviewer.mattgreer.dev/).
+
+<pitfall>
+	Don't forget games from around 1999 on encrypted their tiles. If you load
+	encrypted ROMs into this viewer, you'll just see snow. you will need the
+	decrypted ROMs.
+</pitfall>
+
+In this case, we need to load C1 and C2 into the tile viewer. We'll cover how to know which ROMs to load below. `2693` converted from hex to decimal is `9875`. So head to tile 9875 in the viewer, and there are the pots.
+
+<figure>
+	<img src={require('./spriteViewer_pots.png').default.src} />
+	<figcaption>The Tile Viewer showing the pot tiles</figcaption>
+</figure>
+
+And there you go, you've located the tiles you were after.
+
+## How to know which C ROM pair to load in the viewer
+
+C ROMs always come in pairs, so C1 and C2 hold one set of the game's tiles, C3 and C4 the next set, and so on.
+
+You will need to know how many tiles are in a single pair for the game you are interested in. That can be determined by loading any pair from the game into the tile viewer, and seeing how many total tiles are in the pair, shown at the top. In the case of KOF98, each C ROM pair holds 131,072 tiles.
+
+Take the tile index and divide it by this number, so in this case, `9875/131072`, which is `0.0753`, so that tells us this tile is in the first pair, C1 and C2. If the answer was say `2.348`, then the tile is located in the third pair, C5 and C6.
+
+If you load the third pair into the viewer, it will show the first tile as `0`. This is because the tile viewer is just considering that single pair, and not that it's part of larger set. The tile index you got from the game is for the entire tile set across all pairs however.
+
+Let's say you got tile index 215,200 from the game, doing `215200/131072` gives us `1.641`, so we know we are interested in the second pair, C3 and C4. Once that pair is loaded into the viewer, the index you need to locate is `215200 % 131072` (modulus operator), which is `84128`. So head to tile 84128 in the tile viewer and that is your tile.
