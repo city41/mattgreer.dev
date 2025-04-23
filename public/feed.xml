@@ -4,7 +4,7 @@
         <title>Matt Greer</title>
         <link>https://mattgreer.dev</link>
         <description>Mostly web dev and game dev related articles</description>
-        <lastBuildDate>Thu, 13 Feb 2025 04:20:39 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 23 Apr 2025 16:04:12 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
@@ -29,6 +29,14 @@
             <guid>https://mattgreer.dev/blog/printing-ereader-cards-part-3</guid>
             <pubDate>Sun, 09 Feb 2025 00:00:00 GMT</pubDate>
             <description><![CDATA[More things I have found through my trials and errors]]></description>
+            <author>matt.e.greer@gmail.com (Matt Greer)</author>
+        </item>
+        <item>
+            <title><![CDATA[Printing Nintendo E-Reader Cards: Part 4, troubleshooting]]></title>
+            <link>https://mattgreer.dev/blog/printing-ereader-cards-part-4</link>
+            <guid>https://mattgreer.dev/blog/printing-ereader-cards-part-4</guid>
+            <pubDate>Sun, 09 Feb 2025 00:00:00 GMT</pubDate>
+            <description><![CDATA[Some tips and suggestions when your printed cards won't scan.]]></description>
             <author>matt.e.greer@gmail.com (Matt Greer)</author>
         </item>
         <item>

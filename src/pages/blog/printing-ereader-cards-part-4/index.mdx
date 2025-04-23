@@ -1,0 +1,181 @@
+import { Article } from '../../../components/layouts/Article';
+import meta from './meta.json';
+
+export default ({ children }) => (
+	<Article
+		{...meta}
+		img={require('./feature.jpg').default.src}
+		socialMediaImg={require('./twitter.png').default.src}
+		intro="Some tips and suggestions when your printed cards won't scan."
+	>
+		{children}
+	</Article>
+);
+
+## Will you help me?
+
+Every once in a while I get messages from people asking if I will help them figure out why their printed out cards are not scanning. **I'm sorry, but no, I can't help you.** I just don't have time to help everyone individually, it would end up being all I do. But even worse, this process is almost entirely trial and error. We have figured out how the E-Reader's camera works a little bit, but ultimately it still remains a huge mystery. Which printer you use, paper, ink, print settings, printer driver, operating system, on and on, they all are a factor in this. There's just too many factors. I just know what has worked for me, and what hasn't. Despite putting countless hours into this, I am not an expert. Not even close, sadly...
+
+## Printing E-Reader cards is really hard!
+
+If your cards won't scan, that is disappointing for sure, but also know it's not unexpected. Of the many approaches I have tried, only a small handful have worked.
+
+<figure>
+	<img src={require('./bombHunter_landscapeVsPortrait.jpg').default.src} />
+	<figcaption>
+		Close up of two print outs, one was printed landscape, the other portrait.
+	</figcaption>
+</figure>
+
+Here is a good example. These two cards were printed identically in every way. The only difference is one was rotated. The rotated one scans pretty good, and the horizontal one does not scan at all.
+
+<figure>
+	<img
+		src={require('./bombHunter_landscapeVsPortrait_zoomedIn.jpg').default.src}
+	/>
+	<figcaption>The same two print outs, even more closely zoomed in.</figcaption>
+</figure>
+
+If you look closely, the dots on one are tall and narrow, and the other are wide and short. Again, the only difference in the images is one was rotated. After the rotation I confirmed the dots in the image file remained the same. So for some reason this caused the printer to print the dots differently.
+
+Here is another example
+
+<figure>
+	<img src={require('./solitaire_landscapeVsPortrait.jpg').default.src} />
+	<figcaption>
+		Two print outs, one landscape and one portrait. The portrait one is missing
+		lots of dots.
+	</figcaption>
+</figure>
+
+Again, same printer, same everything except for the image rotation. This time the landscape one printed all the dots, and the portrait one is missing many dots!
+
+<figure>
+	<img src={require('./solitaire_portrait.jpg').default.src} />
+	<figcaption>
+		A close up of the portrait card which is missing many dots.
+	</figcaption>
+</figure>
+
+Why do printers do this? I have no idea. I really wish I knew!
+
+And one last crazy example ...
+
+<figure>
+	<img src={require('./bombHunter_4x6vs5x7.jpg').default.src} />
+	<figcaption>
+		The same card printed on on the same paper, just of different sizes.
+	</figcaption>
+</figure>
+
+Here I printed the same exact card, same in every regard. The only difference is I ran out of the 4x6 paper so I got 5x7 paper as that was the only size that was in stock. They are the same paper! The 4x6 one scans fine, and the 5x7, doesn't scan at all. This is bonkers! When comparing the two cards under a loupe and microscope, I can't see any differences. My only guess is the 5x7 paper is slightly more or less glossy. If that is true, we might even find different batches of the same paper have different scanability ...
+
+Anyway, onto the tips.
+
+## Tip 1: Get a loupe and maybe a microscope
+
+I know this is annoying, but they really do help a lot. Sometimes a loupe and/or microscope will show very obviously why a card won't scan. Your naked eye probably can't make these tiny dots out.
+
+Jeweler's loupes are cheap and easy to get. And online you should be able to find a cheap little microscope like this
+
+<figure>
+	<img
+		src={
+			require('../printing-ereader-cards-more-learnings/microscope.jpg').default
+				.src
+		}
+	/>
+	<figcaption>A little, cheap microscope</figcaption>
+</figure>
+
+Of the two, the loupe is more useful.
+
+## Tip 2: Try portrait and landscape printing
+
+Your printer might be just like mine (see above). It might print more scannable cards in one orientation versus the other.
+
+## Tip 3: try higher resolution dot code strips
+
+If your printer maxes out at 1200dpi, then try 2400dpi dot strips. 600dpi? Then try 1200dpi, etc. The printer will be forced to scale the image down to its native resolution, and it's possible the printer's scaling results in a better print out. You never know. If you do try this, make sure the larger dpi is a multiple of your printer's dpi.
+
+## Tip 4: Probably stick with raw2bmp
+
+I have made a [tool](https://github.com/city41/ereader-tools) that creates vector based dotstrips. In my experience, this is necessary for commercial printers. But I have found the opposite of consumer printers. They seem to print raster images better than vector.
+
+## Tip 5: try both color and black & white
+
+Dot strips are more scannable the closer to pure black they are. I am very confident of that. So if a printer can do its highest quality printing in black and white, that will probably work better. My Canon ink jet prints very low quality when told to only use black ink. It needs the full gamut of color inks to print at its highest quality. I am confident the colorized dots make scanning harder, but that's the best I can get out of this printer.
+
+## Tip 6: Work with your printer's resolution
+
+Your printer's resolution is most likey rated at "dots per inch", maybe 600dpi or 1200dpi. Your best bet is to not fight this. If you have a 600dpi printer, make sure to use 600dpi bmps or 1200dpi. As long as it is a multiple of your printer's dpi you should be ok.
+
+Also, try to place the dot strip at a good boundary on the page. What does that mean? If your printer can do 1200dpi, that means there are 600 dots in half an inch, 300 in a quarter inch, and 150 in an 1/8th of an inch. If you make sure the dot strip lands on a 1/8" boundary on the page, it usually prints better as the printer can line up its head to print entire dots. Let's say your dotstrip is at a 1/10" of an inch boundary, that odd location might cause the printer to interpolate the dots, which is bad. This is only relevant if you're printing a whole card with artwork. If you are just printing a dotstrip and that is it, just leave it at the very edge of the page, that seems to work best.
+
+This is an extreme example of dot interpolation, but this is what I mean
+
+<figure>
+	<img
+		src={
+			require('../printing-ereader-cards-part-3/interpolatedDotStrip.jpg')
+				.default.src
+		}
+	/>
+	<figcaption>A dot strip that got interpolated by the printer</figcaption>
+</figure>
+
+### Metric countries
+
+From what I can gather, even in metric countries printers still use dots per inch. So you might be fine. If your printer's resolution is in metric, you _might_ have a harder time. I don't know for sure as I've never used a metric based printer. But since raw2bmp's images are sized with dots per inch, the mismatch might cause trouble.
+
+## Tip 7: Inkjets seem to be better than laser printers
+
+I can't say this for sure, but it _seems_ like inkjets are better at home. The main reason I say this, is consumer laser jet printers have a much smaller variety of paper types available. I have never found a laser compatible paper that seemed good enough for dot strips. If you have access to both, try both of course.
+
+For commercial printers, I have found the opposite. Here laser printers seem to work much better.
+
+## Tip 8: Low data strips scan, but not higher data ones?
+
+If a dot strip doesn't contain much data, it will be mostly empty, like This
+
+<figure>
+	<img
+		src={
+			require('../printing-ereader-cards/helloWorld.dotcode.bmp.png').default
+				.src
+		}
+	/>
+	<figcaption>A dotstrip with very little data in it</figcaption>
+</figure>
+
+You can see where the data drops off here
+
+<figure>
+	<img src={require('./helloWorld.dotcode.bmp.closeup.png').default.src} />
+	<figcaption>Up close in the dotstrip where the data ends</figcaption>
+</figure>
+
+These dotstrips are easier to scan. The camera has less data to try and assemble, so it's more likey to succeed. Dotstrips also contain redundant data. So if the camera can't extract data from one part of the strip, it might be able to recover that data from a different part of the strip.
+
+For example in this card I scratched out an entire cell, and it still scans
+
+<figure>
+	<img src={require('./testCardWithMissingCell.jpg').default.src} />
+	<figcaption>
+		An E-Reader card were one of the data cells was scratched out
+	</figcaption>
+</figure>
+
+So, if you find light dotstrips do scan, but heavier ones don't, then that means your printer is just barely printing scannable cards. It's a good sign, but you probably need to improve the quality in one way or another to get all cards to scan.
+
+## Tip 9: try all kinds of scanning speeds
+
+On a similar note, the more data in a strip, the harder it is to scan. You might find you have to scan the card _very_ slowly. If a card doesn't want to scan, don't give up on it too quickly. Try scanning slower and slower each time. I have some cards that do scan as long as I scan them very slowly. With consumer printers, sometimes this is the best you can get.
+
+## Tip 10: don't give up
+
+If you really want scannable print outs, the key is to just keep trying things. Maybe someday we'll be able to really understand how the E-Reader camera works, but until that day, the best technique we have is just throwing things at the wall and seeing what sticks. It's a frustrating and slow process.
+
+## Hopefully a universal solution?
+
+In my spare time, I have been sending test prints to printers like Vistaprint. So far they have all been a bust. But maybe I'll succeed? If I do, we all might just be able to send our cards to one of these printers and get scannable cards in the mail. If I do find an image combination and online printer that I succeed with this, I will for sure let everyone know.
