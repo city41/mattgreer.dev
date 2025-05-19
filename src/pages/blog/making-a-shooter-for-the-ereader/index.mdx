@@ -39,7 +39,7 @@ Exo Attack is a simple boss rush shooter. You choose from one of three character
 	allowFullScreen
 ></iframe>
 
-Yup, fighting the boss is the entire game. E-Reader games are _teeny tiny_. When the game is over, you can enter your score onto the online leaderboard
+Yup, fighting the boss is the entire game. E-Reader games are _teeny tiny_. When the game is over, you can enter your score onto the online leaderboard.
 
 <figure>
 	<img
@@ -49,18 +49,18 @@ Yup, fighting the boss is the entire game. E-Reader games are _teeny tiny_. When
 	<figcaption>Game over with the online code shown</figcaption>
 </figure>
 
-but more on the leaderboard later.
+More on the leaderboard later.
 
 ## Z80 E-Reader games
 
 There are three different ways to make a standalone game for the E-Reader. You can make an ARM GBA game, and in many ways this approach is just like making a normal cartridge game for the system. The E-Reader has an NES emulator built into it, so making a simple NES game is another approach. And finally the E-Reader also has a z80 emulator built into it. Exo Attack is a z80 E-Reader game.
 
-I chose z80 as these games tend to be smaller than GBA or NES. Exo Attack barely fit onto two cards (4 data strips), and I think if I had made a GBA game instead, it'd probably by 5 or 6 data strips. Was this the right choice? Honestly, probably not as the z80 emulator has a lot of performance issues, gotchas, and limitations. Making a fast paced shooter in this environment was tricky.
+I chose z80 as these games tend to be smaller than GBA or NES. Exo Attack barely fit onto two cards (4 data strips), and I think if I had made a GBA game instead, it'd probably by 5 or maybe even 6 data strips. Was this the right choice? Honestly, probably not as the z80 emulator has a lot of performance issues, gotchas, and limitations. Making a fast paced shooter in this environment was tricky.
 
 A caveat with z80 games is they can not directly talk to the hardware. They must always communicate with the system via ERAPI, an API built into the E-Reader.
 
 <wisdom>
-	For more background on the E-Reader, check out{' '}
+	For more background on the E-Reader and ERAPI, check out{' '}
 	<a href="/blog/cramming-solitaire-onto-a-nintendo-ereader-card/">
 		my previous post on writing Solitaire for it.
 	</a>
@@ -68,9 +68,14 @@ A caveat with z80 games is they can not directly talk to the hardware. They must
 
 ## A tiny little game
 
-Exo Attack is 14,494 bytes, or 14.14kb. In 90s gaming terminology, that is 0.11 megabits. This is the uncompressed size; After compression it is 8,016 bytes, making it small enough to fit onto four data strips.
+Exo Attack is 14,494 bytes, or 14.14kb. In 90s gaming terminology, that is 0.11 megabits. This is the uncompressed size; After compression it is 8,016 bytes, making it small enough to fit onto four data strips, which is two cards.
 
-In comparison, Super Mario Bros on the NES is 40kb. Gradius Galaxies, a shooter for the GBA in a similar style to Exo Attack, is 4 megabytes, or 32 megabits. Meaning it is about 290 times larger! Of course Gradius Galaxies is a full fledged game with many levels, enemies, power ups, the works, so the size difference is more than warranted.
+<figure>
+	<img src={require('./exoCards.jpg').default.src} />
+	<figcaption>Exo Attack requires two E-Reader cards</figcaption>
+</figure>
+
+In comparison, Super Mario Bros on the NES is 40kb. Gradius Galaxies, a shooter for the GBA in a similar style to Exo Attack, is 4 megabytes, or 32 megabits. Meaning it is about 290 times larger! Of course Gradius Galaxies is a full fledged game with many levels, enemies, power ups, numerous bosses, the works, so the size difference is more than warranted.
 
 <figure>
 	<img
@@ -80,7 +85,11 @@ In comparison, Super Mario Bros on the NES is 40kb. Gradius Galaxies, a shooter 
 	<figcaption>Gradius Galaxies</figcaption>
 </figure>
 
-Super Mario Bros being an NES game, requires less graphical data, as NES graphics have fewer colors and usually fewer frames of animation too compared to the GBA. For example the boss alone in Exo Attack takes up quite a bit of that 14kb. But also, Exo Attack uses a lot of resources like backgrounds and music that are built into the E-Reader. So how big is Exo Attack really? It's hard to say. But I think it is sufficient to just say it's a tiny little game. Keeping it small enough to fit onto four data strips was a challenge all on its own.
+Super Mario Bros being an NES game, requires less graphical data, as NES graphics have fewer colors and usually fewer frames of animation too compared to the GBA.
+
+For example the boss graphics alone in Exo Attack are 2080 bytes, which is 14% of the entire game! And that's just the graphics, the boss's logic is probably half the game if not more.
+
+To save space, Exo Attack uses a lot of resources like backgrounds and music that are built into the E-Reader. So how big is Exo Attack really? It's hard to say. But I think it is sufficient to just say it's a tiny little game. Keeping it small enough to fit onto four data strips was a challenge all on its own.
 
 ## Using built in resources
 
@@ -93,7 +102,7 @@ To make the character select screen, I used two of these backgrounds.
 	<figcaption>Forming the scene from built in backgrounds</figcaption>
 </figure>
 
-The default starry background is a dark blue, but you can alter the palettes the backgrounds use, which is how my starry sky is black. I really changed the palettes around a lot to form the main "moon" scene.
+The default starry background is a dark blue, but you can alter the palettes the backgrounds use, which is how my starry sky is black. I really changed the palettes around a lot to form the main moon terrain.
 
 <figure>
 	<img src={require('./systemBGsToMainBG.svg').default.src} />
@@ -114,7 +123,7 @@ The E-Reader also has many [built in sprites](https://www.retrodotcards.com/tool
 	<figcaption>Game over with the online code shown</figcaption>
 </figure>
 
-As is the boss's explosion
+As is the boss's explosion.
 
 <figure>
 	<img
@@ -124,7 +133,7 @@ As is the boss's explosion
 	<figcaption>The animation frames of the built in explosion</figcaption>
 </figure>
 
-These system sprites can be a massive space savings. A custom explosion similar to this one would have taken up a ton of space. In comparison, the player's explosion is custom, and much smaller and simpler
+These system sprites can be a massive space savings. A custom explosion similar to this one would have taken up a ton of space. In comparison, the player's explosion is custom, and much smaller and simpler.
 
 <figure>
 	<img
@@ -138,7 +147,7 @@ Being a single color allows it to compress much better. And for further space sa
 
 ### Music and sound
 
-All of my E-Reader games use the built in sound effects and music. Sound takes up so much space, that I kind of doubt I will ever include a custom sound in a game. Thankfully the E-Reader has many sound effects and songs to choose from. Exo Attack uses numerous sound effects from explosions and gun fire to bubbles popping and more. It also uses six songs for background music. Having the E-Reader play a song is a tiny little function call, and playing so many different songs makes the game "feel" a lot larger than it really is. It also goes a long way in making the game feel more "complete", instead of just being a simple mini game.
+All of my E-Reader games use built in sound effects and music. Sound takes up so much space, that I kind of doubt I will ever include a custom sound in a game. Thankfully the E-Reader has many sound effects and songs to choose from. Exo Attack uses numerous sound effects from explosions and gun fire to bubbles popping and more. It also uses six songs for background music. Having the E-Reader play a song is a tiny little function call, and playing so many different songs makes the game "feel" a lot larger than it really is. It also goes a long way in making the game feel more "complete", instead of just being a simple mini game.
 
 ## Managing Sprites
 
@@ -189,7 +198,7 @@ Then bank 1 is for Tina's special attack, where she sends the kids riding her bu
 	<figcaption>Tina's special attack</figcaption>
 </figure>
 
-And the last bank is Jeff's bubble shield
+And the last bank is Jeff's bubble shield.
 
 <figure>
 	<img
@@ -216,12 +225,15 @@ Jeff's bullets are bubbles, and so they gradually rise as they travel across the
 		src={require('./exoJeffShooting.png').default.src}
 		style={{ imageRendering: 'pixelated' }}
 	/>
-	<figcaption>Jeff shooting bubbles:want</figcaption>
+	<figcaption>Jeff shooting bubbles</figcaption>
 </figure>
 
 I first implemented this by moving the bubbles myself, but this brought the game to a _crawl_. Instead, I built a simple "waypoint" system. Each waypoint tells the game what the bullet's x and y velocities should be as it travels across the screen. Every 4 frames, the game checks to see if the bullet has arrived at a waypoint. If so, it calls `SpriteAutoMove` with the new x and y velocities. By defining convincing waypoints, the bubble's gradual rise was accomplished. This approach didn't cause any performance issues. Instead of fully controlling the bullet's trajectory in the z80 code, it instead gently "nudges" the bullet along and lets the native code actually more the bullets.
 
-<<< DIAGRAM OF WAYPOINTS >>>
+<figure>
+	<img src={require('./jeffWaypointDiagram.svg').default.src} />
+	<figcaption>Jeff's bubble waypoints</figcaption>
+</figure>
 
 Since space is always a concern with E-Reader games, I have all three players use this waypoint system. But since Vick and Tina's bullets go straight across, they only have a single waypoint at the very beginning of the bullet's life.
 
@@ -231,7 +243,7 @@ Hit detection had a similar story. There is the ERAPI function `SpriteFindCollis
 
 It was dire straits for a while. My hit detection system was way too slow, but the built in system was unreliable. I dug more on the system hit detection system and thankfully figured out most of its quirks. In the end I got the system hit detection system working, and that saved the game.
 
-Whenever Tina's kid attack ends up killing the boss, the game is doing a lot: _lots_ of hit detection, playing an explosion animation, kicking off several sound effects, writing to flash to record an achievement, and other things. This proved to be too much and slowed the game down in an awkward, jerky, way. So to solve this, the kids now kill the boss similar to how sword fights work in anime :) There is a brief delay, and then the boss explodes in a fairly dramatic fashion. I think it worked out pretty well, and solved a performance issue I didn't see any other way to solve. Phew again!
+Whenever Tina's kid attack ends up killing the boss, the game is doing a lot: _lots_ of hit detection, playing an explosion animation, kicking off several sound effects, writing to flash to record an achievement, and other things. This proved to be too much and slowed the game down in an awkward, jerky, way. So to solve this, the kids now kill the boss similar to how sword fights work in anime :) There is a brief delay, and then the boss explodes in a fairly dramatic fashion. I think it worked out pretty well, and solved a performance issue I didn't see any other way to solve.
 
 <iframe
 	height={315}
@@ -277,7 +289,13 @@ Also the boss can teleport, and I accomplished this fading in and out effect by 
 	<figcaption>The three colors the Boss's stripe comes in</figcaption>
 </figure>
 
-A full GBA palette is 32 bytes, so these teleport palettes would require 64 bytes of space, which is a lot in this context. So I ended up writing a function that takes the base palette and generates darker versions of it when the game first starts. After compression this function took up a tiny bit less space. Honestly probably not enough to make it worth it. But it does have the nice side effect of not needing to update the teleporting palettes every time I tweaked how the boss looked.
+<wisdom>
+	The GBA's sprites can do alpha transparency blending. So why do this with
+	palettes? As far as I know, z80 sprites cannot take advantage of alpha
+	blending. I hope I'm wrong on this one.
+</wisdom>
+
+A full GBA palette is 32 bytes, so these teleport palettes would require 64 bytes of space, which is a lot in this context. So I ended up writing a function that takes the base palette and generates darker versions of it when the game first starts. This function took up a tiny bit less space. Honestly probably not enough to make it worth it. But it does have the nice side effect of not needing to update the teleporting palettes every time I tweaked how the boss looked.
 
 A nice thing about the E-Reader is the game gets loaded into the GBA's 256kb of RAM. For these teeny games, 256k kilobytes might as well be gigabytes, RAM is practically unlimited. So creating these new palettes when the game starts was not a problem at all in this regard.
 
@@ -321,6 +339,22 @@ This health bar was made with ERAPI's `DrawRect`, which first needs you to estab
 So in the end, the boss's health became a number instead of a bar. Not nearly as nice looking or as useful. But sometimes that's just the way things go. Especially when working on such an obscure system. When I ran into problems like these, I was completely all alone in solving them.
 
 Could I have instead restored the background's palettes manually and avoid the region getting blown away? Probably, yes. But when I found this bug, the game was already completely taking up the 4 data strips, and just about any change would cause it to spill into a fifth strip. I probably could have figured out how to do this without needing the fifth strip, but that might have taken a long time. Or it might have required cutting some other feature. Balancing features and space is a constant struggle with these tiny games.
+
+## A crazy bug, the kids have defected!
+
+Here's an odd bug.
+
+<iframe
+	height={315}
+	style={{ margin: '3em auto', width: 'min(560px, 100%)' }}
+	src="https://www.youtube.com/embed/qnUFpHdOtxM"
+	frameBorder={0}
+	allowFullScreen
+></iframe>
+
+This one took me a while to figure out, but was obvious in retrospect (aren't most bugs?). When performing hit detection, the system will write the sprite ids that collided into a list. You provide a pointer to this list when calling the function. In the case of the kid attack, there are so many kids and they move so rapidly, that the number of collisions is much higher. This caused the game to write more sprite ids into the list than there was room for, and ended up clobbering game code. A classic buffer overflow. Simply making the space for the list much bigger resolved this bug.
+
+This is also a good example of how the compression and the GBA's 256kb can work to your advantage. I ended up making the list 32 bytes, so that is simply 32 zeroes packed into the game's binary. That's super wasteful, right? It is, except compression will take those 32 bytes and knock them down to 2 bytes. And since the game gets expanded into the vast 256kb of GBA RAM, in the end this list was not a problem or wasteful at all.
 
 ## An online leaderboard
 
