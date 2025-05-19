@@ -228,7 +228,7 @@ Jeff's bullets are bubbles, and so they gradually rise as they travel across the
 	<figcaption>Jeff shooting bubbles</figcaption>
 </figure>
 
-I first implemented this by moving the bubbles myself, but this brought the game to a _crawl_. Instead, I built a simple "waypoint" system. Each waypoint tells the game what the bullet's x and y velocities should be as it travels across the screen. Every 4 frames, the game checks to see if the bullet has arrived at a waypoint. If so, it calls `SpriteAutoMove` with the new x and y velocities. By defining convincing waypoints, the bubble's gradual rise was accomplished. This approach didn't cause any performance issues. Instead of fully controlling the bullet's trajectory in the z80 code, it instead gently "nudges" the bullet along and lets the native code actually more the bullets.
+I first implemented this by moving the bubbles myself, but this brought the game to a _crawl_. Instead, I built a simple "waypoint" system. Each waypoint tells the game what the bullet's x and y velocities should be as it travels across the screen. Every 4 frames, the game checks to see if the bullet has arrived at a waypoint. If so, it calls `SpriteAutoMove` with the new x and y velocities. By defining convincing waypoints, the bubble's gradual rise was accomplished. This approach didn't cause any performance issues. Instead of fully controlling the bullet's trajectory in the z80 code, it instead gently "nudges" the bullet along and lets the native code actually move the bullets.
 
 <figure>
 	<img src={require('./jeffWaypointDiagram.svg').default.src} />
