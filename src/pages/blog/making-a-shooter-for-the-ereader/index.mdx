@@ -1,0 +1,401 @@
+import { Article } from '../../../components/layouts/Article';
+import meta from './meta.json';
+
+export default ({ children }) => (
+	<Article
+		{...meta}
+		img={require('./feature.png').default.src}
+		socialMediaImg={require('./twitter.png').default.src}
+		intro="Looking back on what it was like to make Exo Attack"
+	>
+		{children}
+	</Article>
+);
+
+I recently finished making a shooter called Exo Attack for the Game Boy Advance E-Reader. It was a pretty tough project in several ways, so I figured I'd talk about challenges I came across while making it.
+
+<wisdom>
+	<b>Some self promotion...</b>
+	<p>
+		This game, along with 4 others, will be for sale on July 27th at{' '}
+		<a href="https://retrodotcards.com">retrodotcards.com</a>. They are
+		physical, professionally made, cards you scan into a real E-Reader. Just
+		like it's 2003 again!
+	</p>
+</wisdom>
+
+<figure>
+	<img src={require('./exoAttackCard1.png').default.src} />
+	<figcaption>The Exo Attack card to use in an E-Reader</figcaption>
+</figure>
+
+Exo Attack is a simple boss rush shooter. You choose from one of three characters, then fight the boss. Each time you defeat the boss, it comes back stronger and harder than before. The goal is to see how many rounds you can win.
+
+<iframe
+	height={315}
+	style={{ margin: '3em auto', width: 'min(560px, 100%)' }}
+	src="https://www.youtube.com/embed/Ikknj6MRlR8"
+	frameBorder={0}
+	allowFullScreen
+></iframe>
+
+Yup, fighting the boss is the entire game. E-Reader games are _teeny tiny_. When the game is over, you can enter your score onto the online leaderboard
+
+<figure>
+	<img
+		src={require('./exoOnlineCode.png').default.src}
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>Game over with the online code shown</figcaption>
+</figure>
+
+but more on the leaderboard later.
+
+## Z80 E-Reader games
+
+There are three different ways to make a standalone game for the E-Reader. You can make an ARM GBA game, and in many ways this approach is just like making a normal cartridge game for the system. The E-Reader has an NES emulator built into it, so making a simple NES game is another approach. And finally the E-Reader also has a z80 emulator built into it. Exo Attack is a z80 E-Reader game.
+
+I chose z80 as these games tend to be smaller than GBA or NES. Exo Attack barely fit onto two cards (4 data strips), and I think if I had made a GBA game instead, it'd probably by 5 or 6 data strips. Was this the right choice? Honestly, probably not as the z80 emulator has a lot of performance issues, gotchas, and limitations. Making a fast paced shooter in this environment was tricky.
+
+A caveat with z80 games is they can not directly talk to the hardware. They must always communicate with the system via ERAPI, an API built into the E-Reader.
+
+<wisdom>
+	For more background on the E-Reader, check out{' '}
+	<a href="/blog/cramming-solitaire-onto-a-nintendo-ereader-card/">
+		my previous post on writing Solitaire for it.
+	</a>
+</wisdom>
+
+## A tiny little game
+
+Exo Attack is 14,494 bytes, or 14.14kb. In 90s gaming terminology, that is 0.11 megabits. This is the uncompressed size; After compression it is 8,016 bytes, making it small enough to fit onto four data strips.
+
+In comparison, Super Mario Bros on the NES is 40kb. Gradius Galaxies, a shooter for the GBA in a similar style to Exo Attack, is 4 megabytes, or 32 megabits. Meaning it is about 290 times larger! Of course Gradius Galaxies is a full fledged game with many levels, enemies, power ups, the works, so the size difference is more than warranted.
+
+<figure>
+	<img
+		src={require('./gradiusGalaxies.png').default.src}
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>Gradius Galaxies</figcaption>
+</figure>
+
+Super Mario Bros being an NES game, requires less graphical data, as NES graphics have fewer colors and usually fewer frames of animation too compared to the GBA. For example the boss alone in Exo Attack takes up quite a bit of that 14kb. But also, Exo Attack uses a lot of resources like backgrounds and music that are built into the E-Reader. So how big is Exo Attack really? It's hard to say. But I think it is sufficient to just say it's a tiny little game. Keeping it small enough to fit onto four data strips was a challenge all on its own.
+
+## Using built in resources
+
+The E-Reader has an 8 megabyte ROM that contains many resources a game can use. For example, the USA E-Reader has [77 built in backgrounds](https://www.retrodotcards.com/tools/us-background-dump).
+
+To make the character select screen, I used two of these backgrounds.
+
+<figure>
+	<img src={require('./systemBGsToCharSelect.svg').default.src} />
+	<figcaption>Forming the scene from built in backgrounds</figcaption>
+</figure>
+
+The default starry background is a dark blue, but you can alter the palettes the backgrounds use, which is how my starry sky is black. I really changed the palettes around a lot to form the main "moon" scene.
+
+<figure>
+	<img src={require('./systemBGsToMainBG.svg').default.src} />
+	<figcaption>
+		The main background made out of several system backgrounds
+	</figcaption>
+</figure>
+
+It's really fun and challenging taking the built in backgrounds and repurposing them for something else. You can really change how something looks with a new palette. Limitation breeding creativity is very true here.
+
+The E-Reader also has many [built in sprites](https://www.retrodotcards.com/tools/us-sprite-dump). The Game Over text is a built in sprite.
+
+<figure>
+	<img
+		src={require('./exoOnlineCode.png').default.src}
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>Game over with the online code shown</figcaption>
+</figure>
+
+As is the boss's explosion
+
+<figure>
+	<img
+		src={require('./systemExplosion.png').default.src}
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>The animation frames of the built in explosion</figcaption>
+</figure>
+
+These system sprites can be a massive space savings. A custom explosion similar to this one would have taken up a ton of space. In comparison, the player's explosion is custom, and much smaller and simpler
+
+<figure>
+	<img
+		src={require('./customExplosion.png').default.src}
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>The custom explosion for the player</figcaption>
+</figure>
+
+Being a single color allows it to compress much better. And for further space savings and utility, this explosion is also used when the boss's capsule bombs explode.
+
+### Music and sound
+
+All of my E-Reader games use the built in sound effects and music. Sound takes up so much space, that I kind of doubt I will ever include a custom sound in a game. Thankfully the E-Reader has many sound effects and songs to choose from. Exo Attack uses numerous sound effects from explosions and gun fire to bubbles popping and more. It also uses six songs for background music. Having the E-Reader play a song is a tiny little function call, and playing so many different songs makes the game "feel" a lot larger than it really is. It also goes a long way in making the game feel more "complete", instead of just being a simple mini game.
+
+## Managing Sprites
+
+The GBA can put 128 hardware sprites onto the screen at once. But ERAPI can only handle up to 56.
+
+<wisdom>
+	ERAPI is the "E-Reader API", a set of functions built into the E-Reader to
+	help make games.
+</wisdom>
+
+If you try to create a 57th sprite, the GBA will crash and reset. ERAPI has both `SpriteCreate` and `SpriteFree`, so initially I thought I could just use ERAPI itself as an ad-hoc sprite pool. But I quickly found that both `SpriteCreate` and especially `SpriteFree` are slow and expensive.
+
+So instead, I made my own sprite pools. At the beginning of the game, I allocate 20 sprites into 2 pools (40 sprites total), and keep those sprites allocated indefinitely. When a sprite is done being used and needs to be cleaned up, I just move it off screen. This worked great and I had no performance issues with sprites, but since I can only call `SpriteCreate` once for these sprites, it greatly limited how they could be used. Once a sprite is created, its graphical data can not be changed.
+I ended up making one pool for the player's bullets, and another pool for the boss's bullets.
+
+<figure>
+	<img
+		src={require('./shipBulletBanks.svg').default.src}
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>
+		The sprite graphics for the player's bullet sprite pool
+	</figcaption>
+</figure>
+
+E-Reader sprites can have three different banks. Each bank holds a set of frames for animation. I used this to enable a single sprite from the player's sprite pool to serve all the roles the player needs. Each bank must have the same number of frames, which is why some frames above are blank.
+
+When a sprite is being used as a bullet, I set the sprite to bank 1, and then the frame based on which character the player chose.
+
+<figure>
+	<img
+		src={require('./ship_bullet_bullets.png').default.src}
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>
+		Each of the player bullet types: Tina's tires, Vick's plasma bullets and
+		Jeff's bubbles
+	</figcaption>
+</figure>
+
+Then bank 1 is for Tina's special attack, where she sends the kids riding her bus into battle :)
+
+<figure>
+	<img
+		src={require('./exoTinaSpecialAttack.png').default.src}
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>Tina's special attack</figcaption>
+</figure>
+
+And the last bank is Jeff's bubble shield
+
+<figure>
+	<img
+		src={require('./exoJeffBubble.png').default.src}
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>Jeff protected by his bubble shield</figcaption>
+</figure>
+
+These sprite pools worked out very well. Coding them up in assembly was a chore for sure, but doable. In later rounds of the game, many more bullets are on the screen and when that happens there is a decent amount of slowdown. But that's just the reality of the z80 emulator, it bogs down pretty quickly. I'm not too bothered by this, the slowdown is managable and a common "feature" in shooters like this.
+
+## Have ERAPI do as many things as you can
+
+The key to squeezing performance out of this emulator is to do as little with z80 code as possible. When you make an ERAPI call such as `SetSpritePosition`, that will be handled by _much_ faster native ARM code. You really want to only use the z80 emulator as a way to guide and orchestrate the overall game, and leave the heavy lifting to the native GBA. I suspect this is very similar to modern games moving all graphic work to the GPU or heavy logic out of the engine's scripting language and into the native code.
+
+### Bullet movement
+
+A simple example is moving the bullets across the screen. I could have kept track of each bullet's position myself and called `SetSpritePosition` each frame to move them. But instead calling ERAPI's `SpriteAutoMove` function is significantly more performant.
+
+Jeff's bullets are bubbles, and so they gradually rise as they travel across the screen.
+
+<figure>
+	<img
+		src={require('./exoJeffShooting.png').default.src}
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>Jeff shooting bubbles:want</figcaption>
+</figure>
+
+I first implemented this by moving the bubbles myself, but this brought the game to a _crawl_. Instead, I built a simple "waypoint" system. Each waypoint tells the game what the bullet's x and y velocities should be as it travels across the screen. Every 4 frames, the game checks to see if the bullet has arrived at a waypoint. If so, it calls `SpriteAutoMove` with the new x and y velocities. By defining convincing waypoints, the bubble's gradual rise was accomplished. This approach didn't cause any performance issues. Instead of fully controlling the bullet's trajectory in the z80 code, it instead gently "nudges" the bullet along and lets the native code actually more the bullets.
+
+<<< DIAGRAM OF WAYPOINTS >>>
+
+Since space is always a concern with E-Reader games, I have all three players use this waypoint system. But since Vick and Tina's bullets go straight across, they only have a single waypoint at the very beginning of the bullet's life.
+
+### Hit detection
+
+Hit detection had a similar story. There is the ERAPI function `SpriteFindCollisions` which thankfully does everything needed for this. At first I didn't fully understand how this function worked, and I thought it was buggy. So I tried instead implementing my own hit detection system. Woah was that a mistake! The game ran at about 10fps, if that :)
+
+It was dire straits for a while. My hit detection system was way too slow, but the built in system was unreliable. I dug more on the system hit detection system and thankfully figured out most of its quirks. In the end I got the system hit detection system working, and that saved the game.
+
+Whenever Tina's kid attack ends up killing the boss, the game is doing a lot: _lots_ of hit detection, playing an explosion animation, kicking off several sound effects, writing to flash to record an achievement, and other things. This proved to be too much and slowed the game down in an awkward, jerky, way. So to solve this, the kids now kill the boss similar to how sword fights work in anime :) There is a brief delay, and then the boss explodes in a fairly dramatic fashion. I think it worked out pretty well, and solved a performance issue I didn't see any other way to solve. Phew again!
+
+<iframe
+	height={315}
+	style={{ margin: '3em auto', width: 'min(560px, 100%)' }}
+	src="https://www.youtube.com/embed/U9rr1bGq0tM"
+	frameBorder={0}
+	allowFullScreen
+></iframe>
+
+No, it's not amazing or anything. But it works, and is much better than the herky jerky alternative. Make no doubt about it, the z80 emulator is very slow. It's easy to overwhelm it, you need to tread lightly.
+
+## Palette color tricks
+
+I needed to have the boss change its colors for two reasons.
+
+It needed to change its stripe color based on which attack mode it is in. This helps the player anticipate the boss's attacks once they associate the colors with the different modes.
+
+<figure>
+	<img
+		src={require('./exoBossThreeStripeColors.png').default.src}
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>The three colors the Boss's stripe comes in</figcaption>
+</figure>
+
+I did this by writing into the boss's palette to update the stripe colors as the game progresses. Originally I did this by just using bytes found in the game itself, so each round I'd move the pointer forward and the boss would end up with a different colored stripe. Sometimes the colors were absolutely wild and it was a lot of fun. It also saved some space! But I ultimately ditched this as often the stripe just ended up black, as zero is a pretty common byte. And since the color changed randomly each round, the player wouldn't be able to use the stripe as a guide on what kind of attack round they are entering.
+
+<figure>
+	<img
+		src={require('./exoRandomBossStripes.png').default.src}
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>Some of the random stripe colors</figcaption>
+</figure>
+
+Also the boss can teleport, and I accomplished this fading in and out effect by defining palettes for it.
+
+<figure>
+	<img
+		src={require('./exoBossTeleportPalettes.png').default.src}
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>The three colors the Boss's stripe comes in</figcaption>
+</figure>
+
+A full GBA palette is 32 bytes, so these teleport palettes would require 64 bytes of space, which is a lot in this context. So I ended up writing a function that takes the base palette and generates darker versions of it when the game first starts. After compression this function took up a tiny bit less space. Honestly probably not enough to make it worth it. But it does have the nice side effect of not needing to update the teleporting palettes every time I tweaked how the boss looked.
+
+A nice thing about the E-Reader is the game gets loaded into the GBA's 256kb of RAM. For these teeny games, 256k kilobytes might as well be gigabytes, RAM is practically unlimited. So creating these new palettes when the game starts was not a problem at all in this regard.
+
+Although I now see I had a bug here. I create the faded out palettes using the boss's main palette from when it has an orange stripe. But the boss only teleports when it has a green stripe. That bug shipped, and you can't download a patch onto a paper card, so oh well :)
+
+## A screen clearing bomb
+
+Each character has a special attack. Tina has her kids, Jeff has his bubble shield, and Vick has a screen clearing bomb.
+
+<wisdom>
+	The main ship in the Gradius series is the Vic Viper. "Vick" is a small nod to
+	those great games.
+</wisdom>
+
+<iframe
+	height={315}
+	style={{ margin: '3em auto', width: 'min(560px, 100%)' }}
+	src="https://www.youtube.com/embed/z70STkVYb8k"
+	frameBorder={0}
+	allowFullScreen
+></iframe>
+
+This was yet another palette trick. I made all the background palettes completely white, and the palettes of the player and boss completely black. This is a common strategy for bombs like this in shooters. It looks pretty cool, and has the added bonus of being simple to implement and not taking up much space.
+
+### But ... no more health bar
+
+The boss used to have a healthbar up in the HUD.
+
+<figure>
+	<img
+		src={require('./exoBossHealthbar.png').default.src}
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>The boss's green health bar up at the top</figcaption>
+</figure>
+
+This was really nice as you could see out of the corner of your eye how close the boss was to dying. It had an extra little bonus of a "filling up" animation at the start of each round which was nice touch.
+
+This health bar was made with ERAPI's `DrawRect`, which first needs you to establish a region to draw into using `CreateRegion`. The region defines a section of one background to draw into, in this case, the stars background. After Vick's bomb, I needed to restore the background to revert it back from the all white palette. But doing this blows away the drawing region. At first I had it just create a new region, and continue drawing the health bar into it. But this is a resource leak, as the E-Reader can keep track of only so many regions. I know of no way to free regions. Hopefully that is possible, but so far I don't know how. So once I asked for a region and the E-Reader was out of them, the system would crash.
+
+So in the end, the boss's health became a number instead of a bar. Not nearly as nice looking or as useful. But sometimes that's just the way things go. Especially when working on such an obscure system. When I ran into problems like these, I was completely all alone in solving them.
+
+Could I have instead restored the background's palettes manually and avoid the region getting blown away? Probably, yes. But when I found this bug, the game was already completely taking up the 4 data strips, and just about any change would cause it to spill into a fifth strip. I probably could have figured out how to do this without needing the fifth strip, but that might have taken a long time. Or it might have required cutting some other feature. Balancing features and space is a constant struggle with these tiny games.
+
+## An online leaderboard
+
+Exo Attack includes an online leaderboard. After your game is over, it will give you a code. If you head to https://retrodotcards.com/leaderboards and punch the code in, your score will get added.
+
+<pitfall>
+	At the time of writing this, the leaderboard is not live because the games
+	have not been released yet. So if you get a 404, that is why. Try again after
+	July 27th.
+</pitfall>
+
+Here is an old video demonstrating it. Both the game and leaderboard have changed since making this video, but you get the idea.
+
+<iframe
+	height={315}
+	style={{ margin: '3em auto', width: 'min(560px, 100%)' }}
+	src="https://www.youtube.com/embed/gDjbcSUvpo8"
+	frameBorder={0}
+	allowFullScreen
+></iframe>
+
+This might come across as a gimmick at first, and well, it kind of is. But it really makes the game a lot more fun! Without any motivation to keep going, such a simple and repetitive game gets boring. But the tension of trying to climb to first place adds so much fun to the game. This is why arcade games always had high score charts. That added competition adds so much to games like this.
+
+### A little encryption
+
+I implemented the leaderboard using a simple encryption scheme. When it's game over, the game takes the round you got to, how many coins you got, and which character you used and encrypts this data into a 10 digit number. Then the website knows how to decrypt the payload to get the data.
+
+I think it's pretty neat that a game found on a paper card, using a device from over 20 years ago, has a web based online leaderboard.
+
+It is possible someone will crack this encryption. I'm ok with that. I actually take that as a sign that people are getting into the game. If that does happen and the leaderboard gets borked, I can help resolve that by adding invite only leaderboards. Then you can compete with your friends or an online group and minimize the cheating.
+
+## Pausing the game
+
+Pressing start to pause a game is simple to implement, right? It proved to be a challenge! There are two things at play here, how much space I have left to implement a pause feature, and the fact that many things in the game are moving with ERAPI's `SpriteAutoMove` function. Simply preventing boss and player logic when start is pressed is not enough, as the bullets will keep moving. And `SpriteAutoMove` was essential for performance.
+
+In the end, I sadly was only able to add pausing during the coin bonus rounds. If you press start during the bonus round, the coins keep bouncing around, but other than that the game is fully paused. I was disappointed with this compromise, but unless I wanted the game to spill into a third card (something I _really_ did not want to do), it was the best I could do. At least there is some form of pausing, it's way better than nothing.
+
+### Built in pausing
+
+The E-Reader has a built in pause feature. It is enabled by default, and if you press start with it enabled, you get this screen
+
+<figure>
+	<img
+		src={require('./ereaderBuiltInPause.png').default.src}
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>The built in pause feature of the E-Reader</figcaption>
+</figure>
+
+Simple, right? Just press A to return to the game. Except pressing A doesn't just return you to your game, it resets the game! This is _worse_ than having no pause at all! Thankfully this can be disabled with an ERAPI call as the game is starting up.
+
+Most of Nintendo's E-Reader games disable this screen.
+
+<wisdom>
+	The mini games found in Mario Party-E do not disable this screen. I can
+	imagine someone back in the day found out the hard way they didn't just pause
+	their game, but destroyed their run :(
+</wisdom>
+
+Which makes sense. It almost feels like a bug or a miscommunication that made its way into the final product, and Nintendo devs avoided using it because of that.
+
+Many Nintendo E-Reader games have this pause overlay.
+
+<figure>
+	<img
+		src={require('./ereaderPauseOverlay.png').default.src}
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>Air Hockey currently paused</figcaption>
+</figure>
+
+It looks similar, but it's quite different. Most importantly, pressing A really does bring you back to your in progress game. Since it is an overlay, the pause graphics are made with sprites instead of a background. Is pausing in this way a simple ERAPI call? It would be really nice if it is, but I have my doubts. My hunch is Nintendo devs implemented pausing manually in each game. I'd love to be wrong here.
+
+One day I plan to sit down and reverse engineer how this pause overlay works. That is one thing about making E-Reader games, the E-Reader still has many mysteries. As part of making these games, I figured out a handful of mysteries and figured out more functinality of ERAPI. I documented all my findings in [this wiki](https://ereader.miraheze.org/), [here is the ERAPI page](https://ereader.miraheze.org/wiki/ERAPI-Z80).
+
+## Conclusion
+
+Phew, this turned out to be a long one. Would I have made a shooter for the E-Reader like this again, knowing what I know now? Probably not. I'd probably make it as a native GBA E-Reader game which are much better suited for fast paced action like this. I'm still quite happy with how it turned out. I do find it interesting that making this game was such a challenge, and nobody will ever know (unless they read this blog post! :)) In fact, it might even be the opposite, people's reaction might be "why is a GBA game so simple?". Ah well, I still feel it's a fun game, and nothing like it has ever been made for this obscure system.
