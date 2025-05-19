@@ -175,7 +175,7 @@ I ended up making one pool for the player's bullets, and another pool for the bo
 
 E-Reader sprites can have three different banks. Each bank holds a set of frames for animation. I used this to enable a single sprite from the player's sprite pool to serve all the roles the player needs. Each bank must have the same number of frames, which is why some frames above are blank.
 
-When a sprite is being used as a bullet, I set the sprite to bank 1, and then the frame based on which character the player chose.
+When a sprite is being used as a bullet, I set the sprite to bank 0, and then the frame based on which character the player chose.
 
 <figure>
 	<img
@@ -297,7 +297,7 @@ Also the boss can teleport, and I accomplished this fading in and out effect by 
 
 A full GBA palette is 32 bytes, so these teleport palettes would require 64 bytes of space, which is a lot in this context. So I ended up writing a function that takes the base palette and generates darker versions of it when the game first starts. This function took up a tiny bit less space. Honestly probably not enough to make it worth it. But it does have the nice side effect of not needing to update the teleporting palettes every time I tweaked how the boss looked.
 
-A nice thing about the E-Reader is the game gets loaded into the GBA's 256kb of RAM. For these teeny games, 256k kilobytes might as well be gigabytes, RAM is practically unlimited. So creating these new palettes when the game starts was not a problem at all in this regard.
+A nice thing about the E-Reader is the game gets loaded into the GBA's 256kb of RAM. For these teeny games, 256 kilobytes might as well be gigabytes, RAM is practically unlimited. So creating these new palettes when the game starts was not a problem at all in this regard.
 
 Although I now see I had a bug here. I create the faded out palettes using the boss's main palette from when it has an orange stripe. But the boss only teleports when it has a green stripe. That bug shipped, and you can't download a patch onto a paper card, so oh well :)
 
