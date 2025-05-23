@@ -2,7 +2,7 @@
 	"title": "Nintendo E-Reader: Simple Fixed Point",
 	"date": "2024-12-15",
 	"type": "technical article",
-	"tags": ["Gaming", "Retro gaming", "Game dev"],
+	"tags": ["Gaming", "Retro gaming", "Game dev", "E-Reader"],
 	"description": ["The E-Reader API uses a nice and simple fixed point system"],
 	"imgAlt": "Exo Attack screenshot"
 }
