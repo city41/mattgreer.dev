@@ -1,0 +1,175 @@
+import { Article } from '../../../components/layouts/Article';
+import meta from './meta.json';
+
+export default ({ children }) => (
+	<Article
+		{...meta}
+		img={require('./feature.png').default.src}
+		socialMediaImg={require('./twitter.png').default.src}
+		intro="What if the best game of 2024 came out on an old, obscure and weird platform?"
+	>
+		{children}
+	</Article>
+);
+
+I friggin' _love_ Balatro. I've put an embarrassing number of hours into it. I also like to make games for the Nintendo E-Reader. The E-Reader was a peripheral for the Game Boy Advance that let you load mini games and "DLC" by scanning cards into it.
+
+<figure>
+	<img src={require('./Ereader.png').default.src} />
+	<figcaption>
+		The E-Reader attached to a Game Boy Advance (image by Nintendo)
+	</figcaption>
+</figure>
+
+<wisdom>
+	Oh and Balatro is a single player solitaire/poker hybrid game that is super
+	fun. If you enjoy poker, solitaire, or especially trading card games like
+	Magic the Gathering or Pokemon, you should definitely check it out if you
+	haven't already.
+</wisdom>
+
+A while back, I made this mock up screenshot of what Balatro might look like on the
+E-Reader.
+
+<figure>
+	<img
+		src={require('./balatroMockup.png').default.src}
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>A mock up of Balatro on the E-Reader</figcaption>
+</figure>
+
+This mock up was really fun to make. So I decided to take it one step further and make a working prototype of the game. This was also a blast to make!
+
+<iframe
+	height={315}
+	style={{ margin: '3em auto', width: 'min(560px, 100%)' }}
+	src="https://www.youtube.com/embed/pEH-qrA-9rs"
+	frameBorder={0}
+	allowFullScreen
+></iframe>
+
+This prototype is _almost_ entirely real. It's a real E-Reader game, and it really plays Balatro. I only implemented just what you see in the video, so it's a very long way away from being a full port of the game.
+
+I said it's almost entirely real because it does fake a few things. The blind selection screen is entirely a mock. You just press A and go into the round.
+
+<figure>
+	<img
+		src={require('./prototypeBlindsScreen.png').default.src}
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>The blind selection screen is completely mocked</figcaption>
+</figure>
+
+And when you win the round, the win screen is mocked too. You have to win with two remaining hands for it to be believable :)
+
+<figure>
+	<img
+		src={require('./prototypeWinScreen.png').default.src}
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>The blind selection screen is completely mocked</figcaption>
+</figure>
+
+But playing the game within the round is 99% real. I hard coded Fibonacci and Splash jokers, and when it calculates what type of hand was played, it only knows about "duplicative" style hands (ie two pair, full house, three of a kind, etc). My wife was sad to find her straight only got scored as a high card. Doh. Many other things are missing too, but this was mostly due to not wanting to spend too much time on this project more than anything.
+
+## Could it be done?
+
+Would it be possible to make Balatro for the E-Reader? I think so!
+
+It would be a challenging project and some concessions would need to be made. But I definitely think a demaked version that still captures the essence and fun of the game is doable.
+
+### Dealing with high scores
+
+The biggest challenge by far would be the massive scores you can get in Balatro. E-Reader games can comfortably work with 32 bit numbers. So the highest possible score would be 4,294,967,295. Real balatro uses 64 bit numbers so scores can absolutely go into the stratosphere there. But I think 4 billion is still plenty to have fun and get that Balatro experience.
+
+But ... the Game Boy Advance's screen is only 240x160 pixels, so fitting such larger numbers onto the screen would be a challenge. This is an area the demake would have to be different from the real thing. Something like this would be needed (just a quick mock up).
+
+<figure>
+	<img
+		src={require('./newUiForLargerScores.png').default.src}
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>A UI change to accomodate larger scores</figcaption>
+</figure>
+
+### So many numbers
+
+Balatro puts a lot of numbers on the screen
+
+- Number of remaining hands
+- Number of remaining discards
+- Current ante
+- Current round
+- How many cards remain in the deck
+- How large the deck is
+- The level of the hand that is being played
+- The current chip total
+- The current mult total
+- Your money
+- Your score so far in the round
+- Your score for the current hand
+- The goal score to beat the round
+
+Did I miss any? The E-Reader has a collection of `DrawNumber` functions, but the problem is it is limited to four unique numbers. If you try to draw a fifth number with `DrawNumber`, nothing happens.
+
+Even worse, each number can have a max of 5 digits. So just to keep track of your score, would take up 2 of those number slots.
+
+A lot of this can be worked around with sprites and some clever redesigning and careful pruning back of features (this would be a demake after all). I do think this challenge could be overcome, but it would probably be the hardest part of this project.
+
+### 150 jokers?
+
+Balatro has 150 jokers, and they all do very different things. I think making a full fledge "joker engine" that can handle this is doable. The E-Reader/GBA has plenty of memory for this, and it's easy to dynamically call functions. So logic-wise, I don't think this would be a problem. But each joker needs a card graphic.
+
+<figure>
+	<img
+		src={require('./jokers.png').default.src}
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>Five Joker cards in the demaked style</figcaption>
+</figure>
+
+That would really add up and take up a ton of space. Space is always a concern with E-Reader games. Make no doubt, Balatro on the E-Reader would be a very large game by E-Reader standards. But I'm certain fitting all 150 jokers would not be possible. A careful sub-selection of jokers would have to be picked.
+
+### Text
+
+Balatro has a ton of text in it. Similar to games like Magic the Gathering, the rules of the game are literally written out on the cards. Balatro uses little text pop outs for this, but it's still the same idea.
+
+<figure>
+	<img src={require('./wee.png').default.src} />
+	<figcaption>The Wee Joker showing its rules pop up</figcaption>
+</figure>
+
+There would be no way to include all this text into an E-Reader demake. So unfortunately the demake would really only be playable by people who are familiar with the main game. I dunno, that doesn't really bother me. After all, doing something like this is would be just for the heck of it.
+
+### Running out of sprites
+
+In Balatro it's possible to have many jokers, and a large hand. Here is a very extreme example, but it gets the idea across.
+
+<figure>
+	<img src={require('./manyCards.png').default.src} />
+	<figcaption>
+		A game of Balatro with many jokers and a very large hand
+	</figcaption>
+</figure>
+
+The E-Reader only supports 56 sprites. I think for space saving, a card would have to be made out of two (and maybe even three) sprites each.
+
+<figure>
+	<img src={require('./threeSpritesOneCard.svg').default.src} />
+	<figcaption>A single card made out of three sprites</figcaption>
+</figure>
+
+Working within this limitation would be very challenging. Fortunately it is possible to use backgrounds here instead of sprites. In my prototype, your hand at the bottom of the screen is a background. That can help a lot. But even with backgrounds, this would be challenging. The demake might have to impose a limit on how big your hand can be and/or how many jokers you can have.
+
+### Space considerations
+
+Space is always a challenge with this device. The prototype ended up being four data strips, in other words two cards. But I also wasn't worried about space here, I just built the prototype without worrying how large it ended up being. If you work at it, you can get your E-Reader games a lot smaller with clever coding techniques. So although I'm pretty sure Balatro would be a large game (maybe 8 cards? 10? The max of 12?), running out of space such that this idea ends up not possible doesn't worry me.
+
+## Just make a real GBA game?
+
+Why do this on the E-Reader if it is so limited? No other reason than I really like the device and have a soft spot for it. If the demake was instead made as a full fledged GBA game on a cartridge, it'd have a lot more breathing room to work through these issues. Many limitations would remain though, like the 240x160 screen. The GBA can work with 128 sprites, which is better than 56 but still pretty limiting.
+
+## Will I release the prototype?
+
+No, I won't. At least, not without LocalThunk's approval. This was just for fun, and I made it entirely on my own. Balatro is an excellent game, so I don't want to cause it any harm (or at least surprise) by releasing a demake of it, even if it's just a tiny little prototype. You really aren't missing anything, everything that is possible in the prototype is shown in the video.
