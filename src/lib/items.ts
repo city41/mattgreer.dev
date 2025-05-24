@@ -107,11 +107,16 @@ function buildUrl(classification: string, slug: string): string {
 export function getAllBlogItems(
 	options: GetAllArticleItemsOptions = {}
 ): FeatureItem[] {
-	const items = getItems('blog').map((i) => {
-		return {
-			...i,
-			url: buildUrl('blog', i.slug),
-		};
+	const items = getItems('blog').flatMap((i) => {
+		if (i.dontList) {
+			return [];
+		}
+		return [
+			{
+				...i,
+				url: buildUrl('blog', i.slug),
+			},
+		];
 	});
 
 	if (options.sortByDateDescending) {

@@ -6,5 +6,6 @@
 	"description": [
 		"What if the best game of 2024 came out on an old, obscure and weird platform?"
 	],
-	"imgAlt": "A screenshot of Balatro running on the E-Reader"
+	"imgAlt": "A screenshot of Balatro running on the E-Reader",
+	"dontList": true
 }
