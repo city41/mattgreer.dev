@@ -83,7 +83,7 @@ It would be a challenging project and some concessions would need to be made. Bu
 
 An immediate challenge would be the massive scores you can get in Balatro. E-Reader games can comfortably work with 32 bit numbers. So the highest possible score would be 4,294,967,295. Real Balatro uses 64 bit numbers so scores can absolutely go into the stratosphere there. But I think 4 billion is still plenty to have fun and get that Balatro experience.
 
-But ... the Game Boy Advance's screen is only 240x160 pixels, so fitting such larger numbers onto the screen would be a challenge. This is an area the demake would have to be different from the real thing. Something like this would be needed (just a quick mock up).
+But ... the Game Boy Advance's screen is only 240x160 pixels, so fitting such large numbers onto the screen would be a challenge. This is an area the demake would have to be different from the real thing. Something like this would be needed (just a quick mock up).
 
 <figure>
 	<img
@@ -95,7 +95,7 @@ But ... the Game Boy Advance's screen is only 240x160 pixels, so fitting such la
 
 ### So many numbers
 
-Balatro puts a lot of numbers on the screen
+Balatro puts a lot of numbers on the screen.
 
 - Number of remaining hands
 - Number of remaining discards
@@ -111,7 +111,7 @@ Balatro puts a lot of numbers on the screen
 - Your score for the current hand
 - The goal score to beat the round
 
-Did I miss any? The E-Reader has a collection of `DrawNumber` functions, but the problem is it is limited to four unique numbers. If you try to draw a fifth number with `DrawNumber`, nothing happens.
+Did I miss any? The E-Reader has a collection of [`DrawNumber`](https://ereader.miraheze.org/wiki/ERAPI-Z80#0x6b:_DrawNumber) functions, but the problem is it is limited to four unique numbers. If you try to draw a fifth number with `DrawNumber`, nothing happens.
 
 Even worse, each number can have a max of 5 digits. So just to keep track of your score, would take up 2 of those number slots.
 
@@ -119,7 +119,7 @@ A lot of this can be worked around with sprites and some clever redesigning and 
 
 ### 150 jokers?
 
-Balatro has 150 jokers, and they all do very different things. I think making a full fledge "joker engine" that can handle this is doable. The E-Reader/GBA has plenty of memory for this, and it's easy to dynamically call functions. So logic-wise, I don't think this would be a problem. But each joker needs a card graphic.
+Balatro has 150 jokers, and they all do very different things. I think making a full fledged "joker engine" that can handle this is doable. The E-Reader/GBA has plenty of memory for this, and it's easy to dynamically call functions. So logic-wise, I don't think this would be a problem. But each joker needs a card graphic.
 
 <figure>
 	<img
@@ -140,7 +140,7 @@ Balatro has a ton of text in it. Similar to games like Magic the Gathering, the 
 	<figcaption>The Wee Joker showing its rules pop up</figcaption>
 </figure>
 
-There would be no way to include all this text into an E-Reader demake. So unfortunately the demake would really only be playable by people who are familiar with the main game. I dunno, that doesn't really bother me. After all, doing something like this is would be just for the heck of it.
+There would be no way to include all this text into an E-Reader demake. So unfortunately the demake would only be playable by people who are familiar with the main game. I dunno, that doesn't really bother me. This is the type of project that's just done for the sake of it.
 
 ### Running out of sprites
 
@@ -153,14 +153,14 @@ In Balatro it's possible to have many jokers, and a large hand. Here is a very e
 	</figcaption>
 </figure>
 
-The E-Reader only supports 56 sprites. I think for space saving, a card would have to be made out of two (and maybe even three) sprites each.
+The E-Reader only supports 56 sprites. I think for space saving, a card would have to be made out of two (and sometimes three) sprites each.
 
 <figure>
 	<img src={require('./threeSpritesOneCard.svg').default.src} />
 	<figcaption>A single card made out of three sprites</figcaption>
 </figure>
 
-Working within this limitation would be very challenging. Fortunately it is possible to use backgrounds here instead of sprites. In my prototype, your hand at the bottom of the screen is a background. That can help a lot. But even with backgrounds, this would be challenging. The demake might have to impose a limit on how big your hand can be and/or how many jokers you can have.
+Working within this limitation would be very challenging. Fortunately it is possible to use backgrounds here instead of sprites. In my prototype, your hand at the bottom of the screen is a background (similarly, in my [E-Reader solitaire game](/blog/cramming-solitaire-onto-a-nintendo-ereader-card/), all of the cards are drawn into a background instead of using sprites). That can help a lot. But even with backgrounds, this would be challenging. The demake might have to impose a limit on how big your hand can be and/or how many jokers you can have.
 
 ### Space considerations
 
@@ -185,10 +185,10 @@ Why do this on the E-Reader if it is so limited? No other reason than I really l
 
 ## Will I release the prototype?
 
-No, I won't. At least, not without LocalThunk's approval. This was just for fun, and I made it entirely on my own. Balatro is an excellent game, so I don't want to cause it any harm (or at least surprise) by releasing a demake of it, even if it's just a tiny little prototype. You really aren't missing anything, everything that is possible in the prototype is shown in the video.
+No, I won't. At least, not without LocalThunk's approval. This was just for fun, and I made it entirely on my own. Balatro is an excellent game, so I don't want to cause it any harm (or at least surprise) by releasing a demake of it, even if it's just a tiny little prototype. You really aren't missing anything, everything that is possible in the prototype is shown in the video. Oh, the prototype can also sort the cards by rank or suit. Yup, that's the entirety of it.
 
 ## Conclusion
 
-That's it on this one. Thanks for reading! I have more posts about the [E-Reader](/blog/E-Reader/) and [Balatro](/blog/Balatro/) if you want more.
+Thanks for reading! I have more posts about the [E-Reader](/blog/E-Reader/) and [Balatro](/blog/Balatro/) if you want more.
 
-And if you read this far, checkout https://retrodotcards.com, my E-Reader site. I will be selling a pack of games starting July 27th!
+And if you read this far, checkout https://retrodotcards.com, my E-Reader site. I will be selling a pack of new games starting July 27th!
