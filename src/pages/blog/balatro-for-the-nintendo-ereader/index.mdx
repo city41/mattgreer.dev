@@ -75,13 +75,18 @@ But playing the game within the round is 99% real. I hard coded Fibonacci and Sp
 
 ## Could it be done?
 
-Would it be possible to make Balatro for the E-Reader? I think so!
+Would it be possible to make Balatro for the E-Reader? I think so.
 
-It would be a challenging project and some concessions would need to be made. But I definitely think a demaked version that still captures the essence and fun of the game is doable.
+It would be a challenging project and a good number of concessions would need to be made. But I do think a demaked version that still captures the essence and fun of the game is doable.
 
 ### Dealing with high scores
 
 An immediate challenge would be the massive scores you can get in Balatro. E-Reader games can comfortably work with 32 bit numbers. So the highest possible score would be 4,294,967,295. Real Balatro uses 64 bit numbers so scores can absolutely go into the stratosphere there. But I think 4 billion is still plenty to have fun and get that Balatro experience.
+
+<pitfall>
+	There's more bad news here. We'll talk about it below in the small numbers
+	section.
+</pitfall>
 
 But ... the Game Boy Advance's screen is only 240x160 pixels, so fitting such large numbers onto the screen would be a challenge. This is an area the demake would have to be different from the real thing. Something like this would be needed (just a quick mock up).
 
@@ -179,11 +184,36 @@ Space is always a challenge with this device. The prototype ended up being four 
 
 But I also wasn't worried about space here, I just built the prototype without worrying how large it ended up being. If you work at it, you can get your E-Reader games a lot smaller with clever coding techniques. So although I'm pretty sure Balatro would be a large game (maybe 8 cards? 10? The max of 12?), running out of space such that this idea ends up not possible doesn't worry me.
 
+### Small numbers
+
+Uh oh, this is a bad one. The GBA can not natively handle decimal numbers, like `.25` or `1.1`. There are a few ways to work around this, but none of them are great.
+
+#### Work around idea 1: Use fixed point numbers
+
+A work around for this problem has been used on old computers since forever. It's called fixed point, and it's a way to do decimal numbers like `1.5` on systems that don't support them natively. I won't get into the details here as it's fairly technical (I wrote two blog posts on it [here](/blog/neo-geo-dev-fixed-point/) and [here](/blog/ereader-simple-fixed-point/) if you are curious). This approach has the advantage of being simple, but has the major disadvantage of reducing the largest number we can work with. That 4 billion above would likely be reduced to 1 billion or even half a billion. Ugh. And on the flip side, this approach has accuracy problems, it could do say `1.5` pretty easily, but `1.1` would probably have to be rounded to `1.25` or `1`.
+
+#### Work around idea 2: software floating point
+
+Floating point is the name of the number system that modern systems (and Balatro) use to do decimal numbers. It's much better than fixed point. On modern computers, it is always implemented in hardware, because it's very complicated. Technically it would probably be possible to implement a software version of floating point in the E-Reader, but my word it'd be one hell of a project and slow as molasses. This one just doesn't seem realistic to me.
+
+#### Work around 3: just use integers
+
+Integers are whole numbers, like `1`, `40` and so on. All computers support this type of number. This is by far the easiest and fastest approach. But it would likely mean ditching jokers like Hologram, Vampire and Lucky Cat. Some of the coolest jokers in the game :(
+
+<figure>
+	<img src={require('../balatro-score-growth/hologram.png').default.src} />
+	<figcaption>Hologram we'd miss you!</figcaption>
+</figure>
+
+Oh, and then there is the problem of drawing decimal numbers to the screen. The E-Reader's `DrawNumber` functions work with whole numbers only ...
+
+Make no doubt about it, decimal numbers are a big hurdle in making a Balatro demake. If I were to actually make this game, I'd probably choose the fixed point approach for this problem.
+
 ## Just make a real GBA game?
 
-Why do this on the E-Reader if it is so limited? No other reason than I really like the device and have a soft spot for it. If the demake was instead made as a full fledged GBA game on a cartridge, it'd have a lot more breathing room to work through these issues. Many limitations would remain though, like the 240x160 screen. The GBA can work with 128 sprites, which is better than 56 but still pretty limiting.
+Why do this on the E-Reader if it is so limited? No other reason than I really like the device and have a soft spot for it. If the demake was instead made as a full fledged GBA game on a cartridge, it'd have a bit more breathing room to work through these issues. Many limitations would remain though, like the 240x160 screen and decimal numbers. The GBA can work with 128 sprites, which is better than the 56 of the E-Reader, but still pretty limiting. My hunch is doing this as a proper GBA game would only make it a little bit easier.
 
-## Will I release the prototype?
+## Anyway ... will I release the prototype?
 
 No, I won't. At least, not without LocalThunk's approval. This was just for fun, and I made it entirely on my own. Balatro is an excellent game, so I don't want to cause it any harm (or at least surprise) by releasing a demake of it, even if it's just a tiny little prototype. You really aren't missing anything, everything that is possible in the prototype is shown in the video. Oh, the prototype can also sort the cards by rank or suit. Yup, that's the entirety of it.
 
