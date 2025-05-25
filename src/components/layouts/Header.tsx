@@ -37,7 +37,7 @@ function Header({
 			<div
 				className={clsx(
 					className,
-					'flex flex-row gap-x-4 items-center justify-center'
+					'flex flex-col sm:flex-row sm:gap-x-4 items-center justify-center'
 				)}
 			>
 				<div

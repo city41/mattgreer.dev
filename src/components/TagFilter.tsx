@@ -47,7 +47,7 @@ function TagFilter({
 }: TagFilterProps) {
 	return (
 		<div className={clsx(className, 'flex flex-col gap-y-6')}>
-			<div className="text-2xl max-w-full sm:max-w-xl mt-4">
+			<div className="text-2xl max-w-full sm:max-w-xl mt-4 mx-auto">
 				{!currentTag ? (
 					<p>
 						All{' '}
@@ -66,7 +66,7 @@ function TagFilter({
 			</div>
 			<div>
 				<p className="text-fg text-sm mb-1">or filter by </p>
-				<div className="grid grid-flow-row gap-x-1.5 gap-y-1.5 grid-cols-[max-content_max-content_max-content] sm:grid-cols-[max-content_max-content_max-content_max-content]">
+				<div className="grid grid-flow-row gap-x-1.5 gap-y-1.5 grid-cols-[33%_33%_33%] sm:grid-cols-[max-content_max-content_max-content_max-content]">
 					{['All']
 						.concat(tags)
 						.sort()
