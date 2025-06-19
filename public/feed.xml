@@ -4,7 +4,7 @@
         <title>Matt Greer</title>
         <link>https://mattgreer.dev</link>
         <description>Mostly web dev and game dev related articles</description>
-        <lastBuildDate>Fri, 23 May 2025 21:16:11 GMT</lastBuildDate>
+        <lastBuildDate>Thu, 19 Jun 2025 18:11:04 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
@@ -16,9 +16,17 @@
         <copyright>Copyright Matt Greer</copyright>
         <atom:link href="https://mattgreer.dev/feed.xml" rel="self" type="application/rss+xml"/>
         <item>
-            <title><![CDATA[Balatro for the E-Reader]]></title>
-            <link>https://mattgreer.dev/blog/balatro-for-the-ereader</link>
-            <guid>https://mattgreer.dev/blog/balatro-for-the-ereader</guid>
+            <title><![CDATA[E-Reader Cards Production Run: Mistakes Were Made]]></title>
+            <link>https://mattgreer.dev/blog/ereader-cards-production-run-mistakes-were-made</link>
+            <guid>https://mattgreer.dev/blog/ereader-cards-production-run-mistakes-were-made</guid>
+            <pubDate>Tue, 24 Jun 2025 00:00:00 GMT</pubDate>
+            <description><![CDATA[Lessons learned and why I had to reprint the series one E-Reader cards]]></description>
+            <author>matt.e.greer@gmail.com (Matt Greer)</author>
+        </item>
+        <item>
+            <title><![CDATA[Balatro for the Nintendo E-Reader]]></title>
+            <link>https://mattgreer.dev/blog/balatro-for-the-nintendo-ereader</link>
+            <guid>https://mattgreer.dev/blog/balatro-for-the-nintendo-ereader</guid>
             <pubDate>Fri, 23 May 2025 00:00:00 GMT</pubDate>
             <description><![CDATA[What if the best game of 2024 came out on an old, obscure and weird platform?]]></description>
             <author>matt.e.greer@gmail.com (Matt Greer)</author>
