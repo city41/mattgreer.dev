@@ -1,0 +1,171 @@
+import { Article } from '../../../components/layouts/Article';
+import meta from './meta.json';
+
+export default ({ children }) => (
+	<Article
+		{...meta}
+		img={require('./feature.jpg').default.src}
+		socialMediaImg={require('./twitter.png').default.src}
+		intro="Lessons learned and why I had to reprint the series one E-Reader cards"
+	>
+		{children}
+	</Article>
+);
+
+A while back I got the cards for [Series One](https://retrodotcards.com/series-one) back from the printer.
+
+<figure>
+	<img src={require('./firstRunInBoxFromPrinter.jpg').default.src} />
+	<figcaption>The cards as I first received them from the printer.</figcaption>
+</figure>
+
+I then proceeded to package them all up to get ready to sell them.
+
+<figure>
+	<img src={require('./packagedCardsInBox.jpg').default.src} />
+	<figcaption>
+		Many booster packs of the cards piled into a box, ready to sell.
+	</figcaption>
+</figure>
+
+But I won't be selling any of these cards, despite taking _days_ to package them all up. These cards have several problems in them, so I decided to have them reprinted.
+
+## The Problems
+
+### Die Cutting Tabs
+
+One problem I knew about right away &mdash; but at first shrugged off &mdash; was the artifact tabs left on the cards from the die cutter.
+
+<figure>
+	<img src={require('./closeUpOfCardWithTabsPointedOut.jpg').default.src} />
+	<figcaption>
+		A card with the die cutting tabs on it, pointed out with red lines.
+	</figcaption>
+</figure>
+
+The red lines are pointing out the tabs. And yeah, they are very tiny. Unless you know they are there, you might even miss them.
+
+A die cutting machine was used to cut the cards out. But the machine can't fully cut the card out of the sheet, otherwise they'd all fall to the floor and create a huge mess. So the machine always leaves behind tabs that keep the cards connected to the sheet. Then later a person can punch the cards off in a controlled way. It's true when just looking at one card they aren't very noticable. But if you stack a bunch of cards together, they jump out. And once you know about them, you can't ignore them.
+
+<figure>
+	<img src={require('./stackOfCardsWithTabs.jpg').default.src} />
+	<figcaption>A stack of cards held together to show the tabs.</figcaption>
+</figure>
+
+I wasn't happy with these tabs from day one, but I originally planned to just roll with them. These tabs gnawed at me, because otherwise the cards came out great!
+
+### Shrinkwrapping woes
+
+The printer bundled the cards into sets of 100 and shrinkwrapped them. This ended up messing up the ink on the cards at the top and bottom of each bundle. The heat gun used for the shrinkwrapping heated the ink back up on these outer cards, then the pressure from the shrinkwrap caused the top 2 to 4, and bottom 2 to 4 cards in each bundle to stick together. When the cards are pulled apart, spots of ink got torn off.
+
+<figure>
+	<img src={require('./badInkCards.jpg').default.src} />
+	<figcaption>
+		Cards that got ink damage due to the shrinkwrapping heat.
+	</figcaption>
+</figure>
+
+Honestly this wasn't that big of a deal, once I fully realized the issue. I just removed the messed up cards and set them aside. I'd either sell those at a discount, or give them away, or something. After all the cards were still fully functional.
+
+But I made a really bad mistake here. If a card that was stuck together looked good on the front, it almost always meant the ink on the back of the card was messed up instead. I didn't realize this until I had already packaged up a _lot_ of cards, so that box of booster packs up above had "land mines" littered throughout it. Just by bad luck, someone was going to get sent messed up cards, and there was no way to know which ones were bad! I face palmed hard when I realized this ...
+
+### Color reproduction
+
+Color comes in two "systems", additive and subtractive. Computer monitors use an additive system, the more light there is, the closer the color comes to white. Pigments and inks are subtractive, the _less_ pigment there is, the closer the color is to white (assuming you're printing on white paper).
+
+Additive color is handled with RGB lights (red, green, and blue), and subtractive is handled with CMYK pigments (cyan, magenta, yellow and black). The problem is, there are differences between the two. In short, what you see on your monitor isn't necessarily what you will get once it is printed out on paper. Professional designers deal with this by color calibrating their monitors to help ensure what they see on their screen matches more closely to what gets printed. So far I have no way to do that with my setup. Even if I had the hardware, I prefer to use open source software which in general doesn't have the best CMYK support yet.
+
+The vast majority of the time, this isn't a problem. The differences are often nothing at all or very minor. But it turns out I gambled and lost with the backs of the cards. What were bright and vibrant reds and purples on my monitor came out a bit dull looking on paper.
+
+<figure>
+	<img src={require('./backComparison.jpg').default.src} />
+	<figcaption>Two different back designs for the cards.</figcaption>
+</figure>
+
+On the left is the back design that was used for the first print run. It's hard to see in a photo, but the colors could be better. Also the purple ink going right up to the edge left behind a small white "halo" that comes from the edge of the card.
+
+<wisdom>
+	The halo effect is truly the very edge of the card. The card design had proper
+	bleed setup so that once cut out, the purple went up to the very edge of the
+	face of the card. It's just the thin side walls of the card that cause the
+	undesirable "halo".
+</wisdom>
+
+The one on the right was the back I used for the reprint. These colors were more pigment friendly and the new card backs look much better!
+
+### Miscuts
+
+A very small number of cards in the run got cut incorrectly. Actually the Solitaire card above was one of those cards.
+
+<figure>
+	<img src={require('./closeUpOfCardWithTabsPointedOut.jpg').default.src} />
+	<figcaption>A miscut card with the data strip getting cut off.</figcaption>
+</figure>
+
+See how the data strip is cut off on the left side? Due to the way E-Reader cards work, this card still scans and plays just fine. Less than 0.5% of the cards were miscut like this, so really it wasn't a big deal. That's just the reality of mass production.
+
+### And ... a really bad bug
+
+And finally, the mistake that made the reprint a must, one of the games had a terrible bug. These cards aren't like modern games, you can't send your customers "patch cards" :) I tested the living heck out of these games, and other people helped as well. In the end I've played these games so much it's honestly ridiculous. But even still, a dumb mistake allowed a bad bug to sneak through.
+
+I needed to at least reprint the game that had the bug. But with all the other issues, I decided to bite the bullet and do a full reprint of all of the games. This also allowed me to fix some minor cosmetic bugs in a few other games as well. Bugs that I doubt anyone but me would notice, but if I'm reprinting anyway, I might as well fix them.
+
+## A much better second run
+
+This was a fairly painful lesson to learn. But ah well, that's life sometimes. I knew I had to learn some of these lessons the hard way as this is both a physical medium where mistakes are often costly, and something I am brand new to. So all in all I'm not too bothered by all of this. Here are the lessons/changes I've applied to the second run.
+
+### No more shrinkwrapping
+
+The printer delivered the second run to me in boxes, with slips of paper separating out the packs. So this time no cards were damaged by heat and every single card is in excellent condition.
+
+It also turned out bundling the cards in the shrink wrap led to more packaging work. I had to manually get one of each card into a full pack set before I could package them. This time around, the cards are organized so that each set of cards between the paper slips is one pack.
+
+<figure>
+	<img src={require('./secondPrintCardsInBoxes.jpg').default.src} />
+	<figcaption>The new cards still in the boxes from the printer.</figcaption>
+</figure>
+
+So like in this box, each "chunk of white" between the dark lines you see is a set of the 9 cards that make up one pack. I can just take that chunk out, and package it directly. No sorting needed. This is a _huge_ time saver and how it should have always been done! Now I know ...
+
+### No more die cutting
+
+This time around, the die cutting machine was not used at all. Instead the printer cut the cards out using straight cuts. No more tabs!
+
+But wait, the edges are now just square? No, I am cutting the corners out myself using this device.
+
+<figure>
+	<img src={require('./cornerCutter.jpg').default.src} />
+	<figcaption>The corner cutting device.</figcaption>
+</figure>
+
+This device can cut the corners of many cards at once. But if you're not careful, the cuts can be inaccurate due to the cards shifting around as the cut is happening. This device takes some practice and patience. But as long as you have that, it works great.
+
+<figure>
+	<img src={require('./secondRunCardsWithCutCorners.jpg').default.src} />
+	<figcaption>The cards after their corners have been cut.</figcaption>
+</figure>
+
+The printer offered to do the cuts, but I decided to do them myself. The cuts can absolutely come out perfectly if you take your time. A printer has many jobs in the pipeline and often doesn't have the time luxury. They warned me the cuts might be a bit different here and there. It's more work for sure, but I like knowing I can get perfect cards this way.
+
+### A cheat code in one game
+
+As for that terrible bug. I fixed it, but I also included a cheat code in that game that allows me to thoroughly test the situations where the bug came up, quickly and easily. Once I was done with my code changes, I just left the cheat code in the game. This is the true origin of cheat codes back in the early days, they were really there to help the development team. They just left them in because why not? They ended up becoming a marketing gimmick and players even came to expect them. It's very reassuring to grab a production card, scan it in, enter the cheat code, and see for sure the bug is gone. I tested the bug is gone without using the cheat code too, it just takes much longer to do that.
+
+## Mistakes were made ...
+
+So yeah, that first run took me to the school of hard knocks. That's just the way it goes sometimes. I'm brand new to physical products, manufacturing, packaging, all of that type of stuff, I've never done before.
+
+When I chose July 27th as the launch date, some people questioned why, thinking it's a very conservative date. And yeah, it is. I've never done physical stuff before, but I've been involved in many launches of digital products throughout my career and usually you'll face at least one catastrophe each time :) Unless another catastrophe or two come up, I'm still quite confident in hitting the July 27th date.
+
+## Conclusion
+
+Now with these new cards, I can feel a lot better about selling them. I know the quality is up to my standards, and I don't have to secretly hope people don't notice the small issues that crept in.
+
+If you are interested in getting a pack yourself, they will be on sale July 27th at https://retrodotcards.com.
+
+### Previous posts about printing E-Reader cards:
+
+- [Printing E-Reader Cards](/blog/printing-ereader-cards/)
+- [Printing E-Reader Cards, More Learnings](/blog/printing-ereader-cards-more-learnings/)
+- [Printing E-Reader Cards part 3](/blog/printing-ereader-cards-part-3/)
+- [Printing E-Reader Cards part 4: Troubleshooting](/blog/printing-ereader-cards-part-4/)
