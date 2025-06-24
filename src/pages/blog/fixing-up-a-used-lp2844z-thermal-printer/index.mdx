@@ -1,0 +1,154 @@
+import { Article } from '../../../components/layouts/Article';
+import meta from './meta.json';
+
+export default ({ children }) => (
+	<Article
+		{...meta}
+		img={require('./feature.png').default.src}
+		socialMediaImg={require('./twitter.png').default.src}
+		intro="How I got an old, used, Zebra thermal printer working"
+	>
+		{children}
+	</Article>
+);
+
+I will soon be selling physical products online, something that is brand new to me. To make shipping easier, I decided to get a thermal printer for the shipping labels. I knew exactly zero about thermal printers. Here is the blog post I wish existed before I started.
+
+I ended up getting an old, used thermal printer that after some troubleshooting is working great. This approach saved me a lot of money.
+
+<pitfall>
+	I still know very little about thermal printers. This post is just the path I
+	ended up going down. Please don't take it as definitive advice.
+</pitfall>
+
+## Thermal printer options
+
+It seems these days there's broadly three ways you can go:
+
+- A new printer from a major brand
+- A new printer from a non-major brand
+- A used printer from a major brand
+
+### A new printer from a major brand
+
+Brands like Zebra, Brady and Dymo sell printers that are well regarded and respected. But new ones are pricy, starting around $300 and going up from there.
+
+From what I understand, this is a pretty bullet proof way to go. They just work, are under warranty, and are well made. You do have to watch out for printers that only accept their own proprietary labels. You're probably better off sticking with ones that will work with any label.
+
+I did not go this route, so I really don't know much about it.
+
+### A new printer from a non-major brand
+
+Primarily Chinese companies sell new thermal printers for around $80. I've heard a lot of mixed stories here. Some people have no problems and they work great. Others seem to have a lot of issues. I also did not go this route, so I can't really comment here either.
+
+### A used printer from a major brand
+
+On eBay you can find all kinds of used thermal printers. It seems sellers get their hands on huge lots of them, maybe from retailers that went out of business or decided to upgrade their fleet. Either way, these used ones tend to be in the $50-100 range.
+
+## A used Zebra LP2844-Z
+
+I grabbed this printer off of eBay after seeing it recommended often.
+
+<figure>
+	<img src={require('./printer.jpg').default.src} />
+	<figcaption>
+		The used thermal printer. The plastic being yellowed is a good hint at its
+		age.
+	</figcaption>
+</figure>
+
+It came with a third party power supply and two rolls of labels. Altogether it was $58 shipped. A great deal!
+
+It can accept rolls of labels or sheet fed labels, up to 4 inches wide. It will glady work with any type too.
+
+This printer as it first arrived would just barely print a 4x6" label, and it would error out part way through printing labels most of the time.
+
+<figure>
+	<img src={require('./labelExamples.jpg').default.src} />
+	<figcaption>
+		Examples of labels I got trying to use the printer as I received it.
+	</figcaption>
+</figure>
+
+The first label is where the printer errored out and gave up. Oh this happened a lot, it was so frustrating. The second label is where I managed to get it to print the entire thing, but the bar code was faded a lot. It's hard to see in the photo, but it's not great. And the third one printed the bar code very crisp, but at the cost of the label only being half the size.
+
+<wisdom>
+	I was testing with a real label. You can find sample labels on line easily
+	though.
+</wisdom>
+
+## A short term fix: use a lighter print setting
+
+When printing, you can choose your darkness setting from 1 up to 18 or so. The darker the setting, the more likely the printer will crap out and fail to print a label. I found with my printer the darkest I could go was 3. With this setting it'd print entire labels, but this is why the barcode came out so faded.
+
+## The main fix: use a good power supply
+
+Just gonna cut to the chase, the real thing that got this printer working was switching to an official Zebra power supply. It came with a third party knock off.
+
+<figure>
+	<img src={require('./powerSupplies.jpg').default.src} />
+	<figcaption>
+		The power supply the printer came with on the left, and the one I replaced
+		it with on the right.
+	</figcaption>
+</figure>
+
+You will find online a lot of people recommended getting an official Zebra power supply. And they aren't wrong. But I am pretty sure the real criteria of a good power supply here is the output amperage. The knock off provides 1.75 amps, while the offical one outputs 3 amps.
+
+When printing with a dark setting, the printer needs more power that the knock off power supply can provide. That is why it either errors out and gives up, as in the left label above. Or the best I could get was either faded bar codes or just a half sized label. Both approaches allowed the printer to keep going and work within the knock off power supplies capabilities.
+
+Once I got the Zebra power supply, this thing started printing like a champ no matter how dark I chose. Beautiful, perfect labels with crystal clear bar codes each and every time.
+
+## Replace the print head?
+
+Some folks online say these old printers need a new print head, and that's why they can't print. A new print head was the first thing I tried. I ordered one off eBay and it wasn't too difficult to install. This video shows you how.
+
+<iframe
+	height={315}
+	style={{ margin: '3em auto', width: 'min(560px, 100%)' }}
+	src="https://www.youtube.com/embed/UmUf6NUuuCQ"
+	frameBorder={0}
+	allowFullScreen
+></iframe>
+
+Tedious for sure, but if you just take your time you should be able to get it.
+
+This didn't seem to improve my printing issues at all. I mean, maybe it did? It's hard to say. But I would say based on my experience, try a correct power supply before you go down the print head route.
+
+## Calibrate the printer?
+
+If you head to [Zebra's page on this printer](https://www.zebra.com/us/en/support-downloads/printers/desktop/lp-2844.html), you can download drivers, firmware and a utilities application.
+
+You will need the driver at the very least (more on drivers in a bit). And the utilities app doesn't seem to cause any harm. I played with it and tried many different things, but none really seemed to make a difference. This was before the new power supply btw. But maybe you'll find it helpful.
+
+## Drivers
+
+You can get the official Zebra driver from the link above. It works just fine and allows you to print labels easily. They barcodes on these labels will probably be fuzzy and jittery, and there doesn't seem to be any way to prevent that.
+
+To fix that, you can get a third party driver [from BarTender sofware](https://www.bartendersoftware.com/resources/printer-drivers/zebra/zebra-lp2844). With this driver, if you go into its preferences then graphics, and set dithering to "none", you will then get perfect barcodes.
+
+For whatever reason, with the BarTender driver I have to set the printer to landscape, despite printing portrait labels. Why? I have no idea, but once I did that I got perfect labels.
+
+## Total price
+
+The Zebra power supply was twenty bucks. So all in this printer was $78. You are essentially paying the same price as non-major brand printer, but getting the reliability of the major brands. I think it's a win win.
+
+The print head was $16. But I am pretty sure I didn't need to buy it.
+
+## Free and cheap labels
+
+You can get free 4x6 labels from UPS. The ones I got have UPS branding on them so you should really only use them if you are shipping with UPS.
+
+I also bought a giant box of blank labels off of eBay for very cheap, 3000 labels for $30 shipped, so a penny per label! Be warned though, these labels are truly blank on the front, but they do have some UPS wording and copyright info on the back. I suspect at one time the free UPS labels were blank like this and people took advantage. I feel a little bad essentially cheating UPS, but in my defense I didn't know. The seller on eBay made no mention of this.
+
+My printer came with two rolls of labels and I recommend that if you can. I probably went through 100 labels just trying to get this dang thing to work.
+
+## Printing on OSes other than Windows
+
+I would prefer to print from Linux, and people online seem to suggest this is possible. But I've never tried it. I have an old Windows laptop laying around I just decided to use that for printing labels. As for MacOS, I have no idea. Sorry.
+
+## Thanks
+
+Thanks to the YouTuber who made the print head video. That was helpful.
+
+I also found [John Hagen Sieker's blog post on the Zebra LP 2844-Z](https://hagensieker.com/2023/10/23/zebra-lp-2844-label-printer/) helpful.

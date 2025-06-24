@@ -4,7 +4,7 @@
         <title>Matt Greer</title>
         <link>https://mattgreer.dev</link>
         <description>Mostly web dev and game dev related articles</description>
-        <lastBuildDate>Thu, 19 Jun 2025 18:11:04 GMT</lastBuildDate>
+        <lastBuildDate>Tue, 24 Jun 2025 16:02:42 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
@@ -16,10 +16,18 @@
         <copyright>Copyright Matt Greer</copyright>
         <atom:link href="https://mattgreer.dev/feed.xml" rel="self" type="application/rss+xml"/>
         <item>
+            <title><![CDATA[Getting a used LP-2844-Z Thermal Printer]]></title>
+            <link>https://mattgreer.dev/blog/lp2844z-thermal-printer</link>
+            <guid>https://mattgreer.dev/blog/lp2844z-thermal-printer</guid>
+            <pubDate>Tue, 24 Jun 2025 00:00:00 GMT</pubDate>
+            <description><![CDATA[How I got an old, used, Zebra thermal printer working]]></description>
+            <author>matt.e.greer@gmail.com (Matt Greer)</author>
+        </item>
+        <item>
             <title><![CDATA[E-Reader Cards Production Run: Mistakes Were Made]]></title>
             <link>https://mattgreer.dev/blog/ereader-cards-production-run-mistakes-were-made</link>
             <guid>https://mattgreer.dev/blog/ereader-cards-production-run-mistakes-were-made</guid>
-            <pubDate>Tue, 24 Jun 2025 00:00:00 GMT</pubDate>
+            <pubDate>Fri, 20 Jun 2025 00:00:00 GMT</pubDate>
             <description><![CDATA[Lessons learned and why I had to reprint the series one E-Reader cards]]></description>
             <author>matt.e.greer@gmail.com (Matt Greer)</author>
         </item>
