@@ -188,7 +188,7 @@ I'm happy to say my new encryption routine fully re-encrypts the game. Now with 
 
 ### What is that SMA data?
 
-In the ROM's zip, the file `ka.neo-sma` stores the SMA data. It is `0x40000` bytes in size and this data lives at `0xc0000-0xfffff` in the PROM data and in that same location in the Neo Geo's memory map when the game is running. It is not encrypted either. Why? What is it? So far I have no idea. It makes up a good chunk of the first megabyte of PRAM code. Is it executable? Will the game call into it? Or is it data the NEO-SMA chip needs and the game will never touch it? Maybe this is where the data on what bits to swap and how to descramble addresses lives? I guess time will tell.
+In the ROM's zip, the file `ka.neo-sma` stores the SMA data. It is `0x40000` bytes in size and this data lives at `0xc0000-0xfffff` in the PROM data and in that same location in the Neo Geo's memory map when the game is running. It is not encrypted either. Why? What is it? So far I have no idea. It makes up a good chunk of the first megabyte of P ROM code. Is it executable? Will the game call into it? Or is it data the NEO-SMA chip needs and the game will never touch it? Maybe this is where the data on what bits to swap and how to descramble addresses lives? I guess time will tell.
 
 ## Conclusion
 
