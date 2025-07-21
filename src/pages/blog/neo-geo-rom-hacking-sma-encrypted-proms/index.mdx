@@ -1,0 +1,201 @@
+import { Article } from '../../../components/layouts/Article';
+import meta from './meta.json';
+
+export default ({ children }) => (
+	<Article
+		{...meta}
+		img={require('./feature.png').default.src}
+		socialMediaImg={require('./twitter.png').default.src}
+		intro="My first exposure to working with SMA encryption in a Neo Geo game"
+	>
+		{children}
+	</Article>
+);
+
+I am currently exploring a ROM hack idea I have for The King of Fighters 99. It's a very ambitious idea, so at this point, I'm not sure I can pull it off. To start off, I'm trying to get the lay of the land and come to grips on how to go about hacking a newer and more complex Neo Geo game.
+
+I've made [several Neo Geo ROM hacks](https://neorh.mattgreer.dev) so far. But almost all of them were on early Neo Geo games. They lack two things that are already making King of Fighters 99 a more challenging game to hack on: encryption and bank switching.
+
+Today we'll take a look at encryption.
+
+## P ROMs
+
+Neo Geo games are made up of various different types of ROMs. The P ROMs are the program data. This is the main code of the game and is executed by the main Motorola 68k processor. Other types of ROMs include the C ROMs which contain the sprite data, and V ROMs which contain music data, amongst others.
+
+Any Neo Geo ROM in a game can be encrypted. For KOF99, its P ROMs and C ROMs are encrypted. Today we will only be looking at how P ROMs are encrypted, and leave C ROMs for a future post.
+
+## Encryption
+
+Back in the 90s, the Neo Geo really suffered from a piracy problem. It was very easy to bootleg its games. Nowadays there are so many bootleg carts floating around that Neo Alec made a video with tips on how to spot them.
+
+<iframe
+	height={315}
+	style={{ margin: '3em auto', width: 'min(560px, 100%)' }}
+	src="https://www.youtube.com/embed/eVV5pci9mQw"
+	frameBorder={0}
+	allowFullScreen
+></iframe>
+
+<wisdom>
+	Back in the 90s, the piracy was mostly focused on arcade cartridges. Now,
+	decades later, many Neo Geo home cartridges are very rare and desirable,
+	making them very pricey. So that has also caused a lot of piracy. Sadly,
+	whether the arcade or home version of the Neo, piracy is just a fact of life.
+</wisdom>
+
+With The King of Fighters 98, SNK started encrypting the data in their cartridges, which made them more difficult to bootleg.
+
+<wisdom>
+	Despite 98 being the first encrypted game, this post will focus on 99, as
+	that's the game I'm hacking on and more familiar with.
+</wisdom>
+
+The encryption was ... very weak. It really wasn't encryption but instead a form of obfuscation. This makes sense, as SNK only had so much to work with. The games still had to work with all Neo Geos that had been sold up to that point, and everything related to encrypting &mdash; and thus decrypting &mdash; the data, had to be housed inside the cartridge. Since all of the needed information resides in the cartridge, a persistent person could crack the obfuscation.
+
+### Bit swapping
+
+SNK mostly pulled off their encryption by scrambling up the words inside the data, and this was accomplished with bit swapping.
+
+Take for example the word `20,000`, in hex that is `0x4e20` and in binary it is `0b0100111000100000`.
+
+<wisdom>
+	In this context, word means a sixteen bit number, which takes up two bytes of
+	space.
+</wisdom>
+
+Let's shuffle the bits in the way KOF99 does it.
+
+<figure>
+	<img src={require('./bitSwapping.svg').default.src} />
+	<figcaption>Moving the bits around.</figcaption>
+</figure>
+
+So once the bits have been swapped around, the word goes from `20,000` to `2,588`. In the diagram, I am only showing how the 1s got swapped. In reality, all bits get swapped, but showing all 16 movements would have made the diagram really messy.
+
+### Address scrambling
+
+The bits within the words were scrambled, but also the words themselves were scrambled and strewn all over the data chips. As a simple example imagine the sentence "I want to play Puzzle Bobble.", address scrambling would turn it into something like "Bobble I play to want Puzzle.".
+
+### Purposeful gibberish
+
+The combination of bit swapping and address scrambling is how SNK accomplished their encryption. If a bootlegger were to dump the data out of the P ROMs and write that data onto new chips, it wouldn't work. Since the data is all scrambled, it would be pure gibberish to the CPU if one attempted to execute it directly.
+
+### The SMA Chip
+
+But how does this actually work? If the data is all scrambled up, how can the game run? What descrambles it? The game's PROG board contains a NEO-SMA chip, and descrambling the data is its main task.
+
+<wisdom>
+	The NEO-SMA also handles bank switching and can do random number generation,
+	but we'll leave those features for other posts.
+</wisdom>
+
+<figure>
+	<img src={require('./Kof99_set1_b1_front.jpg').default.src} />
+	<figcaption>
+		King of Fighters 99's PROG board, containing the data chips, as well as a
+		NEO SMA circled in red. Image taken from mvs-scans.com.
+	</figcaption>
+</figure>
+
+With a traditional Neo Geo game, whenever the system needs data from the game, it will read it directly from the game's data chips on the cartridge. But in the case of KOF99, the data lines that go from the cartridge connector and normally would go straight into the data chips, instead go into the NEO-SMA.
+
+<figure>
+	<img src={require('./cartLinesIntoSMA.png').default.src} />
+	<figcaption>
+		A closer view of the NEO-SMA. The highlighted cartridge lines show how they
+		go into the NEO-SMA instead of straight to the data chips like in a
+		traditional game.
+	</figcaption>
+</figure>
+
+When the game says "get me the word at address $107da!", the NEO-SMA knows how to take the scrambled data, descramble it, and return the real data the system needs. The system is none the wiser, and so it runs the game like any other.
+
+The only way bootleggers could have made a copy of KOF99, was to also make a working copy of the NEO-SMA chip.
+
+<wisdom>
+	They also could have figured out what the unscrambled data was. Maybe they
+	could rig up a device that used the NEO-SMA to extract the data one word at a
+	time. With the decrypted data, they could make a bootleg of KOF99 that works
+	just like any other Neo Geo game that lacks encryption.
+</wisdom>
+
+Was the NEO-SMA successful in warding off bootleggers? I think so. It seems like bootlegs of these encrypted games are not as common. But I can't say for sure, I'm just going off my personal experience of seeing games in the wild.
+
+## Handling Encryption While Hacking
+
+When KOF99 runs in MAME, it will decrypt the ROM data and from there the debugging experience is as if the game was never encrypted. This is great, and the way it should be. But once I've figured out a change I want to make to the game, I need to apply the change to the encrypted ROMs. So I need to do this:
+
+1. decrypt the ROMs.
+2. Apply the changes I want to the decrypted data.
+3. Re-encrypt the ROMs and package them back up.
+4. Run the game in MAME and see my changes in action.
+
+Decrypting is relatively straightforward, as emulators like MAME need to do this to run the game. For example, [here is GNGEO's decryption code](https://github.com/ColumPaget/gngeo-cjp/blob/master/src/neocrypt.c). If you look through that file, you'll find many decryption functions, but no encryption functions. An emulator doesn't need to encrypt the ROM, so why bother implementing it? Somewhere in MAME's vast codebase would be similar decryption code.
+
+Thankfully, iq-132 wrote an encrypt and decrypt tool and [posted it to the neo-source forum](https://neo-source.com/index.php?topic=1066.0), including the source code! They did this nearly _twenty years ago_ and yet it is still up. Shout out to websites that stick around!
+
+I took their tool and [ported it to TypeScript](https://github.com/city41/kof99v/blob/main/src/patchRom/sma.ts), and then incorporated it into my patch tool.
+
+## How the decryption works
+
+The input to decryption is the game's P1 and P2 ROM files, as well as the ROM file for for the SMA chip.
+
+<wisdom>
+	Altogether, P1, P2 and the SMA data make up the entire P ROM data.
+</wisdom>
+
+It takes these three files and concats them together into one overall binary. The SMA data is only `0x40000` bytes long and starts at address `0xc0000`, so the first megabyte starts with `0xc0000` bytes of empty space.
+
+<figure>
+	<img src={require('./startingStateForDecryption.svg').default.src} />
+	<figcaption>
+		The starting state for decryption, the three files concatenated together,
+		with some empty space at the start.
+	</figcaption>
+</figure>
+
+It then proceeds to descramble the words that make up the P1 and P2 data, from `0x100000` to `0x8fffff`, in other words from the second megabyte on up to the end of the binary. The words here are scrambled with bit swaps, so the decryption descrambles them in place. Thankfully the bit swap information is known already, maybe iq-132 figured it out or someone else did? I'm not sure, but regardless, we know which bit goes where, so deswapping the bits is pretty straightforward.
+
+Next comes some address descrambling, ie moving entire words into new locations.
+
+<wisdom>
+	In other words, going from "Bobble I play to want Puzzle" to "I want to play
+	Puzzle Bobble"
+</wisdom>
+
+Notice how the first megabyte at this point is mostly empty? The address descrambling grabs words in the `0x700000-0x7fffff` range and moves them down to the front. Combining this newly moved data with the SMA data that is already at `0xc0000-0xfffff` and the end result is the first megabyte of the game's P ROM data.
+
+<figure>
+	<img src={require('./addressDescramblingToFront.svg').default.src} />
+	<figcaption>
+		Address descrambling moves words from the 8th megabyte up to the front.
+	</figcaption>
+</figure>
+
+Finally, the data in the range `0x100000-0x6fffff` (second megabyte up to the seventh megabyte) is all out of order, so the decryption moves the words around into the correct order within this range.
+
+The final result is a fully decrypted nine megabytes of data that makes up the game's P ROM data, ie the game's main code.
+
+### The encryption was not quite correct though
+
+This tool decrypted the files just fine. The nine megabyte binary result exactly mimics what the Neo Geo would see, and also matches what MAME shows you in its debugger. Awesome! But when I made changes and tried to use the encryption to repackage up the game, it missed changes made in the first megabyte of data.
+
+In the decryption process, there is a step where it grabs words out of the `0x700000-0x7fffff` range and moves them down to the front of the binary, forming the first megabyte of the game's code. But the encryption routine failed to take the data from this first megabyte, and move it back up to its original location up in the `0x700000` range.
+
+This took a bit to figure out how to fix. But by thinking through what needed to happen, drawing it out on a dry-erase board, and adding lots of logging I was finally able to get it working.
+
+I'm happy to say my new encryption routine fully re-encrypts the game. Now with the entire decrypt and ecrypt steps incorporated into my patch flow, I was able to make a small hack for the game. Huzzah!
+
+### What is that SMA data?
+
+In the ROM's zip, the file `ka.neo-sma` stores the SMA data. It is `0x40000` bytes in size and this data lives at `0xc0000-0xfffff` in the PROM data and in that same location in the Neo Geo's memory map when the game is running. It is not encrypted either. Why? What is it? So far I have no idea. It makes up a good chunk of the first megabyte of PRAM code. Is it executable? Will the game call into it? Or is it data the NEO-SMA chip needs and the game will never touch it? Maybe this is where the data on what bits to swap and how to descramble addresses lives? I guess time will tell.
+
+## Conclusion
+
+That's it for today. This was a meaty one, eh? There are other challenges and complexities waiting for me as I dive deeper into this more advanced game. As mentioned before, the C ROMs that contain the sprite data are also encrypted, so eventually I'll need to dive into decrypting them as well.
+
+KOF99 is a large game. The Neo Geo's memory map has space for 2 megabytes of P ROM data, but KOF99 is much bigger than that. The NEO-SMA does bank switching to move the various megabytes of P ROM data into and out of the memory map as it needs to access different parts of its code. I can already tell that's going to make this ROM hack more annoying, but coming to grips with that is for future me to figure out.
+
+### Oh and the hack...
+
+This KOF99 ROM hack is a low priority project for me. Something I plan to work on here and there and not make my main focus, at least for now. So heads up nothing truly interesting will come from it for a while, if ever. If you wanna follow along, the [repo for it is here](https://github.com/city41/kof99v).
