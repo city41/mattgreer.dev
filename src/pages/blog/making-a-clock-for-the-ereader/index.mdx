@@ -1,0 +1,369 @@
+import { Article } from '../../../components/layouts/Article';
+import meta from './meta.json';
+
+export default ({ children }) => (
+	<Article
+		{...meta}
+		img={require('./feature.png').default.src}
+		socialMediaImg={require('./twitter.png').default.src}
+		intro="Writing up a custom clock for the Nintendo E-Reader"
+	>
+		{children}
+	</Article>
+);
+
+I am building a Nonogram game (aka Picross) for the Nintendo GBA E-Reader. Nonograms traditionally have a 30 minute time limit. The E-Reader's built in ERAPI has a clock, but it maxes out at about 18 minutes. So I had no choice but to write my own. It was very simple actually. But I figured I'd blog about it as an example of what it is like to write games in z80 assembly for the E-Reader and using ERAPI.
+
+<figure>
+	<img
+		src={require('./nonogramScreenshot.png').default.src}
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>
+		An early screenshot of my Nonogram game. Very much a work in progress.
+	</figcaption>
+</figure>
+
+## ERAPI's DrawTime
+
+<wisdom>
+	What is ERAPI? It is the "E-Reader API". It is a collection of functions built
+	into the E-Reader that games can use. More info on it and general E-Reader
+	development in my{' '}
+	<a href="/blog/cramming-solitaire-onto-a-nintendo-ereader-card/">
+		post about making Solitaire for the E-Reader
+	</a>
+	.
+</wisdom>
+
+ERAPI has [`ERAPI_DrawTime`](https://ereader.miraheze.org/wiki/ERAPI-Z80#0x6f:_DrawTime), [`ERAPI_DrawTimeNewValue`](https://ereader.miraheze.org/wiki/ERAPI-Z80#0x6f:_DrawTimeNewValue) and [`ERAPI_DrawTimeDeltaValue`](https://ereader.miraheze.org/wiki/ERAPI-Z80#0x6f:_DrawTime) to draw times to the screen. These functions are easy to use and take up almost no precious space to use them.
+
+To use them, first you establish a time struct. It is a collection of values that inform the `DrawTime` functions where and how to draw the time.
+
+```nasm
+time_struct:
+    .db  0     ; bg #
+    .db  0     ; palette #
+    .db 10     ; x in tiles
+    .db 8      ; y in tiles
+    .dw 4107   ; system sprite
+	           ; to use as the font
+    .db 11     ; separator
+	           ; 10=.
+			   ; 11=:
+			   ; 12=/
+			   ; 13=-
+    .db 1      ; format
+	           ; 0=mm:ss:ff
+			   ; 1=mm:ss
+			   ; 2=mmss
+			   ; 3=mm
+			   ; 4=mm:ss
+			   ; 5=mm, 6=mm
+    .dw 65000  ; starting value
+    .db 0      ; loaded sprite?
+
+```
+
+`.db` means "place a byte here" and `.dw` means "place a word here", which is a two byte value. So this struct in C would look like
+
+```C
+struct TimeStruct {
+	uint8 backgroundIndex;
+	uint8 paletteIndex;
+	uint8 x;
+	uint8 y;
+	uint16 spriteId;
+	uint8 separator;
+	uint8 format;
+	uint16 startingValue;
+	uint8 loadedSprite
+};
+```
+
+I don't know what the `loaded sprite` byte is for, I've not investigated it yet. Everything else is pretty self explanatory. For the system sprite, that is the "font". You can see them all [here](https://www.retrodotcards.com/tools/us-sprite-dump). Turn off pokemon and other to just see the number fonts.
+
+<figure>
+	<img src={require('./numberFonts.png').default.src} />
+	<figcaption>All of the number fonts available on the E-Reader</figcaption>
+</figure>
+
+To draw a time to the screen, call `ERAPI_DrawTime` and give it your time struct.
+
+```nasm
+ld hl, time_struct
+rst 0
+.db ERAPI_DrawTime
+
+;; force a screen refresh so the time gets drawn right away
+ld a, 1
+halt
+```
+
+Then the time will show up as expected.
+
+<figure>
+	<img
+		src={require('./DrawTimeExampleScreenshot.png').default.src}
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>The time drawn onto the screen</figcaption>
+</figure>
+
+The `value` word is what the time is in system frames. There are about 60 frames per second on the GBA, so if you set this value to `60`, the clock will show `00:01`. This is a two byte value, so the maximum number it can accept is `65535`. Hmmmm... what is that in seconds? It is 1092 seconds, so the max time the ERAPI clock can show is `18:12`. Once it goes to `18:13`, the clock rolls over to zero and starts over.
+
+### Changing the time
+
+The other functions are used to change the time as the game progresses. `ERAPI_DrawTimeNewValue` will set an entirely new time value.
+
+```nasm
+;; our new time value
+ld de, 12345
+ld hl, time_struct
+.db ERAPI_DrawTimeNewValue
+```
+
+This is exactly the same as `ERAPI_DrawTime`, except it is taking the time value from `de` instead of the time_struct.
+
+And `ERAPI_DrawTimeDeltaValue` adds the new value onto the current one. Typically you call this every frame to have the clock either count up or down, to act as a timer.
+
+```nasm
+;; the delta value
+ld de, 1
+ld hl, time_struct
+.db ERAPI_DrawTimeDeltaValue
+```
+
+## But that max time though
+
+As we discussed above, the maximum time the ERAPI clock can show is 18 minutes and 12 seconds. A Nonogram game traditionally gives you 30 minutes to solve a puzzle. What to do?
+
+One approach is to use the ERAPI clock twice. Set it to 15 minutes and also set up two tokens somewhere. Once the 15 minutes counts down, take away a token, and restart the clock again at 15 minutes. Once that 15 minutes elapses, take away the second token and now it's game over. Sure, this would work, but wow it's clunky.
+
+I decided to take the space hit and implement my own clock.
+
+## Making a clock from scratch
+
+Fortunately ERAPI still has other functions available that allow us to make our clock with ease. The `ERAPI_DrawNumber*` functions are similar to the `DrawTime` functions, but just draw straight numbers to the screen. Also there is `ERAPI_Div` for division, and `ERAPI_Mod` for performing a modulus (which is dividing two numbers and just keeping the remainder).
+
+<wisdom>
+	Yeah, function calls just to divide numbers. The z80 is an 8 bit processor
+	which has no native way to divide. Dividing two numbers with the z80 requires
+	writing a complex division routine, which would be slow and take up a lot of
+	space. I am very grateful <pre>ERAPI_Div</pre> and <pre>ERAPI_Mod</pre> exist.
+</wisdom>
+
+The overall gameplan is this, first in JavaScript for simplicity.
+
+```javascript
+let frameCounter = 0;
+// start the clock/timer at 30 minutes
+let secondCounter = 30 * 60;
+
+const minutesNumberStruct = {
+	backgroundIndex: 0,
+	paletteIndex: 14,
+	x: 10,
+	y: 4,
+	systemSprite: 4149,
+	numberOfDigits: 2,
+	numberOfExtraDigits: 0,
+	// pad out numbers with zeroes
+	// so say 9 gets shown as 09
+	fillWith: 0,
+	loadedSprite: 0,
+	value: 30,
+};
+
+const secondsNumberStruct = {
+	backgroundIndex: 0,
+	paletteIndex: 14,
+	x: 13,
+	y: 4,
+	systemSprite: 4149,
+	numberOfDigits: 2,
+	numberOfExtraDigits: 0,
+	// pad out numbers with zeroes
+	// so say 9 gets shown as 09
+	fillWith: 0,
+	loadedSprite: 0,
+	value: 30,
+};
+
+// called once at the start of the game
+function clockInit() {
+	// get our numbers loaded into ERAPI
+	// and up onto the screen
+	ERAPI_DrawNumber(minutesNumberStruct);
+	ERAPI_DrawNumber(secondsNumberStruct);
+}
+
+function clockFrame() {
+	frameCounter += 1;
+
+	if (frameCounter === 60) {
+		// a second has elapsed
+		frameCounter = 0;
+		secondCounter -= 1;
+	}
+
+	const minutes = secondsCounter / 60;
+	ERAPI_DrawNumberNewValue(minutesNumberStruct, minutes);
+	const seconds = secondsCounter % 60;
+	ERAPI_DrawNumberNewValue(secondsNumberStruct, seconds);
+}
+```
+
+There's a lot of code related to setup. The number structs are very similar to the time structs. But actually working out the clock and drawing its current value to the screen is quite simple.
+
+And here it is an z80 assembly.
+
+```nasm
+CL_MINUTES_X_TILE = 9
+CL_MINUTES_Y_TILE = 1
+CL_SECONDS_X_TILE = 12
+CL_SECONDS_Y_TILE = 1
+
+clock_init:
+    ;; init the number drawing
+    ld hl, _cl_minutes_number
+    rst 0
+    .db ERAPI_DrawNumber
+
+    ld hl, _cl_seconds_number
+    rst 0
+    .db ERAPI_DrawNumber
+
+    ret
+
+
+clock_frame:
+	;; increment the frame counter
+    ld a, (_cl_frame_counter)
+    inc a
+	;; did it just hit 60 frames, ie one second?
+    cp 60
+	;; if no, skip down below
+    jr nz, clock_frame__skip_reset_frame_counter
+    ;; we've counted an entire second, reset frame counter
+    ld a, 0
+    ;; and decrement seconds
+    ld hl, (_cl_seconds_counter)
+    dec hl
+    ld (_cl_seconds_counter), hl
+
+    clock_frame__skip_reset_frame_counter:
+	;; save the new value for the frame counter
+    ld (_cl_frame_counter), a
+
+	;; now draw the current time to the screen
+    call _cl_render
+
+    ret
+
+_cl_render:
+    ;; draw minutes
+    ld hl, (_cl_seconds_counter)
+    ld de, 60
+    ;; hl = hl/de
+    rst 8
+    .db ERAPI_Div
+	;; hl is now secondsCounter / 60
+	;; which is the current minutes
+
+    ;; move number to de, where DrawNumberNewValue needs it
+    push hl
+    pop de
+    ld hl, _cl_minutes_number
+	;; draw the new minutes value to the screen
+    rst 0
+    .db ERAPI_DrawNumberNewValue
+
+    ;; draw seconds
+    ld hl, (_cl_seconds_counter)
+    ld de, 60
+    ;; hl = hl%de
+    rst 8
+    .db ERAPI_Mod
+	;; hl is now secondsCounter % 60
+	;; which is the current seconds
+
+    ;; move number to de, where DrawNumberNewValue needs it
+    push hl
+    pop de
+    ld hl, _cl_seconds_number
+	;; draw the new seconds value to the screen
+    rst 0
+    .db ERAPI_DrawNumberNewValue
+
+    ret
+
+
+_cl_seconds_counter:
+    ;; 30 minutes
+    .dw 30 * 60
+_cl_frame_counter:
+    .db 0
+
+_cl_minutes_number:
+    .db 0 ; background index
+    .db 14 ; palette #
+    .db CL_MINUTES_X_TILE ; x in tiles
+    .db CL_MINUTES_Y_TILE ; y in tiles
+    .dw 4149 ; system sprite to use as the font
+    .db 2 ; number of digits
+    .db 0 ; number of extra zeroes on right
+    .db 1 ; 0 fill with spaces, 1 fill with zeroes
+    .db 0 ; loaded sprite?
+    .dw 0 ; value
+
+_cl_seconds_number:
+    .db 0 ; background index
+    .db 14 ; palette #
+    .db CL_SECONDS_X_TILE ; x in tiles
+    .db CL_SECONDS_Y_TILE ; y in tiles
+    .dw 4149 ; system sprite to use as the font
+    .db 2 ; number of digits
+    .db 0 ; number of extra zeroes on right
+    .db 1 ; 0 fill with spaces, 1 fill with zeroes
+    .db 0 ; loaded sprite?
+    .dw 0 ; value
+
+```
+
+If you're not familiar with z80 assembly, that is a lot to take in. It's pretty much identical to the JavaScript version. If you take it line by line and compare it to the JavaScript version, it will hopefully become clear.
+
+### In action
+
+And here is the final result
+
+<iframe
+	height={315}
+	style={{ margin: '3em auto', width: 'min(560px, 100%)' }}
+	src="https://www.youtube.com/embed/SrOB6vJSWHk"
+	frameBorder={0}
+	allowFullScreen
+></iframe>
+
+Don't forget this game has a long ways to go. The final version will look very different.
+
+### The colon separator
+
+<wisdom>
+	I figured the colon in a clock would have a special name. Nope, it's just a
+	regular ol' colon. The more you know.
+</wisdom>
+
+The code above doesn't add the colon that goes between the minutes and seconds. That is just a simple sprite. If we could use `ERAPI_DrawTime`, it'd handle the colon for us. But since we are using `ERAPI_DrawNumber` instead, the colon is up to us. If wanted, you could also use `ERAPI_SpriteAutoAnimate` to show the colon blinking once per second. I decided not to do that as it was a little distracting.
+
+### How much space does it use?
+
+The nice thing about `ERAPI_DrawTime` is it takes up hardly any space at all in your game. An ERAPI function call is just a handful of bytes and each time struct is 11 bytes.
+
+My clock implementation is currently 174 bytes, plus the bytes needed to call it. That doesn't sound like much, but for an E-Reader game that is positively massive. I can probably trim the size down through some optimizations. But make no doubt, this custom clock is an expensive feature. But I feel like it is necessary, nonograms without a 30 minute timer just wouldn't be right.
+
+## Conclusion
+
+Hopefully this blog post gave you a little taste of what writing z80 assembly for an E-Reader game is like. One day I will write up real tutorials on how to make an E-Reader game. But that won't be for a while.
+
+If you like the E-Reader, check out https://retrodotcards.com or [follow me on Bluesky](https://bsky.app/profile/retrodotcards.com).
