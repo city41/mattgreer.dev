@@ -1,0 +1,150 @@
+import { Article } from '../../../components/layouts/Article';
+import meta from './meta.json';
+
+export default ({ children }) => (
+	<Article
+		{...meta}
+		img={require('./feature.png').default.src}
+		socialMediaImg={require('./twitter.png').default.src}
+		intro="Using Ghidra to figure out how an E-Reader function works"
+	>
+		{children}
+	</Article>
+);
+
+This is a post on how I used Ghidra to figure out one of the E-Reader's API functions.
+
+<pitfall>
+	Hey! I am <i>really</i> bad at Ghidra and reverse engineering in general.
+	Seriously, I suck. I wrote this post mostly for me, to help remember how I did
+	this in the future. You've been warned, don't expect good advice or insights
+	here :)
+</pitfall>
+
+GBATEK has [an incomplete listing of the functions in ERAPI](https://problemkaputt.de/gbatek.htm#gbacartereaderapifunctions). One that really stood out and seemed like something I'd find very useful for my next E-Reader game is `RST0_DDh DecompressVPKorNonVPK`. But that's all the help GBATEK offered, the function's ID, and a name for it. How many parameters does it take? What are the parameters? How to use it?
+
+<wisdom>
+	ERAPI is the "E-Reader API". It is a collection of functions that E-Reader
+	games can call into to make their life easier. Things like creating and moving
+	around sprites, animation, etc. for more info, check out my post on{' '}
+	<a href="/blog/cramming-solitaire-onto-a-nintendo-ereader-card/">
+		creating Solitaire for the E-Reader
+	</a>
+	.
+</wisdom>
+
+## What is a VPK?
+
+VPK0 is a compression routine that Hudson Soft created. They used it in some N64 games, and it was adopted for the E-Reader too. When scanning a card into the E-Reader, the data in that card is almost always compressed using VPK0. The E-Reader decompresses the data then executes it. The compression ratio can be quite nice, and so VPK0 really allows you to cram a lot more data into a card than you otherwise could.
+
+I am making a puzzle game that involves loading the main game card, then once that is loaded, scanning in a "puzzle collection" card that contains many puzzles to solve. If I could compress the puzzle data using VPK, then decompress it, I'd be able to fit a lot more puzzles onto a single card. That seemed exactly what `DecompressVPKorNonVPK` is for ... but how to use it?
+
+## The ERAPI Function Table
+
+Since ERAPI is a collection of functions, it makes sense that somewhere in the E-Reader ROM is a table of function pointers. And indeed, there is. [nytpu's blog post](https://nytpu.com/gemlog/2025-08-06) pointed out where the table lives at address 0x85eebf8. Thanks nytpu!
+
+ERAPI actually has two function tables, but we'll ignore that for this post.
+
+## Loading up Ghidra
+
+[Ghidra](https://github.com/NationalSecurityAgency/ghidra) is a tool created by the NSA that is used to reverse engineer compiled binaries. You can load just about any binary into it and then start chipping away slowly at it, and hopefully figuring out how some things work.
+
+To load a GBA ROM into Ghidra, I used [this GBA Ghidra loader](https://github.com/pudii/gba-ghidra-loader). This loader knows for example that the ROM starts at `0x8000000` in the GBA's memory map, so it places it there in Ghidra, and does some other niceties for GBA ROMs.
+
+Once the E-Reader ROM is loaded, press 'g' for "go to", and head to 0x85eebf8, the start of the function table.
+
+<figure>
+	<img src={require('./ghidraFunctionTable.png').default.src} />
+	<figcaption>Ghidra showing the function table.</figcaption>
+</figure>
+
+While you are here, right click on 0x85eebf8 and choose "Add Label". I called mine "ERAPI_2xx_jumpTable". That way you can get back to the table by just double clicking on its label on the left side in the symbol tree pane.
+
+## Finding the decompress function
+
+`DecompressVPKorNonVPK` has an id of `0xDD`. We know this from GBATEK, that is what 'RST0_DDh`means. The`RST0` part is related to the z80, since writing a z80 app is the main way to write an e-Reader game.
+
+Pointers on the GBA are four bytes, since the GBA is a 32 bit system. So to move ahead in the table and find the function pointer for `DecompressVPKorNonVPK`, it is `0x85eebf8 + 4 * 0xdd`, which is `0x85eef6c`. Press 'g' and head there in Ghidra
+
+<figure>
+	<img src={require('./ghidraFunctionPointerInTable.png').default.src} />
+	<figcaption>The function pointer we are interested in.</figcaption>
+</figure>
+
+Since the GBA is a little endian system, we need to form the bytes backwards to arrive at our pointer. Take `f1 23 02 08` and reverse them -> `0x80223f1`. That is the address of the DecompressVPKorNonVPK function.
+
+<wisdom>
+	Actually the address is <pre>0x80223f0</pre>. Why is the pointer off by a
+	byte? I have no idea.
+</wisdom>
+
+Head to `0x80223f0` with 'g'. When you get there, you can see that Ghidra kinda/sorta figured out this is a function.
+
+<figure>
+	<img src={require('./ghidraArriveAtFunction.png').default.src} />
+	<figcaption>The function we are after, shown in Ghidra.</figcaption>
+</figure>
+
+I say kinda/sorta, because the function is read only. If you try to change anything in the function, Ghidra won't let you. You can change this by right clicking on 0x80223f0 in the main pane and selection "Create Function". Now that we have told Ghidra that this really is a function, it will let us edit it. Head to the source pane on the right and select "Rename Function", I named it "ERAPI_DecompressVPK".
+
+You can see this function is basically just calling another function.
+
+<figure>
+	<img src={require('./ghidraDecompiledERAPI_DecompressVPK.png').default.src} />
+	<figcaption>ERAPI_DecompressVPK decompiled by Ghirda.</figcaption>
+</figure>
+
+Let's head to that other function. So far Ghidra is calling that function "func_0x800509c". In the decompilation, click on the function name to highlight it, then in the main disassembly pane in the middle, the line `bl SUB_0800509c` will be highlighted. Double click on that, and you will jump to the second function, and the decompilation will show on the right.
+
+Again, Ghidra thinks this might be a function, but hasn't fully committed. Right click on the 800509c line in the center pane and choose "Create Function", then you can rename the function over in the disassembly. I called it "decompress1".
+
+<figure>
+	<img src={require('./ghidraDecompiledDecompress1.png').default.src} />
+	<figcaption>The decompress1 function, decompiled by Ghidra.</figcaption>
+</figure>
+
+Here is some good stuff. By looking over this function we can see It takes two parameters. Ghidra thinks one is a pointer and doesn't know what the other one is.
+
+In the first if statement, this function is examining the contents of the first parameter and looking for the string "vpk0". Heck yeah! If it's looking for VPK's magic string, that is a really strong sign this function is for decompression.
+
+<wisdom>
+	If you look closely, the function is looking for the 'k' at the wrong spot. I
+	don't know why. If you go back to the assembly pane, you will see it's not
+	doing that. For sure, this function is looking for the string "vpk0" and for
+	some reason Ghidra's decompilation of it is a bit wrong.
+</wisdom>
+
+Also notice that it is looking for 'v' 2 bytes into the input? That proved to be very interesting and key to figuring this whole thing out. So the vpk buffer needs to be `<byte> <byte> v p k 0 ...` It turns out those two starting bytes are the size of the VPK payload.
+
+## Understanding how DecompressVPKOrNonVPK works
+
+At this point, Ghidra has taught us enough to know how to use this function. It takes two parameters, the first one is a pointer, and the second one is ... probably a pointer too. That makes sense right? One points to the VPK payload, and the other points to a buffer where it will place the decompressed contents.
+
+We know the first parameter points to the VPK payload, and it is important that it points two bytes in front of the "vpk0" string.
+
+So from all of this, it's most likely `DecompressVPKOrNonVPK(u16 *vpkSrc, u16 *destBuffer)`
+
+I wrote up a small test program that contained a little embedded test VPK. And indeed, I was able to decompress it.
+
+## And for z80
+
+I did all of this exploring and testing using the ARM side of the E-Reader. In other words my little test programs were all written in C and compiled pretty much just like how you'd compile a normal GBA cartridge.
+
+For z80 apps, the ID is still `0xdd`, and the parameters become 16 bit registers. `de` for the output buffer, and `hl` for the input vpk.
+
+```nasm
+ld hl, _dest_buffer
+push hl
+pop de
+ld hl, _input_vpk
+rst 0
+.db ERAPI_DecompressVPKOrNonVPK
+```
+
+## Why was this so hard?
+
+At the end of the day, I should have been able to do this without Ghidra, right? This function in hindsite is very obvious. And that is true. What tripped me up was those two starting bytes that indicate the VPK's size. When you make a VPK using `nevpk`, the first four bytes are "vpk0". So I figured that is where I needed to set the pointer. It took Ghidra for me to realize the pointer needs to start 2 bytes in front of that, and then I realized the function needs two starting bytes that tell it how big the VPK payload is.
+
+## Conclusion
+
+But regardless of whether I really needed Ghidra for this or not, it's good to get an idea of how ERAPI functions live in the ROM and how to poke at them using Ghidra. From here, figuring out even more of ERAPI using Ghidra should be possible.

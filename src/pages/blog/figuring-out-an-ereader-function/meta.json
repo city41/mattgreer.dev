@@ -1,0 +1,8 @@
+{
+	"title": "Figuring Out an E-Reader Function",
+	"date": "2025-09-10",
+	"type": "technical",
+	"tags": ["Gaming", "E-Reader", "Reverse engineering"],
+	"description": ["Using Ghidra to figure out how an E-Reader function works"],
+	"imgAlt": "Nintendo E-Reader Cards"
+}
