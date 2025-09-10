@@ -47,7 +47,7 @@ ERAPI actually has two function tables, but we'll ignore that for this post.
 
 ## Loading up Ghidra
 
-[Ghidra](https://github.com/NationalSecurityAgency/ghidra) is a tool created by the NSA that is used to reverse engineer compiled binaries. You can load just about any binary into it and then start chipping away slowly at it, and hopefully figuring out how some things work.
+[Ghidra](https://github.com/NationalSecurityAgency/ghidra) is a tool created by the NSA that is used to reverse engineer compiled binaries. You can load just about any binary into it and then start chipping away slowly at it, and hopefully figure out how some things work.
 
 To load a GBA ROM into Ghidra, I used [this GBA Ghidra loader](https://github.com/pudii/gba-ghidra-loader). This loader knows for example that the ROM starts at `0x8000000` in the GBA's memory map, so it places it there in Ghidra, and does some other niceties for GBA ROMs.
 
