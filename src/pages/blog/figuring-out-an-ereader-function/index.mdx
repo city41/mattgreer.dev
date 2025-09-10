@@ -122,7 +122,7 @@ At this point, Ghidra has taught us enough to know how to use this function. It 
 
 We know the first parameter points to the VPK payload, and it is important that it points two bytes in front of the "vpk0" string.
 
-So from all of this, it's most likely `DecompressVPKOrNonVPK(u16 *vpkSrc, u16 *destBuffer)`
+So from all of this, it's most likely `DecompressVPKOrNonVPK(u8 *vpkSrc, u8 *destBuffer)`
 
 I wrote up a small test program that contained a little embedded test VPK. And indeed, I was able to decompress it.
 
