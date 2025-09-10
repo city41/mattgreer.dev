@@ -62,7 +62,7 @@ While you are here, right click on 0x85eebf8 and choose "Add Label". I called mi
 
 ## Finding the decompress function
 
-`DecompressVPKorNonVPK` has an id of `0xDD`. We know this from GBATEK, that is what 'RST0_DDh`means. The`RST0` part is related to the z80, since writing a z80 app is the main way to write an e-Reader game.
+`DecompressVPKorNonVPK` has an id of `0xDD`. We know this from GBATEK, that is what `RST0_DDh` means. The `RST0` part is related to the z80, since writing a z80 app is the main way to write an e-Reader game.
 
 Pointers on the GBA are four bytes, since the GBA is a 32 bit system. So to move ahead in the table and find the function pointer for `DecompressVPKorNonVPK`, it is `0x85eebf8 + 4 * 0xdd`, which is `0x85eef6c`. Press 'g' and head there in Ghidra
 
