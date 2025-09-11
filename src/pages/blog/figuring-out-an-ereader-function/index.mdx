@@ -121,6 +121,11 @@ In the first if statement, this function is examining the contents of the first 
 
 Also notice that it is looking for 'v' 2 bytes into the input? That proved to be very interesting and key to figuring this whole thing out. So the vpk buffer needs to be `<byte> <byte> v p k 0 ...` It turns out those two starting bytes are the size of the VPK payload.
 
+<pitfall>
+	Actually, sometimes these two bytes are zero and it still decompresses. So not
+	quite sure what those bytes are, or if they even matter...
+</pitfall>
+
 ## Understanding how DecompressVPKOrNonVPK works
 
 At this point, Ghidra has taught us enough to know how to use this function. It takes two parameters, the first one is a pointer, and the second one is ... probably a pointer too. That makes sense right? One points to the VPK payload, and the other points to a buffer where it will place the decompressed contents.
