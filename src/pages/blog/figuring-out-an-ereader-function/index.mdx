@@ -143,9 +143,7 @@ I did all of this exploring and testing using the ARM side of the E-Reader. In o
 For z80 apps, the ID is still `0xdd`, and the parameters become 16 bit registers. `de` for the output buffer, and `hl` for the input vpk.
 
 ```nasm
-ld hl, _dest_buffer
-push hl
-pop de
+ld de, _dest_buffer
 ld hl, _input_vpk
 rst 0
 .db ERAPI_DecompressVPKOrNonVPK
