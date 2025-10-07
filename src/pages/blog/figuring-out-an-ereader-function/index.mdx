@@ -79,8 +79,14 @@ Pointers on the GBA are four bytes, since the GBA is a 32 bit system. So to move
 Since the GBA is a little endian system, we need to form the bytes backwards to arrive at our pointer. Take `f1 23 02 08` and reverse them -> `0x80223f1`. That is the address of the DecompressVPKorNonVPK function.
 
 <wisdom>
-	Actually the address is <pre>0x80223f0</pre>. Why is the pointer off by a
-	byte? I have no idea.
+	Actually the address is <pre>0x80223f0</pre>. This is because GBA games run in
+	Thumb mode. Functions will always be at an even address due to how instruction
+	alignment works on ARM processors. So the CPU takes advantage of that unused
+	lowest bit to use that as a "this function runs in Thumb mode" flag. So even
+	if the processor jumps there in ARM mode, it will know to switch to Thumb
+	before executing this function.
+	<br />
+	<br />I didn't know this. Thanks to the many people who pointed this out.
 </wisdom>
 
 Head to `0x80223f0` with 'g'. When you get there, you can see that Ghidra kinda/sorta figured out this is a function.
