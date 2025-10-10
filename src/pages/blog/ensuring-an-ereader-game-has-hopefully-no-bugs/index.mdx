@@ -1,0 +1,200 @@
+import { Article } from '../../../components/layouts/Article';
+import meta from './meta.json';
+
+export default ({ children }) => (
+	<Article
+		{...meta}
+		img={require('./feature.png').default.src}
+		socialMediaImg={require('./twitter.png').default.src}
+		intro="Additional steps I am taking to make my next E-Reader game more robust"
+	>
+		{children}
+	</Article>
+);
+
+The [Series One release](https://retrodotcards.com/series-one) of my E-Reader games was a pretty good success. But it did have a pretty bad problem, two of the games are a bit [buggy](https://retrodotcards.com/series-one/bugs). I decided to learn from this blunder and take steps to ensure my next E-Reader game is less buggy. Here's what I'm doing.
+
+<figure>
+	<img src={require('./us_exoGBA.jpg').default.src} />
+	<figcaption>
+		A game from the Series One release being played on a Game Boy Advance.
+	</figcaption>
+</figure>
+
+## Be more cautious with a reverse engineered platform
+
+<figure>
+	<img
+		src={require('./frannyScreenshot.png').default.src}
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>Giving Franny a treat.</figcaption>
+</figure>
+
+One of my games lets you give treats to a dog. But if you give her too many, the game locks up. I was finally able to track this down to ERAPI's `SpriteFree` function.
+
+<wisdom>
+	What is ERAPI? It is the "E-Reader API", a collection of functions built into
+	the E-Reader that games can use. More info on it and general E-Reader
+	development in my{' '}
+	<a href="/blog/cramming-solitaire-onto-a-nintendo-ereader-card/">
+		post about making Solitaire for the E-Reader
+	</a>
+	.
+</wisdom>
+
+`SpriteFree` does exactly what it sounds, it takes a sprite you earlier allocated and dellocates it, cleaning up all of its resources. But sometimes ... it doesn't? The thing is, I'm not entirely sure. I wrote a small test program that does this
+
+```javascript
+for (let i = 0; i < 200; ++i) {
+	const handle = ERAPI_SpriteCreate(spriteInfo);
+	ERAPI_SetSpritePos(handle, i, 40);
+	// display the sprite for 10 frames
+	halt(10);
+	ERAPI_SpriteFree(handle);
+}
+```
+
+The real app is in z80 assembly, but it's pretty much just the same as this for loop. This works fine and does exactly what you would expect. After creating and freeing 200 sprites, the system is still rocking along without any issue.
+
+I even extended the app and had it run the for loop twice. So it creates 400 sprites no problem. Considering the E-Reader can only manage 56 sprites at once, this really seems like `SpriteFree` is working correctly.
+
+But ... if I just do this, the game will lock up.
+
+```javascript
+for (let i = 0; i < 200; ++i) {
+	const handle = ERAPI_SpriteCreate(spriteInfo);
+	ERAPI_SetSpritePos(handle, i, 40);
+	// display the sprite for 10 frames
+	halt(10);
+	// call halt one more time...
+	halt(1);
+	ERAPI_SpriteFree(handle);
+}
+```
+
+The only difference here is I am halting an extra time. `halt` is the way to tell the E-Reader to render a frame to the screen.
+
+This version of the app locks up after creating about 18 sprites. I can easily get the app to lock up by doing all kinds of things that on the surface don't seem related to `SpriteFree` at all.
+
+Why? I have no idea. But this tells me we don't fully understand `SpriteFree`, and that makes it dangerous to use. And I paid the price with Franny Answers when people started reporting the game locking up. Doh...
+
+So lesson number one learned. This is an obscure system that had to be reverse engineered to figure out how it works. That's awesome that people did that and enabled us to make E-Reader games, but reverse engineering is inherently less thorough and more error prone than a documented system intended for others to use.
+
+### No more SpriteFree
+
+So for my next game, I stopped using `SpriteFree` altogether. This was challenging, and required me to restructure the game quite a bit. But it was worth it, as now the game is much more robust and I actually like how much simpler it is now.
+
+On top of this I now treat all ERAPI functions with a little bit of skepticism. Is that really all it does? Have we figured out what all of the parameters are? Is it safe to use in all scenarios? A little caution here can go a long way.
+
+## Avoiding complex games, at least for now ...
+
+Another mistake I made was simply making the game Exo Attack. I was too ambitious on this one. Why's that? Exo Attack is a pretty complex game by E-Reader standards.
+
+<figure>
+	<img
+		src={require('./exoAttackScreenshot.png').default.src}
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>Exo Attack.</figcaption>
+</figure>
+
+It's an action game where the boss, player, bullets, explosions, coins, all kinds of stuff are constantly moving and changing. This means the game has a ton of state in it, and it uses ERAPI quite a bit. The bugs in this game are game breaking and bad. One bug is just due to me making a simple coding mistake I never caught. Doh. And the other bugs? I honestly have no idea. They are hard to reproduce, and when they do reproduce, it's difficult to pinpoint what is causing them. That can be the dangers of a system that has so much mutating state in it.
+
+I just think this game was perhaps a bit much for a first release. I should have saved the more complex endeavours for when I have more chops under my E-Reader belt.
+
+## Adding integration tests
+
+For obscure systems like this, often the only practical way to test your game is to play it and look for bugs. But E-Reader games are written in z80 assembly. The z80 was a widly successful cpu used in many devices, so there is a lot of z80 related tooling out there. I was able to take some of these already existing tools, and adapt them for the E-Reader, due to it essentially being a z80 cpu at its core.
+
+This improvement I'm really excited about! My upcoming game now has an integration test system and a suite of ever growing tests for it.
+
+<wisdom>
+	Integration tests are a form of written tests that (usually) accompany
+	software development. They are a way to poke at the main app you're writing
+	and help ensure it's doing things correctly. Once the tests are written, they
+	can be ran as much as needed. Every time I make a change, I run the tests to
+	ensure other parts of the game didn't unexpectedly break. "Integration" means
+	these tests setup and run the application similar to how a human would. Other
+	types of tests instead only work with small pieces of the app.
+</wisdom>
+
+I took my [E-Reader emulator](https://github.com/city41/ereader-z80-emulator) and made a "headless" version of it. So it no longer shows the screen, plays sound effects or accepts input from a controller. Now the game runs just like before, but only in my computer's memory.
+
+Using this emulator, I write a test that does something in the game, then examines the resulting game memory to make sure everything is as expected.
+
+Here is one of those tests.
+
+```javascript
+it('should set the clock_empty flag when the time runs out', async function () {
+	const runner = await createRunner();
+
+	runner.runUntil(
+		'scan in a card, choose first puzzle',
+		[ERAPI_KEY_A, ERAPI_KEY_A],
+		(result) => {
+			return result.getByte('_b_cur_size_tile') === 8;
+		}
+	);
+
+	const emptyClockResult = runner.runUntil('clock runs out', (result) => {
+		return result.getByte('clock_empty') === 1;
+	});
+
+	expect(emptyClockResult.getWord('clock_seconds_counter')).toBe(0);
+});
+```
+
+My real runner and test code are a bit more complex than this, but the above is the overall gist.
+
+The runner is the z80 emulator with my game loaded into it. `runUntil` tells the emulator to run the game until a certain condition is met. Then it stops running it, and allows the test to examine the game's memory.
+
+The array with `ERAPI_KEY_A` in it are the inputs. So the first `runUntil` presses the A button twice to get a puzzle loaded and running.
+
+The second `runUntil` has no inputs, it just sits there and allows the puzzle timer to run out. When it runs out, it verifies that the `clock_empty` flag was set, and also verifies that `clock_seconds_counter` is zero, which it needs to be so that the clock on the screen that the user sees shows `00:00`.
+
+These tests are so helpful! I've already found several bugs thanks to them. And I can run them whenever I want. If a test fails, the runner outputs a log that lets me see exactly what the game was doing. This is helpful in figuring out bugs in the game itself, but also helps ensure the tests are doing the right thing too. Here is a little snippet of a log
+
+```
+pc: cursor_init
+erapi call: SpriteCreate
+erapi call: SpriteAutoAnimate
+pc: flash_init
+pc: hints_init
+erapi call: SpriteCreate
+erapi call: SetSpritePos
+pc: hints_on_stop
+erapi call: SpriteHide
+pc: game_init
+pc: board_init
+erapi call: CreateRegion
+pc: numbers_init
+erapi call: CreateRegion
+erapi call: CreateRegion
+pc: clock_init
+erapi call: SpriteCreate
+erapi call: SetSpritePos
+erapi call: SpriteCreate
+erapi call: SpriteAutoMove
+pc: clock_on_stop
+```
+
+### Tests make it easier to make changes
+
+A common need for E-Reader games is to try and cut down how big they are, as only so much data can fit onto those paper cards. So with Pixel Pup, when I inevitably look for space savings, these tests can help ensure the changes I make to save bytes didn't break the game. I wish I had these tests when I reworked the game to not use `SpriteFree` as I talked about above.
+
+### Tests aren't a silver bullet
+
+Tests are super helpful and I'm a big advocate for them. But it's important to keep in mind they are just one layer of defense. The tests can still miss things, or even worse a test can be written incorrectly and give you false hope!
+
+So I will still involve beta testers, do lots of manual testing, write defensive code, all that good stuff.
+
+## More beta testers
+
+And speaking of beta testers, I plan to have more of them this time. For my first games I had friends and family play the games and test them out. That was helpful for sure, but I think if I had even more beta testers I may have found those bugs that ended up in the final games.
+
+## Conclusion
+
+So yeah, lots of lessons learned from my first release. I'm confident [Pixel Pup](https:retrodotcards.com/pixel-pup) will be a more robust and less buggy game than Exo Attack was.
+
+If you got this far and want to read more of my blatherings on the E-Reader, [here they are](https://www.mattgreer.dev/blog/E-Reader/). And if you own an E-Reader and want to try out some new games for them, [maybe buy a Series One pack?](https://store.retrodotcards.com/). Just, uh, don't mind the bugs :)

@@ -4,7 +4,7 @@
         <title>Matt Greer</title>
         <link>https://mattgreer.dev</link>
         <description>Mostly web dev and game dev related articles</description>
-        <lastBuildDate>Wed, 10 Sep 2025 19:30:15 GMT</lastBuildDate>
+        <lastBuildDate>Mon, 06 Oct 2025 20:29:13 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
@@ -15,6 +15,22 @@
         </image>
         <copyright>Copyright Matt Greer</copyright>
         <atom:link href="https://mattgreer.dev/feed.xml" rel="self" type="application/rss+xml"/>
+        <item>
+            <title><![CDATA[Writing Integration Tests For an E-Reader Game]]></title>
+            <link>https://mattgreer.dev/blog/writing-integration-tests-for-an-ereader-game</link>
+            <guid>https://mattgreer.dev/blog/writing-integration-tests-for-an-ereader-game</guid>
+            <pubDate>Mon, 06 Oct 2025 00:00:00 GMT</pubDate>
+            <description><![CDATA[Ensuring my e-Reader games have fewer bugs]]></description>
+            <author>matt.e.greer@gmail.com (Matt Greer)</author>
+        </item>
+        <item>
+            <title><![CDATA[Figuring Out an E-Reader Function]]></title>
+            <link>https://mattgreer.dev/blog/figuring-out-an-ereader-function</link>
+            <guid>https://mattgreer.dev/blog/figuring-out-an-ereader-function</guid>
+            <pubDate>Wed, 10 Sep 2025 00:00:00 GMT</pubDate>
+            <description><![CDATA[Using Ghidra to figure out how an E-Reader function works]]></description>
+            <author>matt.e.greer@gmail.com (Matt Greer)</author>
+        </item>
         <item>
             <title><![CDATA[Making a Clock for the Nintendo E-Reader]]></title>
             <link>https://mattgreer.dev/blog/making-a-clock-for-the-ereader</link>
@@ -117,14 +133,6 @@
             <guid>https://mattgreer.dev/blog/cramming-solitaire-onto-a-nintendo-ereader-card</guid>
             <pubDate>Mon, 28 Oct 2024 00:00:00 GMT</pubDate>
             <description><![CDATA[Making a new game from scratch for Nintendo's forgotten peripheral]]></description>
-            <author>matt.e.greer@gmail.com (Matt Greer)</author>
-        </item>
-        <item>
-            <title><![CDATA[Printing Nintendo E-Reader Cards]]></title>
-            <link>https://mattgreer.dev/blog/figuring-out-an-ereader-function</link>
-            <guid>https://mattgreer.dev/blog/figuring-out-an-ereader-function</guid>
-            <pubDate>Tue, 08 Oct 2024 00:00:00 GMT</pubDate>
-            <description><![CDATA[How I printed Nintendo E-Reader cards so they work]]></description>
             <author>matt.e.greer@gmail.com (Matt Greer)</author>
         </item>
         <item>
