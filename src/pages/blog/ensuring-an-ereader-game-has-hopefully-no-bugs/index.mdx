@@ -151,7 +151,7 @@ The runner is the z80 emulator with my game loaded into it. `runUntil` tells the
 
 The array with `ERAPI_KEY_A` in it are the inputs. So the first `runUntil` presses the A button twice to get a puzzle loaded and running.
 
-The second `runUntil` has no inputs, it just sits there and allows the puzzle timer to run out. When it runs out, it verifies that the `clock_empty` flag was set, and also verifies that `clock_seconds_counter` is zero, which it needs to be so that the clock on the screen that the user sees shows `00:00`.
+The second `runUntil` has no inputs, it just sits there and allows the puzzle timer to run out. When it runs out, it verifies that the `clock_empty` flag was set, and also verifies that `clock_seconds_counter` is zero, which it needs to be so that the clock on the screen that the player sees shows `00:00`.
 
 These tests are so helpful! I've already found several bugs thanks to them. And I can run them whenever I want. If a test fails, the runner outputs a log that lets me see exactly what the game was doing. This is helpful in figuring out bugs in the game itself, but also helps ensure the tests are doing the right thing too. Here is a little snippet of a log
 
