@@ -6,7 +6,7 @@ export default ({ children }) => (
 		{...meta}
 		img={require('./feature.png').default.src}
 		socialMediaImg={require('./twitter.png').default.src}
-		intro="How to make a simple hello app for the E-Reader"
+		intro="How to make a simple hello app for the e-Reader"
 	>
 		{children}
 	</Article>
@@ -125,7 +125,7 @@ You will need the e-Reader dev tools. You can grab them for Windows at CaitSith2
 
 The non-Windows version of `nedcmake` often crashes. One day I'll get around to fixing this, but for now I use the Windows version of `nedcmake` through wine.
 
-## Writing an actual E-Reader app
+## Writing an actual e-Reader app
 
 Take `hello.asm` and expand it to this.
 
@@ -194,7 +194,7 @@ ERAPI_CreateRegion:             equ 0x90
 ERAPI_DrawText:                 equ 0x99
 ```
 
-`hello.asm` is now a real E-Reader app. We'll go over the code shortly. But for now, let's just get it running.
+`hello.asm` is now a real e-Reader app. We'll go over the code shortly. But for now, let's just get it running.
 
 ## Assemble it
 
@@ -212,11 +212,11 @@ Invoke `nevpk` to compress the binary you just made.
 nevpk -c -i hello.bin -o hello.vpk
 ```
 
-A "vpk" is a compressed file using the vpk0 compression algorithm. It was named that because vpk files (usually) start with the magic string "vpk0". It was developed by Hudson soft and used in their N64 games. Nintendo adopted it for the E-Reader. Most (but not all) E-Reader cards contain vpk0 compressed data. After you scan a card in, the E-Reader will decompress the data automatically.
+A "vpk" is a compressed file using the vpk0 compression algorithm. It was named that because vpk files (usually) start with the magic string "vpk0". It was developed by Hudson soft and used in their N64 games. Nintendo adopted it for the e-Reader. Most (but not all) e-Reader cards contain vpk0 compressed data. After you scan a card in, the e-Reader will decompress the data automatically.
 
 ## Turn the vpk into a sav file
 
-After you have scanned a game into the E-Reader, you are asked if you'd like to save it. If you do, the E-Reader will save the game's data into its sav file. The next time you run the E-Reader, you can choose "Access Save Data" to run the game you have saved, so you don't need to scan it in again.
+After you have scanned a game into the e-Reader, you are asked if you'd like to save it. If you do, the e-Reader will save the game's data into its sav file. The next time you run the e-Reader, you can choose "Access Save Data" to run the game you have saved, so you don't need to scan it in again.
 
 <figure>
 	<img
@@ -224,11 +224,11 @@ After you have scanned a game into the E-Reader, you are asked if you'd like to 
 		style={{ imageRendering: 'pixelated' }}
 	/>
 	<figcaption>
-		The E-Reader's menu, with "Access Save Data" currently focused.
+		The e-Reader's menu, with "Access Save Data" currently focused.
 	</figcaption>
 </figure>
 
-We can take advantage of this feature of the E-Reader by turning our vpk into an E-Reader sav file, that is what `neflmake` does.
+We can take advantage of this feature of the e-Reader by turning our vpk into an e-Reader sav file, that is what `neflmake` does.
 
 ```bash
 neflmake -i hello.vpk -o hello.sav -type 1 -name hello
@@ -279,7 +279,7 @@ One data strip can hold about 2kb of data. A version 33 QR Code, which is 149x14
 	<figcaption>hello.asm in a version 33 QR Code.</figcaption>
 </figure>
 
-Hoo that's a big boy! It's pretty impressive just how much data these little E-Reader data strips can hold.
+Hoo that's a big boy! It's pretty impressive just how much data these little e-Reader data strips can hold.
 
 Anyway, use `nedcmake` to create the raw file.
 
