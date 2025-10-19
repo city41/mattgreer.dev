@@ -12,7 +12,7 @@ export default ({ children }) => (
 	</Article>
 );
 
-Today, let's make a very simple E-Reader app in z80 assembly. This tutorial won't be very elaborate. There's almost no code at all, instead the focus is on getting the tooling setup and covering some background on how e-Reader apps work.
+Today, let's make a very simple e-Reader app in z80 assembly. This tutorial won't be very elaborate. There's almost no code at all, instead the focus is on getting the tooling setup and covering some background on how e-Reader apps work.
 
 <pitfall>
 	These tools are not too user friendly. If you've never coded before or are not
@@ -21,7 +21,7 @@ Today, let's make a very simple E-Reader app in z80 assembly. This tutorial won'
 
 ## Install pyz80
 
-This tutorial is about writing E-Reader games in z80 assembly, so we need an assembler.
+This tutorial is about writing e-Reader games in z80 assembly, so we need an assembler.
 
 <wisdom>
 	E-Reader games can also be written in C, or you can make an NES game. Each
@@ -119,9 +119,9 @@ And if you look at it in a hex editor, you should see
 
 If you get anything else, then pyz80 is not working correctly for you.
 
-## Get the E-Reader dev tools
+## Get the e-Reader dev tools
 
-You will need the E-Reader dev tools. You can grab them for Windows at CaitSith2's website [here](https://caitsith2.com/ereader/devtools.htm), grab the "Dotcode Dev Package". For other OSes, you can build the tools via [this repo](https://github.com/breadbored/nedclib). If you are on Linux, you can find compiled binaries in this tutorial's companion repo [here](https://github.com/city41/ereader-z80-tutorial/tree/main/bin).
+You will need the e-Reader dev tools. You can grab them for Windows at CaitSith2's website [here](https://caitsith2.com/ereader/devtools.htm), grab the "Dotcode Dev Package". For other OSes, you can build the tools via [this repo](https://github.com/breadbored/nedclib). If you are on Linux, you can find compiled binaries in this tutorial's companion repo [here](https://github.com/city41/ereader-z80-tutorial/tree/main/bin).
 
 The non-Windows version of `nedcmake` often crashes. One day I'll get around to fixing this, but for now I use the Windows version of `nedcmake` through wine.
 
@@ -236,7 +236,7 @@ neflmake -i hello.vpk -o hello.sav -type 1 -name hello
 
 If that succeeded, you will now have `hello.sav`.
 
-If you load up the E-Reader ROM in a GBA emulator with `hello.sav` as its save file. You will be able to choose "Access Save Data" and see your app.
+If you load up the e-Reader ROM in a GBA emulator with `hello.sav` as its save file. You will be able to choose "Access Save Data" and see your app.
 
 <figure>
 	<img
@@ -246,7 +246,7 @@ If you load up the E-Reader ROM in a GBA emulator with `hello.sav` as its save f
 	<figcaption>The hello app running.</figcaption>
 </figure>
 
-I use [mGBA](https://mgba.io/) and highly recommend it. It is an excellent emulator. Getting it installed depends on your OS, so I will leave that to you. You will also need the EReader ROM. You can get that by dumping your e-Reader using a GBA cart dumper, or, uh, via other methods...
+I use [mGBA](https://mgba.io/) and highly recommend it. It is an excellent emulator. Getting it installed depends on your OS, so I will leave that to you. You will also need the e-Reader ROM. You can get that by dumping your e-Reader using a GBA cart dumper, or, uh, via other methods...
 
 If you have mgba installed and on your path, you should be able to invoke it from the command line.
 
