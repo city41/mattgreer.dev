@@ -4,7 +4,7 @@
         <title>Matt Greer</title>
         <link>https://mattgreer.dev</link>
         <description>Mostly web dev and game dev related articles</description>
-        <lastBuildDate>Mon, 06 Oct 2025 20:29:13 GMT</lastBuildDate>
+        <lastBuildDate>Sun, 19 Oct 2025 17:15:52 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
@@ -16,11 +16,19 @@
         <copyright>Copyright Matt Greer</copyright>
         <atom:link href="https://mattgreer.dev/feed.xml" rel="self" type="application/rss+xml"/>
         <item>
-            <title><![CDATA[Writing Integration Tests For an E-Reader Game]]></title>
-            <link>https://mattgreer.dev/blog/writing-integration-tests-for-an-ereader-game</link>
-            <guid>https://mattgreer.dev/blog/writing-integration-tests-for-an-ereader-game</guid>
-            <pubDate>Mon, 06 Oct 2025 00:00:00 GMT</pubDate>
-            <description><![CDATA[Ensuring my e-Reader games have fewer bugs]]></description>
+            <title><![CDATA[E-Reader Dev Tutorial: Part 1]]></title>
+            <link>https://mattgreer.dev/blog/ereader-tutorial-part1</link>
+            <guid>https://mattgreer.dev/blog/ereader-tutorial-part1</guid>
+            <pubDate>Sun, 19 Oct 2025 00:00:00 GMT</pubDate>
+            <description><![CDATA[How to make a simple hello app for the E-Reader]]></description>
+            <author>matt.e.greer@gmail.com (Matt Greer)</author>
+        </item>
+        <item>
+            <title><![CDATA[Ensuring an E-Reader Game Has (Hopefully) No Bugs]]></title>
+            <link>https://mattgreer.dev/blog/ensuring-an-ereader-game-has-hopefully-no-bugs</link>
+            <guid>https://mattgreer.dev/blog/ensuring-an-ereader-game-has-hopefully-no-bugs</guid>
+            <pubDate>Fri, 10 Oct 2025 00:00:00 GMT</pubDate>
+            <description><![CDATA[Additional steps I am taking to make my next E-Reader game more robust]]></description>
             <author>matt.e.greer@gmail.com (Matt Greer)</author>
         </item>
         <item>
