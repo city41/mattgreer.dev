@@ -573,13 +573,13 @@ We skipped `org 0x100`. What does that do?
 
 The labels in our program, `@region_handle` and `@hello_text`, are really just for us. They make it easier to write assembly programs and refer to different parts of the program. Once the binary is assembled, those labels will be replaced with numbers. The number is the address of the label, and the address is just the position of the label in the file.
 
-Let's pretend pyz80 was assembling our program, and had stuck 149 bytes into the binary when it encounted `@region_handle`. That means `@region_handle`'s address will be 150, as it will be the 150th byte in the program. So in that case, the line `ld (@region_handle), a` will basically become `ld (100), a`.
+Let's pretend pyz80 was assembling our program, and had stuck 149 bytes into the binary when it encounted `@region_handle`. That means `@region_handle`'s address will be 150, as it will be the 150th byte in the program. So in that case, the line `ld (@region_handle), a` will basically become `ld (150), a`.
 
-Ok that all makes sense, but there's a catch. In our example, `@region_handle` will be at address 100 in the binary, but it won't necessarily be at address 100 when the app is loaded into the GBA's memory. Its actual address in memory will depend on where in memory the e-Reader stuck our app.
+Ok that all makes sense, but there's a catch. In our example, `@region_handle` will be at address 150 in the binary, but it won't necessarily be at address 150 when the app is loaded into the GBA's memory. Its actual address in memory will depend on where in memory the e-Reader stuck our app.
 
-When the e-Reader loads a z80 app into the GBA's memory, it starts at memory address 0x100. So in our binary, the first byte is at address 0, but when running, it will actually be at address 0x100.
+When the e-Reader loads a z80 app into the GBA's memory, it starts at memory address 0x100 in the GBA's memory. So in our binary, the first byte is at address 0, but when running, it will actually be at address 0x100.
 
-`org 0x100` is telling the assembler that when the app runs, all of the addresses will be off by 0x100. So above when it decided the address for `@region_handle` was 150, it will add 0x100 onto that address and actually write down the address 356 (which is 100 plus 0x100). Now when our app does `ld (356), a`, the draw region handle will go into the correct place in memory.
+`org 0x100` is telling the assembler that when the app runs, all of the addresses will be off by 0x100. So above when it decided the address for `@region_handle` was 150, it will add 0x100 onto that address and actually write down the address 356 (which is 100 plus 0x100, which is 256 in decimal). Now when our app does `ld (356), a`, the draw region handle will go into the correct place in memory.
 
 ## Conclusion
 
