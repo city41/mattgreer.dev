@@ -1,0 +1,306 @@
+import { Article } from '../../../components/layouts/Article';
+import meta from './meta.json';
+
+export const config = {
+	unstable_runtimeJS: false,
+};
+
+export default ({ children }) => (
+	<Article
+		{...meta}
+		img={require('./feature.png').default.src}
+		socialMediaImg={require('./twitter.png').default.src}
+		intro="Extending an e-Reader game by scanning in new cards that alter its code"
+	>
+		{children}
+	</Article>
+);
+
+I am well under way developing my next e-Reader game, Pixel Pup.
+
+<wisdom>
+	<figure style={{ border: 0 }}>
+		<img
+			src={require('../printing-ereader-cards/ereaderWithCard.jpg').default.src}
+			alt="The E-Reader and one of its cards"
+		/>
+		<figcaption>The E-Reader and one of its cards</figcaption>
+	</figure>
+	The e-Reader is a peripheral for the Game Boy Advance. With it you scan in
+	paper cards that contain mini games, DLC, and more. For more background on
+	making games for it, check out my post on{' '}
+	<a href="/blog/cramming-solitaire-onto-a-nintendo-ereader-card/">
+		writing solitaire for the e-Reader
+	</a>
+	.
+</wisdom>
+
+It is a nonogram puzzle game (Nintendo's line of nonogram games are called "Picross") where you first scan in the main game card...
+
+<figure>
+	<img src={require('./mainCardUS.png').default.src} />
+	<figcaption>The main Pixel Pup e-Reader card.</figcaption>
+</figure>
+
+Then once that is loaded, you scan in a puzzle pack card to load a set of puzzles.
+
+<figure>
+	<img src={require('./puzzlePackCards.svg').default.src} />
+	<figcaption>Puzzle Pack cards.</figcaption>
+</figure>
+
+To add some fun to the game, each puzzle pack alters the game in a unique way. For example, the entomology pack adds this spider in the corner.
+
+<figure>
+	<img
+		src={require('./entomologySpider.png').default.src}
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>
+		A spider appears in the corner of an entomology puzzle.
+	</figcaption>
+</figure>
+
+This is a very simple example. The puzzle packs are free to do whatever they want and are only limited by the space available. The more elaborate the puzzle pack tweak is, the more space it takes up. So the pack needs to balance the size of its changes versus how many puzzles it can fit into its data payload.
+
+## Loading a Puzzle Pack card
+
+The e-Reader contains an API called ERAPI. It has many functions that help with making games such as loading and moving sprites. One of its functions is `ScanDotCode`. When called it will stop everything and listen to the scanner for a card. Once the card is scanned in, the running game is then free to do whatever it wants with that data.
+
+Each puzzle pack card is a collection of puzzle data. Each entry in the puzzle payload includes things like the size of the puzzle, its title, and the tile data that forms the puzzle. After the puzzles, any remaining space can be used for an optional function. If after scanning a card in the game notices there is a function there, it will call it.
+
+## E-Reader games reside entirely in RAM and can be altered
+
+After an e-Reader loads a game in from a card, the resulting data lives in the Game Boy Advance's RAM. This is different from regular cart games, where the game primarily lives in ROM. The game's data in the RAM is entirely unprotected, so it's trivial for a game to alter itself whenever it wants.
+
+<wisdom>
+	Since these games are ran in a z80 emulator, they are limited to using 16 bit
+	pointers for memory. That limits the game's size, but it also prevents the
+	game from reaching beyond this memory and altering other parts of memory. So
+	probably by coincidence, the main e-Reader's RAM is protected. Too bad,
+	altering that might be fun :)
+</wisdom>
+
+For example, the puzzle menu in the game is normally 5 puzzles across and centered on the screen.
+
+<figure>
+	<img
+		src={require('./entomologyPuzzleMenu.png').default.src}
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>
+		The most common puzzle menu in the game, with 5 puzzles per row.
+	</figcaption>
+</figure>
+
+I knew puzzle packs would want to change the layout of this menu, so I extracted the values that drive the menu into variables.
+
+```nasm
+PM_ENTRIES_PER_ROW = 5
+
+PM_START_X = 56
+PM_START_Y = 36
+PM_SPAN = 32
+
+_pm_entries_per_row:
+    .db PM_ENTRIES_PER_ROW
+_pm_start_x:
+    .db PM_START_X
+_pm_start_y:
+    .db PM_START_Y
+_pm_span:
+    .db PM_SPAN
+```
+
+The beta puzzle pack only has 9 puzzles, and uses a background that is offset to the left a bit. So once that pack is loaded, its function changes the values of these variables, and results in the menu looking like this.
+
+<figure>
+	<img
+		src={require('./betaPuzzleMenu.png').default.src}
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>The beta puzzle pack with a different menu layout.</figcaption>
+</figure>
+
+This is simple to do, overwriting a byte in memory is easy.
+
+```
+ld a, 76
+ld (_pm_start_x), a
+```
+
+This is z80 assembly, it's just writing data through a pointer, this is what it'd be in C.
+
+```c
+*_pm_start_x = 76;
+```
+
+### Not quite so simple
+
+But there's a really big dragon lurking here. `_pm_start_x` is really just a number, it is the address in memory where the value lives. So how does the puzzle pack know what the address is? One approach would be to assemble the main game, figure out at which address the assembler stuck `_pm_start_x`, then go into the puzzle pack's code and hardcode that address in. That will work, but every time I make a change to the main game, `_pm_start_x` will almost certainly move to a new location. Continually looking up the address and writing it into the beta puzzle pack code would get old really fast.
+
+There's another problem I've glossed over. Each puzzle pack contains a function the main game calls. But each puzzle pack has a different number of puzzles in it, so each puzzle pack will have that function in a different location. This is easily solved, the puzzle pack contains a word at the very start that tells the main game how far to advance forward to find the function. So the main game can easily find the function, but there's another problem, the function not knowing where it ultimately will be in memory makes assembling it difficult.
+
+## How addresses are determined during assembly
+
+Both problems really boil down to one thing: when an assembler assembles something, it will hardcode the addresses used within the code. Take this simple example.
+
+```nasm
+_my_function:
+	ld a, (_my_variable)
+	ret
+
+_my_variable:
+	.db 4
+```
+
+This simple assembly program contains two labels, `_my_function` and `_my_variable`. When the code is being assembled, the assembler will note where it was whenever it encounters a new symbol. In this case, it was at address zero when it encountered `_my_function`, and address 4 when it encounters `_my_variable`. Why 4? because the opcode `ld a, (_my_variable)` is 3 bytes long, and the opcode `ret` is a single byte. Here is the machine code:
+
+```nasm
+3A 04 00  ;; ld a, (_my_variable)
+C9        ;; ret
+04        ;; .db 4
+```
+
+When the assembler is generating these bytes, it will remember that `_my_variable` ended up being at address 4. So it will turn `ld a, (_my_variable)` into `ld a, (4)`, which ultimately becomes `3A 04 00`.
+
+So if we change the code to this:
+
+```nasm
+_my_function:
+	ld a, (_my_variable)
+	ld b, 2
+	add a, b
+	ret
+
+_my_variable:
+	.db 4
+```
+
+Now `_my_variable` won't be at address 4, it will instead be at address 7. The extra code caused `_my_function` to be bigger, and pushed `_my_variable` down accordingly.
+
+### the .org directive
+
+We need to throw one more wrench into this. We said `_my_function` would be at address zero, because it's at the very beginning of the program. But in the case of the e-Reader, when it loads in a game, it loads it into the GBA's RAM starting at address `0x100`. This is a problem, because the address for `_my_variable` was hardcoded into the game as 7. But when the game is up and running, `_my_variable` will actually be found at address 0x107. Which means `_my_function` will read whatever is in the Game Boy Advance's memory at address 7, which is not what we want.
+
+Since we know the e-Reader always loads the game starting at address 0x100, we can tell the assembler this.
+
+```nasm
+.org 0x100
+
+_my_function:
+	ld a, (_my_variable)
+	ld b, 2
+	add a, b
+	ret
+
+_my_variable:
+	.db 4
+```
+
+Now with the `.org` directive in place, the assembler will note that `_my_function` is now at address 0x100 (0x100 + 0), and `_my_variable` is at address 0x107 (0x100 + 7), and now our program will work as intended.
+
+## Writing puzzle pack code without going insane
+
+This all adds up to puzzle pack code being really hard to write. Whenever it wants to alter things in the main game, it has no idea where that stuff is. And on top of that, it has no idea where its own code is!
+
+What do I mean it has no idea where its own code is? Pretend the above code was part of a puzzle pack. If that puzzle pack has 6 puzzles in it, then `_my_variable` will end up at one address.
+
+<figure>
+	<img src={require('./memoryDiagram1.svg').default.src} />
+	<figcaption>
+		A simple view of Pixel Pup's memory, showing how the puzzle pack function
+		comes after its puzzle data.
+	</figcaption>
+</figure>
+
+But if the puzzle pack then gains one more puzzle, `_my_variable` will end up shifted down to a different address.
+
+<figure>
+	<img src={require('./memoryDiagram2.svg').default.src} />
+	<figcaption>
+		Adding one new puzzle to the pack causes the function and all of its
+		contents to shift to a new address.
+	</figcaption>
+</figure>
+
+`scan_puzzle_buffer` is the space the main game has set aside to load the puzzle pack into. So every time the main game changes, that buffer's location shifts, adding to the mayhem.
+
+<figure>
+	<img src={require('./memoryDiagram3.svg').default.src} />
+	<figcaption>
+		Adding more code to the main game causes the puzzle pack buffer and
+		everything inside of it to shift to a new address.
+	</figcaption>
+</figure>
+
+Solving this turned out to not be too hard once I fully wrapped my brain around what was happening.
+
+### Step 1: give the puzzle pack code an org
+
+It's simple to allow the puzzle pack code to know where its own stuff is, start off that code with an `.org` directive. If that org directive is the starting address at runtime where the puzzle pack function will live, we are golden.
+
+I do this in two steps. Whenever I assemble the main code, the assembler outputs a symbols file. It contains the addresses of where all the labels landed. It looks something like this:
+
+```bash
+Symbol Table
+	...
+
+  2 _pm_entries_per_row  AF78 R
+  2 _pm_start_x          AF79 R
+  2 _pm_start_y          AF7A R
+	...
+  2 scan_puzzle_buffer   0AD4 R
+	...
+
+```
+
+<pitfall>What do the leading 2 and trailing R mean? Beats me :)</pitfall>
+
+I parse this file and use it to locate the `scan_puzzle_buffer` address. That is where the puzzle pack code goes once it is loaded.
+
+I then compile the puzzle data and form the entire puzzle pack, minus the function. After I've done that, I can measure how big the pack ended up being. I know the function's data will be right after the puzzle data, so I can add `scan_puzzle_buffer`'s address with the puzzle pack data size to arrive at what I need to use for `.org`. I then assemble the puzzle pack function with that org set, and append it onto the end of the puzzle pack data, arriving at a final puzzle pack payload that can get encoded onto a card.
+
+### Step 2: a system for accessing main symbols
+
+Whenever the puzzle pack code wants to reach into the main code and change things, it would be easiest to just use the symbols I've defined in the main code. By taking that symbols file above that I parsed, it allows me to write puzzle pack assembly that can use main symbols by wrapping those symbols in `$$$`.
+
+For example, in the code above where I am changing the puzzle menu's layout, the puzzle pack code actually looks like this:
+
+```nasm
+    ld a, 76
+    ld ($$$_pm_start_x$$$), a
+    ld a, 50
+    ld ($$$_pm_start_y$$$), a
+    ld a, 3
+    ld ($$$_pm_entries_per_row$$$), a
+```
+
+So when I assemble this code, I do a pre pass where I use the main symbol file and replace all instances of `$$$label$$$` with the address. So that code becomes something like this:
+
+```nasm
+    ld a, 76
+    ld (0xAF79), a
+    ld a, 50
+    ld (0xAF7A), a
+    ld a, 3
+    ld (0xAF78), a
+```
+
+and then the puzzle pack can successfully alter the main game.
+
+### Strong coupling
+
+This results in puzzle pack cards that can only work correctly when loaded by the same main card they were built against. Whenever I make changes to the main code, I need to remember to regenerate the puzzle pack cards or else they will not work correctly. And I really need to remember that when it comes time to print the cards or else that's an expensive mistake...
+
+This isn't too big of a deal really. The end result is I can just write main code as I please, and I can write the puzzle pack code as I please. I've moved all the tedious remembering addresses and determining orgs into tools that do it each time and always correctly. As it should be.
+
+This does mean later Pixel Pup puzzle pack releases need to use the same version of the main card as earlier releases. If the main card has a bug in it, well, hopefully it's not a major one. To help address that, Pixel Pup has an [integration test suite](/blog/ensuring-an-ereader-game-has-hopefully-no-bugs/).
+
+## Conclusion
+
+I kept the examples in this blog post simple. But with this system in place, a puzzle pack card can do anything it wants. Heck, it could change the game into an action platformer or a spreadsheet if it wanted :) I'm really excited by the possibilities. One thing I hope to do is have a later puzzle pack card alter the game, and then you can scan in an earlier puzzle pack card and get to redo those old puzzles with a twist. Really my imagination is the limit, oh, and how much space I have, which sadly isn't much, but that's e-Reader dev for ya.
+
+### Pixel Pup's release
+
+I am hoping to release Pixel Pup in January. If you're interested, you can join the mailing list at https://retrodotcards.com and I will let you know when the preorder starts.

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg width="208.45mm" height="130.22mm" version="1.1" viewBox="0 0 208.45 130.22" xmlns="http://www.w3.org/2000/svg">
+ <defs>
+  <marker id="marker4" overflow="visible" markerHeight="2" markerWidth="2" orient="auto-start-reverse" preserveAspectRatio="xMidYMid" viewBox="0 0 1 1">
+   <path transform="scale(.7)" d="m-2-4 11 4-11 4c2-2.33 2-5.66 0-8z" fill="context-stroke" fill-rule="evenodd"/>
+  </marker>
+  <marker id="marker2" overflow="visible" markerHeight="2" markerWidth="2" orient="auto-start-reverse" preserveAspectRatio="xMidYMid" viewBox="0 0 1 1">
+   <path transform="scale(.7)" d="m-2-4 11 4-11 4c2-2.33 2-5.66 0-8z" fill="context-stroke" fill-rule="evenodd"/>
+  </marker>
+  <marker id="ConcaveTriangle" overflow="visible" markerHeight="2" markerWidth="2" orient="auto-start-reverse" preserveAspectRatio="xMidYMid" viewBox="0 0 1 1">
+   <path transform="scale(.7)" d="m-2-4 11 4-11 4c2-2.33 2-5.66 0-8z" fill="context-stroke" fill-rule="evenodd"/>
+  </marker>
+  <marker id="marker2-8" overflow="visible" markerHeight="2" markerWidth="2" orient="auto-start-reverse" preserveAspectRatio="xMidYMid" viewBox="0 0 1 1">
+   <path transform="scale(.7)" d="m-2-4 11 4-11 4c2-2.33 2-5.66 0-8z" fill="context-stroke" fill-rule="evenodd"/>
+  </marker>
+  <marker id="ConcaveTriangle-8" overflow="visible" markerHeight="2" markerWidth="2" orient="auto-start-reverse" preserveAspectRatio="xMidYMid" viewBox="0 0 1 1">
+   <path transform="scale(.7)" d="m-2-4 11 4-11 4c2-2.33 2-5.66 0-8z" fill="context-stroke" fill-rule="evenodd"/>
+  </marker>
+  <marker id="marker2-4" overflow="visible" markerHeight="2" markerWidth="2" orient="auto-start-reverse" preserveAspectRatio="xMidYMid" viewBox="0 0 1 1">
+   <path transform="scale(.7)" d="m-2-4 11 4-11 4c2-2.33 2-5.66 0-8z" fill="context-stroke" fill-rule="evenodd"/>
+  </marker>
+  <marker id="marker2-8-3" overflow="visible" markerHeight="2" markerWidth="2" orient="auto-start-reverse" preserveAspectRatio="xMidYMid" viewBox="0 0 1 1">
+   <path transform="scale(.7)" d="m-2-4 11 4-11 4c2-2.33 2-5.66 0-8z" fill="context-stroke" fill-rule="evenodd"/>
+  </marker>
+  <marker id="marker2-40" overflow="visible" markerHeight="2" markerWidth="2" orient="auto-start-reverse" preserveAspectRatio="xMidYMid" viewBox="0 0 1 1">
+   <path transform="scale(.7)" d="m-2-4 11 4-11 4c2-2.33 2-5.66 0-8z" fill="context-stroke" fill-rule="evenodd"/>
+  </marker>
+  <marker id="marker2-8-6" overflow="visible" markerHeight="2" markerWidth="2" orient="auto-start-reverse" preserveAspectRatio="xMidYMid" viewBox="0 0 1 1">
+   <path transform="scale(.7)" d="m-2-4 11 4-11 4c2-2.33 2-5.66 0-8z" fill="context-stroke" fill-rule="evenodd"/>
+  </marker>
+  <marker id="marker4-9" overflow="visible" markerHeight="2" markerWidth="2" orient="auto-start-reverse" preserveAspectRatio="xMidYMid" viewBox="0 0 1 1">
+   <path transform="scale(.7)" d="m-2-4 11 4-11 4c2-2.33 2-5.66 0-8z" fill="context-stroke" fill-rule="evenodd"/>
+  </marker>
+ </defs>
+ <g transform="translate(-15.226 -18.449)">
+  <g>
+   <rect x="15.226" y="18.449" width="95.493" height="130.22" fill="#fea"/>
+   <rect x="61.591" y="28.647" width="46.482" height="118.06" fill="#afc6e9" stroke="#000080" stroke-linecap="round" stroke-width=".39258"/>
+   <rect x="73.526" y="70.947" width="34.546" height="53.541" fill="#b3ff80" stroke="#000080" stroke-linecap="round" stroke-width=".22791"/>
+  </g>
+  <g fill="#55d400" stroke="#000080" stroke-linecap="round" stroke-width=".075883">
+   <rect x="76.764" y="70.946" width="31.31" height="6.5487"/>
+   <rect x="76.764" y="77.495" width="31.31" height="6.5487"/>
+   <rect x="76.764" y="84.043" width="31.31" height="6.5487"/>
+   <rect x="76.764" y="90.592" width="31.31" height="6.5487"/>
+   <rect x="76.764" y="97.141" width="31.31" height="6.5487"/>
+   <rect x="76.764" y="103.69" width="31.31" height="6.5487"/>
+  </g>
+  <g stroke="#000080" stroke-linecap="round">
+   <rect x="73.526" y="110.26" width="34.547" height="27.476" fill="#b3ff80" stroke-width=".16327"/>
+   <path d="m26.922 70.905h42.61" fill="#fff" marker-end="url(#ConcaveTriangle)" stroke-width=".317"/>
+   <path d="m26.922 110.3h42.61" fill="#fff" marker-end="url(#marker2)" stroke-width=".317"/>
+  </g>
+  <g fill="#ffffff" font-family="OpenDyslexicAlta" font-size="3.5278px" font-weight="bold" letter-spacing="0px" stroke="#000080" stroke-linecap="round" stroke-width=".317">
+   <text x="22.826649" y="68.794075" xml:space="preserve"><tspan x="22.826649" y="68.794075" fill="#000000" font-family="sans-serif" font-size="3.5278px" font-weight="bold" letter-spacing="0px" stroke="none" stroke-width=".317">scan_puzzle_buffer</tspan></text>
+   <text x="47.664894" y="23.607674" xml:space="preserve"><tspan x="47.664894" y="23.607674" fill="#000000" font-family="sans-serif" font-size="3.5278px" font-weight="bold" letter-spacing="0px" stroke="none" stroke-width=".317">Pixel Pup's RAM</tspan></text>
+   <text x="83.361649" y="75.023117" xml:space="preserve"><tspan x="83.361649" y="75.023117" fill="#000000" font-family="sans-serif" font-size="3.5278px" font-weight="bold" letter-spacing="0px" stroke="none" stroke-width=".317">puzzle 1</tspan></text>
+   <text x="84.142303" y="81.223747" xml:space="preserve"><tspan x="84.142303" y="81.223747" fill="#000000" font-family="sans-serif" font-size="3.5278px" font-weight="bold" letter-spacing="0px" stroke="none" stroke-width=".317">puzzle 2</tspan></text>
+   <text x="83.867805" y="88.197014" xml:space="preserve"><tspan x="83.867805" y="88.197014" fill="#000000" font-family="sans-serif" font-size="3.5278px" font-weight="bold" letter-spacing="0px" stroke="none" stroke-width=".317">puzzle 3</tspan></text>
+   <text x="83.58107" y="94.601242" xml:space="preserve"><tspan x="83.58107" y="94.601242" fill="#000000" font-family="sans-serif" font-size="3.5278px" font-weight="bold" letter-spacing="0px" stroke="none" stroke-width=".317">puzzle 4</tspan></text>
+   <text x="84.024994" y="101.88445" xml:space="preserve"><tspan x="84.024994" y="101.88445" fill="#000000" font-family="sans-serif" font-size="3.5278px" font-weight="bold" letter-spacing="0px" stroke="none" stroke-width=".317">puzzle 5</tspan></text>
+   <text x="83.760414" y="108.0108" xml:space="preserve"><tspan x="83.760414" y="108.0108" fill="#000000" font-family="sans-serif" font-size="3.5278px" font-weight="bold" letter-spacing="0px" stroke="none" stroke-width=".317">puzzle 6</tspan></text>
+  </g>
+  <g>
+   <g stroke-linecap="round" stroke-width=".317">
+    <text x="31.743721" y="107.60583" fill="#000000" font-family="sans-serif" font-size="3.5278px" font-weight="bold" letter-spacing="0px" xml:space="preserve"><tspan x="31.743721" y="107.60583" stroke-width=".317">_my_function</tspan></text>
+    <path d="m26.79 127.15h42.61" fill="#fff" marker-end="url(#marker2-8)" stroke="#000080"/>
+    <text x="31.612194" y="124.4505" fill="#000000" font-family="sans-serif" font-size="3.5278px" font-weight="bold" letter-spacing="0px" xml:space="preserve"><tspan x="31.612194" y="124.4505" stroke-width=".317">_my_variable</tspan></text>
+    <text x="75.144737" y="57.210438" fill="#000000" font-family="sans-serif" font-size="3.5278px" font-weight="bold" letter-spacing="0px" xml:space="preserve"><tspan x="75.144737" y="57.210438" stroke-width=".317">main code</tspan></text>
+   </g>
+   <rect x="128.18" y="18.449" width="95.493" height="130.22" fill="#fea"/>
+   <rect x="174.55" y="28.647" width="46.482" height="118.06" fill="#afc6e9" stroke="#000080" stroke-linecap="round" stroke-width=".39258"/>
+   <rect x="186.48" y="70.947" width="34.546" height="53.541" fill="#b3ff80" stroke="#000080" stroke-linecap="round" stroke-width=".22791"/>
+  </g>
+  <g fill="#55d400" stroke="#000080" stroke-linecap="round" stroke-width=".075883">
+   <rect x="189.72" y="70.946" width="31.31" height="6.5487"/>
+   <rect x="189.72" y="77.495" width="31.31" height="6.5487"/>
+   <rect x="189.72" y="84.043" width="31.31" height="6.5487"/>
+   <rect x="189.72" y="90.592" width="31.31" height="6.5487"/>
+   <rect x="189.72" y="97.141" width="31.31" height="6.5487"/>
+   <rect x="189.72" y="103.69" width="31.31" height="6.5487"/>
+  </g>
+  <path d="m139.88 70.905h42.61" fill="#fff" marker-end="url(#ConcaveTriangle-8)" stroke="#000080" stroke-linecap="round" stroke-width=".317"/>
+  <g fill="#ffffff" font-family="OpenDyslexicAlta" font-size="3.5278px" font-weight="bold" letter-spacing="0px" stroke="#000080" stroke-linecap="round" stroke-width=".317">
+   <text x="135.78247" y="68.794075" xml:space="preserve"><tspan x="135.78247" y="68.794075" fill="#000000" font-family="sans-serif" font-size="3.5278px" font-weight="bold" letter-spacing="0px" stroke="none" stroke-width=".317">scan_puzzle_buffer</tspan></text>
+   <text x="160.62059" y="23.607674" xml:space="preserve"><tspan x="160.62059" y="23.607674" fill="#000000" font-family="sans-serif" font-size="3.5278px" font-weight="bold" letter-spacing="0px" stroke="none" stroke-width=".317">Pixel Pup's RAM</tspan></text>
+   <text x="196.31734" y="75.023117" xml:space="preserve"><tspan x="196.31734" y="75.023117" fill="#000000" font-family="sans-serif" font-size="3.5278px" font-weight="bold" letter-spacing="0px" stroke="none" stroke-width=".317">puzzle 1</tspan></text>
+   <text x="197.09798" y="81.223747" xml:space="preserve"><tspan x="197.09798" y="81.223747" fill="#000000" font-family="sans-serif" font-size="3.5278px" font-weight="bold" letter-spacing="0px" stroke="none" stroke-width=".317">puzzle 2</tspan></text>
+   <text x="196.8235" y="88.197014" xml:space="preserve"><tspan x="196.8235" y="88.197014" fill="#000000" font-family="sans-serif" font-size="3.5278px" font-weight="bold" letter-spacing="0px" stroke="none" stroke-width=".317">puzzle 3</tspan></text>
+   <text x="196.53676" y="94.601242" xml:space="preserve"><tspan x="196.53676" y="94.601242" fill="#000000" font-family="sans-serif" font-size="3.5278px" font-weight="bold" letter-spacing="0px" stroke="none" stroke-width=".317">puzzle 4</tspan></text>
+   <text x="196.9807" y="101.88445" xml:space="preserve"><tspan x="196.9807" y="101.88445" fill="#000000" font-family="sans-serif" font-size="3.5278px" font-weight="bold" letter-spacing="0px" stroke="none" stroke-width=".317">puzzle 5</tspan></text>
+   <text x="196.71611" y="108.01081" xml:space="preserve"><tspan x="196.71611" y="108.01081" fill="#000000" font-family="sans-serif" font-size="3.5278px" font-weight="bold" letter-spacing="0px" stroke="none" stroke-width=".317">puzzle 6</tspan></text>
+  </g>
+  <g stroke-linecap="round">
+   <rect x="189.72" y="110.24" width="31.31" height="6.5487" fill="#ff7f2a" stroke="#000080" stroke-width=".075883"/>
+   <text x="196.71609" y="114.55947" fill="#ffffff" font-family="OpenDyslexicAlta" font-size="3.5278px" font-weight="bold" letter-spacing="0px" stroke="#000080" stroke-width=".317" xml:space="preserve"><tspan x="196.71609" y="114.55947" fill="#000000" font-family="sans-serif" font-size="3.5278px" font-weight="bold" letter-spacing="0px" stroke="none" stroke-width=".317">puzzle 7</tspan></text>
+   <text x="188.10042" y="57.210434" fill="#000000" font-family="sans-serif" font-size="3.5278px" font-weight="bold" letter-spacing="0px" stroke-width=".317" xml:space="preserve"><tspan x="188.10042" y="57.210434" stroke-width=".317">main code</tspan></text>
+   <rect x="186.44" y="116.91" width="34.547" height="27.476" fill="#b3ff80" stroke="#000080" stroke-width=".16327"/>
+   <g stroke-width=".317">
+    <path d="m139.76 116.93h42.61" fill="#fff" marker-end="url(#marker2-4)" stroke="#000080"/>
+    <text x="144.58638" y="114.22884" fill="#000000" font-family="sans-serif" font-size="3.5278px" font-weight="bold" letter-spacing="0px" xml:space="preserve"><tspan x="144.58638" y="114.22884" stroke-width=".317">_my_function</tspan></text>
+    <path d="m139.63 133.77h42.61" fill="#fff" marker-end="url(#marker2-8-3)" stroke="#000080"/>
+    <text x="144.45486" y="131.0735" fill="#000000" font-family="sans-serif" font-size="3.5278px" font-weight="bold" letter-spacing="0px" xml:space="preserve"><tspan x="144.45486" y="131.0735" stroke-width=".317">_my_variable</tspan></text>
+   </g>
+  </g>
+  <g transform="translate(-3.3133)" opacity=".276" stroke-linecap="round" stroke-width=".317">
+   <path d="m143.08 110.3h42.61" fill="#fff" marker-end="url(#marker2-40)" stroke="#000080"/>
+   <text x="147.89902" y="107.60583" fill="#000000" font-family="sans-serif" font-size="3.5278px" font-weight="bold" letter-spacing="0px" xml:space="preserve"><tspan x="147.89902" y="107.60583" stroke-width=".317">_my_function</tspan></text>
+   <path d="m142.95 127.15h42.61" fill="#fff" marker-end="url(#marker2-8-6)" stroke="#000080"/>
+   <text x="147.76744" y="124.4505" fill="#000000" font-family="sans-serif" font-size="3.5278px" font-weight="bold" letter-spacing="0px" xml:space="preserve"><tspan x="147.76744" y="124.4505" stroke-width=".317">_my_variable</tspan></text>
+  </g>
+  <path d="m144.94 106.59s-24.389 2.0856-3.4919 5.453" fill="none" marker-end="url(#marker4)" stroke="#ff7f2a" stroke-linecap="round" stroke-width=".317"/>
+  <path d="m143.95 123.75s-24.389 2.0856-3.4919 5.453" fill="none" marker-end="url(#marker4-9)" stroke="#ff7f2a" stroke-linecap="round" stroke-width=".317"/>
+ </g>
+</svg>

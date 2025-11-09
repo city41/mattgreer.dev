@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="95.493416mm"
+   height="130.21536mm"
+   viewBox="0 0 95.493415 130.21536"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.2 (2aeb623e1d, 2025-05-12)"
+   sodipodi:docname="memoryDiagram1.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#999999"
+     borderopacity="1"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="1.4752918"
+     inkscape:cx="-132.17724"
+     inkscape:cy="285.70619"
+     inkscape:window-width="5100"
+     inkscape:window-height="1376"
+     inkscape:window-x="0"
+     inkscape:window-y="44"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1">
+    <marker
+       style="overflow:visible"
+       id="marker2"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Concave triangle arrow"
+       markerWidth="2"
+       markerHeight="2"
+       viewBox="0 0 1 1"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.7)"
+         d="M -2,-4 9,0 -2,4 c 2,-2.33 2,-5.66 0,-8 z"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         id="path2" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="ConcaveTriangle"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Concave triangle arrow"
+       markerWidth="2"
+       markerHeight="2"
+       viewBox="0 0 1 1"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.7)"
+         d="M -2,-4 9,0 -2,4 c 2,-2.33 2,-5.66 0,-8 z"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         id="path7" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker2-8"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Concave triangle arrow"
+       markerWidth="2"
+       markerHeight="2"
+       viewBox="0 0 1 1"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.7)"
+         d="M -2,-4 9,0 -2,4 c 2,-2.33 2,-5.66 0,-8 z"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         id="path2-8" />
+    </marker>
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-15.226065,-18.449144)">
+    <rect
+       style="fill:#ffeeaa;fill-opacity:1;stroke:none;stroke-width:2.47933;stroke-linecap:round"
+       id="rect3"
+       width="95.493416"
+       height="130.21536"
+       x="15.226065"
+       y="18.449144" />
+    <rect
+       style="fill:#afc6e9;fill-opacity:1;stroke:#000080;stroke-width:0.392575;stroke-linecap:round"
+       id="rect1"
+       width="46.482327"
+       height="118.0594"
+       x="61.591221"
+       y="28.646816" />
+    <rect
+       style="fill:#b3ff80;fill-opacity:1;stroke:#000080;stroke-width:0.227914;stroke-linecap:round"
+       id="rect1-4"
+       width="34.545685"
+       height="53.541206"
+       x="73.526474"
+       y="70.94706" />
+    <rect
+       style="fill:#55d400;fill-opacity:1;stroke:#000080;stroke-width:0.0758831;stroke-linecap:round"
+       id="rect1-4-68"
+       width="31.309807"
+       height="6.5486593"
+       x="76.763741"
+       y="70.94603" />
+    <rect
+       style="fill:#55d400;fill-opacity:1;stroke:#000080;stroke-width:0.0758831;stroke-linecap:round"
+       id="rect1-4-68-4"
+       width="31.309807"
+       height="6.5486593"
+       x="76.763741"
+       y="77.49469" />
+    <rect
+       style="fill:#55d400;fill-opacity:1;stroke:#000080;stroke-width:0.0758831;stroke-linecap:round"
+       id="rect1-4-68-8"
+       width="31.309807"
+       height="6.5486593"
+       x="76.763741"
+       y="84.04335" />
+    <rect
+       style="fill:#55d400;fill-opacity:1;stroke:#000080;stroke-width:0.0758831;stroke-linecap:round"
+       id="rect1-4-68-7"
+       width="31.309807"
+       height="6.5486593"
+       x="76.763741"
+       y="90.59201" />
+    <rect
+       style="fill:#55d400;fill-opacity:1;stroke:#000080;stroke-width:0.0758831;stroke-linecap:round"
+       id="rect1-4-68-0"
+       width="31.309807"
+       height="6.5486593"
+       x="76.763741"
+       y="97.140663" />
+    <rect
+       style="fill:#55d400;fill-opacity:1;stroke:#000080;stroke-width:0.0758831;stroke-linecap:round"
+       id="rect1-4-68-49"
+       width="31.309807"
+       height="6.5486593"
+       x="76.763741"
+       y="103.68932" />
+    <rect
+       style="fill:#b3ff80;fill-opacity:1;stroke:#000080;stroke-width:0.117661;stroke-linecap:round"
+       id="rect1-4-6"
+       width="34.592503"
+       height="14.250282"
+       x="73.503067"
+       y="110.23798" />
+    <path
+       style="fill:#ffffff;fill-opacity:1;stroke:#000080;stroke-width:0.317;stroke-linecap:round;marker-end:url(#ConcaveTriangle)"
+       d="M 26.921611,70.904544 H 69.531345"
+       id="path1" />
+    <path
+       style="fill:#ffffff;fill-opacity:1;stroke:#000080;stroke-width:0.317;stroke-linecap:round;marker-end:url(#marker2)"
+       d="M 26.921611,110.30458 H 69.531345"
+       id="path1-1" />
+    <text
+       xml:space="preserve"
+       style="font-weight:bold;font-size:3.52778px;font-family:OpenDyslexicAlta;-inkscape-font-specification:'OpenDyslexicAlta Bold';text-align:start;letter-spacing:0px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:#000080;stroke-width:0.317;stroke-linecap:round"
+       x="22.826649"
+       y="68.794075"
+       id="text1"><tspan
+         sodipodi:role="line"
+         id="tspan1"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:3.52778px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:0px;fill:#000000;stroke:none;stroke-width:0.317"
+         x="22.826649"
+         y="68.794075">scan_puzzle_buffer</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-weight:bold;font-size:3.52778px;font-family:OpenDyslexicAlta;-inkscape-font-specification:'OpenDyslexicAlta Bold';text-align:start;letter-spacing:0px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:#000080;stroke-width:0.317;stroke-linecap:round"
+       x="47.664894"
+       y="23.607674"
+       id="text1-8"><tspan
+         sodipodi:role="line"
+         id="tspan1-6"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:3.52778px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:0px;fill:#000000;stroke:none;stroke-width:0.317"
+         x="47.664894"
+         y="23.607674">Pixel Pup's RAM</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-weight:bold;font-size:3.52778px;font-family:OpenDyslexicAlta;-inkscape-font-specification:'OpenDyslexicAlta Bold';text-align:start;letter-spacing:0px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:#000080;stroke-width:0.317;stroke-linecap:round"
+       x="83.361649"
+       y="75.023117"
+       id="text1-6"><tspan
+         sodipodi:role="line"
+         id="tspan1-1"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:3.52778px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:0px;fill:#000000;stroke:none;stroke-width:0.317"
+         x="83.361649"
+         y="75.023117">puzzle 1</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-weight:bold;font-size:3.52778px;font-family:OpenDyslexicAlta;-inkscape-font-specification:'OpenDyslexicAlta Bold';text-align:start;letter-spacing:0px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:#000080;stroke-width:0.317;stroke-linecap:round"
+       x="84.142303"
+       y="81.223747"
+       id="text1-6-4"><tspan
+         sodipodi:role="line"
+         id="tspan1-1-8"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:3.52778px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:0px;fill:#000000;stroke:none;stroke-width:0.317"
+         x="84.142303"
+         y="81.223747">puzzle 2</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-weight:bold;font-size:3.52778px;font-family:OpenDyslexicAlta;-inkscape-font-specification:'OpenDyslexicAlta Bold';text-align:start;letter-spacing:0px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:#000080;stroke-width:0.317;stroke-linecap:round"
+       x="83.867805"
+       y="88.197014"
+       id="text1-6-44"><tspan
+         sodipodi:role="line"
+         id="tspan1-1-4"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:3.52778px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:0px;fill:#000000;stroke:none;stroke-width:0.317"
+         x="83.867805"
+         y="88.197014">puzzle 3</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-weight:bold;font-size:3.52778px;font-family:OpenDyslexicAlta;-inkscape-font-specification:'OpenDyslexicAlta Bold';text-align:start;letter-spacing:0px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:#000080;stroke-width:0.317;stroke-linecap:round"
+       x="83.58107"
+       y="94.601242"
+       id="text1-6-1"><tspan
+         sodipodi:role="line"
+         id="tspan1-1-7"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:3.52778px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:0px;fill:#000000;stroke:none;stroke-width:0.317"
+         x="83.58107"
+         y="94.601242">puzzle 4</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-weight:bold;font-size:3.52778px;font-family:OpenDyslexicAlta;-inkscape-font-specification:'OpenDyslexicAlta Bold';text-align:start;letter-spacing:0px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:#000080;stroke-width:0.317;stroke-linecap:round"
+       x="84.024994"
+       y="101.88445"
+       id="text1-6-17"><tspan
+         sodipodi:role="line"
+         id="tspan1-1-85"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:3.52778px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:0px;fill:#000000;stroke:none;stroke-width:0.317"
+         x="84.024994"
+         y="101.88445">puzzle 5</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-weight:bold;font-size:3.52778px;font-family:OpenDyslexicAlta;-inkscape-font-specification:'OpenDyslexicAlta Bold';text-align:start;letter-spacing:0px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:#000080;stroke-width:0.317;stroke-linecap:round"
+       x="83.760414"
+       y="108.0108"
+       id="text1-6-5"><tspan
+         sodipodi:role="line"
+         id="tspan1-1-9"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:3.52778px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:0px;fill:#000000;stroke:none;stroke-width:0.317"
+         x="83.760414"
+         y="108.0108">puzzle 6</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:3.52777px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';text-align:start;letter-spacing:0px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.317;stroke-linecap:round"
+       x="31.743721"
+       y="107.60583"
+       id="text2"><tspan
+         sodipodi:role="line"
+         id="tspan2"
+         style="stroke-width:0.317"
+         x="31.743721"
+         y="107.60583">_my_function</tspan></text>
+    <path
+       style="fill:#ffffff;fill-opacity:1;stroke:#000080;stroke-width:0.317;stroke-linecap:round;marker-end:url(#marker2-8)"
+       d="M 26.790083,117.63815 H 69.399817"
+       id="path1-1-8" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:3.52777px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';text-align:start;letter-spacing:0px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.317;stroke-linecap:round"
+       x="31.612194"
+       y="114.9394"
+       id="text2-9"><tspan
+         sodipodi:role="line"
+         id="tspan2-6"
+         style="stroke-width:0.317"
+         x="31.612194"
+         y="114.9394">_my_variable</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:3.52777px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';text-align:start;letter-spacing:0px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.317;stroke-linecap:round"
+       x="75.144737"
+       y="57.210438"
+       id="text3"><tspan
+         sodipodi:role="line"
+         id="tspan3"
+         style="stroke-width:0.317"
+         x="75.144737"
+         y="57.210438">main code</tspan></text>
+  </g>
+</svg>
