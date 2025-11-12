@@ -181,7 +181,17 @@ Now `_my_variable` won't be at address 4, it will instead be at address 7. The e
 
 ### the .org directive
 
-We need to throw one more wrench into this. We said `_my_function` would be at address zero, because it's at the very beginning of the program. But in the case of the e-Reader, when it loads in a game, it loads it into the GBA's RAM starting at address `0x100`. This is a problem, because the address for `_my_variable` was hardcoded into the game as 7. But when the game is up and running, `_my_variable` will actually be found at address 0x107. Which means `_my_function` will read whatever is in the Game Boy Advance's memory at address 7, which is not what we want.
+We need to throw one more wrench into this. We said `_my_function` would be at address zero, because it's at the very beginning of the program. But in the case of the e-Reader, when it loads in a game, it loads it into the GBA's RAM starting at address `0x100`.
+
+<pitfall>
+	Actually this is not entirely true. The e-Reader contains a z80 emulator and
+	from within the emulator, the game starts at address 0x100. From outside the
+	emulator, the z80 memory is very high up in the GBA's RAM. But really, that
+	detail isn't important to this post. From the running e-Reader game's
+	perspective, the memory starts at 0x100.
+</pitfall>
+
+This is a problem, because the address for `_my_variable` was hardcoded into the game as 7. But when the game is up and running, `_my_variable` will actually be found at address 0x107. Which means `_my_function` will read whatever is in the Game Boy Advance's memory at address 7, which is not what we want.
 
 Since we know the e-Reader always loads the game starting at address 0x100, we can tell the assembler this.
 
