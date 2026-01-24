@@ -1,8 +1,8 @@
 {
-	"title": "E-Reader Dev Tutorial: Part 1",
+	"title": "E-Reader z80 Dev Tutorial: Part 1",
 	"date": "2025-10-19",
 	"type": "Tutorial",
 	"tags": ["Gaming", "Retro gaming", "Game dev", "E-Reader"],
-	"description": ["How to make a simple hello app for the e-Reader"],
+	"description": ["How to make a simple z80 hello world app for the e-Reader"],
 	"imgAlt": "Hello screenshot"
 }

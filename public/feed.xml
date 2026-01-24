@@ -4,7 +4,7 @@
         <title>Matt Greer</title>
         <link>https://mattgreer.dev</link>
         <description>Mostly web dev and game dev related articles</description>
-        <lastBuildDate>Sat, 08 Nov 2025 19:11:25 GMT</lastBuildDate>
+        <lastBuildDate>Fri, 23 Jan 2026 15:40:25 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
@@ -16,10 +16,18 @@
         <copyright>Copyright Matt Greer</copyright>
         <atom:link href="https://mattgreer.dev/feed.xml" rel="self" type="application/rss+xml"/>
         <item>
+            <title><![CDATA[E-Reader Dev Tutorial: Part 0]]></title>
+            <link>https://mattgreer.dev/blog/ereader-tutorial-part0</link>
+            <guid>https://mattgreer.dev/blog/ereader-tutorial-part0</guid>
+            <pubDate>Fri, 23 Jan 2026 00:00:00 GMT</pubDate>
+            <description><![CDATA[A broad intro to e-Reader dev]]></description>
+            <author>matt.e.greer@gmail.com (Matt Greer)</author>
+        </item>
+        <item>
             <title><![CDATA[Hacking My Own E-Reader Game]]></title>
             <link>https://mattgreer.dev/blog/hacking-my-own-ereader-game</link>
             <guid>https://mattgreer.dev/blog/hacking-my-own-ereader-game</guid>
-            <pubDate>Tue, 18 Nov 2025 00:00:00 GMT</pubDate>
+            <pubDate>Sun, 09 Nov 2025 00:00:00 GMT</pubDate>
             <description><![CDATA[Extending an e-Reader game by scanning in new cards that alter its code]]></description>
             <author>matt.e.greer@gmail.com (Matt Greer)</author>
         </item>
@@ -28,7 +36,7 @@
             <link>https://mattgreer.dev/blog/ereader-tutorial-part1</link>
             <guid>https://mattgreer.dev/blog/ereader-tutorial-part1</guid>
             <pubDate>Sun, 19 Oct 2025 00:00:00 GMT</pubDate>
-            <description><![CDATA[How to make a simple hello app for the e-Reader]]></description>
+            <description><![CDATA[How to make a simple z80 hello world app for the e-Reader]]></description>
             <author>matt.e.greer@gmail.com (Matt Greer)</author>
         </item>
         <item>
