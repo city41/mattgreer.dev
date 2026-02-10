@@ -16,7 +16,7 @@ If you need your Game Boy Advance game to draw lines, rectangles, etc, there's a
 
 ## Using a bitmap background
 
-The GBA has various background modes, and a few of them turn the background into a bitmap surface you can easily draw into. For this post we will stick with mode 3, but modes 4 and 5 also enable bitmap graphics. In mode 3 the entire background converts into a 240x160, 16 bit bitmap. In other words, the entire screen becomes one image that is made up of direct color entries instead of using palettes.
+The GBA has various background modes, and a few of them turn the background into a bitmap surface you can easily draw into. For this post we will stick with mode 3, but modes 4 and 5 also enable bitmap graphics. In mode 3 the entire background converts into a 240x160, 15 bit bitmap. In other words, the entire screen becomes one image that is made up of direct color entries instead of using palettes.
 
 With that in mind, let's draw our first pixel.
 
@@ -44,9 +44,9 @@ int main() {
 }
 ```
 
-This is about as simple as it gets. In mode 3, each pixel on the screen is individually addressable, and each pixel address in vram stores a 16 bit color.
+This is about as simple as it gets. In mode 3, each pixel on the screen is individually addressable, and each pixel address in vram stores a 15 bit color.
 
-First we switch the GBA to mode 3 by setting the `REG_DISPCNT` (display controller) register.
+First we switch the GBA to mode 3 by setting the `REG_DISPCNT` (display controller) register. At the same time we are alson turning on background 2, which is the bitmap background in this mode.
 
 `vid_mem` is the starting address for video ram, so in mode 3 it is the very first pixel on the screen in the upper left corner. By adding `19200` to that address, we arrive at the halfway point, which would put us on the very center of the left edge of the screen. By adding 120 more on top of that, we arrive at the very center of the screen. We then set the color `0x1f` to that address, which is pure red.
 
@@ -56,7 +56,7 @@ First we switch the GBA to mode 3 by setting the `REG_DISPCNT` (display controll
 	pure red, set all five bottom bits to 1, <pre>0000000000011111</pre>. In hex,
 	that is <pre>0x1f</pre>. You can use{' '}
 	<a href="https://www.retrodotcards.com/tools/color-converter">this tool</a> to
-	convert any color into the GBA's format.
+	convert a color into the GBA's format.
 </wisdom>
 
 <figure>
@@ -99,9 +99,14 @@ int main() {
 
 Since we can set any pixel on the screen we want, we are only limited by our imagination and coding skills on what we can draw.
 
+<wisdom>
+	I'm not kidding here, bitmap modes is how games like Doom work on the GBA. You
+	really need a lot of coding skills to pull something like that off :)
+</wisdom>
+
 ### Using Tonc's m3 functions
 
-Thankfully, Tonc has done some of that work for us. The libtonc library contains functions like `m3_rect` and `m3_line` that can be used to draw basic shapes to the screen.
+Tonc has done some of this work for us. The libtonc library contains functions like `m3_rect` and `m3_line` that can be used to draw basic shapes to the screen.
 
 ```c
 #include "tonc.h"
@@ -145,7 +150,7 @@ Tonc has defined various color constants, like `CLR_ORANGE`, for convenience. Yo
 
 ## Drawing on sprites
 
-Bitmap backgrounds are the easiest way to draw pixels. From here on out it's bit trickier, as instead of a bitmap surface we have tiles to work with.
+Bitmap backgrounds are the easiest way to draw pixels. From here on out it's bit trickier, as instead of a bitmap surface we need to work with tiles, which are more complex.
 
 ### Sprite crash course
 
@@ -163,10 +168,8 @@ const u8 faceTiles[32] = {
     0x10, 0x11, 0x11, 0x01, 0x00, 0x11, 0x11, 0x00
 };
 
-const u16 facePalette[16] = {
-	0x7c1f, 0x59da, 0x7fff, 0x3626, 0x1c88, 0x0000,
-    0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,
-    0x0000, 0x0000, 0x0000, 0x0000
+const u16 facePalette[5] = {
+	0x7c1f, 0x59da, 0x7fff, 0x3626, 0x1c88
 };
 
 int main() {
@@ -174,7 +177,7 @@ int main() {
   REG_DISPCNT = DCNT_MODE0 | DCNT_OBJ | DCNT_OBJ_1D;
 
   // copy the palette in
-  memcpy16(pal_obj_mem, facePalette, 16);
+  memcpy16(pal_obj_mem, facePalette, 5);
   // copy the tile in
   memcpy32(&tile_mem[4][0], faceTiles, 8);
   // establish the sprite
@@ -253,7 +256,7 @@ We are interested in setting a single pixel's value at a time. So with tiles, we
 
 ### Setting a single pixel
 
-With that in mind, let's write code that will change a single pixel of a sprite. We will take our face sprite and change one of its eyes from white to the same dark color of its mouth.
+With that in mind, let's write code that will change a single pixel of a sprite. We will take our face sprite and change one of its eyes from white to black.
 
 ```c
 /*
@@ -286,7 +289,7 @@ int main() {
 }
 ```
 
-What in the heck is going on here? This ridiculous code is precisely changing the tile such that the left eye's palette index is now 4 (the dark color).
+What in the heck is going on here? This ridiculous code is precisely changing the tile such that the left eye's palette index is now 4 (black).
 
 <figure>
 	<img
@@ -296,9 +299,9 @@ What in the heck is going on here? This ridiculous code is precisely changing th
 	<figcaption>Our simple face sprite with one dark eye</figcaption>
 </figure>
 
-Our face sprite is using the very first sprite tile in video ram. Believe it our, `tile_mem[4][0]` is the address of that tile, for detailed reasons we'll ignore today. Since video ram needs to be written 2 bytes at a time, we cast this memory address to a `u16*`, as that makes our life easier.
+Our face sprite is using the very first sprite tile in video ram. For reasons I'm going to ignore, `tile_mem[4][0]` is the address of that tile. Since video ram needs to be written 2 bytes at a time, we cast this memory address to a `u16*`, as that makes our life easier.
 
-`tile` is currently pointing at the very start of the tile, but our pixel is in a ways. Since tile data is two pixels crammed into a single byte, and we must deal with double bytes, we are working with 4 pixel chunks at a time. The eye pixel we want to change is in the fifth chunk, so we need to jump forward four chunks.
+`tile` is currently pointing at the very start of the tile, but our pixel is found deeper in. Since tile data is two pixels crammed into a single byte, and we must deal with double bytes, we are working with 4 pixel chunks at a time. The eye pixel we want to change is in the fifth chunk, so we need to jump forward four chunks.
 
 <figure>
 	<img
@@ -357,6 +360,7 @@ int main() {
   setPixel(tile, x, y, paletteIndex);
 
   while (1) {
+	// keep the demo running forever
   }
 
   return 0;
@@ -416,7 +420,7 @@ And here it is on the GBA's screen.
 	<figcaption>Our simple face sprite with the other eye dark</figcaption>
 </figure>
 
-Let's again change the eye to black. This is very similar to before, but now the eye is four tiles over. We need to change `setPixel` to be aware that sprites can be multiple tiles wide (and tall).
+Let's again change the eye to black. This is very similar to before, but now the eye is in the fourth tile over. We need to change `setPixel` to be aware that sprites can be multiple tiles wide (and tall).
 
 ```c
 void setPixel(u16 *startingTile, u32 x, u32 y, u32 value) {
@@ -450,7 +454,7 @@ With the indexes in hand, we can jump forward in memory and point at the tile we
   u16 *tile = startingTile + (tileYIndex * 4 + tileXIndex) * 16;
 ```
 
-Notice we are multiplying y by 4? That is because this sprite is 4 tiles wide. So this function as it is written will only work correctly on sprites of a certain size. A simple fix is to pass the function how wide the sprite is.
+Notice we are multiplying y by 4? That is because this sprite is 4 tiles wide. So this function as it is written will only work correctly on sprites that are 4 tiles wide. A simple fix is to pass the width of the sprite we are working with into the function as a parameter.
 
 Once we are pointed at the correct tile, the rest of the function is the same as before, with one minor tweak. When we were dealing with a single tile, we knew x and y would always be less than 8. Here the x that was passed in is 29. We need to map that 29 that is the coordinate of the pixel across the entire sprite to the coordinate of the pixel within our current tile. Modding the x value by 8 accomplishes that, and same with the y value.
 
@@ -481,14 +485,14 @@ This scene is made of several backgrounds, and the main terrain background uses 
 
 If a sprite uses the same tile more than once, that tile gets copied into vram multiple times, which is wasteful. For backgrounds, there is only one copy of a tile, and then a map tells the GBA how to lay the tiles out to form a background.
 
-In the Mario example, the bushes might have a tile id of 4. So in the map, there will be three 4's.
+In the Mario example, the bushes might have a tile id of 1. So in the map, there will be three 1's.
 
 <figure>
 	<img src={require('./sma4Map.svg').default.src} />
 	<figcaption>A small slice of what Mario's map might look like</figcaption>
 </figure>
 
-Just like individual tiles are made up of numbers that tell the pixel what color in the palette it is, tile maps are numbers that tell what tile goes onto that part of the background.
+Just like a tile is made up of numbers that tell the pixel what color in the palette it is, tile maps are numbers that tell what tile goes onto that part of the background.
 
 ### Drawing on a background
 
@@ -563,7 +567,7 @@ If you look at the code, it's very similar to the sprite drawing code. Except it
   REG_BG0CNT = (BG_CBB(CBB) + BG_SBB(SBB)) | BG_REG_32x32;
 ```
 
-First we tell the GBA to use mode 0 (ie, four regular tiled backgrounds) and enable background zero, the one we are going to draw into. Then the next line is telling the GBA how background zero should be set up. Background zero will find its tile data at character base block 0, and its tile map at screen base block 4. This sounds confusing, but we really just dedicating certain sections of video ram to the background's tiles and its tile map, and telling the GBA where so it can draw the background.
+First we tell the GBA to use mode 0 (ie, four regular tiled backgrounds) and enable background zero, the one we are going to draw into. Then the next line is telling the GBA how background zero should be set up (BG0CNT means "background 0 control"). Background zero will find its tile data at character base block 0, and its tile map at screen base block 4. This sounds confusing, but we really just dedicating certain sections of video ram to the background's tiles and its tile map, and telling the GBA where so it knows how to find everything it needs in order to draw the background onto the screen.
 
 <wisdom>
 	For more info on backgrounds, CBB, SBB, etc, check out{' '}
@@ -591,18 +595,18 @@ Then we copy our palette into background palette ram, so we can have some colors
   }
 ```
 
-And here is the real magic that differentiates this from sprite drawing. We are setting up a tiny little tile map in the corner of the screen.
+And here is the real magic that differentiates this from sprite drawing. We are setting up a tiny little tile map in the upper left corner of the screen.
 
 First we get a pointer to our tile map. This is just a location in video ram where we will write our map.
 
-Then we write the numbers 1 through 4 into the map, corresponding to the upper left corner of the screen. That is what the two for loops are doing. When they finish, the tile map for our background will look like this.
+Then we write the numbers 1 through 4 into the map, corresponding to the corner. That is what the two for loops are doing. When they finish, the tile map for our background will look like this.
 
 <figure>
 	<img src={require('./smallTileMap.svg').default.src} />
 	<figcaption>Our small tile map in the corner of the screen</figcaption>
 </figure>
 
-By setting up 1-4 in the upper corner like this, that means tiles 1 through 4 can be used to draw on. The rest of the tile map is set to zero, and we will leave tile zero alone so that the rest of the screen remains empty.
+By setting up 1-4 in the upper corner like this, that means tiles 1 through 4 can be used to draw on. The rest of the tile map is set to zero, and we will leave tile zero blank so that the rest of the screen remains empty.
 
 ```c
   u16 *tile = (u16 *)(&tile_mem[CBB][1]);
@@ -613,6 +617,8 @@ By setting up 1-4 in the upper corner like this, that means tiles 1 through 4 ca
 ```
 
 So now that we have our tile map set up, we can grab tiles and draw on them, just like before. Here the starting tile pointer is set to `tile_mem[CBB][1]`. That's just a fancy way of grabbing exactly the part of vram we care about, the `[1]` is because we want to start at tile 1, and leave tile 0 alone so it remains blank.
+
+From here, `setPixel` is exactly the same as it was in the sprite version. Once we have a tile map set up and some background tiles to draw into, the actual drawing of the pixels is identical to drawing on sprites.
 
 ## Conclusion
 
