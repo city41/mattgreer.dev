@@ -628,4 +628,15 @@ Why go through all of this trouble? If your GBA game needs to draw something, wh
 
 And then there is the main puzzle board. Implementing it was much easier using functions like `drawRectangle()` and `drawLine()` instead of trying to wrangle sprites where they need to be. For the board I could have used bitmap mode (and I did this when I was first starting the game). But I ultimately wanted access to all four backgrounds for better visuals in the game, and so that meant I needed to draw the board onto a tiled background. To do that, I use the third technique outlined in this post.
 
+<figure>
+	<img
+		src={require('./pixelPup.png').default.src}
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>
+		My game using drawing calls to make the board and the puzzle title. It is
+		early in development, so using place holder graphics :)
+	</figcaption>
+</figure>
+
 Truthfully I mostly wrote this post for myself. This is some very obtuse programming, and having a post like this I can refer back to allows me to not forget any details.
