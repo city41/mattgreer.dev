@@ -279,7 +279,7 @@ int main() {
   u16 *tile = (u16 *)(&tile_mem[4][0]);
   u16 *fourPixels = tile + 4;
 
-  *fourPixels |= 0x400;
+  *fourPixels |= 0x0400;
 
   while (1) {
 	// keep the demo running forever
@@ -324,7 +324,7 @@ It uses pointer arithmetic to jump forward four half words (which are u16s) to p
 Now that we are pointing at the data we want to change, we can finally change it.
 
 ```
-*fourPixels |= 0x400;
+*fourPixels |= 0x0400;
 ```
 
 In this chunk, we want the third pixel (the eye) to go from palette index 2 (white) to 4 (black). Which is what this line is doing, it is slamming a 4 into that pixel, and leaving the other three pixels alone.
