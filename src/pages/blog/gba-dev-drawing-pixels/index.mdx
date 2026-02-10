@@ -209,6 +209,12 @@ In this simple example, we loaded sprite data that we already had on hand. I too
 
 Often tiles are considered "static". Things like animation and changing scenery usually involves changing which tiles we are using. But tiles are written into video ram, and video ram can be changed at any time. So they actually aren't static at all, and that is how we accomplish drawing pixels directly onto sprites.
 
+<wisdom>
+	Fun fact, the Neo Geo is also a tile based system. Except its tiles are truly
+	static. Accomplishing drawing like this on the Neo Geo is not possible, which
+	ultimately limited the types of games that could be made for it.
+</wisdom>
+
 ### Drawing on tiles
 
 So instead of copying pre determined tile data, we will write values into the tile memory to accomplish our drawing. At its core, it's very similar to how bitmap mode works. But tiles introduce a few gotchas and complexities.
