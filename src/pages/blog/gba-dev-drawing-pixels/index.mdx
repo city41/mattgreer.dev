@@ -46,7 +46,7 @@ int main() {
 
 This is about as simple as it gets. In mode 3, each pixel on the screen is individually addressable, and each pixel address in vram stores a 15 bit color.
 
-First we switch the GBA to mode 3 by setting the `REG_DISPCNT` (display controller) register. At the same time we are alson turning on background 2, which is the bitmap background in this mode.
+First we switch the GBA to mode 3 by setting the `REG_DISPCNT` (display controller) register. At the same time we are also turning on background 2, which is the bitmap background in this mode.
 
 `vid_mem` is the starting address for video ram, so in mode 3 it is the very first pixel on the screen in the upper left corner. By adding `19200` to that address, we arrive at the halfway point, which would put us on the very center of the left edge of the screen. By adding 120 more on top of that, we arrive at the very center of the screen. We then set the color `0x1f` to that address, which is pure red.
 
@@ -100,8 +100,8 @@ int main() {
 Since we can set any pixel on the screen we want, we are only limited by our imagination and coding skills on what we can draw.
 
 <wisdom>
-	I'm not kidding here, bitmap modes is how games like Doom work on the GBA. You
-	really need a lot of coding skills to pull something like that off :)
+	I'm not kidding here, bitmap modes are how games like Doom work on the GBA.
+	You really need a lot of coding skills to pull something like that off :)
 </wisdom>
 
 ### Using Tonc's m3 functions
@@ -408,7 +408,7 @@ Our face sprite is only a single tile, making drawing on it a bit easier. Most s
 	<figcaption>Our simple face sprite with the other eye dark</figcaption>
 </figure>
 
-This time we are working with a sprite that is 4 tiles wide. It is also 4 tiles tall because GBA sprites can only be certain sizes, and 4x4 is one of them. We will ignore all the extra blank tiles and just think of this as a 4x1 tile.
+This time we are working with a sprite that is 4 tiles wide. It is also 4 tiles tall because GBA sprites can only be certain sizes, and 4x4 is one of them. We will ignore all the extra blank tiles and just think of this as a 4x1 sprite.
 
 And here it is on the GBA's screen.
 
@@ -446,7 +446,7 @@ int main() {
 }
 ```
 
-The function is given `startingTile`, which is the very first tile of the sprite, just like before. We need to jump ahead to the tile that contains the x and y coordinate. If we divide those coordinates by 8, we will get x and y tile indexes. In our example we passed in x=29 and y=2, which maps to tile indexes x=3 and y=0. Which makes sense, if you look above at the worm sprite, its eye is in tile 3 (the first tile is tile zero).
+The function is given `startingTile`, which is the very first tile of the sprite, just like before. We need to jump ahead to the tile that contains the x and y coordinate we are interested in. If we divide those coordinates by 8, we will get x and y tile indexes. In our example we passed in x=29 and y=2, which maps to tile indexes x=3 and y=0. Which makes sense, if you look above at the worm sprite, its eye is in tile 3 (the first tile is tile zero).
 
 With the indexes in hand, we can jump forward in memory and point at the tile we care about.
 
@@ -454,7 +454,7 @@ With the indexes in hand, we can jump forward in memory and point at the tile we
   u16 *tile = startingTile + (tileYIndex * 4 + tileXIndex) * 16;
 ```
 
-Notice we are multiplying y by 4? That is because this sprite is 4 tiles wide. So this function as it is written will only work correctly on sprites that are 4 tiles wide. A simple fix is to pass the width of the sprite we are working with into the function as a parameter.
+Notice we are multiplying y by 4? That is because this sprite is 4 tiles wide. So this function as it is written will only work correctly on sprites that are 4 tiles wide. A simple fix is to pass the width of the sprite we are working with into the function as a parameter. We multiply the whole shebang by 16 because each tile is 16 half words (a u16).
 
 Once we are pointed at the correct tile, the rest of the function is the same as before, with one minor tweak. When we were dealing with a single tile, we knew x and y would always be less than 8. Here the x that was passed in is 29. We need to map that 29 that is the coordinate of the pixel across the entire sprite to the coordinate of the pixel within our current tile. Modding the x value by 8 accomplishes that, and same with the y value.
 
@@ -462,7 +462,7 @@ Hoo! We made it, we can now draw onto sprites. I am glossing over some details h
 
 ## Drawing on tiled backgrounds
 
-Drawing on sprites is useful, but often the real prize is arbitrary drawing on tiled backgrounds. Why? Why not just use a bitmap background like at the start of the post? When you switch the GBA to bitmap mode, you only get a single background. In tiled mode, there are four backgrounds to work with. If you need to do drawing but still have some regular backgrounds for your game, your only choice is sticking with tiled backgrounds.
+Drawing on sprites is useful, but often the real prize is arbitrary drawing on tiled backgrounds. Why? Why not just use a bitmap background like at the start of the post? When you switch the GBA to bitmap mode, you only get a single background. In tiled mode, there are four backgrounds to work with. If you need to do drawing but still need to have some regular backgrounds for your game, your only choice is sticking with tiled backgrounds.
 
 ### Tiled background crash course
 
@@ -567,7 +567,7 @@ If you look at the code, it's very similar to the sprite drawing code. Except it
   REG_BG0CNT = (BG_CBB(CBB) + BG_SBB(SBB)) | BG_REG_32x32;
 ```
 
-First we tell the GBA to use mode 0 (ie, four regular tiled backgrounds) and enable background zero, the one we are going to draw into. Then the next line is telling the GBA how background zero should be set up (BG0CNT means "background 0 control"). Background zero will find its tile data at character base block 0, and its tile map at screen base block 4. This sounds confusing, but we really just dedicating certain sections of video ram to the background's tiles and its tile map, and telling the GBA where so it knows how to find everything it needs in order to draw the background onto the screen.
+First we tell the GBA to use mode 0 (ie, four regular tiled backgrounds) and enable background zero, the one we are going to draw into. Then the next line is telling the GBA how background zero should be set up (BG0CNT means "background 0 control"). Background zero will find its tile data at character base block 0, and its tile map at screen base block 4. This sounds confusing, but we are really just dedicating certain sections of video ram to the background's tiles and its tile map, and telling the GBA where so it knows how to find everything it needs in order to draw the background onto the screen.
 
 <wisdom>
 	For more info on backgrounds, CBB, SBB, etc, check out{' '}
@@ -582,7 +582,7 @@ First we tell the GBA to use mode 0 (ie, four regular tiled backgrounds) and ena
   memcpy16(pal_bg_mem, bgPalette, 5);
 ```
 
-Then we copy our palette into background palette ram, so we can have some colors to work with. This is just like sprite palettes, except background palettes go to a different spot.
+Then we copy our palette into background palette ram, so we can have some colors to work with. This is just like sprite palettes, except background palettes go to a different spot (`pal_obj_mem` for sprites, and `pal_bg_mem` for backgrounds).
 
 ```c
   u16 *bgMap = se_mem[SBB];
@@ -619,6 +619,12 @@ By setting up 1-4 in the upper corner like this, that means tiles 1 through 4 ca
 So now that we have our tile map set up, we can grab tiles and draw on them, just like before. Here the starting tile pointer is set to `tile_mem[CBB][1]`. That's just a fancy way of grabbing exactly the part of vram we care about, the `[1]` is because we want to start at tile 1, and leave tile 0 alone so it remains blank.
 
 From here, `setPixel` is exactly the same as it was in the sprite version. Once we have a tile map set up and some background tiles to draw into, the actual drawing of the pixels is identical to drawing on sprites.
+
+### Tiled background drawing limitations
+
+Notice when we set up the tile map, each entry had a different number. That is different from Super Mario Bros which used the same `1` repeatedly to drop 3 bushes into the scene. We need each entry in the tile map to be different, so that each tile can individually be drawn and be different.
+
+There's only so much video ram, and only so many tiles we get to work with. Typically when drawing on a background like this, you will need to confine the drawing to a small portion of the screen. If you try to draw an image onto the entire screen, you will use up almost all of the tiles available and have virtually nothing else left for your game. If you need to do that, bitmap modes are more efficient.
 
 ## Conclusion
 
