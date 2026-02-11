@@ -335,6 +335,12 @@ Now that we are pointing at the data we want to change, we can finally change it
 
 In this chunk, we want the third pixel (the eye) to go from palette index 2 (white) to 4 (black). Which is what this line is doing, it is slamming a 4 into that pixel, and leaving the other three pixels alone.
 
+<wisdom>
+	I'm fibbing here a little bit. Before you can set the new pixel value, you
+	need to erase the old value. I'm not going to get into that as the code in
+	this post is gnarly enough already.
+</wisdom>
+
 ### Abstracting this into a function
 
 That's a lot of work and a lot of things to remember just to change a single pixel! We can make our life a little easier by hiding all of the details in a function.
