@@ -52,6 +52,21 @@ Then set the fade level in `REG_BLDY`. This register dedicated 5 bits to this va
 
 Technically the fixed values mean the fade is 0.5, 0.75, etc. But for me, I just consider it between 0 and 16 and that works fine for me.
 
+### Not fading sprites
+
+A neat little effect is to leave sprits out of the fading. This accomplishes a "spotlight" effect, kind of like in a play. Considering it's so cheap to do, it's a nice trick.
+
+<figure>
+	<img
+		src={require('./spritesNotFading.png').default.src}
+		style={{ imageRendering: 'pixelated' }}
+	/>
+	<figcaption>
+		All the backgrounds faded close to black, while the sprites remain at full
+		intensity, creating a simple "spotlight" effect.
+	</figcaption>
+</figure>
+
 ## Fade to white
 
 Fading to white is identical to fading to black, except `REG_BLDCNT` gets a different flag to indicate white.
