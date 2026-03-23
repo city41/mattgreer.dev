@@ -4,7 +4,7 @@
         <title>Matt Greer</title>
         <link>https://mattgreer.dev</link>
         <description>Mostly web dev and game dev related articles</description>
-        <lastBuildDate>Tue, 10 Feb 2026 13:48:39 GMT</lastBuildDate>
+        <lastBuildDate>Mon, 23 Mar 2026 15:35:23 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
@@ -15,6 +15,22 @@
         </image>
         <copyright>Copyright Matt Greer</copyright>
         <atom:link href="https://mattgreer.dev/feed.xml" rel="self" type="application/rss+xml"/>
+        <item>
+            <title><![CDATA[Game Boy Advance Dev: Blending Pixels]]></title>
+            <link>https://mattgreer.dev/blog/gba-dev-blending-pixels</link>
+            <guid>https://mattgreer.dev/blog/gba-dev-blending-pixels</guid>
+            <pubDate>Sat, 21 Mar 2026 00:00:00 GMT</pubDate>
+            <description><![CDATA[How to blend layers of pixels on the GBA]]></description>
+            <author>matt.e.greer@gmail.com (Matt Greer)</author>
+        </item>
+        <item>
+            <title><![CDATA[Game Boy Advance Dev: Drawing Pixels]]></title>
+            <link>https://mattgreer.dev/blog/gba-dev-drawing-pixels</link>
+            <guid>https://mattgreer.dev/blog/gba-dev-drawing-pixels</guid>
+            <pubDate>Tue, 10 Feb 2026 00:00:00 GMT</pubDate>
+            <description><![CDATA[Several ways to draw individual pixels on a GBA]]></description>
+            <author>matt.e.greer@gmail.com (Matt Greer)</author>
+        </item>
         <item>
             <title><![CDATA[E-Reader Card Types]]></title>
             <link>https://mattgreer.dev/blog/ereader-card-types</link>
@@ -205,14 +221,6 @@
             <guid>https://mattgreer.dev/blog/cpu-driving-part-1-waypoints</guid>
             <pubDate>Thu, 12 Sep 2024 00:00:00 GMT</pubDate>
             <description><![CDATA[How can you make a CPU car drive around a track in a video game?]]></description>
-            <author>matt.e.greer@gmail.com (Matt Greer)</author>
-        </item>
-        <item>
-            <title><![CDATA[Game Boy Advance Dev: Drawing Pixels]]></title>
-            <link>https://mattgreer.dev/blog/gba-dev-drawing-pixels</link>
-            <guid>https://mattgreer.dev/blog/gba-dev-drawing-pixels</guid>
-            <pubDate>Thu, 12 Sep 2024 00:00:00 GMT</pubDate>
-            <description><![CDATA[Several ways to draw individual pixels on a GBA]]></description>
             <author>matt.e.greer@gmail.com (Matt Greer)</author>
         </item>
         <item>

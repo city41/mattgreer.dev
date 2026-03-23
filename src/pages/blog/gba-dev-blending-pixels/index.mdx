@@ -1,0 +1,185 @@
+import { Article } from '../../../components/layouts/Article';
+import meta from './meta.json';
+
+export default ({ children }) => (
+	<Article
+		{...meta}
+		img={require('./feature.png').default.src}
+		socialMediaImg={require('./twitter.png').default.src}
+		intro="How to blend layers of pixels on the GBA"
+	>
+		{children}
+	</Article>
+);
+
+The Game Boy Advance has some simple pixel blending abilities. Here's how to do them all.
+
+## Target audience: GBA devs
+
+First I tried to write this for a wide audience, but it quickly grew into a book. If you're not familiar with GBA development, there might not be much for you here.
+
+With that out of the way, let's dig into the three blending techniques available on the GBA.
+
+<wisdom>
+	I use libtonc, and so the terminology and techniques in this post use that as
+	well.
+</wisdom>
+
+## Fade to black
+
+This allows you to fade a scene to black, and then defade a scene from black, great for transitions. This one is simple.
+
+### Set up REG_BLDCNT
+
+Tell REG_BLDCNT you want to fade to black
+
+```c
+#define FADE_BLACK 3
+
+  REG_BLDCNT =
+      BLD_BUILD(BLD_BACKDROP | BLD_BG0 | BLD_BG1 | BLD_BG2 | BLD_BG3 | BLD_OBJ, 0, FADE_BLACK);
+```
+
+Here I am telling the GBA I want everything on screen to fade to black by passing in all background layers, the backdrop and sprites (BLD_OBJ). From what I can tell, libtonc does not include a constant for `FADE_BLACK` that is compatible with `BLD_BUILD` (maybe I missed it?), so I just defined my own.
+
+### Set the fade level
+
+Then set the fade level in `REG_BLDY`. This register dedicated 5 bits to this value, so the value can be between 0 (no black at all), to 16 (completely black), with all values in between providing the fade. Ramping this up and down over time is how to achieve your fade.
+
+#### The fade level values
+
+5 bits should mean the maximum value is 31, right? The value is in 1.4 fixed format, and must be between 0 and 1 (inclusive). So that means anything 16 and above is just black.
+
+Technically the fixed values mean the fade is 0.5, 0.75, etc. But for me, I just consider it between 0 and 16 and that works fine for me.
+
+## Fade to white
+
+Fading to white is identical to fading to black, except `REG_BLDCNT` gets a different flag to indicate white.
+
+```c
+#define FADE_WHITE 2
+
+  REG_BLDCNT =
+      BLD_BUILD(BLD_BACKDROP | BLD_BG0 | BLD_BG1 | BLD_BG2 | BLD_BG3 | BLD_OBJ, 0, FADE_WHITE);
+```
+
+## Blending backgrounds
+
+This time instead of blending the scene with black/white, we are now blending different layers together, to accomplish a half transparency effect (often called "alpha').
+
+### Set up REG_BLDCNT
+
+This is similar to fading to black/white, except there are two differences.
+
+First we need to indicate we want layer blending.
+
+```c
+#define FADE_ALPHA 1
+
+  REG_BLDCNT =
+      BLD_BUILD(BLD_BACKDROP | BLD_BG0 | BLD_BG1 | BLD_BG2 | BLD_BG3 | BLD_OBJ, 0, FADE_ALPHA);
+```
+
+Which is just like before. But this time since we are fading between layers, we need to tell the GBA what constitutes a "top" layer and what is the "bottom". Now in `BLD_BUILD`, that zero will go away and be replaced with what we want the bottom to be.
+
+Here we are blending background 0 into background 1.
+
+```c
+#define FADE_ALPHA 1
+
+  REG_BLDCNT =
+      BLD_BUILD(BLD_BG0, BLD_BG1, FADE_ALPHA);
+```
+
+And here we are blending sprites and background 3 into the backdrop.
+
+```c
+#define FADE_ALPHA 1
+
+  REG_BLDCNT =
+      BLD_BUILD(BLD_BG3 | BLD_OBJ, BLD_BACKDROP, FADE_ALPHA);
+```
+
+One important caveat is the blending only happens if a pixel from a "top" layer is actually above (z-order wise) a pixel from a "bottom" layer. So you need to make sure you have background and sprite priorities/ordering set up properly.
+
+Another caveat is when we indicate `BLD_OBJ`, that means _all_ sprites will blend. We'll talk about individual sprite blending down below.
+
+### Setup the blend values
+
+Now that we have told the GBA what we want to blend, we need to tell it how they should blending using `REG_BLDALPHA`.
+
+```c
+REG_BLDALPHA = BLDA_BUILD(8, 8);
+```
+
+Just like in fade to black/white, there are 5 bits for each layer that allow placing a 1.4 fixed value number. So just like before, 16 is the max, and technically these are fixed point numbers but I just think of them as 0 through 16.
+
+By specifying 8 for eva (the top layer's blending) and 8 for evb (the bottom layer's blending), we essentially get the two evenly blended together. A pretty typical "transparency" result.
+
+Changing these numbers can change the effect drastically. For example setting them both to one means they both only contribute a tiny portion of their color to the result, so the end result is very close to black. Setting it to something like `BLDA_BUILD(14, 1)` means the top layer contributes almost all of its color, and the bottom layer just a little bit, so the end result is heavily biased towards the top layer. You will probably have to play with these numbers to get a feel for what they do.
+
+## Blending individual sprites
+
+And finally the best blending technique in my opinion, selectively choosing which sprites blend.
+
+### Tell a sprite it should blend
+
+First set the blend flag on the sprite in OAM. Something like this.
+
+```c
+  OBJ_ATTR *spriteObj = obj_buffer + spriteIndex;
+  u32 attr0 = spriteObj->attr0;
+
+  attr0 |= ATTR0_BLEND;
+  spriteObj->attr0 = attr0;
+```
+
+You're just flipping the two blending bits to alpha on OAM attribute 0.
+
+### Tell the whole scene to blend
+
+Just like above in normal alpha blending, we need to tell `REG_BLDCNT` to set up an alpha blend.
+
+But this time, sprites that have their blend flag set participate in this setup regardless.
+
+Let's say we want background 0 to blend into background 1.
+
+```c
+#define FADE_ALPHA 1
+
+  REG_BLDCNT =
+      BLD_BUILD(BLD_BG0, BLD_BG1, FADE_ALPHA);
+  REG_BLDALPHA = BLDA_BUILD(8, 8);
+```
+
+This means background 0 will blend into 1 as expected. But it also means any sprites that have their blend flag set will also blend into background 1, assuming their priority places them above.
+
+So if you just want individual sprites to blend and nothing else, leave the top layer blank.
+
+```c
+#define FADE_ALPHA 1
+
+  REG_BLDCNT =
+      BLD_BUILD(0, BLD_BG1, FADE_ALPHA);
+  REG_BLDALPHA = BLDA_BUILD(8, 8);
+```
+
+Now only sprites that have their blend flag set will blend into background 1, and nothing else.
+
+For truly transparent sprites, have them blend into everything.
+
+```c
+#define FADE_ALPHA 1
+
+  REG_BLDCNT =
+      BLD_BUILD(0, BLD_BACKDROP | BLD_BG0 | BLD_BG1 | BLD_BG2 | BLD_BG3, FADE_ALPHA);
+  REG_BLDALPHA = BLDA_BUILD(8, 8);
+```
+
+I left sprites out (`BLD_OBJ`) because although it seems like it should work, so far I've not been able to figure it out. Probably a topic for a future blog post :)
+
+## One caveat
+
+Since all blending is done through a single register, that means only one type of blending is possible at any given time.
+
+All is not lost though, if you really want alpha blending and fading to black/white, the latter can be accomplished through palettes, yet another future blog post.
