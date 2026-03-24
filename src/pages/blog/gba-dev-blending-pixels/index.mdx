@@ -195,7 +195,13 @@ For truly transparent sprites, have them blend into everything.
   REG_BLDALPHA = BLDA_BUILD(8, 8);
 ```
 
-I left sprites out (`BLD_OBJ`) because although it seems like it should work, so far I've not been able to figure it out. Probably a topic for a future blog post :)
+### Sprite to sprite blending is not possible.
+
+I left sprites out (`BLD_OBJ`) because doing blending between sprites is not possible. The GBA will take all the pixels from all of the sprites and only consider the highest one (z-order wise).
+
+gbatek explains it like this:
+
+> Before special effects are applied, the display controller computes the OBJ priority ordering, and isolates the top-most OBJ pixel. In result, only the top-most OBJ pixel is recursed at the time when processing special effects. Ie. alpha blending and semi-transparency can be used for OBJ-to-BG or BG-to-OBJ , but not for OBJ-to-OBJ.
 
 ## One caveat
 
