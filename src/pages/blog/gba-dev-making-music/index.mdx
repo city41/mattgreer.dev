@@ -36,7 +36,7 @@ Beyond these four channels, it also has two PCM channels for playing samples. Th
 
 ## Creating a song - PSG, PCM, or both?
 
-When creating a song to play on the GBA, you first need to decide if you are going to use PSG audio (the four original channels from the original Game Boy), PCM audio (the two sampling channels), or both. The main tradeoff is storage requires and CPU. PSG music requires less space, and very little cpu, but can only sound like an original Game Boy.
+When creating a song to play on the GBA, you first need to decide if you are going to use PSG audio (the four original channels from the original Game Boy), PCM audio (the two sampling channels), or both. The main tradeoffs are storage requirements and CPU usage. PSG music requires less space, and very little cpu, but can only sound like an original Game Boy.
 
 If going the PSG route, [gbt-player](https://github.com/AntonioND/gbt-player) looks very promising. I've never used it myself though.
 
@@ -87,7 +87,7 @@ If you hear you're sound effect, you should be good!
 
 ### Playing a song
 
-Maxmod works with tracker files for songs, and I have found the best tracker file format to use is .it files, made by Impulse Tracker. Impulse Tracker is an old tracker from back in the day, and runs in DOS. There is a modern recreation of it called [Schism Tracker](https://schismtracker.org/). It runs on modern machines and works with .it files, but I found files made by Schism Tracker caused Maxmod to crash. Instead, it seems like the GBA community mostly uses [OpenMPT](https://openmpt.org/), another tracker that also has .it file support. Files made with OpenMPT have worked great for me in Maxmod.
+Maxmod works with tracker files for songs, and I have found the best tracker file format to use is .it files, made by Impulse Tracker. Impulse Tracker is an old tracker from back in the day, and runs in DOS. There is a modern recreation of it called [Schism Tracker](https://schismtracker.org/). It runs on modern machines and works with .it files, but I found files made by Schism Tracker cause Maxmod to crash. Instead, it seems like the GBA community mostly uses [OpenMPT](https://openmpt.org/), another tracker that also has .it file support. Files made with OpenMPT have worked great for me in Maxmod.
 
 <wisdom>
 	OpenMPT is a Windows program. I run it on Linux using Wine and I've not had a
@@ -96,7 +96,7 @@ Maxmod works with tracker files for songs, and I have found the best tracker fil
 
 If you look around, there are .it files out there you can play with. Here is [an .it song](https://github.com/Skaleee/Celeste2-GBA/blob/main/maxmod_data/mus2.it) that is part of an open source port of Pico Celeste to the GBA (how cool is that??).
 
-Drop that file into your audio directory, and `make` your game again. Maxmod should detect the it file and extract the samples out of it. You should see this in your build output.
+Drop that file into your audio directory, and `make` your game again. Maxmod should detect the .it file and extract the samples out of it. You should see this in your build output.
 
 ```sh
 ...
@@ -116,9 +116,9 @@ sample snd20_8 is at 1148/472 of 47864
 Those samples are wav files that are embedded in the .it.
 
 <pitfall>
-	You might also notice this song added about <b>two megabytes!</b> to your
-	game's size. Samples are huge, you need to be careful here with your own
-	music.
+	You might also notice this song added about <b>two megabytes</b> to your
+	game's size! Samples are typically huge, you need to be careful here with your
+	own music.
 </pitfall>
 
 Now that Maxmod has processed the file, it is included in `soundbank.h`, so you can play it.
@@ -144,7 +144,7 @@ Now with the coding stuff out of the way, the rest of this post will walk throug
 
 ### Finding a song to work with
 
-If you're not a musician -- which I am not --, you probably need to rely on already written songs. Here creative commons and classical music are your friends, as both can be used without any copyright or royalty issues to worry about. I searched around and explored classical music until I settled on this song by Chopin. What's really awesome about classic music is the website musescore, which often has your song as sheet music and playable. Here is [Waltz in A Minor](https://musescore.com/user/4609986/scores/1749181). That playback feature was very helpful!
+If you're not a musician&mdash;which I am not&mdash;you probably need to rely on already written songs. Here creative commons and classical music are your friends, as both can be used without any copyright or royalty issues to worry about. I searched around and explored classical music until I settled on this song by Chopin. What's really awesome about classical music is the website musescore, which often has your song as sheet music and playable. Here is [Waltz in A Minor](https://musescore.com/user/4609986/scores/1749181). That playback feature was very helpful!
 
 If you are interested in more modern music, you can probably fine some. For example [musopen](https://musopen.org/) has sheet music for many types of music, including stuff written this century.
 
@@ -204,14 +204,14 @@ First click the "Insert Sample" button, it is the very first thing in the upper 
 This sample actually has a few problems, so let's just patch it up now as it will make our life easier. I use Audacity for this. I load the sample there and
 
 - Switch it from stereo to mono
-- Run the amplify effect on it and make it (much) louder (be careful to not cause distortion)
+- Run the amplify effect on it and make it (much) louder (be careful not to cause distortion)
 - Export it from there as a 44100hz, 16 bit sample
 
 Incidentally, up above where you could play the sample, that is my patched up version. You can grab it [here](/007_Gsharp3_forte_sustained.wav) to avoid dealing with Audacity.
 
 Click on the "Import Sample" button again, and this time load in the patched version.
 
-Among many things, it will now playback much louder in OpenMPT. The original sample was very quiet.
+It will now playback much louder in OpenMPT. The original sample was very quiet.
 
 <figure>
 	<img src={require('./loadedSample.png').default.src} />
@@ -248,7 +248,7 @@ Then for bass, add those notes in. `E-4` is the T key. When you are done, it sho
 	<figcaption>The first measure of the song, typed into the tracker</figcaption>
 </figure>
 
-Notice how the two `C-5`s in the first column have a space between them? That is because teh first two notes are 8th notes, and the C's are quarter notes.
+Notice how the two `C-5`s in the first column have a space between them? That is because the first two notes are 8th notes, and the C's are quarter notes.
 
 ### Play it back
 
