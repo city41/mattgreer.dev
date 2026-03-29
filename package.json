@@ -17,6 +17,7 @@
 		"@nivo/line": "^0.87.0",
 		"clsx": "^1.1.1",
 		"feed": "^4.2.1",
+		"file-loader": "^6.2.0",
 		"imagemin-mozjpeg": "^9.0.0",
 		"imagemin-optipng": "^8.0.0",
 		"imagemin-svgo": "^8.0.0",
