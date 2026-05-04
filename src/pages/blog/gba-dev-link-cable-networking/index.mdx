@@ -195,6 +195,12 @@ The way I did networking for my game, it doesn't matter which GBA is player 1 an
 
 If this does matter for your game, then when you do `File > New multiplayer window`, the new window that pops up is player 1, and the original window is player 2. Why? I have no idea, it seems backwards to me. But through experimentation I am pretty sure this is correct.
 
+<pitfall>
+	Actually, come to think of it, the link cable library says the first window is
+	ID 0 and the new window is ID 1, so maybe they aren't backwards? I honestly
+	don't know.
+</pitfall>
+
 ### Networking is very tricky
 
 Actually getting your game to robustly work in two player mode via a link cable requires careful planning and thought. For my game I established a simple protocol that uses the top 4 bits of the 16 bit half word to indicate what type of message is being sent, and the bottom 12 bits are the payload of the message.
@@ -261,7 +267,15 @@ During the handshake, if the GBA does't hear anything within 15 seconds, it give
 
 ### Synchronize before gameplay starts
 
-It's important that both GBA's start the gameplay at the same time. To accomplish this, I have a "sync" phase just before gameplay starts. Here player 1's GBA (with ID of zero) sends a message. Once player 2's GBA gets that message, it sends one back. Player 2 then waits one frame, and then starts. Player 1 will start as soon as it receive's player 2's message. Processing a message takes one frame, so that is why player 2 waits that one extra frame. With this, both sides start at the exact same time.
+It's important that both GBA's start the gameplay at the same time. To accomplish this, I have a "sync" phase just before gameplay starts. Here player 1's GBA (with ID of zero) sends a message. Once player 2's GBA gets that message, it sends one back. Player 2 then waits one frame, and then starts. Player 1 will start as soon as it receives player 2's message. Processing a message takes one frame, so that is why player 2 waits that one extra frame. With this, both sides start at the exact same time.
+
+<pitfall>
+	Exact same time, within a range of about 16ms (the length of one frame).
+	That's because when the players turned on their GBAs is a factor here.
+	Sometimes even this tiny little difference can make the music sound a little
+	"off", so I altered my game such that in two player mode, only player 1 can
+	play music.
+</pitfall>
 
 ### Audio can lock things up
 
