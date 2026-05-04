@@ -3,7 +3,6 @@ import clsx from 'clsx';
 import Link from 'next/link';
 import {
 	FaEnvelope,
-	FaLinkedin,
 	FaGithub,
 	FaStackOverflow,
 	FaRss,
@@ -68,13 +67,6 @@ function Footer({ className }: FooterProps) {
 						Icon={FaStackOverflow}
 						href="https://stackoverflow.com/users/194940/matt-greer"
 						label="my StackOverflow profile"
-					/>
-				</li>
-				<li>
-					<IconLink
-						Icon={FaLinkedin}
-						href="https://www.linkedin.com/in/matt-greer-133405ab/"
-						label="my LinkedIn profile"
 					/>
 				</li>
 			</ul>
