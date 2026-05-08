@@ -386,7 +386,7 @@ With our new `setPixel`, we are using it to set the other eye to black.
 		src={require('./faceSpriteOtherEyeDark.png').default.src}
 		style={{ imageRendering: 'pixelated' }}
 	/>
-	<figcaption>The earthworm on the screen</figcaption>
+	<figcaption>The face with the other eye blackened</figcaption>
 </figure>
 
 That's great, it's now super simple to set a single pixel within a sprite's tile. From there, full on drawing of lines, boxes (and even circles if you're feeling adventurous) is now doable.
@@ -417,7 +417,7 @@ Our face sprite is only a single tile, making drawing on it a bit easier. Most s
 		src={require('./earthWormTiles.png').default.src}
 		style={{ imageRendering: 'pixelated' }}
 	/>
-	<figcaption>Our simple face sprite with the other eye dark</figcaption>
+	<figcaption>A work sprite that is four tiles wide</figcaption>
 </figure>
 
 This time we are working with a sprite that is 4 tiles wide. It is also 4 tiles tall because GBA sprites can only be certain sizes, and 4x4 is one of them. We will ignore all the extra blank tiles and just think of this as a 4x1 sprite.
@@ -429,7 +429,7 @@ And here it is on the GBA's screen.
 		src={require('./earthWormWhiteEye.png').default.src}
 		style={{ imageRendering: 'pixelated' }}
 	/>
-	<figcaption>Our simple face sprite with the other eye dark</figcaption>
+	<figcaption>The worm sprite drawn onto the screen</figcaption>
 </figure>
 
 Let's again change the eye to black. This is very similar to before, but now the eye is in the fourth tile over. We need to change `setPixel` to be aware that sprites can be multiple tiles wide (and tall).
