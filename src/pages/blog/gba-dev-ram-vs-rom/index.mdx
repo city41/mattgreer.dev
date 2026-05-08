@@ -1,0 +1,203 @@
+import { Article } from '../../../components/layouts/Article';
+import meta from './meta.json';
+
+export default ({ children }) => (
+	<Article
+		{...meta}
+		img={require('./feature.png').default.src}
+		socialMediaImg={require('./twitter.png').default.src}
+		intro="Dealing with the GBA's various storage types"
+	>
+		{children}
+	</Article>
+);
+
+The GBA has virtually unlimited ROM space and comparitively tiny RAM space. Using both correctly and efficiently is important. Here is a little bit of background on them, and some issues I've faced.
+
+## ROM
+
+Read only memory is exactly as it sounds, memory that can be read, but never changed. It was traditionally found in mask ROM chips on the cartridge board, but nowadays it's often simulated on a flash cart, or some other rewritable medium. Despite often being present on rewritable medium now, you still can't write to it.
+
+The [GBA memory map](https://gbadev.net/gbadoc/memory.html) dedicates 32 megabytes to cartridge ROM. For modern homebrew GBA devs that are likely working in small teams, that pretty much equates to infinite space. Of course it isn't actually, but 32 megabytes is a _lot_ of space that would take quite an ambitious project to fill. So far in my GBA game, I've not thought about saving ROM space whatsoever&mdash;quite the opposite actually&mdash; and my game is less than 2 megabytes without music. Music does tend to be quite large though. In my game, each song in the game is looking to require just shy of a megabyte of space.
+
+## RAM
+
+The GBA has a total of 288kb of RAM, divided into two sections: IWRAM and EWRAM.
+
+<wisdom>
+	There is also video RAM, palette RAM and some other minor things. I'm ignoring
+	all of that in this post.
+</wisdom>
+
+### IWRAM
+
+Internal work RAM is 32kb in size and is the fastest storage available on the GBA (other than the CPU's registers of course). This is because it is embedded directly within the CPU and has a 32 bit bus. The 32 bit bus means it's the ideal location to run ARM code, which is 32 bit. For space savings, GBA games mostly run in 16 bit thumb code. Putting thumb code here is possible, but with minimal benefit.
+
+### EWRAM
+
+External work RAM is 256kb in size, has a 16 bit data bus, and is slower than IWRAM.
+
+### When does the speed matter?
+
+I've not encountered any situations where I truly needed the speed of IWRAM or noticed any difference here. EWRAM is still perfectly fine 99% of the time. There is one exception though, interrupt handlers are usually written in ARM code, and stored in IWRAM. This is especially true for the hblank interrupt, which triggers after the screen has drawn a single line. Your hblank interrupt has a mere 272 CPU cycles to do its thing, which is roughly 0.07 milliseconds.
+
+<wisdom>
+	If you are using devKitPro, you can indicate an entire file should go into
+	IWRAM by adding ".iwram.c" to its file name, like myInterruptHandler.iwram.c.
+</wisdom>
+
+## Choosing where to stick stuff
+
+If you are using libtonc and devKitPro, it's actually very easy to decide where things should go: ROM, IWRAM or EWRAM.
+
+### Code goes to ROM
+
+Code, ie functions, go into ROM. Unless you add the extension `.iwram.c` to the file, then the compiler will place this code in IWRAM instead.
+
+### Constant things go to ROM
+
+If you add the keyword `const` to data, then that data will also go into ROM. It's very important to not forget this keyword, if something will truly never change, it almost always should go into ROM and not take up any precious RAM space.
+
+<pitfall>
+	Although I ran into one situation where something marked const still went into
+	IWRAM. More on that below.
+</pitfall>
+
+### Changable things by default go into IWRAM
+
+If you declare something in your file like `u32 x;`, then that variable will like in IWRAM. I'm not sure why IWRAM is the default, but it is. If you're not careful, it's very easy to use up all of the IWRAM. Once you go over the limit, your game will fail during the linking step of your build.
+
+#### But not within functions
+
+This only applies to variables that live outside of functions. If you declare `u32 x` within a function, then that variable will go onto the stack when the function is executing.
+
+### Moving stuff to EWRAM
+
+If you are using libtonc, the macro `EWRAM_DATA` will move that item into EWRAM instead of IWRAM.
+
+If you're not using libtonc, here is the macro, easily defined yourself if needed:
+
+```c
+//! Put variable in EWRAM.
+#define EWRAM_DATA __attribute__((section(".ewram")))
+```
+
+## Putting too much into IWRAM
+
+If your game puts too much stuff into IWRAM, then when you are building your game you will get an error like this.
+
+```bash
+linking cartridge
+/opt/devkitpro/devkitARM/bin/../lib/gcc/arm-none-eabi/15.1.0/../../../../arm-none-eabi/bin/ld: address 0x3008660 of /home/matt/dev/pppro/pppro.elf section `.data' is not within region `iwram'
+```
+
+This fairly cryptic message is just telling you that your game is trying to put more stuff into IWRAM than will fit.
+
+### How to deal with this
+
+A simple way to combat this is to add `--print-memory-usage` to your `LDFLAGS`. Then when you build your game, you'll get an overview of how the memory regions are looking.
+
+```bash
+linking cartridge
+Memory region         Used Size  Region Size  %age Used
+             rom:     3412416 B        32 MB     10.17%
+           iwram:       29836 B        32 KB     91.05%
+           ewram:       12352 B       256 KB      4.71%
+```
+
+That's good to keep an eye on things, but when you go over it's not too helpful.
+
+If you do go over, the easiest thing to do is seek out large stuff in your game and move it to EWRAM with the `EWRAM_DATA` macro.
+
+#### Getting the details with a linker map file
+
+The linker option `-Map=file` will cause the linker to output a map file. This is a very verbose text file showing exactly where everything in your game ended up.
+
+Rather than explain this file here, keep reading below where I explain how I used this file to solve a conundrum I found myself it.
+
+## Const data can sometimes go in IWRAM?
+
+I made a change to my game that seemed innocent enough, I changed around how the constant data was structured. But after I did that and ran a build, I got the ".data is not with region iwram" error. What?
+
+My game contains a struct like this:
+
+```c
+#define PUZZLE_COUNT 28
+
+struct PuzzleCollection {
+	...
+	const struct Puzzle *puzzles[PUZZLE_COUNT];
+	...
+};
+```
+
+But a change to my game required that array of puzzles to be of varying length. So I changed the struct to this.
+
+```c
+struct PuzzleCollection {
+	...
+	const u32 puzzleCount;
+	const struct Puzzle **puzzles;
+	...
+};
+```
+
+This change allows this struct to refer to as many puzzles as it would like, my data then looked something like this.
+
+```c
+const struct Puzzle somePuzzle = { ... };
+
+const struct Puzzle *someCollectionPuzzles[] = { &somePuzzle };
+
+const strudct PuzzleCollection someCollection  = {
+	...
+	.puzzleCount = 1,
+	.puzzles = someCollectionPuzzles
+	...
+};
+```
+
+Seems fine ... I think? Everything has `const` and everything is known at compile time. But for some reason, `someCollectionPuzzles[]` ends up in IWRAM. I'm far from a C expert (or GBA expert), so I'm probably just doing something wrong, but I don't know what?
+
+But when I first got the overflow error, the only thing I knew was something was being place into IWRAM that shouldn't be, but I didn't know what.
+
+### Solving this with the map file
+
+I added `-Map=mapfile.map` to the linker arguments, and did a build. Once it finished, I examined `mapfile.map` and it told me what was unexpectedly going into IWRAM.
+
+I searched for `someCollectionPuzzles` in the map file and found this.
+
+```bash
+ .data          0x03006d48       0x40 someCollection.o
+                0x03006d48                someCollectionPuzzles
+```
+
+`.data` means this array was placed in RAM. If it was placed in ROM instead, it would have been put into the `.rodata` section. It turns out arrays of pointers are always placed in `.data` for some reason, even `const` ones, I'm really not sure why.
+
+### The fix
+
+I fixed this by changing the struct's defintion around. I defined a variable sized array of pointers in the struct itself.
+
+```c
+struct PuzzleCollection {
+	...
+    const u32 puzzleCount;
+    const struct Puzzle *puzzles[];
+};
+```
+
+Then defined the data like this.
+
+```c
+const struct Puzzle somePuzzle = { ... };
+
+const struct PuzzleCollection someCollection  = {
+	...
+	.puzzleCount = 1,
+	.puzzles = {
+		&somePuzzle
+	}
+};
+```
+
+And for some reason, inlining the array into the struct moved that array into `.rodata` and solved my problem.
