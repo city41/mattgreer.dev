@@ -65,11 +65,11 @@ If you add the keyword `const` to data, then that data will also go into ROM. It
 
 ### Changable things by default go into IWRAM
 
-If you declare something in your file like `u32 x;`, then that variable will like in IWRAM. I'm not sure why IWRAM is the default, but it is. If you're not careful, it's very easy to use up all of the IWRAM. Once you go over the limit, your game will fail during the linking step of your build.
+If you declare something in your file like `u32 x;`, then that variable will by default go into IWRAM. I'm not sure why IWRAM is the default, but it is. If you're not careful, it's very easy to use up all of the IWRAM. Once you go over the limit, your game will fail during the linking step of your build.
 
 #### But not within functions
 
-This only applies to variables that live outside of functions. If you declare `u32 x` within a function, then that variable will go onto the stack when the function is executing.
+This only applies to variables that live outside of functions. If you declare `u32 x` within a function, then that variable will go onto the stack when the function is executing, and be pulled out of memory once the function finishes.
 
 ### Moving stuff to EWRAM
 
@@ -81,6 +81,8 @@ If you're not using libtonc, here is the macro, easily defined yourself if neede
 //! Put variable in EWRAM.
 #define EWRAM_DATA __attribute__((section(".ewram")))
 ```
+
+There are other similar macros, [here they are in tonc_types.h](https://github.com/devkitPro/libtonc/blob/master/include/tonc_types.h#L49).
 
 ## Putting too much into IWRAM
 
