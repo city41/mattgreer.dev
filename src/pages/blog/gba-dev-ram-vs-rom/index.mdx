@@ -151,7 +151,7 @@ const struct Puzzle somePuzzle = { ... };
 
 const struct Puzzle *someCollectionPuzzles[] = { &somePuzzle };
 
-const strudct PuzzleCollection someCollection  = {
+const struct PuzzleCollection someCollection  = {
 	...
 	.puzzleCount = 1,
 	.puzzles = someCollectionPuzzles
@@ -214,4 +214,4 @@ Inlining the array is one fix, but another fix would have been to define the arr
 const struct Puzzle *const someCollectionPuzzles[] = { &somePuzzle };
 ```
 
-The added const keyword tells the compiler it's a constant array of constaint pointers, and then that array ends up in the ROM as expected. Thanks nytpu!
+The added const keyword tells the compiler it's a constant array of constant pointers, and then that array ends up in the ROM as expected. Thanks nytpu!
