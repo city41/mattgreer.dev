@@ -203,3 +203,15 @@ const struct PuzzleCollection someCollection  = {
 ```
 
 And for some reason, inlining the array into the struct moved that array into `.rodata` and solved my problem.
+
+## Oh here is why
+
+After I posted this article on [Bluesky](https://bsky.app/profile/did:plc:jdrmcr5kjkkgqplvypdlqc2q/post/3mle3y37zmc2v), nytpu explained why the "const" data ended up in IWRAM, it's not truly const.
+
+Inlining the array is one fix, but another fix would have been to define the array like this:
+
+```c
+const struct Puzzle *const someCollectionPuzzles[] = { &somePuzzle };
+```
+
+The added const keyword tells the compiler it's a constant array of constaint pointers, and then that array ends up in the ROM as expected. Thanks nytpu!
