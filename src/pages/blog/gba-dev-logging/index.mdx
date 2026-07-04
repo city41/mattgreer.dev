@@ -71,11 +71,11 @@ When you run the game, go to `Tools > View logs...` to open up the log window.
 
 And there's your message.
 
-When logging, you can choose to log at various levels: error, warning, info or debug. That's what the `level` business is for in `mgbalog()`. You write your desired log level to `REG_LOG_SEND`, this pulls double duty of telling mGBA at what level to store the message, and that you're done writing the message and mGBA can now process it.
+When logging, you can choose to log at various levels: error, warning, info or debug. That's what the `level` business is for in `mgbalog()`. You write your desired log level to `REG_LOG_SEND`, this pulls double duty of telling mGBA at what level to store the message, and that you're done writing the message so mGBA can now process it.
 
 ### Logging to your terminal
 
-Opening the log window every time to view your logs can be very tedious. If you launch mGBA from the command line, you can also tell it to write the logs to your terminal. To do this, go into the log window again and click, on advance settings, then check "Log to console" at the bottom.
+Opening the log window every time to view your logs can be tedious. If you launch mGBA from the command line, you can also tell it to write the logs to your terminal. To do this, go into the log window again and click, on advance settings, then check "Log to console" at the bottom.
 
 <figure>
 	<img src={require('./advanceSettings.png').default.src} />
@@ -89,7 +89,7 @@ Opening the log window every time to view your logs can be very tedious. If you 
 	dialog as well.
 </wisdom>
 
-Now if you launch your game via the command line, the log output will show up there as well. You can control which level of log you want with `-l`. For example, here is how to only log DEBUG to the console.
+Now if you launch your game via the command line, the log output will show up there as well. You can control which level of log you want with `--log-level`. For example, here is how to only log DEBUG to the console.
 
 ```sh
 mgba --log-level 16 yourRom.gba
@@ -137,9 +137,9 @@ Now you can do things like `mgbalog(DEBUG, "pos.x=%i", pos.x);`.
 
 ## Only logging during development
 
-Logging adds to your binary, uses memory and cpu, and is generally not wanted when a player is playing your game. This is especially true if you add formatting, things like `vsnprintf` from the standard library are pretty expensive on the piddly lil GBA.
+Logging adds to your binary, uses memory and cpu, and is generally not wanted in the final version of your game. This is especially true if you add formatting, things like `vsnprintf` from the standard library are pretty expensive on the poor lil GBA.
 
-I hide my logging implmenetation behind an `MGBALOG` define. So when I want logging, I define `MGBALOG`. If it's not defined, nothing related to logging will get added to the binary.
+I hide my logging implementation behind an `MGBALOG` define. So when I want logging, I define `MGBALOG`. If it's not defined, nothing related to logging will get added to the binary.
 
 ```c
 #ifdef MGBALOG
@@ -182,7 +182,7 @@ void _mgbalog(u32 level, const char *format, ...);
 #endif
 ```
 
-Then throughout my game I call `mgbalog(...)` as before whenever I want to log something. This is now a macro that either calls `_mgbalog()` if `MGBALOG` is defined, or does nothing at all when it is not defined. Now you can leave your log calls in and your game will still compile.
+Then throughout my game I call `mgbalog(...)` as before whenever I want to log something. This is now a macro that either calls `_mgbalog()` if `MGBALOG` is defined, or does nothing at all when it is not defined. Now you don't need to worry about your log calls, the game will always compile regardless.
 
 With the above header file, here is my implementation.
 
