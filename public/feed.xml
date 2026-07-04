@@ -4,7 +4,7 @@
         <title>Matt Greer</title>
         <link>https://mattgreer.dev</link>
         <description>Mostly web dev and game dev related articles</description>
-        <lastBuildDate>Fri, 08 May 2026 14:36:11 GMT</lastBuildDate>
+        <lastBuildDate>Sat, 04 Jul 2026 15:36:16 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
@@ -16,19 +16,27 @@
         <copyright>Copyright Matt Greer</copyright>
         <atom:link href="https://mattgreer.dev/feed.xml" rel="self" type="application/rss+xml"/>
         <item>
-            <title><![CDATA[Game Boy Advance Dev: Link Cable Networking]]></title>
-            <link>https://mattgreer.dev/blog/gba-dev-link-cable-networking</link>
-            <guid>https://mattgreer.dev/blog/gba-dev-link-cable-networking</guid>
-            <pubDate>Sun, 03 May 2026 00:00:00 GMT</pubDate>
-            <description><![CDATA[How to get the link cable going for multiplayer on the Game Boy Advance]]></description>
+            <title><![CDATA[Game Boy Advance Dev: Logging to the console]]></title>
+            <link>https://mattgreer.dev/blog/gba-dev-logging</link>
+            <guid>https://mattgreer.dev/blog/gba-dev-logging</guid>
+            <pubDate>Sat, 04 Jul 2026 00:00:00 GMT</pubDate>
+            <description><![CDATA[How to log to the console from your game using mGBA]]></description>
             <author>matt.e.greer@gmail.com (Matt Greer)</author>
         </item>
         <item>
             <title><![CDATA[Game Boy Advance Dev: RAM vs ROM]]></title>
             <link>https://mattgreer.dev/blog/gba-dev-ram-vs-rom</link>
             <guid>https://mattgreer.dev/blog/gba-dev-ram-vs-rom</guid>
-            <pubDate>Sun, 03 May 2026 00:00:00 GMT</pubDate>
+            <pubDate>Fri, 08 May 2026 00:00:00 GMT</pubDate>
             <description><![CDATA[Dealing with the GBA's various storage types]]></description>
+            <author>matt.e.greer@gmail.com (Matt Greer)</author>
+        </item>
+        <item>
+            <title><![CDATA[Game Boy Advance Dev: Link Cable Networking]]></title>
+            <link>https://mattgreer.dev/blog/gba-dev-link-cable-networking</link>
+            <guid>https://mattgreer.dev/blog/gba-dev-link-cable-networking</guid>
+            <pubDate>Sun, 03 May 2026 00:00:00 GMT</pubDate>
+            <description><![CDATA[How to get the link cable going for multiplayer on the Game Boy Advance]]></description>
             <author>matt.e.greer@gmail.com (Matt Greer)</author>
         </item>
         <item>

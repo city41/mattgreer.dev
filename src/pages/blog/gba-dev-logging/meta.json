@@ -1,0 +1,8 @@
+{
+	"title": "Game Boy Advance Dev: Logging to the console",
+	"date": "2026-07-04",
+	"type": "technical article",
+	"tags": ["Retro gaming", "Game dev", "Game Boy Advance"],
+	"description": ["How to log to the console from your game using mGBA"],
+	"imgAlt": "A terminal with one line logged to it"
+}
